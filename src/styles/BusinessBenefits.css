@@ -1,0 +1,191 @@
+.business-benefits {
+  padding: 0 24px 44px;
+
+  background-color: var(--color-cream);
+}
+
+.business-benefits__container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.business-benefits__grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+
+  padding: 8px 0;
+}
+
+.business-benefit {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+
+  min-width: 0;
+  min-height: 82px;
+  padding: 10px 24px;
+}
+
+/* Separadores verticales */
+
+.business-benefit:not(:last-child)::after {
+  position: absolute;
+  top: 19px;
+  right: 0;
+
+  width: 1px;
+  height: 44px;
+
+  background-color: rgba(23, 23, 23, 0.12);
+
+  content: "";
+}
+
+/* Íconos */
+
+.business-benefit__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  width: 52px;
+  height: 52px;
+
+  color: var(--color-primary);
+}
+
+.business-benefit__icon svg {
+  display: block;
+
+  width: 50px;
+  height: 50px;
+
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.business-benefit__icon-dot {
+  fill: currentColor;
+  stroke: none;
+}
+
+/* Textos */
+
+.business-benefit__content {
+  min-width: 0;
+}
+
+.business-benefit__title {
+  margin: 0;
+
+  color: var(--color-black);
+
+  font-family: "Fredoka", sans-serif;
+  font-size: 0.98rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.business-benefit__description {
+  margin: 4px 0 0;
+
+  color: rgba(23, 23, 23, 0.78);
+
+  font-family: "Nunito", sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+/* Tablets */
+
+@media (max-width: 960px) {
+  .business-benefits {
+    padding: 0 20px 42px;
+  }
+
+  .business-benefits__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: 10px;
+  }
+
+  .business-benefit:nth-child(2)::after {
+    display: none;
+  }
+
+  .business-benefit:nth-child(-n + 2)::before {
+    position: absolute;
+    right: 12%;
+    bottom: -5px;
+
+    width: 76%;
+    height: 1px;
+
+    background-color: rgba(23, 23, 23, 0.1);
+
+    content: "";
+  }
+}
+
+/* Celulares */
+
+@media (max-width: 620px) {
+  .business-benefits {
+    padding: 0 16px 38px;
+  }
+
+  .business-benefits__grid {
+    grid-template-columns: 1fr;
+
+    padding: 0;
+  }
+
+  .business-benefit {
+    justify-content: flex-start;
+
+    min-height: 76px;
+    padding: 12px 18px;
+  }
+
+  .business-benefit:not(:last-child)::after {
+    display: block;
+
+    top: auto;
+    right: 8%;
+    bottom: 0;
+
+    width: 84%;
+    height: 1px;
+  }
+
+  .business-benefit:nth-child(-n + 2)::before {
+    display: none;
+  }
+
+  .business-benefit__icon {
+    width: 48px;
+    height: 48px;
+  }
+
+  .business-benefit__icon svg {
+    width: 46px;
+    height: 46px;
+  }
+
+  .business-benefit__title {
+    font-size: 1rem;
+  }
+
+  .business-benefit__description {
+    font-size: 0.9rem;
+  }
+}

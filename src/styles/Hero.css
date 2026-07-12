@@ -1,0 +1,458 @@
+/* ========================================
+   HERO
+======================================== */
+
+.hero {
+  position: relative;
+  padding: 48px 0 36px;
+  overflow: hidden;
+}
+
+.hero__container {
+  min-height: 540px;
+
+  display: grid;
+  grid-template-columns: minmax(0, 0.92fr) minmax(420px, 1.08fr);
+  align-items: center;
+  gap: 40px;
+}
+
+/* ========================================
+   CONTENIDO
+======================================== */
+
+.hero__content {
+  position: relative;
+  z-index: 3;
+
+  width: 100%;
+  max-width: 510px;
+  min-width: 0;
+}
+
+.hero__title {
+  display: flex;
+  flex-direction: column;
+
+  margin: 0;
+
+  font-family: "Fredoka", sans-serif;
+  font-weight: 700;
+  line-height: 0.91;
+  letter-spacing: -2.5px;
+}
+
+.hero__title-small {
+  color: var(--color-black);
+
+  font-size: clamp(34px, 3.7vw, 48px);
+  line-height: 1.05;
+}
+
+.hero__title-primary {
+  color: var(--color-primary);
+
+  font-size: clamp(62px, 6.2vw, 86px);
+}
+
+.hero__title-underlined {
+  position: relative;
+
+  width: fit-content;
+  padding-bottom: 8px;
+}
+
+.hero__title-underlined::after {
+  content: "";
+
+  position: absolute;
+  left: 0;
+  right: -8px;
+  bottom: -2px;
+
+  height: 6px;
+
+  background-color: var(--color-yellow);
+  border-radius: 999px;
+
+  transform: rotate(0.5deg);
+}
+
+.hero__description {
+  max-width: 430px;
+  margin-top: 34px;
+
+  color: #373737;
+
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.55;
+}
+
+/* ========================================
+   BOTONES
+======================================== */
+
+.hero__actions {
+  margin-top: 27px;
+
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.hero__button {
+  min-height: 54px;
+  padding: 13px 22px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+
+  border: 2px solid var(--color-primary);
+  border-radius: 15px;
+
+  font-family: "Fredoka", sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+
+  transition:
+    transform 0.2s ease,
+    color 0.2s ease,
+    background-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.hero__button svg {
+  font-size: 14px;
+}
+
+.hero__button--primary {
+  color: var(--color-white);
+  background-color: var(--color-primary);
+
+  box-shadow: 0 8px 18px rgba(7, 95, 234, 0.16);
+}
+
+.hero__button--secondary {
+  color: var(--color-primary);
+  background-color: transparent;
+}
+
+.hero__button:hover {
+  transform: translateY(-3px);
+}
+
+.hero__button--primary:hover {
+  background-color: var(--color-primary-dark);
+
+  box-shadow: 0 10px 22px rgba(7, 95, 234, 0.22);
+}
+
+.hero__button--secondary:hover {
+  color: var(--color-white);
+  background-color: var(--color-primary);
+}
+
+/* ========================================
+   BENEFICIOS
+======================================== */
+
+.hero__benefits {
+  margin-top: 36px;
+
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 25px;
+}
+
+.hero__benefit {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.hero__benefit-icon {
+  width: 34px;
+  height: 34px;
+
+  display: grid;
+  place-items: center;
+
+  color: var(--color-primary);
+
+  font-size: 22px;
+}
+
+.hero__benefit div {
+  display: flex;
+  flex-direction: column;
+}
+
+.hero__benefit strong {
+  color: var(--color-black);
+
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.hero__benefit div span {
+  color: #555;
+
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* ========================================
+   IMAGEN PRINCIPAL
+======================================== */
+
+.hero__visual {
+  position: relative;
+  isolation: isolate;
+
+  width: 100%;
+  min-width: 0;
+  min-height: 520px;
+
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+/* Mancha amarilla detrás de la imagen */
+.hero__yellow-shape {
+  position: absolute;
+  left: 54%;
+  top: 145px;
+  z-index: 1;
+
+  width: 390px;
+  height: 315px;
+
+  background-color: var(--color-yellow);
+
+  border-radius:
+    44% 56% 49% 51%
+    / 54% 44% 56% 46%;
+
+  transform: translateX(-50%) rotate(-5deg);
+}
+
+/* Perro y hamburguesa unidos en una sola imagen */
+.hero__main-image {
+  position: relative;
+  z-index: 2;
+
+  width: min(530px, 96%);
+  height: auto;
+  max-height: 520px;
+
+  object-fit: contain;
+  object-position: center bottom;
+
+  filter: drop-shadow(
+    0 20px 20px rgba(23, 23, 23, 0.16)
+  );
+
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ========================================
+   NOTEBOOK
+======================================== */
+
+@media (max-width: 1150px) {
+  .hero__container {
+    grid-template-columns:
+      minmax(0, 0.95fr)
+      minmax(380px, 1.05fr);
+
+    gap: 24px;
+  }
+
+  .hero__title-small {
+    font-size: clamp(32px, 3.6vw, 43px);
+  }
+
+  .hero__title-primary {
+    font-size: clamp(58px, 6vw, 78px);
+  }
+
+  .hero__description {
+    max-width: 390px;
+    font-size: 17px;
+  }
+
+  .hero__benefits {
+    gap: 17px;
+  }
+
+  .hero__visual {
+    min-height: 490px;
+  }
+
+  .hero__yellow-shape {
+    left: 52%;
+    top: 145px;
+
+    width: 340px;
+    height: 280px;
+  }
+
+  .hero__main-image {
+    width: min(470px, 96%);
+    max-height: 480px;
+  }
+}
+
+/* ========================================
+   TABLET
+======================================== */
+
+@media (max-width: 900px) {
+  .hero {
+    padding-top: 38px;
+  }
+
+  .hero__container {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .hero__content {
+    max-width: 650px;
+    margin-inline: auto;
+
+    text-align: center;
+  }
+
+  .hero__title {
+    align-items: center;
+  }
+
+  .hero__description {
+    max-width: 500px;
+
+    margin-inline: auto;
+    margin-top: 32px;
+  }
+
+  .hero__actions,
+  .hero__benefits {
+    justify-content: center;
+  }
+
+  .hero__visual {
+    min-height: 480px;
+  }
+
+  .hero__yellow-shape {
+    left: 50%;
+    top: 140px;
+
+    width: 350px;
+    height: 285px;
+  }
+
+  .hero__main-image {
+    width: 450px;
+    max-width: 92%;
+    max-height: 470px;
+  }
+}
+
+/* ========================================
+   CELULAR
+======================================== */
+
+@media (max-width: 550px) {
+  .hero {
+    padding: 25px 0 20px;
+  }
+
+  .hero__container {
+    width: min(100% - 28px, 1180px);
+    min-height: auto;
+  }
+
+  .hero__title {
+    letter-spacing: -2px;
+  }
+
+  .hero__title-small {
+    font-size: clamp(29px, 9vw, 35px);
+  }
+
+  .hero__title-primary {
+    font-size: clamp(56px, 18vw, 76px);
+  }
+
+  .hero__title-underlined::after {
+    height: 5px;
+  }
+
+  .hero__description {
+    margin-top: 28px;
+
+    font-size: 16px;
+  }
+
+  .hero__actions {
+    flex-direction: column;
+  }
+
+  .hero__button {
+    width: 100%;
+  }
+
+  .hero__benefits {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 7px;
+  }
+
+  .hero__benefit {
+    flex-direction: column;
+    gap: 5px;
+
+    text-align: center;
+  }
+
+  .hero__benefit-icon {
+    width: 30px;
+    height: 30px;
+
+    font-size: 20px;
+  }
+
+  .hero__benefit strong {
+    font-size: 12px;
+  }
+
+  .hero__benefit div span {
+    font-size: 11px;
+  }
+
+  .hero__visual {
+    min-height: 360px;
+  }
+
+  .hero__yellow-shape {
+    left: 50%;
+    top: 110px;
+
+    width: 255px;
+    height: 215px;
+  }
+
+  .hero__main-image {
+    width: 330px;
+    max-width: 96%;
+    max-height: 350px;
+  }
+}
