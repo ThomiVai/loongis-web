@@ -375,10 +375,10 @@
     padding: 25px 0 20px;
   }
 
-  .hero__container {
-    width: min(100% - 28px, 1180px);
-    min-height: auto;
-  }
+ .hero__container {
+  width: 100%;
+  min-height: auto;
+}
 
   .hero__title {
     letter-spacing: -2px;

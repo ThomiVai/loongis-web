@@ -104,7 +104,6 @@ export function StoreInfo() {
   return (
     <section
       className="store-info"
-      id="contacto"
       aria-labelledby="store-info-title"
     >
       <div className="store-info__container">

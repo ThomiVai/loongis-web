@@ -1,27 +1,50 @@
-import { BusinessBenefits } from "./components/BusinessBenefits";
-import { Categories } from "./components/Categories";
-import { DailyPromo } from "./components/DailyPromo";
-import { FeaturedProducts } from "./components/FeaturedProducts";
-import { Footer } from "./components/Footer";
-import { Hero } from "./components/Hero";
-import { Navbar } from "./components/Navbar";
-import { StoreInfo } from "./components/StoreInfo";
+import { Route, Routes } from "react-router-dom";
 
-import "./styles/global.css";
+import { Footer } from "./components/Footer";
+import { Navbar } from "./components/Navbar";
+import { PageTitle } from "./components/PageTitle";
+import { ScrollToTop } from "./components/ScrollToTop";
+
+import { Cart } from "./pages/Cart";
+import { Checkout } from "./pages/Checkout";
+import { Home } from "./pages/Home";
+import { Menu } from "./pages/Menu";
+import { NotFound } from "./pages/NotFound";
 
 function App() {
   return (
     <>
+      <PageTitle />
+      <ScrollToTop />
+
       <Navbar />
 
-      <main id="inicio">
-        <Hero />
-        <Categories />
-        <FeaturedProducts />
-        <DailyPromo />
-        <BusinessBenefits />
-        <StoreInfo />
-      </main>
+      <Routes>
+        <Route
+          path="/"
+          element={<Home />}
+        />
+
+        <Route
+          path="/menu"
+          element={<Menu />}
+        />
+
+        <Route
+          path="/carrito"
+          element={<Cart />}
+        />
+
+        <Route
+          path="/finalizar-pedido"
+          element={<Checkout />}
+        />
+
+        <Route
+          path="*"
+          element={<NotFound />}
+        />
+      </Routes>
 
       <Footer />
     </>

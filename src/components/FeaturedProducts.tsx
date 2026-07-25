@@ -1,4 +1,4 @@
-import { FaPlus } from "react-icons/fa6";
+import { AddToCartButton } from "./AddToCartButton";
 
 import { products } from "../data/products";
 
@@ -14,6 +14,7 @@ export function FeaturedProducts() {
   return (
     <section
       className="featured-products"
+      id="menu"
       aria-labelledby="featured-products-title"
     >
       <div className="featured-products__container">
@@ -58,15 +59,10 @@ export function FeaturedProducts() {
                     {priceFormatter.format(product.price)}
                   </span>
 
-                  <button
+                  <AddToCartButton
+                    product={product}
                     className="featured-product__button"
-                    type="button"
-                    aria-label={`Agregar ${product.name} al pedido`}
-                  >
-                    <FaPlus aria-hidden="true" />
-
-                    <span>Agregar</span>
-                  </button>
+                  />
                 </div>
               </div>
             </article>

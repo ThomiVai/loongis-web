@@ -1,11 +1,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;500;600;700;800&display=swap");
 
+/* ========================================
+   VARIABLES GENERALES
+======================================== */
+
 :root {
-  font-family: "Nunito", sans-serif;
-
-  color: #171717;
-  background-color: #fffaf0;
-
   --color-primary: #075fea;
   --color-primary-dark: #073ca6;
   --color-yellow: #f4c928;
@@ -14,24 +13,101 @@
   --color-black: #171717;
   --color-gray: #e8e4da;
 
+  font-family: "Nunito", sans-serif;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
+
+  color: var(--color-black);
+  background-color: var(--color-cream);
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-* {
-  margin: 0;
-  padding: 0;
+/* ========================================
+   RESET
+======================================== */
+
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
 html {
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+
   scroll-behavior: smooth;
+  scroll-padding-top: 110px;
 }
 
 body {
-  min-width: 320px;
+  width: 100%;
+  min-width: 0;
   min-height: 100vh;
+  margin: 0;
+
+  overflow-x: hidden;
+
   background-color: var(--color-cream);
+  color: var(--color-black);
+
+  font-family: "Nunito", sans-serif;
+}
+
+#root {
+  width: 100%;
+  min-width: 0;
+  min-height: 100vh;
+}
+
+main {
+  width: 100%;
+  min-width: 0;
+  min-height: 100vh;
+}
+
+header,
+main,
+footer,
+section,
+nav,
+div {
+  min-width: 0;
+}
+
+header,
+main,
+footer,
+section {
+  max-width: 100%;
+}
+
+section,
+main,
+footer {
+  scroll-margin-top: 110px;
+}
+
+/* ========================================
+   ELEMENTOS GENERALES
+======================================== */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin-top: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
 }
 
 button,
@@ -42,34 +118,91 @@ select {
 }
 
 button {
-  cursor: pointer;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
+  margin: 0;
 }
 
 img {
   display: block;
+
   max-width: 100%;
+  height: auto;
 }
 
-ul,
-ol {
-  list-style: none;
+svg {
+  flex-shrink: 0;
 }
 
-main {
-  min-height: 100vh;
-}
+/* ========================================
+   CONTENEDOR GENERAL
+======================================== */
 
 .container {
-  width: min(1180px, calc(100% - 40px));
+  width: 100%;
+  max-width: 1180px;
   margin-inline: auto;
+  padding-inline: 20px;
 }
 
+/* Clase opcional para secciones generales */
+
 .section {
+  width: 100%;
   padding: 80px 0;
 }
 
+/* ========================================
+   SELECCIÓN DE TEXTO
+======================================== */
+
+::selection {
+  background-color: var(--color-yellow);
+  color: var(--color-black);
+}
+
+/* ========================================
+   TABLETS
+======================================== */
+
+@media (max-width: 900px) {
+  html {
+    scroll-padding-top: 100px;
+  }
+
+  section,
+  main,
+  footer {
+    scroll-margin-top: 100px;
+  }
+
+  .container {
+    padding-inline: 18px;
+  }
+
+  .section {
+    padding: 64px 0;
+  }
+}
+
+/* ========================================
+   CELULARES
+======================================== */
+
+@media (max-width: 550px) {
+  html {
+    scroll-padding-top: 92px;
+  }
+
+  section,
+  main,
+  footer {
+    scroll-margin-top: 92px;
+  }
+
+  .container {
+    padding-inline: 14px;
+  }
+
+  .section {
+    padding: 52px 0;
+  }
+}

@@ -1,0 +1,474 @@
+/* ========================================
+   PÁGINA DEL MENÚ
+======================================== */
+
+.menu-page {
+  width: 100%;
+  min-height: 100vh;
+
+  background-color: var(--color-cream);
+}
+
+.menu-page__container {
+  width: 100%;
+  max-width: 1180px;
+  margin-inline: auto;
+  padding-inline: 20px;
+}
+
+/* ========================================
+   ENCABEZADO
+======================================== */
+
+.menu-page__hero {
+  padding: 52px 0 58px;
+
+  background:
+    radial-gradient(
+      circle at 82% 40%,
+      rgba(244, 201, 40, 0.2) 0%,
+      rgba(244, 201, 40, 0) 32%
+    ),
+    var(--color-cream);
+}
+
+.menu-page__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+
+  margin-bottom: 38px;
+
+  color: var(--color-primary);
+
+  font-family: "Fredoka", sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+
+  transition:
+    transform 160ms ease,
+    color 160ms ease;
+}
+
+.menu-page__back:hover {
+  color: var(--color-primary-dark);
+
+  transform: translateX(-4px);
+}
+
+.menu-page__back svg {
+  width: 16px;
+  height: 16px;
+}
+
+.menu-page__heading {
+  max-width: 760px;
+}
+
+.menu-page__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 14px;
+  padding: 7px 15px;
+
+  border-radius: 999px;
+
+  background-color: rgba(244, 201, 40, 0.3);
+  color: var(--color-primary-dark);
+
+  font-family: "Fredoka", sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.045em;
+}
+
+.menu-page__title {
+  margin: 0;
+
+  color: var(--color-primary);
+
+  font-family: "Fredoka", sans-serif;
+  font-size: clamp(3rem, 7vw, 5.6rem);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.035em;
+}
+
+.menu-page__subtitle {
+  max-width: 650px;
+  margin: 22px 0 0;
+
+  color: rgba(23, 23, 23, 0.74);
+
+  font-family: "Nunito", sans-serif;
+  font-size: 1.08rem;
+  font-weight: 600;
+  line-height: 1.65;
+}
+
+/* ========================================
+   PRODUCTOS
+======================================== */
+
+.menu-products {
+  padding: 18px 0 86px;
+}
+
+.menu-products__header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+
+  border-bottom: 1px solid rgba(23, 23, 23, 0.12);
+}
+
+.menu-products__label {
+  color: var(--color-primary);
+
+  font-family: "Fredoka", sans-serif;
+  font-size: 0.88rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.045em;
+}
+
+.menu-products__title {
+  margin: 6px 0 0;
+
+  color: var(--color-black);
+
+  font-family: "Fredoka", sans-serif;
+  font-size: clamp(1.8rem, 4vw, 2.7rem);
+  font-weight: 700;
+  line-height: 1.05;
+}
+
+.menu-products__count {
+  flex-shrink: 0;
+
+  padding: 8px 14px;
+
+  border: 1px solid rgba(7, 95, 234, 0.13);
+  border-radius: 999px;
+
+  background-color: rgba(255, 255, 255, 0.72);
+  color: var(--color-primary-dark);
+
+  font-family: "Nunito", sans-serif;
+  font-size: 0.86rem;
+  font-weight: 700;
+}
+
+/* ========================================
+   GRILLA
+======================================== */
+
+.menu-products__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
+
+/* ========================================
+   TARJETA
+======================================== */
+
+.menu-product-card {
+  display: flex;
+  flex-direction: column;
+
+  min-width: 0;
+  overflow: hidden;
+
+  border: 1px solid rgba(7, 95, 234, 0.1);
+  border-radius: 24px;
+
+  background-color: rgba(255, 255, 255, 0.9);
+
+  box-shadow:
+    0 14px 32px rgba(7, 60, 166, 0.06),
+    0 3px 8px rgba(23, 23, 23, 0.025);
+
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.menu-product-card:hover {
+  transform: translateY(-5px);
+
+  border-color: rgba(7, 95, 234, 0.23);
+
+  box-shadow:
+    0 20px 38px rgba(7, 60, 166, 0.1),
+    0 4px 10px rgba(23, 23, 23, 0.03);
+}
+
+.menu-product-card__image-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 270px;
+  padding: 22px;
+
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(244, 201, 40, 0.18) 0%,
+      rgba(255, 250, 240, 0.55) 55%,
+      rgba(255, 255, 255, 0) 78%
+    );
+}
+
+.menu-product-card__image {
+  width: 100%;
+  max-width: 290px;
+  height: 235px;
+
+  object-fit: contain;
+
+  filter: drop-shadow(0 14px 12px rgba(23, 23, 23, 0.13));
+
+  transition: transform 180ms ease;
+}
+
+.menu-product-card:hover .menu-product-card__image {
+  transform: translateY(-3px) scale(1.025);
+}
+
+.menu-product-card__content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+
+  padding: 4px 24px 24px;
+}
+
+.menu-product-card__name {
+  margin: 0;
+
+  color: var(--color-black);
+
+  font-family: "Fredoka", sans-serif;
+  font-size: 1.45rem;
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+.menu-product-card__description {
+  margin: 12px 0 24px;
+
+  color: rgba(23, 23, 23, 0.7);
+
+  font-family: "Nunito", sans-serif;
+  font-size: 0.94rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.menu-product-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+
+  margin-top: auto;
+}
+
+.menu-product-card__price {
+  color: var(--color-primary);
+
+  font-family: "Fredoka", sans-serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.menu-product-card__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+
+  min-height: 43px;
+  padding: 0 18px;
+
+  border: none;
+  border-radius: 999px;
+
+  background-color: var(--color-yellow);
+  color: var(--color-black);
+
+  font-family: "Fredoka", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  box-shadow: 0 8px 18px rgba(244, 201, 40, 0.24);
+
+  transition:
+    transform 160ms ease,
+    background-color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.menu-product-card__button:hover {
+  transform: translateY(-2px);
+
+  background-color: #ffd83d;
+
+  box-shadow: 0 11px 22px rgba(244, 201, 40, 0.34);
+}
+
+.menu-product-card__button:active {
+  transform: translateY(0);
+}
+
+.menu-product-card__button:focus-visible {
+  outline: 3px solid rgba(7, 95, 234, 0.25);
+  outline-offset: 3px;
+}
+
+/* ========================================
+   AVISO
+======================================== */
+
+.menu-products__notice {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+
+  margin-top: 34px;
+  padding: 17px 20px;
+
+  border: 1px dashed rgba(7, 95, 234, 0.25);
+  border-radius: 17px;
+
+  background-color: rgba(225, 235, 255, 0.5);
+  color: rgba(23, 23, 23, 0.74);
+
+  font-family: "Nunito", sans-serif;
+  font-size: 0.94rem;
+  font-weight: 600;
+
+  text-align: center;
+}
+
+.menu-products__notice strong {
+  color: var(--color-primary);
+
+  font-family: "Fredoka", sans-serif;
+}
+
+/* ========================================
+   TABLETS
+======================================== */
+
+@media (max-width: 900px) {
+  .menu-page__hero {
+    padding: 42px 0 50px;
+  }
+
+  .menu-products__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .menu-product-card:last-child {
+    grid-column: 1 / -1;
+
+    width: calc(50% - 11px);
+    justify-self: center;
+  }
+}
+
+/* ========================================
+   CELULARES
+======================================== */
+
+@media (max-width: 650px) {
+  .menu-page__container {
+    padding-inline: 16px;
+  }
+
+  .menu-page__hero {
+    padding: 32px 0 42px;
+  }
+
+  .menu-page__back {
+    margin-bottom: 28px;
+  }
+
+  .menu-page__title {
+    font-size: clamp(3rem, 16vw, 4.3rem);
+  }
+
+  .menu-page__subtitle {
+    margin-top: 18px;
+
+    font-size: 1rem;
+  }
+
+  .menu-products {
+    padding: 12px 0 62px;
+  }
+
+  .menu-products__header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 13px;
+
+    margin-bottom: 22px;
+  }
+
+  .menu-products__grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .menu-product-card,
+  .menu-product-card:last-child {
+    grid-column: auto;
+
+    width: 100%;
+  }
+
+  .menu-product-card__image-wrapper {
+    min-height: 245px;
+  }
+
+  .menu-product-card__image {
+    max-width: 300px;
+    height: 225px;
+  }
+
+  .menu-products__notice {
+    align-items: center;
+    flex-direction: column;
+  }
+}
+
+/* ========================================
+   CELULARES PEQUEÑOS
+======================================== */
+
+@media (max-width: 390px) {
+  .menu-product-card__footer {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .menu-product-card__button {
+    width: 100%;
+  }
+}

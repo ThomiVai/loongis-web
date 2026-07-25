@@ -1,70 +1,145 @@
 import { useState } from "react";
-import { FaBars, FaShoppingBag, FaTimes } from "react-icons/fa";
+import {
+  FaBars,
+  FaShoppingBag,
+  FaTimes,
+} from "react-icons/fa";
+import {
+  Link,
+  NavLink,
+  useNavigate,
+} from "react-router-dom";
+
+import { useCart } from "../hooks/useCart";
+
 import "../styles/Navbar.css";
 
 export function Navbar() {
   const [menuAbierto, setMenuAbierto] = useState(false);
 
+  const navigate = useNavigate();
+
+  const { totalUnits } = useCart();
+
   const cerrarMenu = () => {
     setMenuAbierto(false);
+  };
+
+  const abrirCarrito = () => {
+    cerrarMenu();
+    navigate("/carrito");
+  };
+
+  const obtenerClaseLink = ({
+    isActive,
+  }: {
+    isActive: boolean;
+  }) => {
+    return isActive
+      ? "navbar__link navbar__link--active"
+      : "navbar__link";
   };
 
   return (
     <header className="navbar">
       <div className="container navbar__container">
-        <a href="#inicio" className="navbar__logo" onClick={cerrarMenu}>
+        <NavLink
+          to="/"
+          className="navbar__logo"
+          onClick={cerrarMenu}
+          aria-label="Ir al inicio de Loongis"
+        >
           <img
-            src="images/logos/loongis-logo.jpeg"
+            src="/images/logos/loongis-logo.jpeg"
             alt="Logo de Loongis"
           />
-        </a>
+        </NavLink>
 
         <button
           className="navbar__mobile-button"
           type="button"
-          aria-label={menuAbierto ? "Cerrar menú" : "Abrir menú"}
+          aria-label={
+            menuAbierto
+              ? "Cerrar menú"
+              : "Abrir menú"
+          }
           aria-expanded={menuAbierto}
-          onClick={() => setMenuAbierto(!menuAbierto)}
+          onClick={() =>
+            setMenuAbierto(
+              (estadoActual) => !estadoActual,
+            )
+          }
         >
-          {menuAbierto ? <FaTimes /> : <FaBars />}
+          {menuAbierto ? (
+            <FaTimes aria-hidden="true" />
+          ) : (
+            <FaBars aria-hidden="true" />
+          )}
         </button>
 
         <nav
           className={`navbar__navigation ${
-            menuAbierto ? "navbar__navigation--open" : ""
+            menuAbierto
+              ? "navbar__navigation--open"
+              : ""
           }`}
+          aria-label="Navegación principal"
         >
-          <a
-            href="#inicio"
-            className="navbar__link navbar__link--active"
+          <NavLink
+            to="/"
+            end
+            className={obtenerClaseLink}
             onClick={cerrarMenu}
           >
             Inicio
-          </a>
+          </NavLink>
 
-          <a href="#menu" className="navbar__link" onClick={cerrarMenu}>
+          <NavLink
+            to="/menu"
+            className={obtenerClaseLink}
+            onClick={cerrarMenu}
+          >
             Menú
-          </a>
+          </NavLink>
 
-          <a href="#combos" className="navbar__link" onClick={cerrarMenu}>
+          <Link
+            to="/#combos"
+            className="navbar__link"
+            onClick={cerrarMenu}
+          >
             Combos
-          </a>
+          </Link>
 
-          <a href="#nosotros" className="navbar__link" onClick={cerrarMenu}>
+          <Link
+            to="/#nosotros"
+            className="navbar__link"
+            onClick={cerrarMenu}
+          >
             Nosotros
-          </a>
+          </Link>
 
-          <a href="#contacto" className="navbar__link" onClick={cerrarMenu}>
+          <Link
+            to="/#contacto"
+            className="navbar__link"
+            onClick={cerrarMenu}
+          >
             Contacto
-          </a>
+          </Link>
         </nav>
 
-        <button className="navbar__order-button" type="button">
-          <FaShoppingBag />
+        <button
+          className="navbar__order-button"
+          type="button"
+          aria-label={`Ver mi pedido. ${totalUnits} unidades`}
+          onClick={abrirCarrito}
+        >
+          <FaShoppingBag aria-hidden="true" />
 
           <span>Mi pedido</span>
 
-          <span className="navbar__cart-count">0</span>
+          <span className="navbar__cart-count">
+            {totalUnits}
+          </span>
         </button>
       </div>
     </header>

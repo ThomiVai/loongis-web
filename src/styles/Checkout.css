@@ -1,0 +1,752 @@
+.checkout-page {
+  width: 100%;
+  min-height: 100vh;
+
+  background-color: var(--color-cream);
+}
+
+.checkout-page__container {
+  width: 100%;
+  max-width: 1180px;
+  margin-inline: auto;
+  padding-inline: 20px;
+}
+
+/* ========================================
+   ENCABEZADO
+======================================== */
+
+.checkout-page__hero {
+  padding: 46px 0 52px;
+
+  background:
+    radial-gradient(
+      circle at 84% 35%,
+      rgba(244, 201, 40, 0.22) 0%,
+      rgba(244, 201, 40, 0) 32%
+    ),
+    var(--color-cream);
+}
+
+.checkout-page__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+
+  margin-bottom: 34px;
+
+  color: var(--color-primary);
+
+  font-family: "Fredoka", sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+
+  transition:
+    color 160ms ease,
+    transform 160ms ease;
+}
+
+.checkout-page__back:hover {
+  color: var(--color-primary-dark);
+
+  transform: translateX(-4px);
+}
+
+.checkout-page__eyebrow {
+  display: table;
+
+  margin-bottom: 14px;
+  padding: 7px 15px;
+
+  border-radius: 999px;
+
+  background-color: rgba(244, 201, 40, 0.3);
+  color: var(--color-primary-dark);
+
+  font-family: "Fredoka", sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.045em;
+}
+
+.checkout-page__title {
+  margin: 0;
+
+  color: var(--color-primary);
+
+  font-family: "Fredoka", sans-serif;
+  font-size: clamp(3rem, 7vw, 5.3rem);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.035em;
+}
+
+.checkout-page__subtitle {
+  max-width: 650px;
+  margin: 20px 0 0;
+
+  color: rgba(23, 23, 23, 0.74);
+
+  font-family: "Nunito", sans-serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.6;
+}
+
+/* ========================================
+   DISTRIBUCIÓN
+======================================== */
+
+.checkout-content {
+  padding: 10px 0 86px;
+}
+
+.checkout-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 350px;
+  align-items: start;
+  gap: 28px;
+}
+
+/* ========================================
+   FORMULARIO
+======================================== */
+
+.checkout-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  min-width: 0;
+  padding: 30px;
+
+  border: 1px solid rgba(7, 95, 234, 0.12);
+  border-radius: 26px;
+
+  background-color: rgba(255, 255, 255, 0.92);
+
+  box-shadow:
+    0 16px 36px rgba(7, 60, 166, 0.07),
+    0 4px 10px rgba(23, 23, 23, 0.025);
+}
+
+.checkout-form__header {
+  padding-bottom: 20px;
+
+  border-bottom: 1px solid rgba(23, 23, 23, 0.1);
+}
+
+.checkout-form__label {
+  color: var(--color-primary);
+
+  font-family: "Fredoka", sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.045em;
+}
+
+.checkout-form__title {
+  margin: 5px 0 0;
+
+  color: var(--color-black);
+
+  font-family: "Fredoka", sans-serif;
+  font-size: 1.85rem;
+  font-weight: 700;
+}
+
+.checkout-form__group {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.checkout-form__field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  min-width: 0;
+
+  color: var(--color-black);
+
+  font-family: "Nunito", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+.checkout-form__field > span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.checkout-form__field strong {
+  color: #a62222;
+}
+
+.checkout-form__field input,
+.checkout-form__field textarea,
+.checkout-form__field select {
+  width: 100%;
+  min-width: 0;
+
+  border: 1px solid rgba(7, 95, 234, 0.16);
+  border-radius: 14px;
+
+  background-color: #ffffff;
+  color: var(--color-black);
+
+  font-family: "Nunito", sans-serif;
+  font-size: 0.94rem;
+  font-weight: 600;
+
+  outline: none;
+
+  transition:
+    border-color 150ms ease,
+    box-shadow 150ms ease;
+}
+
+.checkout-form__field input,
+.checkout-form__field select {
+  min-height: 48px;
+  padding: 0 15px;
+}
+
+.checkout-form__field textarea {
+  min-height: 116px;
+  padding: 13px 15px;
+
+  resize: vertical;
+}
+
+.checkout-form__field input:focus,
+.checkout-form__field textarea:focus,
+.checkout-form__field select:focus {
+  border-color: var(--color-primary);
+
+  box-shadow: 0 0 0 4px rgba(7, 95, 234, 0.1);
+}
+
+.checkout-form__field input::placeholder,
+.checkout-form__field textarea::placeholder {
+  color: rgba(23, 23, 23, 0.42);
+}
+
+/* ========================================
+   OPCIONES
+======================================== */
+
+.checkout-form__fieldset {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+
+  border: none;
+}
+
+.checkout-form__fieldset legend {
+  margin-bottom: 10px;
+
+  color: var(--color-black);
+
+  font-family: "Nunito", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+.checkout-form__options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.checkout-option {
+  position: relative;
+
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+
+  min-width: 0;
+  padding: 15px;
+
+  border: 1px solid rgba(7, 95, 234, 0.14);
+  border-radius: 16px;
+
+  background-color: rgba(225, 235, 255, 0.25);
+
+  cursor: pointer;
+
+  transition:
+    border-color 150ms ease,
+    background-color 150ms ease,
+    transform 150ms ease;
+}
+
+.checkout-option:hover {
+  transform: translateY(-2px);
+
+  border-color: rgba(7, 95, 234, 0.3);
+
+  background-color: rgba(225, 235, 255, 0.5);
+}
+
+.checkout-option:has(input:checked) {
+  border-color: var(--color-primary);
+
+  background-color: rgba(225, 235, 255, 0.75);
+
+  box-shadow: 0 0 0 3px rgba(7, 95, 234, 0.08);
+}
+
+.checkout-option input {
+  flex-shrink: 0;
+
+  width: 17px;
+  height: 17px;
+  margin-top: 2px;
+
+  accent-color: var(--color-primary);
+}
+
+.checkout-option__content {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+
+  min-width: 0;
+}
+
+.checkout-option__content strong {
+  color: var(--color-black);
+
+  font-family: "Fredoka", sans-serif;
+  font-size: 0.95rem;
+}
+
+.checkout-option__content small {
+  color: rgba(23, 23, 23, 0.6);
+
+  font-family: "Nunito", sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+/* ========================================
+   ERROR Y BOTÓN
+======================================== */
+
+.checkout-form__error {
+  padding: 13px 15px;
+
+  border: 1px solid rgba(166, 34, 34, 0.22);
+  border-radius: 13px;
+
+  background-color: rgba(166, 34, 34, 0.07);
+  color: #8c1f1f;
+
+  font-family: "Nunito", sans-serif;
+  font-size: 0.87rem;
+  font-weight: 800;
+}
+
+.checkout-form__submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+
+  min-height: 52px;
+  padding: 0 24px;
+
+  border: none;
+  border-radius: 999px;
+
+  background-color: #25d366;
+  color: #ffffff;
+
+  font-family: "Fredoka", sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  box-shadow: 0 11px 24px rgba(37, 211, 102, 0.24);
+
+  transition:
+    background-color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+}
+
+.checkout-form__submit:hover {
+  transform: translateY(-2px);
+
+  background-color: #1fbd5a;
+
+  box-shadow: 0 14px 28px rgba(37, 211, 102, 0.32);
+}
+
+.checkout-form__submit:active {
+  transform: translateY(0);
+}
+
+.checkout-form__submit svg {
+  width: 22px;
+  height: 22px;
+}
+
+.checkout-form__notice {
+  margin: -11px 0 0;
+
+  color: rgba(23, 23, 23, 0.56);
+
+  font-family: "Nunito", sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1.4;
+  text-align: center;
+}
+
+/* ========================================
+   RESUMEN
+======================================== */
+
+.checkout-summary {
+  position: sticky;
+  top: 118px;
+
+  padding: 26px;
+
+  border: 1px solid rgba(7, 95, 234, 0.13);
+  border-radius: 24px;
+
+  background-color: rgba(255, 255, 255, 0.95);
+
+  box-shadow:
+    0 16px 36px rgba(7, 60, 166, 0.08),
+    0 4px 9px rgba(23, 23, 23, 0.03);
+}
+
+.checkout-summary__eyebrow {
+  color: var(--color-primary);
+
+  font-family: "Fredoka", sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.045em;
+}
+
+.checkout-summary__title {
+  margin: 5px 0 20px;
+
+  color: var(--color-black);
+
+  font-family: "Fredoka", sans-serif;
+  font-size: 1.55rem;
+  font-weight: 700;
+}
+
+.checkout-summary__products {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  padding-bottom: 20px;
+
+  border-bottom: 1px solid rgba(23, 23, 23, 0.1);
+}
+
+.checkout-summary__product {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.checkout-summary__product > div {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+
+  min-width: 0;
+}
+
+.checkout-summary__product strong {
+  color: var(--color-black);
+
+  font-family: "Nunito", sans-serif;
+  font-size: 0.86rem;
+  font-weight: 800;
+}
+
+.checkout-summary__product > strong {
+  flex-shrink: 0;
+
+  color: var(--color-primary);
+
+  text-align: right;
+}
+
+.checkout-summary__product span {
+  color: rgba(23, 23, 23, 0.56);
+
+  font-family: "Nunito", sans-serif;
+  font-size: 0.76rem;
+  font-weight: 600;
+}
+
+.checkout-summary__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+
+  padding-top: 15px;
+
+  color: rgba(23, 23, 23, 0.68);
+
+  font-family: "Nunito", sans-serif;
+  font-size: 0.87rem;
+  font-weight: 600;
+}
+
+.checkout-summary__row strong {
+  color: var(--color-black);
+
+  font-weight: 800;
+}
+
+.checkout-summary__total {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+
+  margin-top: 19px;
+  padding-top: 20px;
+
+  border-top: 1px solid rgba(23, 23, 23, 0.1);
+
+  color: var(--color-black);
+
+  font-family: "Fredoka", sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.checkout-summary__total strong {
+  color: var(--color-primary);
+
+  font-size: 1.55rem;
+  text-align: right;
+}
+
+.checkout-summary__edit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 44px;
+  margin-top: 22px;
+
+  border: 1px solid rgba(7, 95, 234, 0.2);
+  border-radius: 999px;
+
+  color: var(--color-primary);
+
+  font-family: "Fredoka", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+
+  transition:
+    background-color 150ms ease,
+    color 150ms ease,
+    transform 150ms ease;
+}
+
+.checkout-summary__edit:hover {
+  transform: translateY(-2px);
+
+  background-color: var(--color-primary);
+  color: #ffffff;
+}
+
+/* ========================================
+   ESTADO VACÍO
+======================================== */
+
+.checkout-empty {
+  display: grid;
+  place-items: center;
+
+  min-height: 70vh;
+  padding: 60px 20px;
+}
+
+.checkout-empty__content {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  width: 100%;
+  max-width: 570px;
+  padding: 54px 28px;
+
+  border: 1px solid rgba(7, 95, 234, 0.12);
+  border-radius: 26px;
+
+  background-color: rgba(255, 255, 255, 0.9);
+
+  box-shadow:
+    0 16px 38px rgba(7, 60, 166, 0.07),
+    0 4px 10px rgba(23, 23, 23, 0.025);
+
+  text-align: center;
+}
+
+.checkout-empty__icon {
+  display: grid;
+  place-items: center;
+
+  width: 82px;
+  height: 82px;
+  margin-bottom: 22px;
+
+  border-radius: 50%;
+
+  background-color: rgba(244, 201, 40, 0.25);
+  color: var(--color-primary);
+}
+
+.checkout-empty__icon svg {
+  width: 35px;
+  height: 35px;
+}
+
+.checkout-empty__title {
+  margin: 0;
+
+  color: var(--color-black);
+
+  font-family: "Fredoka", sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.checkout-empty__description {
+  max-width: 430px;
+  margin: 13px 0 24px;
+
+  color: rgba(23, 23, 23, 0.67);
+
+  font-family: "Nunito", sans-serif;
+  font-size: 0.98rem;
+  font-weight: 600;
+  line-height: 1.55;
+}
+
+.checkout-empty__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 46px;
+  padding: 0 24px;
+
+  border-radius: 999px;
+
+  background-color: var(--color-yellow);
+  color: var(--color-black);
+
+  font-family: "Fredoka", sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+
+  transition:
+    background-color 160ms ease,
+    transform 160ms ease;
+}
+
+.checkout-empty__button:hover {
+  transform: translateY(-2px);
+
+  background-color: #ffd83d;
+}
+
+/* ========================================
+   TABLETS
+======================================== */
+
+@media (max-width: 900px) {
+  .checkout-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .checkout-summary {
+    position: static;
+  }
+}
+
+/* ========================================
+   CELULARES
+======================================== */
+
+@media (max-width: 650px) {
+  .checkout-page__container {
+    padding-inline: 16px;
+  }
+
+  .checkout-page__hero {
+    padding: 32px 0 42px;
+  }
+
+  .checkout-page__back {
+    margin-bottom: 28px;
+  }
+
+  .checkout-page__title {
+    font-size: clamp(3rem, 16vw, 4.2rem);
+  }
+
+  .checkout-page__subtitle {
+    font-size: 1rem;
+  }
+
+  .checkout-content {
+    padding: 8px 0 62px;
+  }
+
+  .checkout-form {
+    gap: 21px;
+
+    padding: 22px 18px;
+  }
+
+  .checkout-form__title {
+    font-size: 1.55rem;
+  }
+
+  .checkout-form__group,
+  .checkout-form__options {
+    grid-template-columns: 1fr;
+  }
+
+  .checkout-summary {
+    padding: 22px;
+  }
+
+  .checkout-empty__content {
+    padding: 44px 20px;
+  }
+
+  .checkout-empty__title {
+    font-size: 1.7rem;
+  }
+}

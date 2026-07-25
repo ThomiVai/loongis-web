@@ -30,7 +30,9 @@
   padding: 10px 24px;
 }
 
-/* Separadores verticales */
+/* ========================================
+   SEPARADORES
+======================================== */
 
 .business-benefit:not(:last-child)::after {
   position: absolute;
@@ -45,7 +47,9 @@
   content: "";
 }
 
-/* Íconos */
+/* ========================================
+   ÍCONOS
+======================================== */
 
 .business-benefit__icon {
   display: flex;
@@ -78,7 +82,9 @@
   stroke: none;
 }
 
-/* Textos */
+/* ========================================
+   TEXTOS
+======================================== */
 
 .business-benefit__content {
   min-width: 0;
@@ -106,7 +112,9 @@
   line-height: 1.2;
 }
 
-/* Tablets */
+/* ========================================
+   TABLETS
+======================================== */
 
 @media (max-width: 960px) {
   .business-benefits {
@@ -136,56 +144,86 @@
   }
 }
 
-/* Celulares */
+/* ========================================
+   CELULARES
+======================================== */
 
 @media (max-width: 620px) {
   .business-benefits {
-    padding: 0 16px 38px;
+    padding: 4px 16px 42px;
   }
 
   .business-benefits__grid {
-    grid-template-columns: 1fr;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
 
     padding: 0;
   }
 
   .business-benefit {
+    display: flex;
+    align-items: center;
     justify-content: flex-start;
+    flex-direction: column;
+    gap: 8px;
 
-    min-height: 76px;
-    padding: 12px 18px;
+    min-height: 136px;
+    padding: 16px 10px;
+
+    border: 1px solid rgba(7, 95, 234, 0.1);
+    border-radius: 16px;
+
+    background-color: rgba(255, 255, 255, 0.74);
+
+    box-shadow:
+      0 8px 18px rgba(7, 60, 166, 0.04),
+      0 2px 5px rgba(23, 23, 23, 0.025);
+
+    text-align: center;
   }
 
-  .business-benefit:not(:last-child)::after {
-    display: block;
-
-    top: auto;
-    right: 8%;
-    bottom: 0;
-
-    width: 84%;
-    height: 1px;
-  }
-
-  .business-benefit:nth-child(-n + 2)::before {
-    display: none;
+  .business-benefit::after,
+  .business-benefit::before {
+    display: none !important;
   }
 
   .business-benefit__icon {
+    width: 52px;
+    height: 52px;
+  }
+
+  .business-benefit__icon svg {
     width: 48px;
     height: 48px;
   }
 
-  .business-benefit__icon svg {
-    width: 46px;
-    height: 46px;
+  .business-benefit__content {
+    width: 100%;
   }
 
   .business-benefit__title {
-    font-size: 1rem;
+    font-size: 0.95rem;
   }
 
   .business-benefit__description {
-    font-size: 0.9rem;
+    margin-top: 3px;
+
+    font-size: 0.84rem;
+    line-height: 1.25;
+  }
+}
+
+/* ========================================
+   CELULARES MUY PEQUEÑOS
+======================================== */
+
+@media (max-width: 350px) {
+  .business-benefits__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .business-benefit {
+    min-height: 120px;
   }
 }

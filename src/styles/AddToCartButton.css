@@ -1,0 +1,62 @@
+.add-to-cart-button {
+  position: relative;
+
+  overflow: hidden;
+}
+
+.add-to-cart-button__icon {
+  flex-shrink: 0;
+
+  transition:
+    transform 180ms ease,
+    opacity 180ms ease;
+}
+
+.add-to-cart-button--added {
+  background-color: #22a95a !important;
+  color: #ffffff !important;
+
+  box-shadow:
+    0 9px 20px rgba(34, 169, 90, 0.26) !important;
+}
+
+.add-to-cart-button--added:hover {
+  background-color: #1e974f !important;
+
+  box-shadow:
+    0 12px 24px rgba(34, 169, 90, 0.32) !important;
+}
+
+.add-to-cart-button--added .add-to-cart-button__icon {
+  animation: add-to-cart-confirmation 280ms ease;
+}
+
+@keyframes add-to-cart-confirmation {
+  0% {
+    opacity: 0;
+
+    transform: scale(0.4) rotate(-20deg);
+  }
+
+  65% {
+    opacity: 1;
+
+    transform: scale(1.2) rotate(4deg);
+  }
+
+  100% {
+    opacity: 1;
+
+    transform: scale(1) rotate(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .add-to-cart-button__icon {
+    transition: none;
+  }
+
+  .add-to-cart-button--added .add-to-cart-button__icon {
+    animation: none;
+  }
+}

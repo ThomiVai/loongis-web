@@ -116,7 +116,7 @@ export function BusinessBenefits() {
   return (
     <section
       className="business-benefits"
-      id="beneficios"
+      id="nosotros"
       aria-label="Beneficios de Loongis"
     >
       <div className="business-benefits__container">

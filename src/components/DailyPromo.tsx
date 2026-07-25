@@ -19,6 +19,7 @@ export function DailyPromo() {
   return (
     <section
       className="daily-promo"
+      id="combos"
       aria-labelledby="daily-promo-title"
     >
       <div className="daily-promo__container">
