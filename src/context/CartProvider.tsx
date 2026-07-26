@@ -10,7 +10,10 @@ import {
   type CartItem,
 } from "./CartContext";
 
-import type { Product } from "../types/Product";
+import type {
+  Product,
+  ProductCustomization,
+} from "../types/Product";
 
 type CartProviderProps = {
   children: ReactNode;
@@ -18,9 +21,68 @@ type CartProviderProps = {
 
 const CART_STORAGE_KEY = "loongis-cart";
 
+function normalizeCustomization(
+  customization?: ProductCustomization,
+): ProductCustomization {
+  return {
+    size: customization?.size,
+    extras: [...(customization?.extras ?? [])].sort((first, second) =>
+      first.id.localeCompare(second.id),
+    ),
+    removedIngredients: [
+      ...(customization?.removedIngredients ?? []),
+    ].sort(),
+    notes: customization?.notes?.trim() ?? "",
+  };
+}
+
+function createCartItemId(
+  productId: number,
+  customization?: ProductCustomization,
+): string {
+  const normalizedCustomization =
+    normalizeCustomization(customization);
+
+  const customizationIdentifier = {
+    size: normalizedCustomization.size?.id ?? "",
+    extras:
+      normalizedCustomization.extras?.map(
+        (extra) => extra.id,
+      ) ?? [],
+    removedIngredients:
+      normalizedCustomization.removedIngredients ?? [],
+    notes: normalizedCustomization.notes ?? "",
+  };
+
+  return `${productId}-${JSON.stringify(
+    customizationIdentifier,
+  )}`;
+}
+
+function calculateUnitPrice(
+  product: Product,
+  customization?: ProductCustomization,
+): number {
+  const sizePrice =
+    customization?.size?.priceModifier ?? 0;
+
+  const extrasPrice =
+    customization?.extras?.reduce(
+      (total, extra) => total + extra.priceModifier,
+      0,
+    ) ?? 0;
+
+  return Math.max(
+    0,
+    product.price + sizePrice + extrasPrice,
+  );
+}
+
 function getStoredCart(): CartItem[] {
   try {
-    const storedCart = localStorage.getItem(CART_STORAGE_KEY);
+    const storedCart = localStorage.getItem(
+      CART_STORAGE_KEY,
+    );
 
     if (!storedCart) {
       return [];
@@ -32,16 +94,50 @@ function getStoredCart(): CartItem[] {
       return [];
     }
 
-    return parsedCart as CartItem[];
+    /*
+      Este map también adapta el carrito antiguo,
+      que todavía no tenía cartItemId ni unitPrice.
+    */
+    return parsedCart.map((storedItem) => {
+      const item = storedItem as Partial<CartItem> &
+        Product;
+
+      const customization = normalizeCustomization(
+        item.customization,
+      );
+
+      return {
+        ...item,
+        quantity:
+          typeof item.quantity === "number" &&
+          item.quantity > 0
+            ? item.quantity
+            : 1,
+        unitPrice:
+          typeof item.unitPrice === "number"
+            ? item.unitPrice
+            : item.price,
+        customization,
+        cartItemId:
+          item.cartItemId ??
+          createCartItemId(item.id, customization),
+      } as CartItem;
+    });
   } catch (error) {
-    console.error("No se pudo recuperar el carrito:", error);
+    console.error(
+      "No se pudo recuperar el carrito:",
+      error,
+    );
 
     return [];
   }
 }
 
-export function CartProvider({ children }: CartProviderProps) {
-  const [cart, setCart] = useState<CartItem[]>(getStoredCart);
+export function CartProvider({
+  children,
+}: CartProviderProps) {
+  const [cart, setCart] =
+    useState<CartItem[]>(getStoredCart);
 
   useEffect(() => {
     localStorage.setItem(
@@ -50,15 +146,31 @@ export function CartProvider({ children }: CartProviderProps) {
     );
   }, [cart]);
 
-  const addProduct = (product: Product) => {
+  const addProduct = (
+    product: Product,
+    customization?: ProductCustomization,
+  ) => {
+    const normalizedCustomization =
+      normalizeCustomization(customization);
+
+    const cartItemId = createCartItemId(
+      product.id,
+      normalizedCustomization,
+    );
+
+    const unitPrice = calculateUnitPrice(
+      product,
+      normalizedCustomization,
+    );
+
     setCart((currentCart) => {
       const existingProduct = currentCart.find(
-        (item) => item.id === product.id,
+        (item) => item.cartItemId === cartItemId,
       );
 
       if (existingProduct) {
         return currentCart.map((item) =>
-          item.id === product.id
+          item.cartItemId === cartItemId
             ? {
                 ...item,
                 quantity: item.quantity + 1,
@@ -71,16 +183,21 @@ export function CartProvider({ children }: CartProviderProps) {
         ...currentCart,
         {
           ...product,
+          cartItemId,
           quantity: 1,
+          unitPrice,
+          customization: normalizedCustomization,
         },
       ];
     });
   };
 
-  const increaseQuantity = (productId: number) => {
+  const increaseQuantity = (
+    cartItemId: string,
+  ) => {
     setCart((currentCart) =>
       currentCart.map((item) =>
-        item.id === productId
+        item.cartItemId === cartItemId
           ? {
               ...item,
               quantity: item.quantity + 1,
@@ -90,11 +207,13 @@ export function CartProvider({ children }: CartProviderProps) {
     );
   };
 
-  const decreaseQuantity = (productId: number) => {
+  const decreaseQuantity = (
+    cartItemId: string,
+  ) => {
     setCart((currentCart) =>
       currentCart
         .map((item) =>
-          item.id === productId
+          item.cartItemId === cartItemId
             ? {
                 ...item,
                 quantity: item.quantity - 1,
@@ -105,9 +224,13 @@ export function CartProvider({ children }: CartProviderProps) {
     );
   };
 
-  const removeProduct = (productId: number) => {
+  const removeProduct = (
+    cartItemId: string,
+  ) => {
     setCart((currentCart) =>
-      currentCart.filter((item) => item.id !== productId),
+      currentCart.filter(
+        (item) => item.cartItemId !== cartItemId,
+      ),
     );
   };
 
@@ -125,7 +248,7 @@ export function CartProvider({ children }: CartProviderProps) {
   const totalPrice = useMemo(() => {
     return cart.reduce(
       (total, item) =>
-        total + item.price * item.quantity,
+        total + item.unitPrice * item.quantity,
       0,
     );
   }, [cart]);

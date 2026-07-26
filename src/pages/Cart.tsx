@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   FaArrowLeftLong,
   FaBagShopping,
@@ -7,15 +8,66 @@ import {
 } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 
+import { ConfirmModal } from "../components/ConfirmModal";
+
+import type { CartItem } from "../context/CartContext";
+
 import { useCart } from "../hooks/useCart";
+import { useNotification } from "../hooks/useNotification";
 
 import "../styles/Cart.css";
+import "../styles/CartCustomization.css";
 
 const priceFormatter = new Intl.NumberFormat("es-AR", {
   style: "currency",
   currency: "ARS",
   maximumFractionDigits: 0,
 });
+
+type CustomizationDetail = {
+  label: string;
+  value: string;
+  type?: "normal" | "removed" | "notes";
+};
+
+function getCustomizationDetails(item: CartItem): CustomizationDetail[] {
+  const details: CustomizationDetail[] = [];
+
+  if (item.customization.size) {
+    details.push({
+      label: "Tamaño",
+      value: item.customization.size.name,
+    });
+  }
+
+  if (item.customization.extras && item.customization.extras.length > 0) {
+    details.push({
+      label: "Extras",
+      value: item.customization.extras.map((extra) => extra.name).join(", "),
+    });
+  }
+
+  if (
+    item.customization.removedIngredients &&
+    item.customization.removedIngredients.length > 0
+  ) {
+    details.push({
+      label: "Sin",
+      value: item.customization.removedIngredients.join(", "),
+      type: "removed",
+    });
+  }
+
+  if (item.customization.notes?.trim()) {
+    details.push({
+      label: "Aclaración",
+      value: item.customization.notes.trim(),
+      type: "notes",
+    });
+  }
+
+  return details;
+}
 
 export function Cart() {
   const {
@@ -28,14 +80,21 @@ export function Cart() {
     clearCart,
   } = useCart();
 
-  const handleClearCart = () => {
-    const shouldClearCart = window.confirm(
-      "¿Seguro que querés vaciar todo el pedido?",
-    );
+  const { showNotification } = useNotification();
 
-    if (shouldClearCart) {
-      clearCart();
-    }
+  const [isClearModalOpen, setIsClearModalOpen] = useState(false);
+
+  const handleConfirmClearCart = () => {
+    clearCart();
+    setIsClearModalOpen(false);
+
+    showNotification("El pedido fue vaciado.", "info");
+  };
+
+  const handleRemoveProduct = (item: CartItem) => {
+    removeProduct(item.cartItemId);
+
+    showNotification(`${item.name} fue eliminado del pedido.`, "info");
   };
 
   return (
@@ -56,7 +115,8 @@ export function Cart() {
             </h1>
 
             <p className="cart-page__subtitle">
-              Revisá tus productos, modificá las cantidades y prepará tu pedido.
+              Revisá los productos, sus personalizaciones y las cantidades antes
+              de finalizar.
             </p>
           </div>
         </div>
@@ -73,8 +133,8 @@ export function Cart() {
               <h2 className="cart-empty__title">Tu pedido está vacío</h2>
 
               <p className="cart-empty__description">
-                Todavía no agregaste ninguna hamburguesa. Entrá al menú y elegí
-                tu favorita.
+                Todavía no agregaste ningún producto. Entrá al menú y elegí tu
+                favorito.
               </p>
 
               <Link className="cart-empty__button" to="/menu">
@@ -94,7 +154,7 @@ export function Cart() {
                   <button
                     className="cart-products__clear"
                     type="button"
-                    onClick={handleClearCart}
+                    onClick={() => setIsClearModalOpen(true)}
                   >
                     <FaTrashCan aria-hidden="true" />
 
@@ -104,10 +164,14 @@ export function Cart() {
 
                 <div className="cart-products__list">
                   {cart.map((item) => {
-                    const itemSubtotal = item.price * item.quantity;
+                    const itemSubtotal = item.unitPrice * item.quantity;
+
+                    const customizationDetails = getCustomizationDetails(item);
+
+                    const isCustomized = customizationDetails.length > 0;
 
                     return (
-                      <article className="cart-item" key={item.id}>
+                      <article className="cart-item" key={item.cartItemId}>
                         <div className="cart-item__image-wrapper">
                           <img
                             className="cart-item__image"
@@ -117,15 +181,56 @@ export function Cart() {
                         </div>
 
                         <div className="cart-item__information">
-                          <h3 className="cart-item__name">{item.name}</h3>
+                          <div className="cart-item__heading">
+                            <h3 className="cart-item__name">{item.name}</h3>
+
+                            {isCustomized && (
+                              <span className="cart-item__personalized-badge">
+                                Personalizado
+                              </span>
+                            )}
+                          </div>
 
                           <p className="cart-item__description">
                             {item.description}
                           </p>
 
-                          <span className="cart-item__unit-price">
-                            Precio unitario: {priceFormatter.format(item.price)}
-                          </span>
+                          {isCustomized && (
+                            <div className="cart-item-customization">
+                              {customizationDetails.map((detail) => (
+                                <div
+                                  className={`cart-item-customization__detail cart-item-customization__detail--${
+                                    detail.type ?? "normal"
+                                  }`}
+                                  key={`${item.cartItemId}-${detail.label}`}
+                                >
+                                  <span className="cart-item-customization__label">
+                                    {detail.label}
+                                  </span>
+
+                                  <span className="cart-item-customization__value">
+                                    {detail.value}
+                                  </span>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+
+                          <div className="cart-item__price-information">
+                            <span className="cart-item__unit-price">
+                              Precio unitario:{" "}
+                              {priceFormatter.format(item.unitPrice)}
+                            </span>
+
+                            <Link
+                              className="cart-item__customize-again"
+                              to={`/producto/${item.id}`}
+                            >
+                              {isCustomized
+                                ? "Personalizar otra"
+                                : "Ver producto"}
+                            </Link>
+                          </div>
                         </div>
 
                         <div className="cart-item__actions">
@@ -137,7 +242,7 @@ export function Cart() {
                               className="cart-item__quantity-button"
                               type="button"
                               aria-label={`Disminuir cantidad de ${item.name}`}
-                              onClick={() => decreaseQuantity(item.id)}
+                              onClick={() => decreaseQuantity(item.cartItemId)}
                             >
                               <FaMinus aria-hidden="true" />
                             </button>
@@ -150,7 +255,7 @@ export function Cart() {
                               className="cart-item__quantity-button"
                               type="button"
                               aria-label={`Aumentar cantidad de ${item.name}`}
-                              onClick={() => increaseQuantity(item.id)}
+                              onClick={() => increaseQuantity(item.cartItemId)}
                             >
                               <FaPlus aria-hidden="true" />
                             </button>
@@ -164,7 +269,7 @@ export function Cart() {
                             className="cart-item__remove"
                             type="button"
                             aria-label={`Eliminar ${item.name} del pedido`}
-                            onClick={() => removeProduct(item.id)}
+                            onClick={() => handleRemoveProduct(item)}
                           >
                             <FaTrashCan aria-hidden="true" />
 
@@ -189,7 +294,7 @@ export function Cart() {
 
                 <div className="cart-summary__rows">
                   <div className="cart-summary__row">
-                    <span>Productos distintos</span>
+                    <span>Configuraciones distintas</span>
 
                     <strong>{cart.length}</strong>
                   </div>
@@ -203,7 +308,7 @@ export function Cart() {
                   <div className="cart-summary__row">
                     <span>Envío</span>
 
-                    <strong>A confirmar</strong>
+                    <strong>Se calcula al finalizar</strong>
                   </div>
                 </div>
 
@@ -214,7 +319,8 @@ export function Cart() {
                 </div>
 
                 <p className="cart-summary__notice">
-                  El costo del envío dependerá de la ubicación del cliente.
+                  Seleccioná tu localidad al finalizar para conocer el total con
+                  envío.
                 </p>
 
                 <Link className="cart-summary__checkout" to="/finalizar-pedido">
@@ -224,16 +330,22 @@ export function Cart() {
                 <Link className="cart-summary__continue" to="/menu">
                   Agregar más productos
                 </Link>
-
-                <p className="cart-summary__next-step">
-                  En el próximo paso conectaremos la confirmación del pedido con
-                  WhatsApp.
-                </p>
               </aside>
             </div>
           )}
         </div>
       </section>
+
+      <ConfirmModal
+        isOpen={isClearModalOpen}
+        title="¿Vaciar todo el pedido?"
+        message="Se eliminarán todos los productos y personalizaciones que agregaste."
+        confirmLabel="Sí, vaciar"
+        cancelLabel="Cancelar"
+        danger
+        onConfirm={handleConfirmClearCart}
+        onCancel={() => setIsClearModalOpen(false)}
+      />
     </main>
   );
 }

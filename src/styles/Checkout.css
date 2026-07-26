@@ -681,6 +681,61 @@
 }
 
 /* ========================================
+   INFORMACIÓN DE ENTREGA
+======================================== */
+
+.checkout-delivery-info {
+  display: grid;
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+  gap: 14px;
+
+  padding: 17px;
+
+  border: 1px solid rgba(7, 95, 234, 0.13);
+  border-radius: 16px;
+
+  background-color: rgba(225, 235, 255, 0.38);
+}
+
+.checkout-delivery-info > div {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.checkout-delivery-info span {
+  color: rgba(23, 23, 23, 0.58);
+
+  font-family: "Nunito", sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.checkout-delivery-info strong {
+  color: var(--color-primary);
+
+  font-family: "Fredoka", sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.checkout-delivery-info--pickup {
+  grid-template-columns: 1fr;
+}
+
+.checkout-delivery-info--pickup p {
+  margin: 3px 0 0;
+
+  color: rgba(23, 23, 23, 0.62);
+
+  font-family: "Nunito", sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+/* ========================================
    TABLETS
 ======================================== */
 
@@ -749,4 +804,8 @@
   .checkout-empty__title {
     font-size: 1.7rem;
   }
+
+  .checkout-delivery-info {
+  grid-template-columns: 1fr;
+}
 }

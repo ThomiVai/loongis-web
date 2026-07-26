@@ -1,0 +1,228 @@
+/* ========================================
+   ESTADO DEL LOCAL
+======================================== */
+
+.store-status {
+  position: relative;
+  z-index: 20;
+
+  width: 100%;
+
+  border-bottom: 1px solid
+    rgba(7, 95, 234, 0.09);
+
+  font-family: "Nunito", sans-serif;
+}
+
+.store-status--open {
+  background-color: #eaf8ef;
+  color: #17663a;
+}
+
+.store-status--closed {
+  background-color: #fff3e6;
+  color: #8a4516;
+}
+
+/* ========================================
+   CONTENEDOR
+======================================== */
+
+.store-status__container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 20px;
+
+  width: 100%;
+  max-width: 1180px;
+  min-height: 58px;
+  margin-inline: auto;
+  padding: 8px 20px;
+}
+
+/* ========================================
+   INFORMACIÓN
+======================================== */
+
+.store-status__information {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+
+  min-width: 0;
+}
+
+.store-status__icon {
+  display: grid;
+  place-items: center;
+
+  flex-shrink: 0;
+
+  width: 38px;
+  height: 38px;
+
+  border-radius: 50%;
+}
+
+.store-status--open .store-status__icon {
+  background-color: rgba(
+    35,
+    151,
+    82,
+    0.13
+  );
+}
+
+.store-status--closed .store-status__icon {
+  background-color: rgba(
+    196,
+    102,
+    29,
+    0.13
+  );
+}
+
+.store-status__icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* ========================================
+   TEXTO
+======================================== */
+
+.store-status__text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+
+  min-width: 0;
+}
+
+.store-status__text strong {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+
+  font-family: "Fredoka", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.store-status__text > span {
+  font-size: 0.78rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+/* ========================================
+   INDICADOR
+======================================== */
+
+.store-status__indicator {
+  display: inline-block;
+
+  flex-shrink: 0;
+
+  width: 8px;
+  height: 8px;
+
+  border-radius: 50%;
+}
+
+.store-status--open
+  .store-status__indicator {
+  background-color: #239752;
+
+  box-shadow:
+    0 0 0 4px rgba(35, 151, 82, 0.12);
+}
+
+.store-status--closed
+  .store-status__indicator {
+  background-color: #c4661d;
+
+  box-shadow:
+    0 0 0 4px rgba(196, 102, 29, 0.12);
+}
+
+/* ========================================
+   TABLETS Y CELULARES
+======================================== */
+
+@media (max-width: 600px) {
+  .store-status__container {
+    min-height: 64px;
+    padding-inline: 16px;
+  }
+
+  .store-status__icon {
+    width: 34px;
+    height: 34px;
+  }
+
+  .store-status__icon svg {
+    width: 15px;
+    height: 15px;
+  }
+
+  .store-status__text strong {
+    font-size: 0.84rem;
+  }
+
+  .store-status__text > span {
+    font-size: 0.72rem;
+  }
+}
+
+/* ========================================
+   CELULARES PEQUEÑOS
+======================================== */
+
+@media (max-width: 430px) {
+  .store-status__container {
+    min-height: 58px;
+    padding-block: 7px;
+  }
+
+  .store-status__information {
+    gap: 9px;
+  }
+
+  .store-status__icon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .store-status__text strong {
+    font-size: 0.8rem;
+  }
+
+  .store-status__text > span {
+    font-size: 0.69rem;
+  }
+}
+
+/* ========================================
+   CELULARES MUY PEQUEÑOS
+======================================== */
+
+@media (max-width: 340px) {
+  .store-status__icon {
+    display: none;
+  }
+
+  .store-status__container {
+    padding-inline: 13px;
+  }
+
+  .store-status__text strong {
+    font-size: 0.78rem;
+  }
+
+  .store-status__text > span {
+    font-size: 0.67rem;
+  }
+}

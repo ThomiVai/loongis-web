@@ -10,18 +10,23 @@ import {
 } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 
+import type { CartItem } from "../context/CartContext";
+
+import { deliveryZones } from "../data/deliveryZones";
+
 import { useCart } from "../hooks/useCart";
 
 import "../styles/Checkout.css";
 
 /*
-  Reemplazá este número por el WhatsApp real del negocio.
+  Reemplazá este número por el WhatsApp real de Loongis.
 
-  Formato para Argentina:
-  54 + código de área sin 0 + número sin 15
-
-  Ejemplo:
-  5491123456789
+  Formato:
+  - Sin +
+  - Sin espacios
+  - Sin guiones
+  - Código de país 54
+  - 9 para celular argentino
 */
 const WHATSAPP_NUMBER = "5491138065902";
 
@@ -32,12 +37,16 @@ const priceFormatter = new Intl.NumberFormat("es-AR", {
 });
 
 type DeliveryMethod = "delivery" | "retiro";
-type PaymentMethod = "efectivo" | "transferencia";
+
+type PaymentMethod =
+  | "efectivo"
+  | "transferencia";
 
 type CheckoutForm = {
   customerName: string;
   customerPhone: string;
   deliveryMethod: DeliveryMethod;
+  deliveryZoneId: string;
   address: string;
   paymentMethod: PaymentMethod;
   notes: string;
@@ -47,28 +56,97 @@ const initialForm: CheckoutForm = {
   customerName: "",
   customerPhone: "",
   deliveryMethod: "delivery",
+  deliveryZoneId: "",
   address: "",
   paymentMethod: "efectivo",
   notes: "",
 };
 
-export function Checkout() {
-  const { cart, totalUnits, totalPrice } = useCart();
+function getCustomizationLines(
+  item: CartItem,
+): string[] {
+  const lines: string[] = [];
 
-  const [form, setForm] = useState<CheckoutForm>(initialForm);
-  const [error, setError] = useState<string | null>(null);
+  if (item.customization.size) {
+    lines.push(
+      `Tamaño: ${item.customization.size.name}`,
+    );
+  }
+
+  if (
+    item.customization.extras &&
+    item.customization.extras.length > 0
+  ) {
+    lines.push(
+      `Extras: ${item.customization.extras
+        .map((extra) => extra.name)
+        .join(", ")}`,
+    );
+  }
+
+  if (
+    item.customization.removedIngredients &&
+    item.customization.removedIngredients.length > 0
+  ) {
+    lines.push(
+      `Sin: ${item.customization.removedIngredients.join(
+        ", ",
+      )}`,
+    );
+  }
+
+  if (item.customization.notes?.trim()) {
+    lines.push(
+      `Aclaración: ${item.customization.notes.trim()}`,
+    );
+  }
+
+  return lines;
+}
+
+export function Checkout() {
+  const {
+    cart,
+    totalUnits,
+    totalPrice,
+  } = useCart();
+
+  const [form, setForm] =
+    useState<CheckoutForm>(initialForm);
+
+  const [error, setError] =
+    useState<string | null>(null);
+
+  const selectedDeliveryZone =
+    deliveryZones.find(
+      (zone) =>
+        zone.id === form.deliveryZoneId,
+    );
+
+  const shippingCost =
+    form.deliveryMethod === "retiro"
+      ? 0
+      : selectedDeliveryZone?.price ?? 0;
+
+  const finalTotal =
+    totalPrice + shippingCost;
 
   const handleChange = (
     event: ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+      | HTMLInputElement
+      | HTMLTextAreaElement
+      | HTMLSelectElement
     >,
   ) => {
     const { name, value } = event.target;
 
-    setForm((currentForm) => ({
-      ...currentForm,
-      [name]: value,
-    }));
+    setForm(
+      (currentForm) =>
+        ({
+          ...currentForm,
+          [name]: value,
+        }) as CheckoutForm,
+    );
 
     setError(null);
   };
@@ -76,28 +154,61 @@ export function Checkout() {
   const createWhatsAppMessage = () => {
     const productsMessage = cart
       .map((item) => {
-        const subtotal = item.price * item.quantity;
+        const subtotal =
+          item.unitPrice * item.quantity;
 
-        return [
+        const customizationLines =
+          getCustomizationLines(item);
+
+        const productLines = [
           `• ${item.quantity} x ${item.name}`,
-          `  ${priceFormatter.format(subtotal)}`,
-        ].join("\n");
+        ];
+
+        if (customizationLines.length > 0) {
+          productLines.push(
+            ...customizationLines.map(
+              (line) => `  - ${line}`,
+            ),
+          );
+        }
+
+        productLines.push(
+          `  Precio unitario: ${priceFormatter.format(
+            item.unitPrice,
+          )}`,
+          `  Subtotal: ${priceFormatter.format(
+            subtotal,
+          )}`,
+        );
+
+        return productLines.join("\n");
       })
-      .join("\n");
+      .join("\n\n");
 
     const deliveryMessage =
       form.deliveryMethod === "delivery"
-        ? `Envío a domicilio\nDirección: ${form.address.trim()}`
-        : "Retiro por el local";
+        ? [
+            "Envío a domicilio",
+            `Localidad: ${selectedDeliveryZone?.name}`,
+            `Dirección: ${form.address.trim()}`,
+            `Costo de envío: ${priceFormatter.format(
+              shippingCost,
+            )}`,
+            `Tiempo estimado: ${selectedDeliveryZone?.estimatedTime}`,
+          ].join("\n")
+        : [
+            "Retiro por el local",
+            "Costo de retiro: Gratis",
+          ].join("\n");
 
     const paymentMessage =
       form.paymentMethod === "efectivo"
         ? "Efectivo"
         : "Transferencia";
 
-    const notesMessage = form.notes.trim()
+    const customerNotes = form.notes.trim()
       ? form.notes.trim()
-      : "Sin aclaraciones";
+      : "Sin aclaraciones generales";
 
     return [
       "¡Hola Loongis! Quiero realizar el siguiente pedido:",
@@ -106,14 +217,28 @@ export function Checkout() {
       productsMessage,
       "",
       "*RESUMEN*",
-      `Unidades: ${totalUnits}`,
-      `Subtotal: ${priceFormatter.format(totalPrice)}`,
-      "Envío: A confirmar",
-      `Total sin envío: ${priceFormatter.format(totalPrice)}`,
+      `Productos distintos: ${cart.length}`,
+      `Unidades totales: ${totalUnits}`,
+      `Subtotal: ${priceFormatter.format(
+        totalPrice,
+      )}`,
+      `Envío: ${
+        form.deliveryMethod === "retiro"
+          ? "Gratis"
+          : priceFormatter.format(
+              shippingCost,
+            )
+      }`,
+      `TOTAL FINAL: ${priceFormatter.format(
+        finalTotal,
+      )}`,
       "",
       "*DATOS DEL CLIENTE*",
       `Nombre: ${form.customerName.trim()}`,
-      `Teléfono: ${form.customerPhone.trim() || "No informado"}`,
+      `Teléfono: ${
+        form.customerPhone.trim() ||
+        "No informado"
+      }`,
       "",
       "*ENTREGA*",
       deliveryMessage,
@@ -121,16 +246,32 @@ export function Checkout() {
       "*FORMA DE PAGO*",
       paymentMessage,
       "",
-      "*ACLARACIONES*",
-      notesMessage,
+      "*ACLARACIONES GENERALES*",
+      customerNotes,
     ].join("\n");
   };
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (
+    event: FormEvent<HTMLFormElement>,
+  ) => {
     event.preventDefault();
 
     if (!form.customerName.trim()) {
-      setError("Ingresá tu nombre para continuar.");
+      setError(
+        "Ingresá tu nombre para continuar.",
+      );
+
+      return;
+    }
+
+    if (
+      form.deliveryMethod === "delivery" &&
+      !form.deliveryZoneId
+    ) {
+      setError(
+        "Seleccioná la localidad de entrega.",
+      );
+
       return;
     }
 
@@ -138,20 +279,28 @@ export function Checkout() {
       form.deliveryMethod === "delivery" &&
       !form.address.trim()
     ) {
-      setError("Ingresá la dirección de entrega.");
+      setError(
+        "Ingresá la dirección de entrega.",
+      );
+
       return;
     }
 
     if (cart.length === 0) {
       setError("Tu pedido está vacío.");
+
       return;
     }
 
-    const message = createWhatsAppMessage();
-    const encodedMessage = encodeURIComponent(message);
+    const message =
+      createWhatsAppMessage();
+
+    const encodedMessage =
+      encodeURIComponent(message);
 
     const whatsappUrl =
-      `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`;
+      `https://wa.me/${WHATSAPP_NUMBER}` +
+      `?text=${encodedMessage}`;
 
     window.open(
       whatsappUrl,
@@ -174,8 +323,8 @@ export function Checkout() {
             </h1>
 
             <p className="checkout-empty__description">
-              Primero agregá productos al pedido y después volvé para
-              completar tus datos.
+              Primero agregá productos al pedido y
+              después volvé para completar tus datos.
             </p>
 
             <Link
@@ -218,8 +367,8 @@ export function Checkout() {
           </h1>
 
           <p className="checkout-page__subtitle">
-            Completá tus datos y te enviaremos a WhatsApp con el
-            pedido preparado.
+            Completá tus datos, seleccioná la
+            localidad y conocé el total final.
           </p>
         </div>
       </section>
@@ -249,7 +398,10 @@ export function Checkout() {
                 >
                   <span>
                     Nombre y apellido
-                    <strong aria-hidden="true">*</strong>
+
+                    <strong aria-hidden="true">
+                      *
+                    </strong>
                   </span>
 
                   <input
@@ -275,14 +427,16 @@ export function Checkout() {
                     type="tel"
                     value={form.customerPhone}
                     onChange={handleChange}
-                    placeholder="Ejemplo: 11 3806-5902"
+                    placeholder="Ejemplo: 11 2345-6789"
                     autoComplete="tel"
                   />
                 </label>
               </div>
 
               <fieldset className="checkout-form__fieldset">
-                <legend>Método de entrega</legend>
+                <legend>
+                  Método de entrega
+                </legend>
 
                 <div className="checkout-form__options">
                   <label className="checkout-option">
@@ -291,15 +445,20 @@ export function Checkout() {
                       name="deliveryMethod"
                       value="delivery"
                       checked={
-                        form.deliveryMethod === "delivery"
+                        form.deliveryMethod ===
+                        "delivery"
                       }
                       onChange={handleChange}
                     />
 
                     <span className="checkout-option__content">
-                      <strong>Envío a domicilio</strong>
+                      <strong>
+                        Envío a domicilio
+                      </strong>
+
                       <small>
-                        El costo se confirma por WhatsApp.
+                        El costo depende de la
+                        localidad.
                       </small>
                     </span>
                   </label>
@@ -310,41 +469,139 @@ export function Checkout() {
                       name="deliveryMethod"
                       value="retiro"
                       checked={
-                        form.deliveryMethod === "retiro"
+                        form.deliveryMethod ===
+                        "retiro"
                       }
                       onChange={handleChange}
                     />
 
                     <span className="checkout-option__content">
-                      <strong>Retiro por el local</strong>
+                      <strong>
+                        Retiro por el local
+                      </strong>
+
                       <small>
-                        Te avisaremos cuando esté preparado.
+                        Sin costo de envío.
                       </small>
                     </span>
                   </label>
                 </div>
               </fieldset>
 
-              {form.deliveryMethod === "delivery" && (
-                <label
-                  className="checkout-form__field"
-                  htmlFor="address"
-                >
-                  <span>
-                    Dirección de entrega
-                    <strong aria-hidden="true">*</strong>
-                  </span>
+              {form.deliveryMethod ===
+                "delivery" && (
+                <>
+                  <div className="checkout-form__group">
+                    <label
+                      className="checkout-form__field"
+                      htmlFor="deliveryZoneId"
+                    >
+                      <span>
+                        Localidad
 
-                  <input
-                    id="address"
-                    name="address"
-                    type="text"
-                    value={form.address}
-                    onChange={handleChange}
-                    placeholder="Calle, altura y localidad"
-                    autoComplete="street-address"
-                  />
-                </label>
+                        <strong aria-hidden="true">
+                          *
+                        </strong>
+                      </span>
+
+                      <select
+                        id="deliveryZoneId"
+                        name="deliveryZoneId"
+                        value={
+                          form.deliveryZoneId
+                        }
+                        onChange={handleChange}
+                      >
+                        <option value="">
+                          Seleccioná una localidad
+                        </option>
+
+                        {deliveryZones.map(
+                          (zone) => (
+                            <option
+                              value={zone.id}
+                              key={zone.id}
+                            >
+                              {zone.name} —{" "}
+                              {priceFormatter.format(
+                                zone.price,
+                              )}
+                            </option>
+                          ),
+                        )}
+                      </select>
+                    </label>
+
+                    <label
+                      className="checkout-form__field"
+                      htmlFor="address"
+                    >
+                      <span>
+                        Dirección
+
+                        <strong aria-hidden="true">
+                          *
+                        </strong>
+                      </span>
+
+                      <input
+                        id="address"
+                        name="address"
+                        type="text"
+                        value={form.address}
+                        onChange={handleChange}
+                        placeholder="Calle y altura"
+                        autoComplete="street-address"
+                      />
+                    </label>
+                  </div>
+
+                  {selectedDeliveryZone && (
+                    <div className="checkout-delivery-info">
+                      <div>
+                        <span>
+                          Costo de envío
+                        </span>
+
+                        <strong>
+                          {priceFormatter.format(
+                            selectedDeliveryZone.price,
+                          )}
+                        </strong>
+                      </div>
+
+                      <div>
+                        <span>
+                          Tiempo estimado
+                        </span>
+
+                        <strong>
+                          {
+                            selectedDeliveryZone.estimatedTime
+                          }
+                        </strong>
+                      </div>
+                    </div>
+                  )}
+                </>
+              )}
+
+              {form.deliveryMethod ===
+                "retiro" && (
+                <div className="checkout-delivery-info checkout-delivery-info--pickup">
+                  <div>
+                    <span>
+                      Retiro por el local
+                    </span>
+
+                    <strong>Sin costo</strong>
+                  </div>
+
+                  <p>
+                    Te avisaremos por WhatsApp cuando
+                    el pedido esté listo.
+                  </p>
+                </div>
               )}
 
               <fieldset className="checkout-form__fieldset">
@@ -357,15 +614,18 @@ export function Checkout() {
                       name="paymentMethod"
                       value="efectivo"
                       checked={
-                        form.paymentMethod === "efectivo"
+                        form.paymentMethod ===
+                        "efectivo"
                       }
                       onChange={handleChange}
                     />
 
                     <span className="checkout-option__content">
                       <strong>Efectivo</strong>
+
                       <small>
-                        Se coordina al confirmar el pedido.
+                        Se coordina al confirmar el
+                        pedido.
                       </small>
                     </span>
                   </label>
@@ -383,9 +643,13 @@ export function Checkout() {
                     />
 
                     <span className="checkout-option__content">
-                      <strong>Transferencia</strong>
+                      <strong>
+                        Transferencia
+                      </strong>
+
                       <small>
-                        Te enviarán los datos por WhatsApp.
+                        Te enviarán los datos por
+                        WhatsApp.
                       </small>
                     </span>
                   </label>
@@ -396,14 +660,16 @@ export function Checkout() {
                 className="checkout-form__field"
                 htmlFor="notes"
               >
-                <span>Aclaraciones</span>
+                <span>
+                  Aclaraciones generales
+                </span>
 
                 <textarea
                   id="notes"
                   name="notes"
                   value={form.notes}
                   onChange={handleChange}
-                  placeholder="Ejemplo: sin cebolla, tocar timbre, pagar con cambio..."
+                  placeholder="Ejemplo: tocar timbre, necesito cambio..."
                   rows={4}
                 />
               </label>
@@ -423,12 +689,14 @@ export function Checkout() {
               >
                 <FaWhatsapp aria-hidden="true" />
 
-                <span>Confirmar por WhatsApp</span>
+                <span>
+                  Confirmar por WhatsApp
+                </span>
               </button>
 
               <p className="checkout-form__notice">
-                El pedido se considera confirmado cuando el local
-                responda el mensaje.
+                El pedido se considera confirmado
+                cuando el local responda el mensaje.
               </p>
             </form>
 
@@ -448,45 +716,82 @@ export function Checkout() {
               </h2>
 
               <div className="checkout-summary__products">
-                {cart.map((item) => (
-                  <div
-                    className="checkout-summary__product"
-                    key={item.id}
-                  >
-                    <div>
+                {cart.map((item) => {
+                  const customizationLines =
+                    getCustomizationLines(item);
+
+                  return (
+                    <div
+                      className="checkout-summary__product"
+                      key={item.cartItemId}
+                    >
+                      <div>
+                        <strong>
+                          {item.quantity} ×{" "}
+                          {item.name}
+                        </strong>
+
+                        {customizationLines.map(
+                          (line) => (
+                            <span
+                              key={`${item.cartItemId}-${line}`}
+                            >
+                              {line}
+                            </span>
+                          ),
+                        )}
+
+                        <span>
+                          {priceFormatter.format(
+                            item.unitPrice,
+                          )}{" "}
+                          c/u
+                        </span>
+                      </div>
+
                       <strong>
-                        {item.quantity} × {item.name}
+                        {priceFormatter.format(
+                          item.unitPrice *
+                            item.quantity,
+                        )}
                       </strong>
-
-                      <span>
-                        {priceFormatter.format(item.price)} c/u
-                      </span>
                     </div>
-
-                    <strong>
-                      {priceFormatter.format(
-                        item.price * item.quantity,
-                      )}
-                    </strong>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
 
               <div className="checkout-summary__row">
-                <span>Unidades</span>
-                <strong>{totalUnits}</strong>
+                <span>Subtotal</span>
+
+                <strong>
+                  {priceFormatter.format(
+                    totalPrice,
+                  )}
+                </strong>
               </div>
 
               <div className="checkout-summary__row">
                 <span>Envío</span>
-                <strong>A confirmar</strong>
+
+                <strong>
+                  {form.deliveryMethod ===
+                  "retiro"
+                    ? "Gratis"
+                    : selectedDeliveryZone
+                      ? priceFormatter.format(
+                          shippingCost,
+                        )
+                      : "Seleccioná zona"}
+                </strong>
               </div>
 
               <div className="checkout-summary__total">
-                <span>Total sin envío</span>
+                <span>Total final</span>
 
                 <strong>
-                  {priceFormatter.format(totalPrice)}
+                  {priceFormatter.format(
+                    finalTotal,
+                  )}
                 </strong>
               </div>
 

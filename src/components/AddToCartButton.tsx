@@ -9,8 +9,12 @@ import {
 } from "react-icons/fa6";
 
 import { useCart } from "../hooks/useCart";
+import { useNotification } from "../hooks/useNotification";
 
-import type { Product } from "../types/Product";
+import type {
+  Product,
+  ProductCustomization,
+} from "../types/Product";
 
 import "../styles/AddToCartButton.css";
 
@@ -18,38 +22,56 @@ type AddToCartButtonProps = {
   product: Product;
   className: string;
   label?: string;
+  customization?: ProductCustomization;
 };
 
 export function AddToCartButton({
   product,
   className,
   label = "Agregar",
+  customization,
 }: AddToCartButtonProps) {
   const { addProduct } = useCart();
 
-  const [productAdded, setProductAdded] = useState(false);
+  const { showNotification } =
+    useNotification();
 
-  const timeoutReference = useRef<number | null>(null);
+  const [productAdded, setProductAdded] =
+    useState(false);
+
+  const timeoutReference =
+    useRef<number | null>(null);
 
   useEffect(() => {
     return () => {
       if (timeoutReference.current !== null) {
-        window.clearTimeout(timeoutReference.current);
+        window.clearTimeout(
+          timeoutReference.current,
+        );
       }
     };
   }, []);
 
   const handleAddProduct = () => {
-    addProduct(product);
+    addProduct(product, customization);
+
     setProductAdded(true);
 
+    showNotification(
+      `${product.name} se agregó a tu pedido.`,
+      "success",
+    );
+
     if (timeoutReference.current !== null) {
-      window.clearTimeout(timeoutReference.current);
+      window.clearTimeout(
+        timeoutReference.current,
+      );
     }
 
-    timeoutReference.current = window.setTimeout(() => {
-      setProductAdded(false);
-    }, 1300);
+    timeoutReference.current =
+      window.setTimeout(() => {
+        setProductAdded(false);
+      }, 1300);
   };
 
   return (
@@ -79,7 +101,7 @@ export function AddToCartButton({
         />
       )}
 
-      <span aria-live="polite">
+      <span>
         {productAdded ? "Agregado" : label}
       </span>
     </button>

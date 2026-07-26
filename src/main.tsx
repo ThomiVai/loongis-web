@@ -5,15 +5,20 @@ import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 
 import { CartProvider } from "./context/CartProvider";
+import { NotificationProvider } from "./context/NotificationProvider";
 
 import "./styles/global.css";
 
-createRoot(document.getElementById("root")!).render(
+createRoot(
+  document.getElementById("root")!,
+).render(
   <StrictMode>
     <BrowserRouter>
-      <CartProvider>
-        <App />
-      </CartProvider>
+      <NotificationProvider>
+        <CartProvider>
+          <App />
+        </CartProvider>
+      </NotificationProvider>
     </BrowserRouter>
   </StrictMode>,
 );

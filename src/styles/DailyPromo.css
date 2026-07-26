@@ -1,196 +1,53 @@
-.daily-promo {
-  padding: 0 24px 56px;
+/* ========================================
+   PROMOCIÓN
+======================================== */
+
+.promo-banner {
+  width: 100%;
+  padding: 72px 20px;
+
   background-color: var(--color-cream);
 }
 
-.daily-promo__container {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-/* Banner principal */
-
-.promo-banner {
-  position: relative;
-
+.promo-banner__container {
   display: grid;
   grid-template-columns:
-    210px
-    minmax(310px, 0.9fr)
-    minmax(470px, 1.35fr);
+    minmax(0, 1.05fr)
+    minmax(380px, 0.95fr);
   align-items: center;
+  gap: 54px;
 
-  min-height: 270px;
+  width: 100%;
+  max-width: 1180px;
+  margin-inline: auto;
+  padding: 46px;
+
   overflow: hidden;
 
-  border: 1px solid rgba(7, 95, 234, 0.14);
-  border-radius: 28px;
+  border: 1px solid rgba(7, 95, 234, 0.12);
+  border-radius: 34px;
 
-  background: linear-gradient(
-    100deg,
-    rgba(225, 235, 255, 0.92) 0%,
-    rgba(243, 247, 255, 0.96) 52%,
-    rgba(225, 235, 255, 0.92) 100%
-  );
+  background:
+    radial-gradient(
+      circle at 12% 15%,
+      rgba(244, 201, 40, 0.3) 0%,
+      rgba(244, 201, 40, 0) 31%
+    ),
+    radial-gradient(
+      circle at 85% 88%,
+      rgba(7, 95, 234, 0.09) 0%,
+      rgba(7, 95, 234, 0) 30%
+    ),
+    rgba(255, 255, 255, 0.84);
 
   box-shadow:
-    0 16px 34px rgba(7, 60, 166, 0.07),
-    0 3px 8px rgba(23, 23, 23, 0.025);
+    0 22px 48px rgba(7, 60, 166, 0.08),
+    0 5px 12px rgba(23, 23, 23, 0.03);
 }
 
-/* Mascota */
-
-.promo-banner__brand {
-  position: relative;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  align-self: stretch;
-  min-width: 0;
-  padding: 24px 8px 24px 20px;
-}
-
-.promo-banner__brand-circle {
-  position: absolute;
-
-  width: 180px;
-  height: 180px;
-
-  border: 2px dashed rgba(7, 95, 234, 0.18);
-  border-radius: 50%;
-}
-
-.promo-banner__mascot,
-.promo-banner__logo {
-  position: relative;
-  z-index: 1;
-
-  display: block;
-
-  width: 166px;
-  height: 190px;
-
-  object-fit: contain;
-
-  transition: transform 180ms ease;
-}
-
-.promo-banner:hover .promo-banner__mascot,
-.promo-banner:hover .promo-banner__logo {
-  transform: translateY(-3px) scale(1.025);
-}
-
-/* Información central */
-
-.promo-banner__content {
-  position: relative;
-  z-index: 3;
-
-  min-width: 0;
-  padding: 34px 12px;
-}
-
-.promo-banner__eyebrow {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  margin-bottom: 10px;
-  padding: 6px 13px;
-
-  border-radius: 999px;
-
-  background-color: rgba(244, 201, 40, 0.3);
-  color: var(--color-primary-dark);
-
-  font-family: "Fredoka", sans-serif;
-  font-size: 0.75rem;
-  font-weight: 700;
-  line-height: 1;
-  text-transform: uppercase;
-  letter-spacing: 0.045em;
-}
-
-.promo-banner__title {
-  margin: 0;
-
-  color: var(--color-primary);
-
-  font-family: "Fredoka", sans-serif;
-  font-size: clamp(2rem, 3.2vw, 3rem);
-  font-weight: 700;
-  line-height: 1;
-  text-transform: uppercase;
-}
-
-.promo-banner__description {
-  margin: 16px 0 10px;
-
-  color: var(--color-black);
-
-  font-family: "Nunito", sans-serif;
-  font-size: 1rem;
-  font-weight: 700;
-  line-height: 1.4;
-}
-
-.promo-banner__prices {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.promo-banner__current-price {
-  color: var(--color-primary);
-
-  font-family: "Fredoka", sans-serif;
-  font-size: 2rem;
-  font-weight: 700;
-  line-height: 1;
-  white-space: nowrap;
-}
-
-.promo-banner__previous-price {
-  color: rgba(23, 23, 23, 0.55);
-
-  font-family: "Nunito", sans-serif;
-  font-size: 0.96rem;
-  font-weight: 700;
-  text-decoration: line-through;
-  white-space: nowrap;
-}
-
-.promo-banner__validity {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-
-  margin-top: 10px;
-
-  color: var(--color-black);
-
-  font-family: "Nunito", sans-serif;
-  font-size: 0.88rem;
-  font-weight: 700;
-}
-
-.promo-banner__validity svg {
-  flex-shrink: 0;
-
-  width: 21px;
-  height: 21px;
-
-  fill: none;
-  stroke: var(--color-primary);
-  stroke-width: 1.8;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-/* Imagen del combo */
+/* ========================================
+   IMAGEN
+======================================== */
 
 .promo-banner__visual {
   position: relative;
@@ -199,9 +56,8 @@
   align-items: center;
   justify-content: center;
 
-  align-self: stretch;
   min-width: 0;
-  padding: 12px 28px 62px 0;
+  min-height: 470px;
 }
 
 .promo-banner__combo-image {
@@ -210,399 +66,441 @@
 
   display: block;
 
-  width: min(100%, 450px);
-  height: 245px;
+  width: 100%;
+  max-width: 540px;
+  height: 430px;
 
   object-fit: contain;
-  object-position: center;
 
-  filter:
-    drop-shadow(0 10px 8px rgba(23, 23, 23, 0.1))
-    drop-shadow(0 20px 18px rgba(23, 23, 23, 0.08));
+  filter: drop-shadow(0 23px 18px rgba(23, 23, 23, 0.17));
 
-  transition:
-    transform 180ms ease,
-    filter 180ms ease;
+  transition: transform 220ms ease;
 }
 
-.promo-banner:hover .promo-banner__combo-image {
-  filter:
-    drop-shadow(0 12px 10px rgba(23, 23, 23, 0.13))
-    drop-shadow(0 23px 21px rgba(23, 23, 23, 0.1));
-
-  transform: translateY(-4px) scale(1.02);
+.promo-banner__visual:hover
+  .promo-banner__combo-image {
+  transform: translateY(-7px) scale(1.025);
 }
 
-/* Sello de descuento */
+.promo-banner__decoration {
+  position: absolute;
+
+  border-radius: 50%;
+
+  pointer-events: none;
+}
+
+.promo-banner__decoration--one {
+  top: 34px;
+  left: 30px;
+
+  width: 330px;
+  height: 330px;
+
+  background-color: rgba(244, 201, 40, 0.24);
+}
+
+.promo-banner__decoration--two {
+  right: 25px;
+  bottom: 45px;
+
+  width: 145px;
+  height: 145px;
+
+  background-color: rgba(7, 95, 234, 0.08);
+}
 
 .promo-banner__discount {
   position: absolute;
-  z-index: 4;
-  top: 24px;
-  right: 24px;
+  z-index: 3;
+  top: 40px;
+  right: 12px;
 
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
 
-  width: 88px;
-  height: 88px;
+  width: 92px;
+  height: 92px;
+
+  border-radius: 50%;
 
   background-color: var(--color-yellow);
-  color: var(--color-black);
+  color: var(--color-primary-dark);
 
-  clip-path: polygon(
-    50% 0%,
-    61% 10%,
-    75% 5%,
-    81% 19%,
-    95% 25%,
-    90% 39%,
-    100% 50%,
-    90% 61%,
-    95% 75%,
-    81% 81%,
-    75% 95%,
-    61% 90%,
-    50% 100%,
-    39% 90%,
-    25% 95%,
-    19% 81%,
-    5% 75%,
-    10% 61%,
-    0% 50%,
-    10% 39%,
-    5% 25%,
-    19% 19%,
-    25% 5%,
-    39% 10%
-  );
+  box-shadow: 0 12px 24px rgba(244, 201, 40, 0.34);
 
   font-family: "Fredoka", sans-serif;
+  line-height: 1;
   text-align: center;
 
-  transform: rotate(8deg);
+  transform: rotate(7deg);
 }
 
 .promo-banner__discount strong {
-  font-size: 1.4rem;
-  line-height: 1;
+  font-size: 1.05rem;
+  font-weight: 700;
 }
 
 .promo-banner__discount span {
-  margin-top: 2px;
+  margin-top: 4px;
 
-  font-size: 0.86rem;
+  font-size: 0.74rem;
+  font-weight: 700;
+}
+
+/* ========================================
+   CONTENIDO
+======================================== */
+
+.promo-banner__content {
+  min-width: 0;
+}
+
+.promo-banner__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+
+  margin-bottom: 14px;
+  padding: 7px 14px;
+
+  border-radius: 999px;
+
+  background-color: rgba(244, 201, 40, 0.25);
+  color: var(--color-primary-dark);
+
+  font-family: "Fredoka", sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.promo-banner__eyebrow svg {
+  width: 14px;
+  height: 14px;
+
+  color: #df7c00;
+}
+
+.promo-banner__title {
+  margin: 0;
+
+  color: var(--color-primary);
+
+  font-family: "Fredoka", sans-serif;
+  font-size: clamp(3rem, 6vw, 5rem);
+  font-weight: 700;
+  line-height: 0.94;
+  letter-spacing: -0.035em;
+}
+
+.promo-banner__product-name {
+  margin: 15px 0 0;
+
+  color: var(--color-black);
+
+  font-family: "Fredoka", sans-serif;
+  font-size: 1.65rem;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.promo-banner__description {
+  max-width: 520px;
+  margin: 14px 0 20px;
+
+  color: rgba(23, 23, 23, 0.7);
+
+  font-family: "Nunito", sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.6;
+}
+
+/* ========================================
+   INCLUYE
+======================================== */
+
+.promo-banner__includes {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  margin: 0 0 24px;
+  padding: 0;
+
+  list-style: none;
+}
+
+.promo-banner__includes li {
+  position: relative;
+
+  padding-left: 24px;
+
+  color: rgba(23, 23, 23, 0.73);
+
+  font-family: "Nunito", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.promo-banner__includes li::before {
+  position: absolute;
+  top: 5px;
+  left: 1px;
+
+  width: 10px;
+  height: 6px;
+
+  border-bottom: 2px solid var(--color-primary);
+  border-left: 2px solid var(--color-primary);
+
+  content: "";
+
+  transform: rotate(-45deg);
+}
+
+/* ========================================
+   PRECIO
+======================================== */
+
+.promo-banner__price {
+  display: flex;
+  align-items: flex-end;
+  gap: 14px;
+
+  margin-bottom: 25px;
+  padding: 19px 0;
+
+  border-top: 1px solid rgba(23, 23, 23, 0.1);
+  border-bottom: 1px solid rgba(23, 23, 23, 0.1);
+}
+
+.promo-banner__price span {
+  padding-bottom: 4px;
+
+  color: rgba(23, 23, 23, 0.58);
+
+  font-family: "Nunito", sans-serif;
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+.promo-banner__price strong {
+  color: var(--color-primary);
+
+  font-family: "Fredoka", sans-serif;
+  font-size: 2.15rem;
   font-weight: 700;
   line-height: 1;
 }
 
-/* Botón */
+/* ========================================
+   ACCIONES
+======================================== */
 
-.promo-banner__button {
-  position: absolute;
-  z-index: 5;
-  right: 28px;
-  bottom: 22px;
+.promo-banner__actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 11px;
+}
 
+.promo-banner__add-button,
+.promo-banner__detail-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 8px;
 
-  min-height: 46px;
-  padding: 0 21px;
+  min-height: 50px;
+  padding: 0 22px;
 
-  border: none;
   border-radius: 999px;
 
-  background-color: var(--color-yellow);
-  color: var(--color-black);
-
   font-family: "Fredoka", sans-serif;
-  font-size: 0.92rem;
+  font-size: 0.94rem;
   font-weight: 700;
-
-  cursor: pointer;
-
-  box-shadow: 0 9px 20px rgba(244, 201, 40, 0.28);
 
   transition:
     transform 160ms ease,
     background-color 160ms ease,
+    color 160ms ease,
+    border-color 160ms ease,
     box-shadow 160ms ease;
 }
 
-.promo-banner__button:hover {
+.promo-banner__add-button {
+  border: none;
+
+  background-color: var(--color-yellow);
+  color: var(--color-black);
+
+  cursor: pointer;
+
+  box-shadow: 0 10px 22px rgba(244, 201, 40, 0.27);
+}
+
+.promo-banner__add-button:hover {
   transform: translateY(-2px);
 
   background-color: #ffd83d;
 
-  box-shadow: 0 13px 24px rgba(244, 201, 40, 0.38);
+  box-shadow: 0 13px 27px rgba(244, 201, 40, 0.35);
 }
 
-.promo-banner__button:active {
-  transform: translateY(0);
+.promo-banner__detail-button {
+  border: 1px solid rgba(7, 95, 234, 0.23);
+
+  color: var(--color-primary);
 }
 
-.promo-banner__button:focus-visible {
-  outline: 3px solid rgba(7, 95, 234, 0.26);
-  outline-offset: 3px;
+.promo-banner__detail-button:hover {
+  transform: translateY(-2px);
+
+  border-color: var(--color-primary);
+
+  background-color: var(--color-primary);
+  color: #ffffff;
 }
 
-.promo-banner__button svg {
-  width: 16px;
-  height: 16px;
+.promo-banner__detail-button svg {
+  width: 14px;
+  height: 14px;
 }
 
-/* Pantallas medianas */
+.promo-banner__notice {
+  max-width: 500px;
+  margin: 15px 0 0;
 
-@media (max-width: 1080px) {
-  .promo-banner {
-    grid-template-columns:
-      185px
-      minmax(280px, 0.9fr)
-      minmax(370px, 1.2fr);
-  }
+  color: rgba(23, 23, 23, 0.52);
 
-  .promo-banner__brand {
-    padding-left: 14px;
-  }
-
-  .promo-banner__brand-circle {
-    width: 155px;
-    height: 155px;
-  }
-
-  .promo-banner__mascot,
-  .promo-banner__logo {
-    width: 145px;
-    height: 170px;
-  }
-
-  .promo-banner__combo-image {
-    width: min(100%, 390px);
-    height: 225px;
-  }
+  font-family: "Nunito", sans-serif;
+  font-size: 0.76rem;
+  font-weight: 600;
+  line-height: 1.45;
 }
 
-/* Tablets */
+/* ========================================
+   TABLETS
+======================================== */
 
 @media (max-width: 900px) {
-  .daily-promo {
-    padding: 0 20px 52px;
-  }
-
   .promo-banner {
-    grid-template-columns:
-      155px
-      minmax(250px, 1fr)
-      minmax(300px, 1fr);
-
-    min-height: 250px;
-    border-radius: 24px;
+    padding: 58px 20px;
   }
 
-  .promo-banner__brand {
-    padding: 20px 6px;
-  }
+  .promo-banner__container {
+    grid-template-columns: 1fr;
+    gap: 30px;
 
-  .promo-banner__brand-circle {
-    width: 130px;
-    height: 130px;
-  }
-
-  .promo-banner__mascot,
-  .promo-banner__logo {
-    width: 125px;
-    height: 145px;
-  }
-
-  .promo-banner__content {
-    padding: 28px 6px;
-  }
-
-  .promo-banner__title {
-    font-size: 2rem;
-  }
-
-  .promo-banner__description {
-    font-size: 0.9rem;
-  }
-
-  .promo-banner__current-price {
-    font-size: 1.65rem;
+    padding: 36px;
   }
 
   .promo-banner__visual {
-    padding: 14px 12px 60px 0;
+    min-height: 410px;
   }
 
   .promo-banner__combo-image {
-    width: min(100%, 315px);
-    height: 190px;
+    max-width: 520px;
+    height: 380px;
+  }
+
+  .promo-banner__content {
+    max-width: 680px;
   }
 
   .promo-banner__discount {
-    top: 18px;
-    right: 12px;
+    right: 7%;
+  }
+}
 
-    width: 72px;
-    height: 72px;
+/* ========================================
+   CELULARES
+======================================== */
+
+@media (max-width: 600px) {
+  .promo-banner {
+    padding: 48px 16px;
+  }
+
+  .promo-banner__container {
+    gap: 20px;
+
+    padding: 24px 18px 28px;
+
+    border-radius: 25px;
+  }
+
+  .promo-banner__visual {
+    min-height: 310px;
+  }
+
+  .promo-banner__combo-image {
+    max-width: 350px;
+    height: 285px;
+  }
+
+  .promo-banner__decoration--one {
+    top: 35px;
+    left: 3%;
+
+    width: 230px;
+    height: 230px;
+  }
+
+  .promo-banner__decoration--two {
+    right: 12px;
+    bottom: 30px;
+
+    width: 90px;
+    height: 90px;
+  }
+
+  .promo-banner__discount {
+    top: 15px;
+    right: 3px;
+
+    width: 75px;
+    height: 75px;
   }
 
   .promo-banner__discount strong {
-    font-size: 1.12rem;
+    font-size: 0.9rem;
   }
 
   .promo-banner__discount span {
-    font-size: 0.75rem;
-  }
-
-  .promo-banner__button {
-    right: 15px;
-    bottom: 17px;
-
-    min-height: 42px;
-    padding: 0 16px;
-
-    font-size: 0.82rem;
-  }
-}
-
-/* Celulares */
-
-@media (max-width: 720px) {
-  .daily-promo {
-    padding: 0 16px 48px;
-  }
-
-  .promo-banner {
-    grid-template-columns: 1fr;
-
-    min-height: auto;
-    border-radius: 22px;
-  }
-
-  .promo-banner__brand {
-    min-height: 170px;
-    padding: 20px 20px 0;
-  }
-
-  .promo-banner__brand-circle {
-    width: 145px;
-    height: 145px;
-  }
-
-  .promo-banner__mascot,
-  .promo-banner__logo {
-    width: 140px;
-    height: 160px;
-  }
-
-  .promo-banner__content {
-    padding: 8px 24px 24px;
-
-    text-align: center;
+    font-size: 0.65rem;
   }
 
   .promo-banner__title {
-    font-size: clamp(1.9rem, 9vw, 2.5rem);
+    font-size: clamp(2.8rem, 15vw, 4rem);
   }
 
-  .promo-banner__description {
-    margin-top: 13px;
+  .promo-banner__product-name {
+    font-size: 1.4rem;
   }
 
-  .promo-banner__prices {
-    justify-content: center;
+  .promo-banner__price {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 6px;
   }
 
-  .promo-banner__validity {
-    justify-content: center;
+  .promo-banner__price strong {
+    font-size: 1.9rem;
   }
 
-  .promo-banner__visual {
-    min-height: 290px;
-    padding: 0 18px 76px;
+  .promo-banner__actions {
+    align-items: stretch;
+    flex-direction: column;
   }
 
-  .promo-banner__combo-image {
-    width: min(100%, 370px);
-    height: 245px;
-  }
-
-  .promo-banner__discount {
-    top: 2px;
-    right: 16px;
-
-    width: 78px;
-    height: 78px;
-  }
-
-  .promo-banner__button {
-    right: 50%;
-    bottom: 22px;
-
-    transform: translateX(50%);
-  }
-
-  .promo-banner__button:hover {
-    transform: translate(50%, -2px);
-  }
-
-  .promo-banner__button:active {
-    transform: translateX(50%);
-  }
-}
-
-/* Celulares pequeños */
-
-@media (max-width: 390px) {
-  .promo-banner__content {
-    padding-right: 16px;
-    padding-left: 16px;
-  }
-
-  .promo-banner__title {
-    font-size: 1.85rem;
-  }
-
-  .promo-banner__description {
-    font-size: 0.9rem;
-  }
-
-  .promo-banner__prices {
-    gap: 10px;
-  }
-
-  .promo-banner__current-price {
-    font-size: 1.6rem;
-  }
-
-  .promo-banner__previous-price {
-    font-size: 0.85rem;
-  }
-
-  .promo-banner__visual {
-    min-height: 270px;
-    padding-right: 10px;
-    padding-left: 10px;
-  }
-
-  .promo-banner__combo-image {
-    height: 220px;
-  }
-
-  .promo-banner__discount {
-    right: 9px;
-
-    width: 70px;
-    height: 70px;
-  }
-
-  .promo-banner__discount strong {
-    font-size: 1.05rem;
+  .promo-banner__add-button,
+  .promo-banner__detail-button {
+    width: 100%;
   }
 }

@@ -1,0 +1,823 @@
+.product-detail {
+  width: 100%;
+  min-height: 100vh;
+
+  background:
+    radial-gradient(
+      circle at 82% 18%,
+      rgba(244, 201, 40, 0.18) 0%,
+      rgba(244, 201, 40, 0) 28%
+    ),
+    var(--color-cream);
+}
+
+.product-detail__content {
+  padding: 48px 0 86px;
+}
+
+.product-detail__container {
+  width: 100%;
+  max-width: 1180px;
+  margin-inline: auto;
+  padding-inline: 20px;
+}
+
+/* ========================================
+   VOLVER
+======================================== */
+
+.product-detail__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+
+  margin-bottom: 36px;
+
+  color: var(--color-primary);
+
+  font-family: "Fredoka", sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+
+  transition:
+    color 160ms ease,
+    transform 160ms ease;
+}
+
+.product-detail__back:hover {
+  color: var(--color-primary-dark);
+
+  transform: translateX(-4px);
+}
+
+.product-detail__back svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* ========================================
+   DISTRIBUCIÓN
+======================================== */
+
+.product-detail__layout {
+  display: grid;
+  grid-template-columns:
+    minmax(0, 1.05fr)
+    minmax(380px, 0.95fr);
+  align-items: center;
+  gap: 62px;
+}
+
+/* ========================================
+   IMAGEN
+======================================== */
+
+.product-detail__visual {
+  min-width: 0;
+}
+
+.product-detail__image-background {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 560px;
+  overflow: hidden;
+  padding: 44px;
+
+  border: 1px solid rgba(7, 95, 234, 0.1);
+  border-radius: 38px;
+
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(244, 201, 40, 0.28) 0%,
+      rgba(244, 201, 40, 0.11) 35%,
+      rgba(255, 255, 255, 0.72) 72%
+    ),
+    rgba(255, 255, 255, 0.8);
+
+  box-shadow:
+    0 24px 52px rgba(7, 60, 166, 0.08),
+    0 5px 14px rgba(23, 23, 23, 0.035);
+}
+
+.product-detail__image {
+  position: relative;
+  z-index: 2;
+
+  display: block;
+
+  width: 100%;
+  max-width: 500px;
+  height: 440px;
+
+  object-fit: contain;
+
+  filter: drop-shadow(0 24px 19px rgba(23, 23, 23, 0.17));
+
+  transition: transform 220ms ease;
+}
+
+.product-detail__image-background:hover
+  .product-detail__image {
+  transform: translateY(-7px) scale(1.025);
+}
+
+.product-detail__decoration {
+  position: absolute;
+
+  border-radius: 50%;
+
+  background-color: var(--color-primary);
+
+  opacity: 0.08;
+}
+
+.product-detail__decoration--one {
+  top: 42px;
+  right: 42px;
+
+  width: 110px;
+  height: 110px;
+}
+
+.product-detail__decoration--two {
+  bottom: 45px;
+  left: 38px;
+
+  width: 66px;
+  height: 66px;
+
+  background-color: var(--color-yellow);
+
+  opacity: 0.32;
+}
+
+/* ========================================
+   INFORMACIÓN
+======================================== */
+
+.product-detail__information {
+  min-width: 0;
+}
+
+.product-detail__category {
+  display: inline-flex;
+
+  margin-bottom: 17px;
+  padding: 7px 14px;
+
+  border-radius: 999px;
+
+  background-color: rgba(225, 235, 255, 0.75);
+  color: var(--color-primary);
+
+  font-family: "Nunito", sans-serif;
+  font-size: 0.76rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.045em;
+}
+
+.product-detail__title {
+  margin: 0;
+
+  color: var(--color-black);
+
+  font-family: "Fredoka", sans-serif;
+  font-size: clamp(2.8rem, 5vw, 4.7rem);
+  font-weight: 700;
+  line-height: 0.96;
+  letter-spacing: -0.035em;
+}
+
+.product-detail__description {
+  margin: 23px 0 28px;
+
+  color: rgba(23, 23, 23, 0.7);
+
+  font-family: "Nunito", sans-serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.65;
+}
+
+/* ========================================
+   PRECIO
+======================================== */
+
+.product-detail__price-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+
+  margin-bottom: 28px;
+  padding: 21px 0;
+
+  border-top: 1px solid rgba(23, 23, 23, 0.1);
+  border-bottom: 1px solid rgba(23, 23, 23, 0.1);
+}
+
+.product-detail__price-row > div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.product-detail__price-label {
+  color: rgba(23, 23, 23, 0.58);
+
+  font-family: "Nunito", sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.product-detail__price {
+  color: var(--color-primary);
+
+  font-family: "Fredoka", sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.product-detail__available,
+.product-detail__unavailable {
+  display: inline-flex;
+  align-items: center;
+
+  padding: 8px 13px;
+
+  border-radius: 999px;
+
+  font-family: "Nunito", sans-serif;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.product-detail__available {
+  background-color: rgba(34, 169, 90, 0.12);
+  color: #197741;
+}
+
+.product-detail__available::before {
+  width: 8px;
+  height: 8px;
+  margin-right: 7px;
+
+  border-radius: 50%;
+
+  background-color: #22a95a;
+
+  content: "";
+}
+
+.product-detail__unavailable {
+  background-color: rgba(166, 34, 34, 0.1);
+  color: #922020;
+}
+
+/* ========================================
+   CARACTERÍSTICAS
+======================================== */
+
+.product-detail__features {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  margin-bottom: 28px;
+}
+
+.product-detail__feature {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+
+  padding: 13px 15px;
+
+  border: 1px solid rgba(7, 95, 234, 0.08);
+  border-radius: 15px;
+
+  background-color: rgba(255, 255, 255, 0.62);
+}
+
+.product-detail__feature > span {
+  display: grid;
+  place-items: center;
+
+  flex-shrink: 0;
+
+  width: 41px;
+  height: 41px;
+
+  border-radius: 50%;
+
+  background-color: rgba(244, 201, 40, 0.2);
+
+  font-size: 1.15rem;
+}
+
+.product-detail__feature > div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.product-detail__feature strong {
+  color: var(--color-black);
+
+  font-family: "Fredoka", sans-serif;
+  font-size: 0.94rem;
+  font-weight: 700;
+}
+
+.product-detail__feature small {
+  color: rgba(23, 23, 23, 0.6);
+
+  font-family: "Nunito", sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+/* ========================================
+   BOTÓN
+======================================== */
+
+.product-detail__add-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+
+  width: 100%;
+  min-height: 54px;
+  padding: 0 25px;
+
+  border: none;
+  border-radius: 999px;
+
+  background-color: var(--color-yellow);
+  color: var(--color-black);
+
+  font-family: "Fredoka", sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  box-shadow: 0 11px 24px rgba(244, 201, 40, 0.28);
+
+  transition:
+    transform 160ms ease,
+    background-color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.product-detail__add-button:hover {
+  transform: translateY(-2px);
+
+  background-color: #ffd83d;
+
+  box-shadow: 0 14px 29px rgba(244, 201, 40, 0.36);
+}
+
+.product-detail__add-button--disabled {
+  background-color: rgba(23, 23, 23, 0.15);
+  color: rgba(23, 23, 23, 0.5);
+
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.product-detail__add-button--disabled:hover {
+  transform: none;
+
+  background-color: rgba(23, 23, 23, 0.15);
+  box-shadow: none;
+}
+
+.product-detail__notice {
+  margin: 14px 0 0;
+
+  color: rgba(23, 23, 23, 0.53);
+
+  font-family: "Nunito", sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1.45;
+  text-align: center;
+}
+
+/* ========================================
+   PRODUCTO NO ENCONTRADO
+======================================== */
+
+.product-detail-empty {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  width: calc(100% - 32px);
+  max-width: 590px;
+  margin: 70px auto;
+  padding: 54px 28px;
+
+  border: 1px solid rgba(7, 95, 234, 0.12);
+  border-radius: 28px;
+
+  background-color: rgba(255, 255, 255, 0.88);
+
+  box-shadow:
+    0 18px 40px rgba(7, 60, 166, 0.07),
+    0 4px 10px rgba(23, 23, 23, 0.025);
+
+  text-align: center;
+}
+
+.product-detail-empty__icon {
+  display: grid;
+  place-items: center;
+
+  width: 82px;
+  height: 82px;
+  margin-bottom: 20px;
+
+  border-radius: 50%;
+
+  background-color: rgba(244, 201, 40, 0.22);
+
+  font-size: 2.2rem;
+}
+
+.product-detail-empty__title {
+  margin: 0;
+
+  color: var(--color-black);
+
+  font-family: "Fredoka", sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.product-detail-empty__description {
+  max-width: 430px;
+  margin: 13px 0 24px;
+
+  color: rgba(23, 23, 23, 0.65);
+
+  font-family: "Nunito", sans-serif;
+  font-size: 0.96rem;
+  font-weight: 600;
+  line-height: 1.55;
+}
+
+.product-detail-empty__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 46px;
+  padding: 0 23px;
+
+  border-radius: 999px;
+
+  background-color: var(--color-yellow);
+  color: var(--color-black);
+
+  font-family: "Fredoka", sans-serif;
+  font-size: 0.94rem;
+  font-weight: 700;
+}
+
+/* ========================================
+   PERSONALIZACIÓN
+======================================== */
+
+.product-customization {
+  min-width: 0;
+  margin: 0 0 25px;
+  padding: 0;
+
+  border: none;
+}
+
+.product-customization__title {
+  margin-bottom: 11px;
+
+  color: var(--color-black);
+
+  font-family: "Fredoka", sans-serif;
+  font-size: 1.08rem;
+  font-weight: 700;
+}
+
+.product-customization__subtitle {
+  margin: -5px 0 11px;
+
+  color: rgba(23, 23, 23, 0.58);
+
+  font-family: "Nunito", sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.product-customization__options {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.product-customization__options--two-columns {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.product-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  min-width: 0;
+  padding: 13px;
+
+  border: 1px solid rgba(7, 95, 234, 0.13);
+  border-radius: 15px;
+
+  background-color: rgba(255, 255, 255, 0.7);
+
+  cursor: pointer;
+
+  transition:
+    transform 150ms ease,
+    border-color 150ms ease,
+    background-color 150ms ease,
+    box-shadow 150ms ease;
+}
+
+.product-option:hover {
+  transform: translateY(-2px);
+
+  border-color: rgba(7, 95, 234, 0.3);
+}
+
+.product-option--selected {
+  border-color: var(--color-primary);
+
+  background-color: rgba(225, 235, 255, 0.8);
+
+  box-shadow: 0 0 0 3px rgba(7, 95, 234, 0.08);
+}
+
+.product-option input {
+  flex-shrink: 0;
+
+  width: 17px;
+  height: 17px;
+  margin: 0;
+
+  accent-color: var(--color-primary);
+}
+
+.product-option__information {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+
+  min-width: 0;
+}
+
+.product-option__information strong {
+  color: var(--color-black);
+
+  font-family: "Fredoka", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.product-option__information small {
+  color: var(--color-primary);
+
+  font-family: "Nunito", sans-serif;
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+/* ========================================
+   INGREDIENTES
+======================================== */
+
+.product-ingredients {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.product-ingredient {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+
+  min-height: 39px;
+  padding: 0 12px;
+
+  border: 1px solid rgba(7, 95, 234, 0.13);
+  border-radius: 999px;
+
+  background-color: rgba(255, 255, 255, 0.72);
+  color: rgba(23, 23, 23, 0.7);
+
+  font-family: "Nunito", sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    border-color 150ms ease,
+    background-color 150ms ease,
+    color 150ms ease;
+}
+
+.product-ingredient input {
+  width: 15px;
+  height: 15px;
+  margin: 0;
+
+  accent-color: #a62222;
+}
+
+.product-ingredient--removed {
+  border-color: rgba(166, 34, 34, 0.25);
+
+  background-color: rgba(166, 34, 34, 0.07);
+  color: #922020;
+}
+
+/* ========================================
+   ACLARACIÓN
+======================================== */
+
+.product-notes {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  margin-bottom: 24px;
+}
+
+.product-notes__title {
+  color: var(--color-black);
+
+  font-family: "Fredoka", sans-serif;
+  font-size: 1.08rem;
+  font-weight: 700;
+}
+
+.product-notes textarea {
+  width: 100%;
+  min-height: 96px;
+  padding: 13px 14px 28px;
+
+  border: 1px solid rgba(7, 95, 234, 0.15);
+  border-radius: 15px;
+
+  background-color: rgba(255, 255, 255, 0.8);
+  color: var(--color-black);
+
+  font-family: "Nunito", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.45;
+
+  outline: none;
+  resize: vertical;
+
+  transition:
+    border-color 150ms ease,
+    box-shadow 150ms ease;
+}
+
+.product-notes textarea:focus {
+  border-color: var(--color-primary);
+
+  box-shadow: 0 0 0 4px rgba(7, 95, 234, 0.09);
+}
+
+.product-notes textarea::placeholder {
+  color: rgba(23, 23, 23, 0.4);
+}
+
+.product-notes__counter {
+  position: absolute;
+  right: 12px;
+  bottom: 9px;
+
+  color: rgba(23, 23, 23, 0.45);
+
+  font-family: "Nunito", sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+/* ========================================
+   TABLETS
+======================================== */
+
+@media (max-width: 900px) {
+  .product-detail__layout {
+    grid-template-columns: 1fr;
+    gap: 38px;
+  }
+
+  .product-detail__image-background {
+    min-height: 470px;
+  }
+
+  .product-detail__image {
+    max-width: 480px;
+    height: 390px;
+  }
+
+  .product-detail__information {
+    max-width: 680px;
+  }
+}
+
+/* ========================================
+   CELULARES
+======================================== */
+
+@media (max-width: 600px) {
+  .product-detail__content {
+    padding: 32px 0 62px;
+  }
+
+  .product-detail__container {
+    padding-inline: 16px;
+  }
+
+  .product-detail__back {
+    margin-bottom: 26px;
+  }
+
+  .product-detail__layout {
+    gap: 30px;
+  }
+
+  .product-detail__image-background {
+    min-height: 340px;
+    padding: 24px;
+
+    border-radius: 26px;
+  }
+
+  .product-detail__image {
+    max-width: 330px;
+    height: 290px;
+  }
+
+  .product-detail__decoration--one {
+    top: 25px;
+    right: 25px;
+
+    width: 78px;
+    height: 78px;
+  }
+
+  .product-detail__decoration--two {
+    bottom: 26px;
+    left: 25px;
+
+    width: 48px;
+    height: 48px;
+  }
+
+  .product-detail__title {
+    font-size: clamp(2.5rem, 12vw, 3.5rem);
+  }
+
+  .product-detail__description {
+    margin-top: 18px;
+
+    font-size: 0.98rem;
+  }
+
+  .product-detail__price {
+    font-size: 1.7rem;
+  }
+
+  .product-customization__options,
+.product-customization__options--two-columns {
+  grid-template-columns: 1fr;
+}
+
+.product-option {
+  padding: 12px;
+}
+}

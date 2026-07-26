@@ -1,6 +1,6 @@
 import { AddToCartButton } from "./AddToCartButton";
 
-import { products } from "../data/products";
+import { featuredProducts as products } from "../data/menuProducts";
 
 import "../styles/FeaturedProducts.css";
 

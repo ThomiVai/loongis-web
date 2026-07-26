@@ -1,0 +1,146 @@
+/* ========================================
+   ENCABEZADO DEL PRODUCTO
+======================================== */
+
+.cart-item__heading {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.cart-item__personalized-badge {
+  display: inline-flex;
+  align-items: center;
+
+  padding: 4px 9px;
+
+  border-radius: 999px;
+
+  background-color: rgba(244, 201, 40, 0.23);
+  color: var(--color-primary-dark);
+
+  font-family: "Nunito", sans-serif;
+  font-size: 0.66rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* ========================================
+   PERSONALIZACIONES
+======================================== */
+
+.cart-item-customization {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  margin: 12px 0;
+  padding: 11px 13px;
+
+  border: 1px solid rgba(7, 95, 234, 0.1);
+  border-radius: 13px;
+
+  background-color: rgba(225, 235, 255, 0.28);
+}
+
+.cart-item-customization__detail {
+  display: grid;
+  grid-template-columns: 78px minmax(0, 1fr);
+  gap: 8px;
+
+  font-family: "Nunito", sans-serif;
+  font-size: 0.78rem;
+  line-height: 1.35;
+}
+
+.cart-item-customization__label {
+  color: var(--color-primary);
+
+  font-weight: 800;
+}
+
+.cart-item-customization__value {
+  min-width: 0;
+
+  color: rgba(23, 23, 23, 0.7);
+
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.cart-item-customization__detail--removed
+  .cart-item-customization__label,
+.cart-item-customization__detail--removed
+  .cart-item-customization__value {
+  color: #922020;
+}
+
+.cart-item-customization__detail--notes {
+  padding-top: 6px;
+
+  border-top: 1px solid rgba(7, 95, 234, 0.08);
+}
+
+/* ========================================
+   PRECIO Y NUEVA CONFIGURACIÓN
+======================================== */
+
+.cart-item__price-information {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+}
+
+.cart-item__customize-again {
+  color: var(--color-primary);
+
+  font-family: "Nunito", sans-serif;
+  font-size: 0.77rem;
+  font-weight: 800;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+
+  transition:
+    color 150ms ease,
+    transform 150ms ease;
+}
+
+.cart-item__customize-again:hover {
+  color: var(--color-primary-dark);
+
+  transform: translateX(2px);
+}
+
+/* ========================================
+   RESPONSIVE
+======================================== */
+
+@media (max-width: 650px) {
+  .cart-item-customization {
+    margin-top: 10px;
+    padding: 10px;
+  }
+
+  .cart-item-customization__detail {
+    grid-template-columns: 68px minmax(0, 1fr);
+
+    font-size: 0.74rem;
+  }
+
+  .cart-item__price-information {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 6px;
+  }
+}
+
+@media (max-width: 380px) {
+  .cart-item-customization__detail {
+    grid-template-columns: 1fr;
+    gap: 1px;
+  }
+}

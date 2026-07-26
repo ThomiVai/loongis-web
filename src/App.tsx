@@ -10,14 +10,19 @@ import { Checkout } from "./pages/Checkout";
 import { Home } from "./pages/Home";
 import { Menu } from "./pages/Menu";
 import { NotFound } from "./pages/NotFound";
+import { ProductDetail } from "./pages/ProductDetail";
+import { NotificationContainer } from "./components/NotificationContainer";
+import { StoreStatus } from "./components/StoreStatus";
 
 function App() {
   return (
     <>
       <PageTitle />
       <ScrollToTop />
+      <NotificationContainer />
 
       <Navbar />
+      <StoreStatus />
 
       <Routes>
         <Route
@@ -28,6 +33,11 @@ function App() {
         <Route
           path="/menu"
           element={<Menu />}
+        />
+
+        <Route
+          path="/producto/:productId"
+          element={<ProductDetail />}
         />
 
         <Route

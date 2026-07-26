@@ -21,7 +21,7 @@ export function Footer() {
           <div className="site-footer__brand">
             <img
               className="site-footer__logo"
-              src="images/logos/loongis-footer.jpeg"
+              src="/images/logos/loongis-footer.jpeg"
               alt="Loongis"
             />
 

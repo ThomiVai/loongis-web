@@ -1,96 +1,117 @@
-import { FaArrowRightLong } from "react-icons/fa6";
+import {
+  FaArrowRightLong,
+  FaFire,
+} from "react-icons/fa6";
+import { Link } from "react-router-dom";
+
+import { AddToCartButton } from "./AddToCartButton";
+
+import { menuProducts } from "../data/menuProducts";
 
 import "../styles/DailyPromo.css";
 
-function ClockIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      aria-hidden="true"
-    >
-      <circle cx="12" cy="12" r="8.5" />
-      <path d="M12 7v5l3.5 2" />
-      <path d="M9 2h6" />
-    </svg>
-  );
-}
+const priceFormatter = new Intl.NumberFormat("es-AR", {
+  style: "currency",
+  currency: "ARS",
+  maximumFractionDigits: 0,
+});
 
 export function DailyPromo() {
+  const promoCombo = menuProducts.find(
+    (product) => product.id === 101,
+  );
+
+  if (!promoCombo) {
+    return null;
+  }
+
   return (
     <section
-      className="daily-promo"
+      className="promo-banner"
       id="combos"
-      aria-labelledby="daily-promo-title"
+      aria-labelledby="promo-banner-title"
     >
-      <div className="daily-promo__container">
-        <div className="promo-banner">
-          <div className="promo-banner__brand">
-            <div className="promo-banner__brand-circle" />
+      <div className="promo-banner__container">
+        <div className="promo-banner__visual">
+          <span
+            className="promo-banner__decoration promo-banner__decoration--one"
+            aria-hidden="true"
+          />
 
-            <img
-              className="promo-banner__mascot"
-              src="images/logos/loongis-promo.png"
-              alt="Mascota de Loongis enamorada de la promoción"
-            />
+          <span
+            className="promo-banner__decoration promo-banner__decoration--two"
+            aria-hidden="true"
+          />
+
+          <img
+            className="promo-banner__combo-image"
+            src={promoCombo.image}
+            alt={promoCombo.imageAlt}
+          />
+
+          <div className="promo-banner__discount">
+            <strong>Promo</strong>
+            <span>del día</span>
+          </div>
+        </div>
+
+        <div className="promo-banner__content">
+          <div className="promo-banner__eyebrow">
+            <FaFire aria-hidden="true" />
+
+            <span>Promo especial</span>
           </div>
 
-          <div className="promo-banner__content">
-            <span className="promo-banner__eyebrow">
-              Promo especial
-            </span>
+          <h2
+            className="promo-banner__title"
+            id="promo-banner-title"
+          >
+            Combo del día
+          </h2>
 
-            <h2
-              id="daily-promo-title"
-              className="promo-banner__title"
-            >
-              Promo del día
-            </h2>
+          <h3 className="promo-banner__product-name">
+            {promoCombo.name}
+          </h3>
 
-            <p className="promo-banner__description">
-              Combo Loongis + Papas + Gaseosa
-            </p>
+          <p className="promo-banner__description">
+            {promoCombo.description}
+          </p>
 
-            <div className="promo-banner__prices">
-              <span className="promo-banner__current-price">
-                $12.500
-              </span>
+          <ul className="promo-banner__includes">
+            <li>Hamburguesa Loongis Clásica</li>
+            <li>Porción de papas crocantes</li>
+            <li>Bebida individual</li>
+          </ul>
 
-              <span className="promo-banner__previous-price">
-                $15.800
-              </span>
-            </div>
+          <div className="promo-banner__price">
+            <span>Precio del combo</span>
 
-            <div className="promo-banner__validity">
-              <ClockIcon />
-
-              <span>Válida hasta las 23:30 hs</span>
-            </div>
+            <strong>
+              {priceFormatter.format(promoCombo.price)}
+            </strong>
           </div>
 
-          <div className="promo-banner__visual">
-            <img
-              className="promo-banner__combo-image"
-              src="/images/burgers/combo-promo.png"
-              alt="Combo Loongis con hamburguesa, papas fritas y gaseosa"
+          <div className="promo-banner__actions">
+            <AddToCartButton
+              product={promoCombo}
+              className="promo-banner__add-button"
+              label="Agregar combo"
             />
 
-            <div
-              className="promo-banner__discount"
-              aria-label="20 por ciento de descuento"
+            <Link
+              className="promo-banner__detail-button"
+              to={`/producto/${promoCombo.id}`}
             >
-              <strong>20%</strong>
-              <span>OFF</span>
-            </div>
-
-            <button
-              className="promo-banner__button"
-              type="button"
-            >
-              <span>¡La quiero!</span>
+              <span>Ver detalle</span>
 
               <FaArrowRightLong aria-hidden="true" />
-            </button>
+            </Link>
           </div>
+
+          <p className="promo-banner__notice">
+            Sujeto a disponibilidad. El sabor de la bebida se coordina al
+            confirmar el pedido.
+          </p>
         </div>
       </div>
     </section>
