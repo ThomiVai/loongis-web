@@ -3,29 +3,46 @@ import type { Product } from "../types/Product";
 export const products: Product[] = [
   {
     id: 1,
-    name: "Loongis Clásica",
+    name: "Simple Queso",
     description:
-      "Doble carne smash, cheddar, cebolla crispy y salsa Loongis.",
-    price: 9800,
-    image: "/images/burgers/loongis-clasica.png",
-    imageAlt: "Hamburguesa Loongis Clásica",
+      "Medallón smash y doble queso.",
+    price: 9500,
+    image:
+      "/images/burgers/simple-queso.png",
+    imageAlt:
+      "Hamburguesa Simple Queso con medallón smash y doble queso",
   },
   {
     id: 2,
-    name: "Loongis Bacon",
+    name: "Loongis Clasic",
     description:
-      "Doble carne smash, cheddar, bacon crocante y salsa especial.",
-    price: 10900,
-    image: "/images/burgers/loongis-bacon.png",
-    imageAlt: "Hamburguesa Loongis Bacon",
+      "Medallón smash, doble queso, lechuga, tomate, cebolla morada, salsa Loongis y pickles.",
+    price: 9800,
+    image:
+      "/images/burgers/loongis-clasic.png",
+    imageAlt:
+      "Hamburguesa Loongis Clasic con doble queso, lechuga, tomate, cebolla morada, salsa Loongis y pickles",
   },
   {
     id: 3,
-    name: "Loongis Doble Cheddar",
+    name: "Loongis Bacon",
     description:
-      "Doble carne smash, doble cheddar, cebolla crispy y pepinillos.",
+      "Medallón smash, doble queso, doble bacon y salsa especial.",
+    price: 10900,
+    image:
+      "/images/burgers/loongis-bacon.png",
+    imageAlt:
+      "Hamburguesa Loongis Bacon con doble queso, doble bacon y salsa especial",
+  },
+  {
+    id: 4,
+    name: "Loongis Crispy",
+    description:
+      "Medallón smash, doble queso, cebolla crispy, bacon y salsa de mostaza dulce.",
     price: 11200,
-    image: "/images/burgers/loongis-doble-cheddar.png",
-    imageAlt: "Hamburguesa Loongis Doble Cheddar",
+    image:
+      "/images/burgers/loongis-crispy.png",
+    imageAlt:
+      "Hamburguesa Loongis Crispy con doble queso, cebolla crispy, bacon y salsa de mostaza dulce",
   },
 ];

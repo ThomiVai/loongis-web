@@ -4,6 +4,7 @@ import {
   FaLocationDot,
   FaStar,
 } from "react-icons/fa6";
+import { Link } from "react-router-dom";
 
 import "../styles/Hero.css";
 
@@ -27,31 +28,34 @@ export function Hero() {
           </h1>
 
           <p className="hero__description">
-            Carne smash, ingredientes frescos y mucho amor en cada bocado.
+            Carne smash, ingredientes frescos y mucho amor
+            en cada bocado.
           </p>
 
           <div className="hero__actions">
-            <a
-              href="#menu"
+            <Link
+              to="/menu"
               className="hero__button hero__button--primary"
             >
               Ver menú
-              <FaArrowRight />
-            </a>
 
-            <a
-              href="#promo-del-dia"
+              <FaArrowRight aria-hidden="true" />
+            </Link>
+
+            <Link
+              to="/#combos"
               className="hero__button hero__button--secondary"
             >
               Ver promo del día
-              <FaArrowRight />
-            </a>
+
+              <FaArrowRight aria-hidden="true" />
+            </Link>
           </div>
 
           <div className="hero__benefits">
             <article className="hero__benefit">
               <span className="hero__benefit-icon">
-                <FaClock />
+                <FaClock aria-hidden="true" />
               </span>
 
               <div>
@@ -62,7 +66,7 @@ export function Hero() {
 
             <article className="hero__benefit">
               <span className="hero__benefit-icon">
-                <FaLocationDot />
+                <FaLocationDot aria-hidden="true" />
               </span>
 
               <div>
@@ -73,7 +77,7 @@ export function Hero() {
 
             <article className="hero__benefit">
               <span className="hero__benefit-icon">
-                <FaStar />
+                <FaStar aria-hidden="true" />
               </span>
 
               <div>
@@ -85,13 +89,13 @@ export function Hero() {
         </div>
 
         <div className="hero__visual">
-          <div className="hero__yellow-shape" />
-
-          <img
-            className="hero__main-image"
-            src="/images/hero/hero-loongis.png"
-            alt="Mascota de Loongis asomándose detrás de una hamburguesa"
-          />
+          <div className="hero__image-frame">
+            <img
+              className="hero__main-image"
+              src="/images/hero/hero-loongis.png"
+              alt="Mascota de Loongis asomándose detrás de una hamburguesa Loongis Clasic"
+            />
+          </div>
         </div>
       </div>
     </section>

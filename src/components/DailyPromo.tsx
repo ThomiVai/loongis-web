@@ -34,23 +34,21 @@ export function DailyPromo() {
       <div className="promo-banner__container">
         <div className="promo-banner__visual">
           <span
-            className="promo-banner__decoration promo-banner__decoration--one"
+            className="promo-banner__decoration"
             aria-hidden="true"
           />
 
-          <span
-            className="promo-banner__decoration promo-banner__decoration--two"
-            aria-hidden="true"
-          />
-
-          <img
-            className="promo-banner__combo-image"
-            src={promoCombo.image}
-            alt={promoCombo.imageAlt}
-          />
+          <div className="promo-banner__image-wrapper">
+            <img
+              className="promo-banner__combo-image"
+              src={promoCombo.image}
+              alt={promoCombo.imageAlt}
+            />
+          </div>
 
           <div className="promo-banner__discount">
             <strong>Promo</strong>
+
             <span>del día</span>
           </div>
         </div>
@@ -78,7 +76,7 @@ export function DailyPromo() {
           </p>
 
           <ul className="promo-banner__includes">
-            <li>Hamburguesa Loongis Clásica</li>
+            <li>Hamburguesa Loongis Clasic</li>
             <li>Porción de papas crocantes</li>
             <li>Bebida individual</li>
           </ul>
@@ -87,7 +85,9 @@ export function DailyPromo() {
             <span>Precio del combo</span>
 
             <strong>
-              {priceFormatter.format(promoCombo.price)}
+              {priceFormatter.format(
+                promoCombo.price,
+              )}
             </strong>
           </div>
 
@@ -109,8 +109,8 @@ export function DailyPromo() {
           </div>
 
           <p className="promo-banner__notice">
-            Sujeto a disponibilidad. El sabor de la bebida se coordina al
-            confirmar el pedido.
+            Sujeto a disponibilidad. El sabor de la
+            bebida se coordina al confirmar el pedido.
           </p>
         </div>
       </div>

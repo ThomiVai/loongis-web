@@ -3,252 +3,277 @@ import {
   type ChangeEvent,
   type FormEvent,
 } from "react";
-import { FaWhatsapp } from "react-icons/fa";
 import {
   FaArrowLeftLong,
-  FaBagShopping,
+  FaBuildingColumns,
+  FaLocationDot,
+  FaMoneyBillWave,
+  FaStore,
+  FaTruck,
+  FaWhatsapp,
 } from "react-icons/fa6";
 import { Link } from "react-router-dom";
-
-import type { CartItem } from "../context/CartContext";
-
-import { deliveryZones } from "../data/deliveryZones";
 
 import { useCart } from "../hooks/useCart";
 
 import "../styles/Checkout.css";
 
 /*
-  Reemplazá este número por el WhatsApp real de Loongis.
+  Reemplazá este número por el WhatsApp real
+  de Loongis.
 
   Formato:
-  - Sin +
-  - Sin espacios
-  - Sin guiones
-  - Código de país 54
-  - 9 para celular argentino
+  - Código de país: 54
+  - 9 para celulares argentinos
+  - Código de área
+  - Número
+
+  No uses +, espacios ni guiones.
 */
 const WHATSAPP_NUMBER = "5491138065902";
 
-const priceFormatter = new Intl.NumberFormat("es-AR", {
-  style: "currency",
-  currency: "ARS",
-  maximumFractionDigits: 0,
-});
-
-type DeliveryMethod = "delivery" | "retiro";
+type DeliveryMethod =
+  | "delivery"
+  | "pickup";
 
 type PaymentMethod =
-  | "efectivo"
-  | "transferencia";
+  | "cash"
+  | "transfer";
 
 type CheckoutForm = {
   customerName: string;
-  customerPhone: string;
+  phone: string;
   deliveryMethod: DeliveryMethod;
-  deliveryZoneId: string;
   address: string;
   paymentMethod: PaymentMethod;
   notes: string;
 };
 
-const initialForm: CheckoutForm = {
-  customerName: "",
-  customerPhone: "",
-  deliveryMethod: "delivery",
-  deliveryZoneId: "",
-  address: "",
-  paymentMethod: "efectivo",
-  notes: "",
+type CheckoutOption = {
+  name?: string;
+  label?: string;
+  price?: number;
+  priceModifier?: number;
 };
 
-function getCustomizationLines(
-  item: CartItem,
-): string[] {
-  const lines: string[] = [];
+type CheckoutCustomization = {
+  size?: CheckoutOption;
+  variant?: CheckoutOption;
+  extras?: CheckoutOption[];
+  removedIngredients?: string[];
+  notes?: string;
+};
 
-  if (item.customization.size) {
+type CheckoutCartItem = {
+  id: number | string;
+  cartItemId?: string;
+
+  name: string;
+  description?: string;
+  image?: string;
+  imageAlt?: string;
+
+  price: number;
+  unitPrice?: number;
+  quantity: number;
+
+  customization?: CheckoutCustomization;
+
+  selectedSize?: CheckoutOption;
+  selectedExtras?: CheckoutOption[];
+  removedIngredients?: string[];
+  notes?: string;
+};
+
+const priceFormatter =
+  new Intl.NumberFormat("es-AR", {
+    style: "currency",
+    currency: "ARS",
+    maximumFractionDigits: 0,
+  });
+
+function getOptionName(
+  option?: CheckoutOption,
+): string {
+  return (
+    option?.name?.trim() ||
+    option?.label?.trim() ||
+    ""
+  );
+}
+
+function getUnitPrice(
+  item: CheckoutCartItem,
+): number {
+  return item.unitPrice ?? item.price;
+}
+
+function getItemCustomization(
+  item: CheckoutCartItem,
+) {
+  const customization =
+    item.customization;
+
+  const size =
+    customization?.size ??
+    customization?.variant ??
+    item.selectedSize;
+
+  const extras =
+    customization?.extras ??
+    item.selectedExtras ??
+    [];
+
+  const removedIngredients =
+    customization?.removedIngredients ??
+    item.removedIngredients ??
+    [];
+
+  const notes =
+    customization?.notes?.trim() ||
+    item.notes?.trim() ||
+    "";
+
+  return {
+    size,
+    extras,
+    removedIngredients,
+    notes,
+  };
+}
+
+function createProductMessage(
+  item: CheckoutCartItem,
+): string {
+  const unitPrice = getUnitPrice(item);
+
+  const subtotal =
+    unitPrice * item.quantity;
+
+  const {
+    size,
+    extras,
+    removedIngredients,
+    notes,
+  } = getItemCustomization(item);
+
+  const lines: string[] = [
+    `• ${item.quantity}x ${item.name}`,
+    `  ${priceFormatter.format(subtotal)}`,
+  ];
+
+  const sizeName =
+    getOptionName(size);
+
+  if (sizeName) {
     lines.push(
-      `Tamaño: ${item.customization.size.name}`,
+      `  Tamaño: ${sizeName}`,
     );
   }
 
-  if (
-    item.customization.extras &&
-    item.customization.extras.length > 0
-  ) {
-    lines.push(
-      `Extras: ${item.customization.extras
-        .map((extra) => extra.name)
-        .join(", ")}`,
-    );
+  if (extras.length > 0) {
+    const extrasNames = extras
+      .map(getOptionName)
+      .filter(Boolean)
+      .join(", ");
+
+    if (extrasNames) {
+      lines.push(
+        `  Extras: ${extrasNames}`,
+      );
+    }
   }
 
   if (
-    item.customization.removedIngredients &&
-    item.customization.removedIngredients.length > 0
+    removedIngredients.length > 0
   ) {
     lines.push(
-      `Sin: ${item.customization.removedIngredients.join(
+      `  Sin: ${removedIngredients.join(
         ", ",
       )}`,
     );
   }
 
-  if (item.customization.notes?.trim()) {
+  if (notes) {
     lines.push(
-      `Aclaración: ${item.customization.notes.trim()}`,
+      `  Aclaración: ${notes}`,
     );
   }
 
-  return lines;
+  return lines.join("\n");
 }
 
 export function Checkout() {
-  const {
-    cart,
-    totalUnits,
-    totalPrice,
-  } = useCart();
+  const { cart } = useCart();
+
+  const checkoutItems =
+    cart as CheckoutCartItem[];
 
   const [form, setForm] =
-    useState<CheckoutForm>(initialForm);
+    useState<CheckoutForm>({
+      customerName: "",
+      phone: "",
+      deliveryMethod: "delivery",
+      address: "",
+      paymentMethod: "cash",
+      notes: "",
+    });
 
-  const [error, setError] =
-    useState<string | null>(null);
-
-  const selectedDeliveryZone =
-    deliveryZones.find(
-      (zone) =>
-        zone.id === form.deliveryZoneId,
+  const totalPrice =
+    checkoutItems.reduce(
+      (total, item) =>
+        total +
+        getUnitPrice(item) *
+          item.quantity,
+      0,
     );
 
-  const shippingCost =
-    form.deliveryMethod === "retiro"
-      ? 0
-      : selectedDeliveryZone?.price ?? 0;
+  const totalUnits =
+    checkoutItems.reduce(
+      (total, item) =>
+        total + item.quantity,
+      0,
+    );
 
-  const finalTotal =
-    totalPrice + shippingCost;
-
-  const handleChange = (
+  const handleInputChange = (
     event: ChangeEvent<
-      | HTMLInputElement
-      | HTMLTextAreaElement
-      | HTMLSelectElement
+      HTMLInputElement | HTMLTextAreaElement
     >,
   ) => {
-    const { name, value } = event.target;
+    const { name, value } =
+      event.target;
 
-    setForm(
-      (currentForm) =>
-        ({
-          ...currentForm,
-          [name]: value,
-        }) as CheckoutForm,
-    );
-
-    setError(null);
+    setForm((currentForm) => ({
+      ...currentForm,
+      [name]: value,
+    }));
   };
 
-  const createWhatsAppMessage = () => {
-    const productsMessage = cart
-      .map((item) => {
-        const subtotal =
-          item.unitPrice * item.quantity;
+  const selectDeliveryMethod = (
+    method: DeliveryMethod,
+  ) => {
+    setForm((currentForm) => ({
+      ...currentForm,
+      deliveryMethod: method,
 
-        const customizationLines =
-          getCustomizationLines(item);
+      /*
+        Al elegir retiro limpiamos la dirección,
+        porque deja de ser necesaria.
+      */
+      address:
+        method === "pickup"
+          ? ""
+          : currentForm.address,
+    }));
+  };
 
-        const productLines = [
-          `• ${item.quantity} x ${item.name}`,
-        ];
-
-        if (customizationLines.length > 0) {
-          productLines.push(
-            ...customizationLines.map(
-              (line) => `  - ${line}`,
-            ),
-          );
-        }
-
-        productLines.push(
-          `  Precio unitario: ${priceFormatter.format(
-            item.unitPrice,
-          )}`,
-          `  Subtotal: ${priceFormatter.format(
-            subtotal,
-          )}`,
-        );
-
-        return productLines.join("\n");
-      })
-      .join("\n\n");
-
-    const deliveryMessage =
-      form.deliveryMethod === "delivery"
-        ? [
-            "Envío a domicilio",
-            `Localidad: ${selectedDeliveryZone?.name}`,
-            `Dirección: ${form.address.trim()}`,
-            `Costo de envío: ${priceFormatter.format(
-              shippingCost,
-            )}`,
-            `Tiempo estimado: ${selectedDeliveryZone?.estimatedTime}`,
-          ].join("\n")
-        : [
-            "Retiro por el local",
-            "Costo de retiro: Gratis",
-          ].join("\n");
-
-    const paymentMessage =
-      form.paymentMethod === "efectivo"
-        ? "Efectivo"
-        : "Transferencia";
-
-    const customerNotes = form.notes.trim()
-      ? form.notes.trim()
-      : "Sin aclaraciones generales";
-
-    return [
-      "¡Hola Loongis! Quiero realizar el siguiente pedido:",
-      "",
-      "*PRODUCTOS*",
-      productsMessage,
-      "",
-      "*RESUMEN*",
-      `Productos distintos: ${cart.length}`,
-      `Unidades totales: ${totalUnits}`,
-      `Subtotal: ${priceFormatter.format(
-        totalPrice,
-      )}`,
-      `Envío: ${
-        form.deliveryMethod === "retiro"
-          ? "Gratis"
-          : priceFormatter.format(
-              shippingCost,
-            )
-      }`,
-      `TOTAL FINAL: ${priceFormatter.format(
-        finalTotal,
-      )}`,
-      "",
-      "*DATOS DEL CLIENTE*",
-      `Nombre: ${form.customerName.trim()}`,
-      `Teléfono: ${
-        form.customerPhone.trim() ||
-        "No informado"
-      }`,
-      "",
-      "*ENTREGA*",
-      deliveryMessage,
-      "",
-      "*FORMA DE PAGO*",
-      paymentMessage,
-      "",
-      "*ACLARACIONES GENERALES*",
-      customerNotes,
-    ].join("\n");
+  const selectPaymentMethod = (
+    method: PaymentMethod,
+  ) => {
+    setForm((currentForm) => ({
+      ...currentForm,
+      paymentMethod: method,
+    }));
   };
 
   const handleSubmit = (
@@ -256,555 +281,550 @@ export function Checkout() {
   ) => {
     event.preventDefault();
 
-    if (!form.customerName.trim()) {
-      setError(
-        "Ingresá tu nombre para continuar.",
-      );
+    const customerName =
+      form.customerName.trim();
 
+    const phone =
+      form.phone.trim();
+
+    const address =
+      form.address.trim();
+
+    const notes =
+      form.notes.trim();
+
+    if (!customerName || !phone) {
       return;
     }
 
     if (
-      form.deliveryMethod === "delivery" &&
-      !form.deliveryZoneId
+      form.deliveryMethod ===
+        "delivery" &&
+      !address
     ) {
-      setError(
-        "Seleccioná la localidad de entrega.",
-      );
-
       return;
     }
+
+    if (checkoutItems.length === 0) {
+      return;
+    }
+
+    const deliveryText =
+      form.deliveryMethod ===
+      "delivery"
+        ? "Envío a domicilio"
+        : "Retiro por el local";
+
+    const paymentText =
+      form.paymentMethod === "cash"
+        ? "Efectivo"
+        : "Transferencia";
+
+    const productsText =
+      checkoutItems
+        .map(createProductMessage)
+        .join("\n\n");
+
+    const messageLines = [
+      "🍔 *NUEVO PEDIDO LOONGIS*",
+      "",
+      `👤 *Cliente:* ${customerName}`,
+      `📱 *Teléfono:* ${phone}`,
+      `📦 *Entrega:* ${deliveryText}`,
+    ];
 
     if (
-      form.deliveryMethod === "delivery" &&
-      !form.address.trim()
+      form.deliveryMethod ===
+      "delivery"
     ) {
-      setError(
-        "Ingresá la dirección de entrega.",
+      messageLines.push(
+        `📍 *Dirección:* ${address}`,
       );
-
-      return;
     }
 
-    if (cart.length === 0) {
-      setError("Tu pedido está vacío.");
+    messageLines.push(
+      `💳 *Pago:* ${paymentText}`,
+      "",
+      "🧾 *PEDIDO*",
+      productsText,
+      "",
+      `🔢 *Unidades:* ${totalUnits}`,
+      `💰 *TOTAL:* ${priceFormatter.format(
+        totalPrice,
+      )}`,
+    );
 
-      return;
+    if (notes) {
+      messageLines.push(
+        "",
+        `📝 *Aclaraciones generales:* ${notes}`,
+      );
     }
 
     const message =
-      createWhatsAppMessage();
-
-    const encodedMessage =
-      encodeURIComponent(message);
+      messageLines.join("\n");
 
     const whatsappUrl =
       `https://wa.me/${WHATSAPP_NUMBER}` +
-      `?text=${encodedMessage}`;
+      `?text=${encodeURIComponent(
+        message,
+      )}`;
 
-    window.open(
+    /*
+      Redirección directa.
+
+      Ya no aparece ninguna pregunta del tipo:
+      "¿Querés enviar el pedido?".
+    */
+    window.location.assign(
       whatsappUrl,
-      "_blank",
-      "noopener,noreferrer",
     );
   };
 
-  if (cart.length === 0) {
+  if (checkoutItems.length === 0) {
     return (
       <main className="checkout-page">
-        <section className="checkout-empty">
-          <div className="checkout-empty__content">
-            <div className="checkout-empty__icon">
-              <FaBagShopping aria-hidden="true" />
-            </div>
+        <div className="checkout-page__container">
+          <section className="checkout-empty">
+            <span className="checkout-empty__eyebrow">
+              Tu pedido
+            </span>
 
             <h1 className="checkout-empty__title">
-              No hay productos para confirmar
+              El carrito está vacío
             </h1>
 
             <p className="checkout-empty__description">
-              Primero agregá productos al pedido y
-              después volvé para completar tus datos.
+              Agregá algún producto antes de
+              finalizar el pedido.
             </p>
 
             <Link
               className="checkout-empty__button"
               to="/menu"
             >
-              Ver el menú
+              Ver menú
             </Link>
-          </div>
-        </section>
+          </section>
+        </div>
       </main>
     );
   }
 
   return (
     <main className="checkout-page">
-      <section
-        className="checkout-page__hero"
-        aria-labelledby="checkout-page-title"
-      >
-        <div className="checkout-page__container">
-          <Link
-            className="checkout-page__back"
-            to="/carrito"
-          >
-            <FaArrowLeftLong aria-hidden="true" />
+      <div className="checkout-page__container">
+        <Link
+          className="checkout-page__back"
+          to="/carrito"
+        >
+          <FaArrowLeftLong
+            aria-hidden="true"
+          />
 
-            <span>Volver a mi pedido</span>
-          </Link>
+          <span>Volver al carrito</span>
+        </Link>
 
+        <header className="checkout-page__header">
           <span className="checkout-page__eyebrow">
             Último paso
           </span>
 
-          <h1
-            className="checkout-page__title"
-            id="checkout-page-title"
-          >
-            Finalizar pedido
+          <h1 className="checkout-page__title">
+            Finalizá tu pedido
           </h1>
 
-          <p className="checkout-page__subtitle">
-            Completá tus datos, seleccioná la
-            localidad y conocé el total final.
+          <p className="checkout-page__description">
+            Completá tus datos y te
+            llevamos directamente a
+            WhatsApp con el pedido escrito.
           </p>
-        </div>
-      </section>
+        </header>
 
-      <section className="checkout-content">
-        <div className="checkout-page__container">
-          <div className="checkout-layout">
-            <form
-              className="checkout-form"
-              onSubmit={handleSubmit}
-              noValidate
-            >
-              <div className="checkout-form__header">
-                <span className="checkout-form__label">
-                  Datos del cliente
-                </span>
+        <div className="checkout-layout">
+          <form
+            className="checkout-form"
+            onSubmit={handleSubmit}
+          >
+            <section className="checkout-section">
+              <h2 className="checkout-section__title">
+                Tus datos
+              </h2>
 
-                <h2 className="checkout-form__title">
-                  Información del pedido
-                </h2>
-              </div>
-
-              <div className="checkout-form__group">
-                <label
-                  className="checkout-form__field"
-                  htmlFor="customerName"
-                >
-                  <span>
-                    Nombre y apellido
-
-                    <strong aria-hidden="true">
-                      *
-                    </strong>
-                  </span>
+              <div className="checkout-form__grid">
+                <label className="checkout-field">
+                  <span>Nombre completo</span>
 
                   <input
-                    id="customerName"
-                    name="customerName"
                     type="text"
+                    name="customerName"
                     value={form.customerName}
-                    onChange={handleChange}
-                    placeholder="Ejemplo: Thomas Vai"
+                    placeholder="Ej: Tomás Vai"
                     autoComplete="name"
+                    minLength={2}
+                    required
+                    onChange={
+                      handleInputChange
+                    }
                   />
                 </label>
 
-                <label
-                  className="checkout-form__field"
-                  htmlFor="customerPhone"
-                >
+                <label className="checkout-field">
                   <span>Teléfono</span>
 
                   <input
-                    id="customerPhone"
-                    name="customerPhone"
                     type="tel"
-                    value={form.customerPhone}
-                    onChange={handleChange}
-                    placeholder="Ejemplo: 11 2345-6789"
+                    name="phone"
+                    value={form.phone}
+                    placeholder="Ej: 11 2345 6789"
                     autoComplete="tel"
+                    minLength={6}
+                    required
+                    onChange={
+                      handleInputChange
+                    }
                   />
                 </label>
               </div>
+            </section>
 
-              <fieldset className="checkout-form__fieldset">
-                <legend>
-                  Método de entrega
-                </legend>
+            <section className="checkout-section">
+              <h2 className="checkout-section__title">
+                Forma de entrega
+              </h2>
 
-                <div className="checkout-form__options">
-                  <label className="checkout-option">
-                    <input
-                      type="radio"
-                      name="deliveryMethod"
-                      value="delivery"
-                      checked={
-                        form.deliveryMethod ===
-                        "delivery"
-                      }
-                      onChange={handleChange}
-                    />
+              <div className="checkout-options">
+                <button
+                  className={`checkout-option ${
+                    form.deliveryMethod ===
+                    "delivery"
+                      ? "checkout-option--active"
+                      : ""
+                  }`}
+                  type="button"
+                  aria-pressed={
+                    form.deliveryMethod ===
+                    "delivery"
+                  }
+                  onClick={() =>
+                    selectDeliveryMethod(
+                      "delivery",
+                    )
+                  }
+                >
+                  <FaTruck
+                    aria-hidden="true"
+                  />
 
-                    <span className="checkout-option__content">
-                      <strong>
-                        Envío a domicilio
-                      </strong>
+                  <span>
+                    <strong>
+                      Envío
+                    </strong>
 
-                      <small>
-                        El costo depende de la
-                        localidad.
-                      </small>
-                    </span>
-                  </label>
+                    <small>
+                      Recibilo en tu casa
+                    </small>
+                  </span>
+                </button>
 
-                  <label className="checkout-option">
-                    <input
-                      type="radio"
-                      name="deliveryMethod"
-                      value="retiro"
-                      checked={
-                        form.deliveryMethod ===
-                        "retiro"
-                      }
-                      onChange={handleChange}
-                    />
+                <button
+                  className={`checkout-option ${
+                    form.deliveryMethod ===
+                    "pickup"
+                      ? "checkout-option--active"
+                      : ""
+                  }`}
+                  type="button"
+                  aria-pressed={
+                    form.deliveryMethod ===
+                    "pickup"
+                  }
+                  onClick={() =>
+                    selectDeliveryMethod(
+                      "pickup",
+                    )
+                  }
+                >
+                  <FaStore
+                    aria-hidden="true"
+                  />
 
-                    <span className="checkout-option__content">
-                      <strong>
-                        Retiro por el local
-                      </strong>
+                  <span>
+                    <strong>
+                      Retiro
+                    </strong>
 
-                      <small>
-                        Sin costo de envío.
-                      </small>
-                    </span>
-                  </label>
-                </div>
-              </fieldset>
+                    <small>
+                      Retirá por el local
+                    </small>
+                  </span>
+                </button>
+              </div>
 
               {form.deliveryMethod ===
                 "delivery" && (
-                <>
-                  <div className="checkout-form__group">
-                    <label
-                      className="checkout-form__field"
-                      htmlFor="deliveryZoneId"
-                    >
-                      <span>
-                        Localidad
+                <label className="checkout-field checkout-field--full">
+                  <span>
+                    Dirección de entrega
+                  </span>
 
-                        <strong aria-hidden="true">
-                          *
-                        </strong>
-                      </span>
+                  <div className="checkout-field__icon-wrapper">
+                    <FaLocationDot
+                      aria-hidden="true"
+                    />
 
-                      <select
-                        id="deliveryZoneId"
-                        name="deliveryZoneId"
-                        value={
-                          form.deliveryZoneId
-                        }
-                        onChange={handleChange}
-                      >
-                        <option value="">
-                          Seleccioná una localidad
-                        </option>
-
-                        {deliveryZones.map(
-                          (zone) => (
-                            <option
-                              value={zone.id}
-                              key={zone.id}
-                            >
-                              {zone.name} —{" "}
-                              {priceFormatter.format(
-                                zone.price,
-                              )}
-                            </option>
-                          ),
-                        )}
-                      </select>
-                    </label>
-
-                    <label
-                      className="checkout-form__field"
-                      htmlFor="address"
-                    >
-                      <span>
-                        Dirección
-
-                        <strong aria-hidden="true">
-                          *
-                        </strong>
-                      </span>
-
-                      <input
-                        id="address"
-                        name="address"
-                        type="text"
-                        value={form.address}
-                        onChange={handleChange}
-                        placeholder="Calle y altura"
-                        autoComplete="street-address"
-                      />
-                    </label>
+                    <input
+                      type="text"
+                      name="address"
+                      value={form.address}
+                      placeholder="Calle, número, localidad y referencias"
+                      autoComplete="street-address"
+                      required
+                      onChange={
+                        handleInputChange
+                      }
+                    />
                   </div>
+                </label>
+              )}
+            </section>
 
-                  {selectedDeliveryZone && (
-                    <div className="checkout-delivery-info">
-                      <div>
-                        <span>
-                          Costo de envío
-                        </span>
+            <section className="checkout-section">
+              <h2 className="checkout-section__title">
+                Forma de pago
+              </h2>
+
+              <div className="checkout-options">
+                <button
+                  className={`checkout-option ${
+                    form.paymentMethod ===
+                    "cash"
+                      ? "checkout-option--active"
+                      : ""
+                  }`}
+                  type="button"
+                  aria-pressed={
+                    form.paymentMethod ===
+                    "cash"
+                  }
+                  onClick={() =>
+                    selectPaymentMethod(
+                      "cash",
+                    )
+                  }
+                >
+                  <FaMoneyBillWave
+                    aria-hidden="true"
+                  />
+
+                  <span>
+                    <strong>
+                      Efectivo
+                    </strong>
+
+                    <small>
+                      Pagás al recibir
+                    </small>
+                  </span>
+                </button>
+
+                <button
+                  className={`checkout-option ${
+                    form.paymentMethod ===
+                    "transfer"
+                      ? "checkout-option--active"
+                      : ""
+                  }`}
+                  type="button"
+                  aria-pressed={
+                    form.paymentMethod ===
+                    "transfer"
+                  }
+                  onClick={() =>
+                    selectPaymentMethod(
+                      "transfer",
+                    )
+                  }
+                >
+                  <FaBuildingColumns
+                    aria-hidden="true"
+                  />
+
+                  <span>
+                    <strong>
+                      Transferencia
+                    </strong>
+
+                    <small>
+                      Te enviamos los datos
+                    </small>
+                  </span>
+                </button>
+              </div>
+            </section>
+
+            <section className="checkout-section">
+              <h2 className="checkout-section__title">
+                Aclaraciones
+              </h2>
+
+              <label className="checkout-field checkout-field--full">
+                <span>
+                  Notas generales
+                </span>
+
+                <textarea
+                  name="notes"
+                  value={form.notes}
+                  placeholder="Ej: tocar timbre, entregar en portería..."
+                  rows={4}
+                  maxLength={300}
+                  onChange={
+                    handleInputChange
+                  }
+                />
+              </label>
+            </section>
+
+            <button
+              className="checkout-submit"
+              type="submit"
+            >
+              <FaWhatsapp
+                aria-hidden="true"
+              />
+
+              <span>
+                Finalizar por WhatsApp
+              </span>
+            </button>
+
+            <p className="checkout-form__notice">
+              Al continuar se abrirá
+              WhatsApp directamente con tu
+              pedido preparado.
+            </p>
+          </form>
+
+          <aside className="checkout-summary">
+            <h2 className="checkout-summary__title">
+              Resumen del pedido
+            </h2>
+
+            <div className="checkout-summary__items">
+              {checkoutItems.map((item) => {
+                const unitPrice =
+                  getUnitPrice(item);
+
+                const customization =
+                  getItemCustomization(
+                    item,
+                  );
+
+                const sizeName =
+                  getOptionName(
+                    customization.size,
+                  );
+
+                const itemKey =
+                  item.cartItemId ??
+                  item.id;
+
+                return (
+                  <article
+                    className="checkout-summary__item"
+                    key={itemKey}
+                  >
+                    {item.image && (
+                      <img
+                        className="checkout-summary__item-image"
+                        src={item.image}
+                        alt={
+                          item.imageAlt ??
+                          item.name
+                        }
+                      />
+                    )}
+
+                    <div className="checkout-summary__item-content">
+                      <div className="checkout-summary__item-heading">
+                        <h3>
+                          {item.quantity}x{" "}
+                          {item.name}
+                        </h3>
 
                         <strong>
                           {priceFormatter.format(
-                            selectedDeliveryZone.price,
+                            unitPrice *
+                              item.quantity,
                           )}
                         </strong>
                       </div>
 
-                      <div>
-                        <span>
-                          Tiempo estimado
-                        </span>
+                      {sizeName && (
+                        <p>
+                          Tamaño: {sizeName}
+                        </p>
+                      )}
 
-                        <strong>
+                      {customization.extras
+                        .length > 0 && (
+                        <p>
+                          Extras:{" "}
+                          {customization.extras
+                            .map(
+                              getOptionName,
+                            )
+                            .filter(Boolean)
+                            .join(", ")}
+                        </p>
+                      )}
+
+                      {customization
+                        .removedIngredients
+                        .length > 0 && (
+                        <p>
+                          Sin:{" "}
+                          {customization.removedIngredients.join(
+                            ", ",
+                          )}
+                        </p>
+                      )}
+
+                      {customization.notes && (
+                        <p>
+                          Aclaración:{" "}
                           {
-                            selectedDeliveryZone.estimatedTime
+                            customization.notes
                           }
-                        </strong>
-                      </div>
+                        </p>
+                      )}
                     </div>
-                  )}
-                </>
-              )}
+                  </article>
+                );
+              })}
+            </div>
 
-              {form.deliveryMethod ===
-                "retiro" && (
-                <div className="checkout-delivery-info checkout-delivery-info--pickup">
-                  <div>
-                    <span>
-                      Retiro por el local
-                    </span>
+            <div className="checkout-summary__row">
+              <span>Unidades</span>
 
-                    <strong>Sin costo</strong>
-                  </div>
+              <strong>
+                {totalUnits}
+              </strong>
+            </div>
 
-                  <p>
-                    Te avisaremos por WhatsApp cuando
-                    el pedido esté listo.
-                  </p>
-                </div>
-              )}
+            <div className="checkout-summary__total">
+              <span>Total</span>
 
-              <fieldset className="checkout-form__fieldset">
-                <legend>Forma de pago</legend>
-
-                <div className="checkout-form__options">
-                  <label className="checkout-option">
-                    <input
-                      type="radio"
-                      name="paymentMethod"
-                      value="efectivo"
-                      checked={
-                        form.paymentMethod ===
-                        "efectivo"
-                      }
-                      onChange={handleChange}
-                    />
-
-                    <span className="checkout-option__content">
-                      <strong>Efectivo</strong>
-
-                      <small>
-                        Se coordina al confirmar el
-                        pedido.
-                      </small>
-                    </span>
-                  </label>
-
-                  <label className="checkout-option">
-                    <input
-                      type="radio"
-                      name="paymentMethod"
-                      value="transferencia"
-                      checked={
-                        form.paymentMethod ===
-                        "transferencia"
-                      }
-                      onChange={handleChange}
-                    />
-
-                    <span className="checkout-option__content">
-                      <strong>
-                        Transferencia
-                      </strong>
-
-                      <small>
-                        Te enviarán los datos por
-                        WhatsApp.
-                      </small>
-                    </span>
-                  </label>
-                </div>
-              </fieldset>
-
-              <label
-                className="checkout-form__field"
-                htmlFor="notes"
-              >
-                <span>
-                  Aclaraciones generales
-                </span>
-
-                <textarea
-                  id="notes"
-                  name="notes"
-                  value={form.notes}
-                  onChange={handleChange}
-                  placeholder="Ejemplo: tocar timbre, necesito cambio..."
-                  rows={4}
-                />
-              </label>
-
-              {error && (
-                <div
-                  className="checkout-form__error"
-                  role="alert"
-                >
-                  {error}
-                </div>
-              )}
-
-              <button
-                className="checkout-form__submit"
-                type="submit"
-              >
-                <FaWhatsapp aria-hidden="true" />
-
-                <span>
-                  Confirmar por WhatsApp
-                </span>
-              </button>
-
-              <p className="checkout-form__notice">
-                El pedido se considera confirmado
-                cuando el local responda el mensaje.
-              </p>
-            </form>
-
-            <aside
-              className="checkout-summary"
-              aria-labelledby="checkout-summary-title"
-            >
-              <span className="checkout-summary__eyebrow">
-                Tu pedido
-              </span>
-
-              <h2
-                className="checkout-summary__title"
-                id="checkout-summary-title"
-              >
-                Resumen
-              </h2>
-
-              <div className="checkout-summary__products">
-                {cart.map((item) => {
-                  const customizationLines =
-                    getCustomizationLines(item);
-
-                  return (
-                    <div
-                      className="checkout-summary__product"
-                      key={item.cartItemId}
-                    >
-                      <div>
-                        <strong>
-                          {item.quantity} ×{" "}
-                          {item.name}
-                        </strong>
-
-                        {customizationLines.map(
-                          (line) => (
-                            <span
-                              key={`${item.cartItemId}-${line}`}
-                            >
-                              {line}
-                            </span>
-                          ),
-                        )}
-
-                        <span>
-                          {priceFormatter.format(
-                            item.unitPrice,
-                          )}{" "}
-                          c/u
-                        </span>
-                      </div>
-
-                      <strong>
-                        {priceFormatter.format(
-                          item.unitPrice *
-                            item.quantity,
-                        )}
-                      </strong>
-                    </div>
-                  );
-                })}
-              </div>
-
-              <div className="checkout-summary__row">
-                <span>Subtotal</span>
-
-                <strong>
-                  {priceFormatter.format(
-                    totalPrice,
-                  )}
-                </strong>
-              </div>
-
-              <div className="checkout-summary__row">
-                <span>Envío</span>
-
-                <strong>
-                  {form.deliveryMethod ===
-                  "retiro"
-                    ? "Gratis"
-                    : selectedDeliveryZone
-                      ? priceFormatter.format(
-                          shippingCost,
-                        )
-                      : "Seleccioná zona"}
-                </strong>
-              </div>
-
-              <div className="checkout-summary__total">
-                <span>Total final</span>
-
-                <strong>
-                  {priceFormatter.format(
-                    finalTotal,
-                  )}
-                </strong>
-              </div>
-
-              <Link
-                className="checkout-summary__edit"
-                to="/carrito"
-              >
-                Editar mi pedido
-              </Link>
-            </aside>
-          </div>
+              <strong>
+                {priceFormatter.format(
+                  totalPrice,
+                )}
+              </strong>
+            </div>
+          </aside>
         </div>
-      </section>
+      </div>
     </main>
   );
 }

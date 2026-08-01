@@ -1,49 +1,85 @@
+/* ========================================
+   NAVBAR
+======================================== */
+
 .navbar {
   position: sticky;
   top: 0;
   z-index: 1000;
+
   padding: 18px 0;
-  background-color: rgba(255, 250, 240, 0.92);
+
+  background-color: rgba(
+    255,
+    250,
+    240,
+    0.92
+  );
+
   backdrop-filter: blur(12px);
 }
 
-.navbar__container {
-  min-height: 74px;
-  padding: 10px 18px 10px 24px;
+/* ========================================
+   CONTENEDOR
+======================================== */
 
+.navbar__container {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 32px;
+  gap: 28px;
 
-  background-color: var(--color-white);
-  border: 2px solid rgba(23, 23, 23, 0.05);
+  min-height: 76px;
+  padding: 8px 18px 8px 22px;
+
+  border: 2px solid
+    rgba(23, 23, 23, 0.05);
   border-radius: 24px;
 
-  box-shadow: 0 12px 35px rgba(23, 23, 23, 0.08);
+  background-color: var(--color-white);
+
+  box-shadow:
+    0 12px 35px
+      rgba(23, 23, 23, 0.08);
 }
+
+/* ========================================
+   LOGO
+======================================== */
 
 .navbar__logo {
-  width: 175px;
-  height: 58px;
-
   display: flex;
   align-items: center;
+  justify-content: flex-start;
+
+  flex-shrink: 0;
+
+  width: 196px;
+  height: 64px;
 
   overflow: hidden;
-  flex-shrink: 0;
+
+  background-color: transparent;
 }
 
-.navbar__logo img {
+.navbar__logo-image {
+  display: block;
+
   width: 100%;
   height: 100%;
 
   object-fit: contain;
   object-position: left center;
 
-  transform: scale(2.5);
+  background-color: transparent;
+
+  transform: scale(1.24);
   transform-origin: left center;
 }
+
+/* ========================================
+   NAVEGACIÓN
+======================================== */
 
 .navbar__navigation {
   display: flex;
@@ -54,9 +90,11 @@
 
 .navbar__link {
   position: relative;
+
   padding: 10px 0;
 
   color: var(--color-black);
+
   font-family: "Fredoka", sans-serif;
   font-size: 16px;
   font-weight: 600;
@@ -68,23 +106,26 @@
 
 .navbar__link:hover {
   color: var(--color-primary);
+
   transform: translateY(-2px);
 }
 
 .navbar__link::after {
-  content: "";
-
   position: absolute;
-  left: 50%;
   bottom: 1px;
+  left: 50%;
 
   width: 0;
   height: 3px;
 
-  background-color: var(--color-primary);
   border-radius: 999px;
 
+  background-color: var(--color-primary);
+
+  content: "";
+
   transform: translateX(-50%);
+
   transition: width 0.2s ease;
 }
 
@@ -97,24 +138,33 @@
   color: var(--color-primary);
 }
 
-.navbar__order-button {
-  min-height: 48px;
-  padding: 10px 12px 10px 18px;
+/* ========================================
+   BOTÓN DEL PEDIDO
+======================================== */
 
+.navbar__order-button {
   display: flex;
   align-items: center;
   gap: 10px;
 
-  color: var(--color-black);
-  background-color: var(--color-yellow);
+  flex-shrink: 0;
+
+  min-height: 48px;
+  padding: 10px 12px 10px 18px;
 
   border: 2px solid var(--color-black);
   border-radius: 16px;
 
+  background-color: var(--color-yellow);
+  color: var(--color-black);
+
   font-family: "Fredoka", sans-serif;
   font-weight: 700;
 
-  box-shadow: 4px 4px 0 var(--color-black);
+  box-shadow:
+    4px 4px 0 var(--color-black);
+
+  cursor: pointer;
 
   transition:
     transform 0.2s ease,
@@ -123,46 +173,84 @@
 
 .navbar__order-button:hover {
   transform: translate(2px, 2px);
-  box-shadow: 2px 2px 0 var(--color-black);
+
+  box-shadow:
+    2px 2px 0 var(--color-black);
 }
 
 .navbar__order-button svg {
+  flex-shrink: 0;
+
   font-size: 18px;
 }
 
 .navbar__cart-count {
-  width: 28px;
-  height: 28px;
-
   display: grid;
   place-items: center;
 
-  color: var(--color-white);
-  background-color: var(--color-primary);
+  flex-shrink: 0;
+
+  width: 28px;
+  height: 28px;
 
   border: 2px solid var(--color-black);
   border-radius: 50%;
+
+  background-color: var(--color-primary);
+  color: var(--color-white);
 
   font-size: 13px;
   font-weight: 800;
 }
 
+/* ========================================
+   BOTÓN MOBILE
+======================================== */
+
 .navbar__mobile-button {
   display: none;
+  place-items: center;
 
   width: 46px;
   height: 46px;
 
-  place-items: center;
-
-  color: var(--color-white);
-  background-color: var(--color-primary);
-
   border: 2px solid var(--color-black);
   border-radius: 14px;
 
+  background-color: var(--color-primary);
+  color: var(--color-white);
+
   font-size: 20px;
+
+  cursor: pointer;
 }
+
+/* ========================================
+   PANTALLAS MEDIANAS
+======================================== */
+
+@media (max-width: 1100px) {
+  .navbar__container {
+    gap: 21px;
+  }
+
+  .navbar__navigation {
+    gap: 26px;
+  }
+
+  .navbar__logo {
+    width: 178px;
+    height: 59px;
+  }
+
+  .navbar__logo-image {
+    transform: scale(1.21);
+  }
+}
+
+/* ========================================
+   TABLETS Y MENÚ MOBILE
+======================================== */
 
 @media (max-width: 900px) {
   .navbar {
@@ -171,40 +259,45 @@
 
   .navbar__container {
     position: relative;
+
     min-height: 68px;
-    padding: 8px 12px 8px 18px;
+    padding: 8px 12px 8px 17px;
   }
 
   .navbar__logo {
-    width: 125px;
+    width: 155px;
+    height: 52px;
   }
 
-  .navbar__logo img {
-    height: 48px;
+  .navbar__logo-image {
+    transform: scale(1.18);
   }
 
   .navbar__mobile-button {
     display: grid;
+
     margin-left: auto;
   }
 
   .navbar__navigation {
     position: absolute;
     top: calc(100% + 10px);
-    left: 0;
     right: 0;
-
-    padding: 22px;
+    left: 0;
 
     display: none;
     flex-direction: column;
     gap: 8px;
 
-    background-color: var(--color-white);
+    padding: 22px;
+
     border: 2px solid var(--color-black);
     border-radius: 20px;
 
-    box-shadow: 6px 6px 0 var(--color-black);
+    background-color: var(--color-white);
+
+    box-shadow:
+      6px 6px 0 var(--color-black);
   }
 
   .navbar__navigation--open {
@@ -215,40 +308,100 @@
     width: 100%;
     padding: 12px;
 
-    text-align: center;
     border-radius: 12px;
+
+    text-align: center;
   }
 
   .navbar__link:hover {
     background-color: var(--color-cream);
+
     transform: none;
+  }
+
+  .navbar__link::after {
+    display: none;
+  }
+
+  .navbar__link--active {
+    background-color: rgba(
+      7,
+      95,
+      234,
+      0.08
+    );
   }
 
   .navbar__order-button {
     padding: 10px 12px;
   }
 
-  .navbar__order-button span:not(.navbar__cart-count) {
+  .navbar__order-button
+    span:not(.navbar__cart-count) {
     display: none;
   }
 }
 
+/* ========================================
+   CELULARES
+======================================== */
+
 @media (max-width: 480px) {
   .navbar__container {
     gap: 10px;
+
+    padding-left: 13px;
   }
 
   .navbar__logo {
-    width: 105px;
+    width: 128px;
+    height: 45px;
+  }
+
+  .navbar__logo-image {
+    transform: scale(1.14);
   }
 
   .navbar__order-button {
     min-height: 44px;
+
     border-radius: 14px;
   }
 
   .navbar__mobile-button {
     width: 44px;
     height: 44px;
+  }
+
+  .navbar__cart-count {
+    width: 26px;
+    height: 26px;
+
+    font-size: 12px;
+  }
+}
+
+/* ========================================
+   CELULARES MUY PEQUEÑOS
+======================================== */
+
+@media (max-width: 370px) {
+  .navbar__logo {
+    width: 112px;
+    height: 41px;
+  }
+
+  .navbar__logo-image {
+    transform: scale(1.1);
+  }
+
+  .navbar__mobile-button {
+    width: 41px;
+    height: 41px;
+  }
+
+  .navbar__order-button {
+    min-height: 41px;
+    padding: 7px 9px;
   }
 }

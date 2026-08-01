@@ -1,152 +1,185 @@
 /* ========================================
-   PROMOCIÓN
+   SECCIÓN PROMOCIONAL
 ======================================== */
 
 .promo-banner {
   width: 100%;
-  padding: 72px 20px;
+  padding: 78px 20px;
 
-  background-color: var(--color-cream);
+  overflow: hidden;
+
+  background:
+    radial-gradient(
+      circle at 94% 88%,
+      rgba(7, 95, 234, 0.055) 0%,
+      rgba(7, 95, 234, 0) 31%
+    ),
+    #ffffff;
 }
 
 .promo-banner__container {
   display: grid;
   grid-template-columns:
-    minmax(0, 1.05fr)
-    minmax(380px, 0.95fr);
+    minmax(0, 1fr)
+    minmax(400px, 0.93fr);
   align-items: center;
-  gap: 54px;
+  gap: clamp(48px, 6vw, 76px);
 
   width: 100%;
   max-width: 1180px;
   margin-inline: auto;
-  padding: 46px;
-
-  overflow: hidden;
-
-  border: 1px solid rgba(7, 95, 234, 0.12);
-  border-radius: 34px;
-
-  background:
-    radial-gradient(
-      circle at 12% 15%,
-      rgba(244, 201, 40, 0.3) 0%,
-      rgba(244, 201, 40, 0) 31%
-    ),
-    radial-gradient(
-      circle at 85% 88%,
-      rgba(7, 95, 234, 0.09) 0%,
-      rgba(7, 95, 234, 0) 30%
-    ),
-    rgba(255, 255, 255, 0.84);
-
-  box-shadow:
-    0 22px 48px rgba(7, 60, 166, 0.08),
-    0 5px 12px rgba(23, 23, 23, 0.03);
 }
 
 /* ========================================
-   IMAGEN
+   LADO VISUAL
 ======================================== */
 
 .promo-banner__visual {
   position: relative;
+  isolation: isolate;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
   min-width: 0;
-  min-height: 470px;
+  min-height: 500px;
+
+  overflow: hidden;
+
+  border-radius: 34px;
+
+  background-color: transparent;
 }
 
-.promo-banner__combo-image {
+/* ========================================
+   CÍRCULO AMARILLO CENTRADO
+======================================== */
+
+.promo-banner__decoration {
+  position: absolute;
+  z-index: -1;
+  top: 50%;
+  left: 48%;
+
+  width: 370px;
+  height: 370px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle at 42% 38%,
+      rgba(255, 229, 119, 0.64) 0%,
+      rgba(244, 201, 40, 0.3) 60%,
+      rgba(244, 201, 40, 0.18) 100%
+    );
+
+  pointer-events: none;
+
+  transform: translate(-50%, -50%);
+}
+
+/* ========================================
+   IMAGEN DEL COMBO
+======================================== */
+
+.promo-banner__image-wrapper {
   position: relative;
   z-index: 2;
 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  height: 460px;
+}
+
+.promo-banner__combo-image {
   display: block;
 
   width: 100%;
-  max-width: 540px;
-  height: 430px;
+  max-width: 570px;
+  height: 100%;
 
   object-fit: contain;
+  object-position: center;
 
-  filter: drop-shadow(0 23px 18px rgba(23, 23, 23, 0.17));
+  filter:
+    drop-shadow(
+      0 22px 18px rgba(23, 23, 23, 0.18)
+    );
 
-  transition: transform 220ms ease;
+  transform: scale(1.04);
+  transform-origin: center;
+
+  transition:
+    transform 240ms ease,
+    filter 240ms ease;
 }
 
 .promo-banner__visual:hover
   .promo-banner__combo-image {
-  transform: translateY(-7px) scale(1.025);
+  filter:
+    drop-shadow(
+      0 27px 22px rgba(23, 23, 23, 0.22)
+    )
+    saturate(1.025)
+    contrast(1.01);
+
+  transform:
+    translateY(-4px)
+    scale(1.065);
 }
 
-.promo-banner__decoration {
-  position: absolute;
-
-  border-radius: 50%;
-
-  pointer-events: none;
-}
-
-.promo-banner__decoration--one {
-  top: 34px;
-  left: 30px;
-
-  width: 330px;
-  height: 330px;
-
-  background-color: rgba(244, 201, 40, 0.24);
-}
-
-.promo-banner__decoration--two {
-  right: 25px;
-  bottom: 45px;
-
-  width: 145px;
-  height: 145px;
-
-  background-color: rgba(7, 95, 234, 0.08);
-}
+/* ========================================
+   SELLO PROMOCIONAL
+======================================== */
 
 .promo-banner__discount {
   position: absolute;
-  z-index: 3;
-  top: 40px;
-  right: 12px;
+  z-index: 4;
+  top: 72px;
+  right: 18px;
 
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
 
-  width: 92px;
-  height: 92px;
+  width: 94px;
+  height: 94px;
 
   border-radius: 50%;
 
   background-color: var(--color-yellow);
   color: var(--color-primary-dark);
 
-  box-shadow: 0 12px 24px rgba(244, 201, 40, 0.34);
+  box-shadow:
+    0 13px 27px rgba(
+      244,
+      201,
+      40,
+      0.31
+    );
 
   font-family: "Fredoka", sans-serif;
   line-height: 1;
   text-align: center;
 
-  transform: rotate(7deg);
+  transform: rotate(6deg);
 }
 
 .promo-banner__discount strong {
-  font-size: 1.05rem;
+  font-size: 1rem;
   font-weight: 700;
 }
 
 .promo-banner__discount span {
-  margin-top: 4px;
+  margin-top: 5px;
 
-  font-size: 0.74rem;
+  font-size: 0.72rem;
   font-weight: 700;
 }
 
@@ -155,7 +188,13 @@
 ======================================== */
 
 .promo-banner__content {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+
   min-width: 0;
+  width: 100%;
+  max-width: 520px;
 }
 
 .promo-banner__eyebrow {
@@ -163,16 +202,21 @@
   align-items: center;
   gap: 7px;
 
-  margin-bottom: 14px;
+  margin-bottom: 15px;
   padding: 7px 14px;
 
   border-radius: 999px;
 
-  background-color: rgba(244, 201, 40, 0.25);
+  background-color: rgba(
+    244,
+    201,
+    40,
+    0.25
+  );
   color: var(--color-primary-dark);
 
   font-family: "Fredoka", sans-serif;
-  font-size: 0.78rem;
+  font-size: 0.77rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -186,19 +230,20 @@
 }
 
 .promo-banner__title {
+  max-width: 100%;
   margin: 0;
 
   color: var(--color-primary);
 
   font-family: "Fredoka", sans-serif;
-  font-size: clamp(3rem, 6vw, 5rem);
+  font-size: clamp(3.15rem, 4.8vw, 4.65rem);
   font-weight: 700;
   line-height: 0.94;
-  letter-spacing: -0.035em;
+  letter-spacing: -0.04em;
 }
 
 .promo-banner__product-name {
-  margin: 15px 0 0;
+  margin: 17px 0 0;
 
   color: var(--color-black);
 
@@ -209,8 +254,8 @@
 }
 
 .promo-banner__description {
-  max-width: 520px;
-  margin: 14px 0 20px;
+  max-width: 500px;
+  margin: 14px 0 21px;
 
   color: rgba(23, 23, 23, 0.7);
 
@@ -221,15 +266,16 @@
 }
 
 /* ========================================
-   INCLUYE
+   ELEMENTOS INCLUIDOS
 ======================================== */
 
 .promo-banner__includes {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 
-  margin: 0 0 24px;
+  width: 100%;
+  margin: 0 0 25px;
   padding: 0;
 
   list-style: none;
@@ -238,25 +284,28 @@
 .promo-banner__includes li {
   position: relative;
 
-  padding-left: 24px;
+  padding-left: 25px;
 
   color: rgba(23, 23, 23, 0.73);
 
   font-family: "Nunito", sans-serif;
-  font-size: 0.9rem;
+  font-size: 0.91rem;
   font-weight: 700;
+  line-height: 1.4;
 }
 
 .promo-banner__includes li::before {
   position: absolute;
   top: 5px;
-  left: 1px;
+  left: 2px;
 
   width: 10px;
   height: 6px;
 
-  border-bottom: 2px solid var(--color-primary);
-  border-left: 2px solid var(--color-primary);
+  border-bottom: 2px solid
+    var(--color-primary);
+  border-left: 2px solid
+    var(--color-primary);
 
   content: "";
 
@@ -269,19 +318,20 @@
 
 .promo-banner__price {
   display: flex;
-  align-items: flex-end;
-  gap: 14px;
+  align-items: center;
+  gap: 18px;
 
+  width: 100%;
   margin-bottom: 25px;
-  padding: 19px 0;
+  padding: 20px 0;
 
-  border-top: 1px solid rgba(23, 23, 23, 0.1);
-  border-bottom: 1px solid rgba(23, 23, 23, 0.1);
+  border-top: 1px solid
+    rgba(23, 23, 23, 0.1);
+  border-bottom: 1px solid
+    rgba(23, 23, 23, 0.1);
 }
 
 .promo-banner__price span {
-  padding-bottom: 4px;
-
   color: rgba(23, 23, 23, 0.58);
 
   font-family: "Nunito", sans-serif;
@@ -293,7 +343,7 @@
   color: var(--color-primary);
 
   font-family: "Fredoka", sans-serif;
-  font-size: 2.15rem;
+  font-size: 2.25rem;
   font-weight: 700;
   line-height: 1;
 }
@@ -316,8 +366,8 @@
   justify-content: center;
   gap: 8px;
 
-  min-height: 50px;
-  padding: 0 22px;
+  min-height: 51px;
+  padding: 0 23px;
 
   border-radius: 999px;
 
@@ -341,7 +391,13 @@
 
   cursor: pointer;
 
-  box-shadow: 0 10px 22px rgba(244, 201, 40, 0.27);
+  box-shadow:
+    0 10px 22px rgba(
+      244,
+      201,
+      40,
+      0.27
+    );
 }
 
 .promo-banner__add-button:hover {
@@ -349,11 +405,18 @@
 
   background-color: #ffd83d;
 
-  box-shadow: 0 13px 27px rgba(244, 201, 40, 0.35);
+  box-shadow:
+    0 13px 27px rgba(
+      244,
+      201,
+      40,
+      0.35
+    );
 }
 
 .promo-banner__detail-button {
-  border: 1px solid rgba(7, 95, 234, 0.23);
+  border: 1px solid
+    rgba(7, 95, 234, 0.23);
 
   color: var(--color-primary);
 }
@@ -374,7 +437,7 @@
 
 .promo-banner__notice {
   max-width: 500px;
-  margin: 15px 0 0;
+  margin: 16px 0 0;
 
   color: rgba(23, 23, 23, 0.52);
 
@@ -385,36 +448,94 @@
 }
 
 /* ========================================
-   TABLETS
+   PANTALLAS MEDIANAS
 ======================================== */
 
-@media (max-width: 900px) {
-  .promo-banner {
-    padding: 58px 20px;
-  }
-
+@media (max-width: 1050px) {
   .promo-banner__container {
-    grid-template-columns: 1fr;
-    gap: 30px;
-
-    padding: 36px;
+    grid-template-columns:
+      minmax(0, 1fr)
+      minmax(360px, 0.92fr);
+    gap: 38px;
   }
 
   .promo-banner__visual {
-    min-height: 410px;
+    min-height: 455px;
+  }
+
+  .promo-banner__image-wrapper {
+    height: 420px;
   }
 
   .promo-banner__combo-image {
     max-width: 520px;
-    height: 380px;
   }
 
-  .promo-banner__content {
-    max-width: 680px;
+  .promo-banner__decoration {
+    left: 48%;
+
+    width: 315px;
+    height: 315px;
+  }
+
+  .promo-banner__title {
+    font-size: clamp(
+      3rem,
+      4.8vw,
+      4.15rem
+    );
+  }
+}
+
+/* ========================================
+   TABLETS
+======================================== */
+
+@media (max-width: 850px) {
+  .promo-banner {
+    padding-block: 62px;
+  }
+
+  .promo-banner__container {
+    grid-template-columns: 1fr;
+    gap: 34px;
+
+    max-width: 700px;
+  }
+
+  .promo-banner__visual {
+    min-height: 470px;
+  }
+
+  .promo-banner__image-wrapper {
+    height: 445px;
+  }
+
+  .promo-banner__combo-image {
+    max-width: 590px;
+  }
+
+  .promo-banner__decoration {
+    left: 50%;
+
+    width: 360px;
+    height: 360px;
   }
 
   .promo-banner__discount {
-    right: 7%;
+    right: 8%;
+  }
+
+  .promo-banner__content {
+    max-width: 620px;
+  }
+
+  .promo-banner__title {
+    font-size: clamp(
+      3.35rem,
+      9vw,
+      4.8rem
+    );
   }
 }
 
@@ -424,83 +545,118 @@
 
 @media (max-width: 600px) {
   .promo-banner {
-    padding: 48px 16px;
+    padding: 50px 16px 58px;
   }
 
   .promo-banner__container {
-    gap: 20px;
+    gap: 25px;
+  }
 
-    padding: 24px 18px 28px;
+  .promo-banner__visual {
+    min-height: 355px;
 
     border-radius: 25px;
   }
 
-  .promo-banner__visual {
-    min-height: 310px;
+  .promo-banner__image-wrapper {
+    height: 335px;
   }
 
   .promo-banner__combo-image {
-    max-width: 350px;
-    height: 285px;
+    max-width: 430px;
+
+    transform: scale(1.07);
   }
 
-  .promo-banner__decoration--one {
-    top: 35px;
-    left: 3%;
-
-    width: 230px;
-    height: 230px;
+  .promo-banner__visual:hover
+    .promo-banner__combo-image {
+    transform:
+      translateY(-3px)
+      scale(1.09);
   }
 
-  .promo-banner__decoration--two {
-    right: 12px;
-    bottom: 30px;
+  .promo-banner__decoration {
+    top: 52%;
+    left: 48%;
 
-    width: 90px;
-    height: 90px;
+    width: 255px;
+    height: 255px;
   }
 
   .promo-banner__discount {
-    top: 15px;
-    right: 3px;
+    top: 20px;
+    right: 2px;
 
-    width: 75px;
-    height: 75px;
+    width: 76px;
+    height: 76px;
   }
 
   .promo-banner__discount strong {
-    font-size: 0.9rem;
+    font-size: 0.88rem;
   }
 
   .promo-banner__discount span {
-    font-size: 0.65rem;
+    font-size: 0.64rem;
   }
 
   .promo-banner__title {
-    font-size: clamp(2.8rem, 15vw, 4rem);
+    font-size: clamp(
+      3rem,
+      15vw,
+      4.1rem
+    );
   }
 
   .promo-banner__product-name {
-    font-size: 1.4rem;
+    font-size: 1.45rem;
   }
 
   .promo-banner__price {
     align-items: flex-start;
     flex-direction: column;
-    gap: 6px;
+    gap: 7px;
   }
 
   .promo-banner__price strong {
-    font-size: 1.9rem;
+    font-size: 2rem;
   }
 
   .promo-banner__actions {
     align-items: stretch;
     flex-direction: column;
+
+    width: 100%;
   }
 
   .promo-banner__add-button,
   .promo-banner__detail-button {
     width: 100%;
+  }
+}
+
+/* ========================================
+   CELULARES PEQUEÑOS
+======================================== */
+
+@media (max-width: 380px) {
+  .promo-banner__visual {
+    min-height: 315px;
+  }
+
+  .promo-banner__image-wrapper {
+    height: 300px;
+  }
+
+  .promo-banner__combo-image {
+    max-width: 385px;
+  }
+
+  .promo-banner__decoration {
+    width: 225px;
+    height: 225px;
+  }
+
+  .promo-banner__title {
+    font-size: 2.72rem;
   }
 }

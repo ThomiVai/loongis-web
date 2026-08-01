@@ -1,254 +1,283 @@
-import { useMemo, useState } from "react";
+import {
+  useMemo,
+  useState,
+} from "react";
 import { FaArrowLeftLong } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 
 import { AddToCartButton } from "../components/AddToCartButton";
 
-import { menuProducts as products } from "../data/menuProducts";
+import { menuProducts } from "../data/menuProducts";
 
-import type { Product, ProductCategory } from "../types/Product";
+import type {
+  Product,
+  ProductCategory,
+} from "../types/Product";
 
 import "../styles/Menu.css";
 
-type ProductFilter = "todos" | ProductCategory;
+type ProductFilter =
+  | "todos"
+  | ProductCategory;
 
-type MenuCategory = {
-  id: ProductFilter;
-  name: string;
-  icon: string;
+type CategoryOption = {
+  value: ProductFilter;
+  label: string;
 };
 
-const categories: MenuCategory[] = [
+const categories: CategoryOption[] = [
   {
-    id: "todos",
-    name: "Todos",
-    icon: "🍽️",
+    value: "todos",
+    label: "Todos",
   },
   {
-    id: "hamburguesas",
-    name: "Hamburguesas",
-    icon: "🍔",
+    value: "hamburguesas",
+    label: "Hamburguesas",
   },
   {
-    id: "combos",
-    name: "Combos",
-    icon: "🥤",
+    value: "combos",
+    label: "Combos",
   },
   {
-    id: "papas",
-    name: "Papas",
-    icon: "🍟",
+    value: "papas",
+    label: "Papas",
   },
   {
-    id: "bebidas",
-    name: "Bebidas",
-    icon: "🧃",
+    value: "bebidas",
+    label: "Bebidas",
   },
   {
-    id: "postres",
-    name: "Postres",
-    icon: "🍪",
+    value: "postres",
+    label: "Postres",
   },
 ];
 
-const priceFormatter = new Intl.NumberFormat("es-AR", {
-  style: "currency",
-  currency: "ARS",
-  maximumFractionDigits: 0,
-});
+const categoryLabels: Record<
+  ProductCategory,
+  string
+> = {
+  hamburguesas: "Hamburguesas",
+  combos: "Combos",
+  papas: "Papas",
+  bebidas: "Bebidas",
+  postres: "Postres",
+};
 
-function getProductCategory(product: Product): ProductCategory {
-  /*
-    Los productos que todavía no tengan categoría
-    se consideran hamburguesas.
-  */
-  return product.category ?? "hamburguesas";
+const priceFormatter =
+  new Intl.NumberFormat("es-AR", {
+    style: "currency",
+    currency: "ARS",
+    maximumFractionDigits: 0,
+  });
+
+function getProductCategory(
+  product: Product,
+): ProductCategory {
+  return (
+    product.category ?? "hamburguesas"
+  );
 }
 
 export function Menu() {
-  const [activeCategory, setActiveCategory] = useState<ProductFilter>("todos");
-
-  const availableProducts = useMemo(() => {
-    return products.filter((product) => product.available !== false);
-  }, []);
+  const [selectedCategory, setSelectedCategory] =
+    useState<ProductFilter>("todos");
 
   const filteredProducts = useMemo(() => {
-    if (activeCategory === "todos") {
-      return availableProducts;
-    }
+    return menuProducts.filter((product) => {
+      const isAvailable =
+        product.available !== false;
 
-    return availableProducts.filter(
-      (product) => getProductCategory(product) === activeCategory,
-    );
-  }, [activeCategory, availableProducts]);
+      if (!isAvailable) {
+        return false;
+      }
 
-  const activeCategoryName =
-    categories.find((category) => category.id === activeCategory)?.name ??
-    "Productos";
+      if (selectedCategory === "todos") {
+        return true;
+      }
+
+      return (
+        getProductCategory(product) ===
+        selectedCategory
+      );
+    });
+  }, [selectedCategory]);
 
   return (
     <main className="menu-page">
-      <section className="menu-page__hero" aria-labelledby="menu-page-title">
+      <section className="menu-hero">
         <div className="menu-page__container">
-          <Link className="menu-page__back" to="/">
-            <FaArrowLeftLong aria-hidden="true" />
+          <Link
+            className="menu-hero__back"
+            to="/"
+          >
+            <FaArrowLeftLong
+              aria-hidden="true"
+            />
 
             <span>Volver al inicio</span>
           </Link>
 
-          <div className="menu-page__heading">
-            <span className="menu-page__eyebrow">Elegí tu favorita</span>
+          <div className="menu-hero__content">
+            <span className="menu-hero__eyebrow">
+              Elegí tu favorita
+            </span>
 
-            <h1 className="menu-page__title" id="menu-page-title">
-              Nuestro menú
+            <h1 className="menu-hero__title">
+              Menú Loongis
             </h1>
 
-            <p className="menu-page__subtitle">
-              Hamburguesas smash preparadas al momento, combos, acompañamientos
-              y todo el sabor de Loongis.
+            <p className="menu-hero__description">
+              Hamburguesas smash, combos,
+              papas, bebidas y algo dulce para
+              cerrar el pedido.
             </p>
           </div>
         </div>
       </section>
 
-      <section className="menu-products" aria-label="Productos del menú">
+      <section
+        className="menu-products"
+        aria-labelledby="menu-products-title"
+      >
         <div className="menu-page__container">
+          <div className="menu-products__header">
+            <div>
+              <span className="menu-products__eyebrow">
+                Nuestro menú
+              </span>
+
+              <h2
+                className="menu-products__title"
+                id="menu-products-title"
+              >
+                Encontrá lo que estás buscando
+              </h2>
+            </div>
+
+            <p className="menu-products__count">
+              {filteredProducts.length}{" "}
+              {filteredProducts.length === 1
+                ? "producto"
+                : "productos"}
+            </p>
+          </div>
+
           <div
             className="menu-filters"
             aria-label="Filtrar productos por categoría"
           >
-            <div className="menu-filters__header">
-              <div>
-                <span className="menu-filters__label">Categorías</span>
+            {categories.map((category) => {
+              const isActive =
+                selectedCategory ===
+                category.value;
 
-                <h2 className="menu-filters__title">
-                  ¿Qué tenés ganas de comer?
-                </h2>
-              </div>
-
-              <span className="menu-filters__result">
-                {filteredProducts.length}{" "}
-                {filteredProducts.length === 1 ? "producto" : "productos"}
-              </span>
-            </div>
-
-            <div className="menu-filters__list">
-              {categories.map((category) => {
-                const isActive = activeCategory === category.id;
-
-                return (
-                  <button
-                    className={`menu-filter-button ${
-                      isActive ? "menu-filter-button--active" : ""
-                    }`}
-                    type="button"
-                    key={category.id}
-                    aria-pressed={isActive}
-                    onClick={() => setActiveCategory(category.id)}
-                  >
-                    <span
-                      className="menu-filter-button__icon"
-                      aria-hidden="true"
-                    >
-                      {category.icon}
-                    </span>
-
-                    <span>{category.name}</span>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          <div className="menu-products__header">
-            <div>
-              <span className="menu-products__label">
-                {activeCategory === "todos"
-                  ? "Menú completo"
-                  : "Categoría seleccionada"}
-              </span>
-
-              <h2 className="menu-products__title">{activeCategoryName}</h2>
-            </div>
-
-            <span className="menu-products__count">
-              {filteredProducts.length}{" "}
-              {filteredProducts.length === 1 ? "producto" : "productos"}
-            </span>
+              return (
+                <button
+                  className={`menu-filter ${
+                    isActive
+                      ? "menu-filter--active"
+                      : ""
+                  }`}
+                  type="button"
+                  key={category.value}
+                  aria-pressed={isActive}
+                  onClick={() =>
+                    setSelectedCategory(
+                      category.value,
+                    )
+                  }
+                >
+                  {category.label}
+                </button>
+              );
+            })}
           </div>
 
           {filteredProducts.length > 0 ? (
             <div className="menu-products__grid">
-              {filteredProducts.map((product) => (
-                <article className="menu-product-card" key={product.id}>
-                  <div className="menu-product-card__image-wrapper">
-                    <img
-                      className="menu-product-card__image"
-                      src={product.image}
-                      alt={product.imageAlt}
-                    />
-                  </div>
+              {filteredProducts.map(
+                (product) => {
+                  const productCategory =
+                    getProductCategory(product);
 
-                  <div className="menu-product-card__content">
-                    <span className="menu-product-card__category">
-                      {
-                        categories.find(
-                          (category) =>
-                            category.id === getProductCategory(product),
-                        )?.name
-                      }
-                    </span>
+                  return (
+                    <article
+                      className={`menu-product-card menu-product-card--${product.id} menu-product-card--${productCategory}`}
+                      key={product.id}
+                    >
+                      <Link
+                        className="menu-product-card__image-link"
+                        to={`/producto/${product.id}`}
+                        aria-label={`Ver detalle de ${product.name}`}
+                      >
+                        <div className="menu-product-card__image-wrapper">
+                          <img
+                            className="menu-product-card__image"
+                            src={product.image}
+                            alt={product.imageAlt}
+                            loading="lazy"
+                          />
+                        </div>
+                      </Link>
 
-                    <h3 className="menu-product-card__name">{product.name}</h3>
+                      <div className="menu-product-card__content">
+                        <span className="menu-product-card__category">
+                          {
+                            categoryLabels[
+                              productCategory
+                            ]
+                          }
+                        </span>
 
-                    <p className="menu-product-card__description">
-                      {product.description}
-                    </p>
+                        <h3 className="menu-product-card__name">
+                          <Link
+                            to={`/producto/${product.id}`}
+                          >
+                            {product.name}
+                          </Link>
+                        </h3>
 
-                    <div className="menu-product-card__footer">
-                      <span className="menu-product-card__price">
-                        {priceFormatter.format(product.price)}
-                      </span>
+                        <p className="menu-product-card__description">
+                          {product.description}
+                        </p>
 
-                      <div className="menu-product-card__actions">
-                        <Link
-                          className="menu-product-card__detail"
-                          to={`/producto/${product.id}`}
-                        >
-                          Ver detalle
-                        </Link>
+                        <div className="menu-product-card__footer">
+                          <span className="menu-product-card__price">
+                            {priceFormatter.format(
+                              product.price,
+                            )}
+                          </span>
 
-                        <AddToCartButton
-                          product={product}
-                          className="menu-product-card__button"
-                        />
+                          <div className="menu-product-card__actions">
+                            <Link
+                              className="menu-product-card__detail"
+                              to={`/producto/${product.id}`}
+                            >
+                              Ver detalle
+                            </Link>
+
+                            <AddToCartButton
+                              product={product}
+                              className="menu-product-card__button"
+                            />
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                </article>
-              ))}
+                    </article>
+                  );
+                },
+              )}
             </div>
           ) : (
-            <div className="menu-products-empty">
-              <span className="menu-products-empty__icon" aria-hidden="true">
-                🍔
-              </span>
-
-              <h3 className="menu-products-empty__title">
-                Todavía no hay productos en esta categoría
+            <div className="menu-products__empty">
+              <h3>
+                No hay productos disponibles
               </h3>
 
-              <p className="menu-products-empty__description">
-                Estamos preparando nuevas opciones para agregar al menú.
+              <p>
+                Por el momento no encontramos
+                productos en esta categoría.
               </p>
-
-              <button
-                className="menu-products-empty__button"
-                type="button"
-                onClick={() => setActiveCategory("todos")}
-              >
-                Ver todos los productos
-              </button>
             </div>
           )}
         </div>

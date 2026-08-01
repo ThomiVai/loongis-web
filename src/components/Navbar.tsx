@@ -15,7 +15,8 @@ import { useCart } from "../hooks/useCart";
 import "../styles/Navbar.css";
 
 export function Navbar() {
-  const [menuAbierto, setMenuAbierto] = useState(false);
+  const [menuAbierto, setMenuAbierto] =
+    useState(false);
 
   const navigate = useNavigate();
 
@@ -34,11 +35,10 @@ export function Navbar() {
     isActive,
   }: {
     isActive: boolean;
-  }) => {
-    return isActive
+  }) =>
+    isActive
       ? "navbar__link navbar__link--active"
       : "navbar__link";
-  };
 
   return (
     <header className="navbar">
@@ -50,7 +50,8 @@ export function Navbar() {
           aria-label="Ir al inicio de Loongis"
         >
           <img
-            src="/images/logos/loongis-logo.jpeg"
+            className="navbar__logo-image"
+            src="/images/logos/loongis-logo-navbar.png"
             alt="Logo de Loongis"
           />
         </NavLink>

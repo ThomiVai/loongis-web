@@ -1,8 +1,18 @@
 import { products as originalProducts } from "./products";
 
-import type { Product, ProductOption } from "../types/Product";
+import type {
+  Product,
+  ProductOption,
+} from "../types/Product";
 
-function createProductIllustration(emoji: string, label: string): string {
+/*
+  Crea imágenes temporales para los productos
+  que todavía no tienen fotografía oficial.
+*/
+function createProductIllustration(
+  emoji: string,
+  label: string,
+): string {
   const svg = `
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -11,10 +21,26 @@ function createProductIllustration(emoji: string, label: string): string {
       viewBox="0 0 700 520"
     >
       <defs>
-        <radialGradient id="background" cx="50%" cy="45%" r="65%">
-          <stop offset="0%" stop-color="#fff8dc" />
-          <stop offset="65%" stop-color="#fffdf4" />
-          <stop offset="100%" stop-color="#ffffff" />
+        <radialGradient
+          id="background"
+          cx="50%"
+          cy="45%"
+          r="65%"
+        >
+          <stop
+            offset="0%"
+            stop-color="#fff8dc"
+          />
+
+          <stop
+            offset="65%"
+            stop-color="#fffdf4"
+          />
+
+          <stop
+            offset="100%"
+            stop-color="#ffffff"
+          />
         </radialGradient>
       </defs>
 
@@ -65,9 +91,17 @@ function createProductIllustration(emoji: string, label: string): string {
     </svg>
   `;
 
-  return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+  return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(
+    svg,
+  )}`;
 }
 
+/*
+  Tamaños disponibles para las hamburguesas.
+
+  El precio registrado en products.ts representa
+  actualmente la opción doble.
+*/
 const hamburgerSizeOptions: ProductOption[] = [
   {
     id: "simple",
@@ -86,6 +120,9 @@ const hamburgerSizeOptions: ProductOption[] = [
   },
 ];
 
+/*
+  Extras disponibles para las hamburguesas.
+*/
 const hamburgerExtraOptions: ProductOption[] = [
   {
     id: "extra-cheddar",
@@ -109,39 +146,92 @@ const hamburgerExtraOptions: ProductOption[] = [
   },
 ];
 
-function getHamburgerIngredients(productName: string): string[] {
-  const normalizedName = productName.toLowerCase();
+/*
+  Devuelve los ingredientes oficiales de cada
+  hamburguesa para poder quitarlos desde la
+  página de personalización.
+*/
+function getHamburgerIngredients(
+  productName: string,
+): string[] {
+  const normalizedName =
+    productName.toLowerCase();
+
+  if (
+    normalizedName.includes("simple queso")
+  ) {
+    return ["Queso"];
+  }
+
+  if (normalizedName.includes("clasic")) {
+    return [
+      "Queso",
+      "Lechuga",
+      "Tomate",
+      "Cebolla morada",
+      "Salsa Loongis",
+      "Pickles",
+    ];
+  }
 
   if (normalizedName.includes("bacon")) {
-    return ["Cheddar", "Bacon", "Cebolla crispy", "Salsa especial"];
+    return [
+      "Queso",
+      "Bacon",
+      "Salsa especial",
+    ];
   }
 
-  if (normalizedName.includes("doble cheddar")) {
-    return ["Cheddar", "Cebolla crispy", "Pepinillos", "Salsa Loongis"];
+  if (normalizedName.includes("crispy")) {
+    return [
+      "Queso",
+      "Cebolla crispy",
+      "Bacon",
+      "Salsa de mostaza dulce",
+    ];
   }
 
-  return ["Cheddar", "Cebolla crispy", "Pepinillos", "Salsa Loongis"];
+  return [];
 }
 
-const hamburgers: Product[] = originalProducts.map((product) => ({
-  ...product,
-  category: "hamburguesas",
-  available: true,
-  featured: true,
-  ingredients: getHamburgerIngredients(product.name),
-  sizeOptions: hamburgerSizeOptions,
-  extraOptions: hamburgerExtraOptions,
-}));
+/*
+  Solo estas hamburguesas aparecerán en la
+  sección de productos destacados del Home.
+
+  Simple Queso seguirá apareciendo en el menú,
+  pero no en el Home.
+*/
+const featuredProductIds = new Set<number>([
+  2,
+  3,
+  4,
+]);
+
+const hamburgers: Product[] =
+  originalProducts.map((product) => ({
+    ...product,
+    category: "hamburguesas",
+    available: true,
+    featured: featuredProductIds.has(
+      product.id,
+    ),
+    ingredients:
+      getHamburgerIngredients(product.name),
+    sizeOptions: hamburgerSizeOptions,
+    extraOptions: hamburgerExtraOptions,
+  }));
 
 const additionalProducts: Product[] = [
   {
     id: 101,
     name: "Combo Clásico",
     description:
-      "Loongis Clásica acompañada con papas crocantes y bebida individual.",
+      "Loongis Clasic acompañada con papas crocantes y bebida individual.",
     price: 14500,
-    image: "/images/burgers/combo-promo.png",
-    imageAlt: "Combo Clásico de Loongis con hamburguesa, papas y bebida",
+    image:
+      "/images/burgers/combo-promo.png",
+    imageAlt:
+      "Combo Clásico de Loongis con hamburguesa, papas y bebida",
     category: "combos",
     available: true,
     featured: false,
@@ -150,10 +240,14 @@ const additionalProducts: Product[] = [
     id: 102,
     name: "Combo Bacon",
     description:
-      "Loongis Bacon, porción de papas crocantes y bebida individual.",
+      "Loongis Bacon acompañada con papas crocantes y bebida individual.",
     price: 15800,
-    image: createProductIllustration("🥤", "Combo Bacon"),
-    imageAlt: "Ilustración temporal del Combo Bacon de Loongis",
+    image: createProductIllustration(
+      "🥤",
+      "Combo Bacon",
+    ),
+    imageAlt:
+      "Ilustración temporal del Combo Bacon de Loongis",
     category: "combos",
     available: true,
     featured: false,
@@ -164,8 +258,12 @@ const additionalProducts: Product[] = [
     description:
       "Papas fritas doradas, crocantes por fuera y tiernas por dentro.",
     price: 4500,
-    image: createProductIllustration("🍟", "Papas Clásicas"),
-    imageAlt: "Ilustración temporal de las Papas Clásicas de Loongis",
+    image: createProductIllustration(
+      "🍟",
+      "Papas Clásicas",
+    ),
+    imageAlt:
+      "Ilustración temporal de las Papas Clásicas de Loongis",
     category: "papas",
     available: true,
     featured: false,
@@ -173,10 +271,15 @@ const additionalProducts: Product[] = [
   {
     id: 104,
     name: "Papas Cheddar y Bacon",
-    description: "Papas fritas cubiertas con cheddar cremoso y bacon crocante.",
+    description:
+      "Papas fritas cubiertas con cheddar cremoso y bacon crocante.",
     price: 6300,
-    image: createProductIllustration("🍟", "Cheddar y Bacon"),
-    imageAlt: "Ilustración temporal de las papas con cheddar y bacon",
+    image: createProductIllustration(
+      "🍟",
+      "Cheddar y Bacon",
+    ),
+    imageAlt:
+      "Ilustración temporal de las papas con cheddar y bacon",
     category: "papas",
     available: true,
     featured: false,
@@ -187,8 +290,12 @@ const additionalProducts: Product[] = [
     description:
       "Gaseosa individual fría. El sabor se coordina al confirmar el pedido.",
     price: 2500,
-    image: createProductIllustration("🥤", "Gaseosa"),
-    imageAlt: "Ilustración temporal de una gaseosa individual",
+    image: createProductIllustration(
+      "🥤",
+      "Gaseosa",
+    ),
+    imageAlt:
+      "Ilustración temporal de una gaseosa individual",
     category: "bebidas",
     available: true,
     featured: false,
@@ -196,10 +303,15 @@ const additionalProducts: Product[] = [
   {
     id: 106,
     name: "Agua mineral",
-    description: "Botella individual de agua mineral sin gas.",
+    description:
+      "Botella individual de agua mineral sin gas.",
     price: 2000,
-    image: createProductIllustration("💧", "Agua Mineral"),
-    imageAlt: "Ilustración temporal de una botella de agua mineral",
+    image: createProductIllustration(
+      "💧",
+      "Agua Mineral",
+    ),
+    imageAlt:
+      "Ilustración temporal de una botella de agua mineral",
     category: "bebidas",
     available: true,
     featured: false,
@@ -207,10 +319,15 @@ const additionalProducts: Product[] = [
   {
     id: 107,
     name: "Brownie Loongis",
-    description: "Brownie húmedo de chocolate, ideal para cerrar el pedido.",
+    description:
+      "Brownie húmedo de chocolate, ideal para cerrar el pedido.",
     price: 3800,
-    image: createProductIllustration("🍫", "Brownie Loongis"),
-    imageAlt: "Ilustración temporal del Brownie Loongis",
+    image: createProductIllustration(
+      "🍫",
+      "Brownie Loongis",
+    ),
+    imageAlt:
+      "Ilustración temporal del Brownie Loongis",
     category: "postres",
     available: true,
     featured: false,
@@ -218,18 +335,27 @@ const additionalProducts: Product[] = [
   {
     id: 108,
     name: "Cookie con chips",
-    description: "Cookie artesanal con chips de chocolate.",
+    description:
+      "Cookie artesanal con chips de chocolate.",
     price: 3200,
-    image: createProductIllustration("🍪", "Cookie Loongis"),
-    imageAlt: "Ilustración temporal de una cookie con chips de chocolate",
+    image: createProductIllustration(
+      "🍪",
+      "Cookie Loongis",
+    ),
+    imageAlt:
+      "Ilustración temporal de una cookie con chips de chocolate",
     category: "postres",
     available: true,
     featured: false,
   },
 ];
 
-export const menuProducts: Product[] = [...hamburgers, ...additionalProducts];
+export const menuProducts: Product[] = [
+  ...hamburgers,
+  ...additionalProducts,
+];
 
-export const featuredProducts: Product[] = menuProducts.filter(
-  (product) => product.featured === true,
-);
+export const featuredProducts: Product[] =
+  menuProducts.filter(
+    (product) => product.featured === true,
+  );

@@ -4,17 +4,21 @@
 
 .hero {
   position: relative;
+
   padding: 48px 0 36px;
+
   overflow: hidden;
 }
 
 .hero__container {
-  min-height: 540px;
-
   display: grid;
-  grid-template-columns: minmax(0, 0.92fr) minmax(420px, 1.08fr);
+  grid-template-columns:
+    minmax(0, 0.92fr)
+    minmax(420px, 1.08fr);
   align-items: center;
-  gap: 40px;
+  gap: 38px;
+
+  min-height: 540px;
 }
 
 /* ========================================
@@ -63,24 +67,25 @@
 }
 
 .hero__title-underlined::after {
-  content: "";
-
   position: absolute;
-  left: 0;
   right: -8px;
   bottom: -2px;
+  left: 0;
 
   height: 6px;
 
-  background-color: var(--color-yellow);
   border-radius: 999px;
+
+  background-color: var(--color-yellow);
+
+  content: "";
 
   transform: rotate(0.5deg);
 }
 
 .hero__description {
   max-width: 430px;
-  margin-top: 34px;
+  margin: 34px 0 0;
 
   color: #373737;
 
@@ -94,22 +99,22 @@
 ======================================== */
 
 .hero__actions {
-  margin-top: 27px;
-
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   gap: 14px;
+
+  margin-top: 27px;
 }
 
 .hero__button {
-  min-height: 54px;
-  padding: 13px 22px;
-
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 18px;
+
+  min-height: 54px;
+  padding: 13px 22px;
 
   border: 2px solid var(--color-primary);
   border-radius: 15px;
@@ -130,15 +135,16 @@
 }
 
 .hero__button--primary {
-  color: var(--color-white);
   background-color: var(--color-primary);
+  color: var(--color-white);
 
-  box-shadow: 0 8px 18px rgba(7, 95, 234, 0.16);
+  box-shadow:
+    0 8px 18px rgba(7, 95, 234, 0.16);
 }
 
 .hero__button--secondary {
-  color: var(--color-primary);
   background-color: transparent;
+  color: var(--color-primary);
 }
 
 .hero__button:hover {
@@ -148,12 +154,13 @@
 .hero__button--primary:hover {
   background-color: var(--color-primary-dark);
 
-  box-shadow: 0 10px 22px rgba(7, 95, 234, 0.22);
+  box-shadow:
+    0 10px 22px rgba(7, 95, 234, 0.22);
 }
 
 .hero__button--secondary:hover {
-  color: var(--color-white);
   background-color: var(--color-primary);
+  color: var(--color-white);
 }
 
 /* ========================================
@@ -161,12 +168,12 @@
 ======================================== */
 
 .hero__benefits {
-  margin-top: 36px;
-
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   gap: 25px;
+
+  margin-top: 36px;
 }
 
 .hero__benefit {
@@ -176,11 +183,11 @@
 }
 
 .hero__benefit-icon {
-  width: 34px;
-  height: 34px;
-
   display: grid;
   place-items: center;
+
+  width: 34px;
+  height: 34px;
 
   color: var(--color-primary);
 
@@ -200,14 +207,14 @@
 }
 
 .hero__benefit div span {
-  color: #555;
+  color: #555555;
 
   font-size: 13px;
   font-weight: 600;
 }
 
 /* ========================================
-   IMAGEN PRINCIPAL
+   ZONA VISUAL
 ======================================== */
 
 .hero__visual {
@@ -218,48 +225,68 @@
   min-width: 0;
   min-height: 520px;
 
+  overflow: hidden;
+}
+
+/*
+  Contenedor que mantiene la imagen centrada
+  y evita que invada el texto.
+*/
+
+.hero__image-frame {
+  position: absolute;
+  inset: 0;
+
   display: flex;
   align-items: flex-end;
   justify-content: center;
+
+  overflow: hidden;
+
+  border-radius: 32px;
 }
 
-/* Mancha amarilla detrás de la imagen */
-.hero__yellow-shape {
-  position: absolute;
-  left: 54%;
-  top: 145px;
-  z-index: 1;
+/* ========================================
+   IMAGEN PRINCIPAL
+======================================== */
 
-  width: 390px;
-  height: 315px;
-
-  background-color: var(--color-yellow);
-
-  border-radius:
-    44% 56% 49% 51%
-    / 54% 44% 56% 46%;
-
-  transform: translateX(-50%) rotate(-5deg);
-}
-
-/* Perro y hamburguesa unidos en una sola imagen */
 .hero__main-image {
-  position: relative;
-  z-index: 2;
+  display: block;
 
-  width: min(530px, 96%);
+  flex-shrink: 0;
+
+  width: 710px;
+  max-width: none;
   height: auto;
-  max-height: 520px;
 
   object-fit: contain;
   object-position: center bottom;
 
-  filter: drop-shadow(
-    0 20px 20px rgba(23, 23, 23, 0.16)
-  );
+  filter:
+    drop-shadow(
+      0 20px 18px rgba(23, 23, 23, 0.13)
+    );
 
   pointer-events: none;
   user-select: none;
+
+  transform: translateY(18px);
+
+  transition:
+    transform 300ms ease,
+    filter 300ms ease;
+}
+
+.hero__visual:hover .hero__main-image {
+  filter:
+    drop-shadow(
+      0 24px 21px rgba(23, 23, 23, 0.17)
+    )
+    saturate(1.02);
+
+  transform:
+    translateY(13px)
+    scale(1.012);
 }
 
 /* ========================================
@@ -269,10 +296,11 @@
 @media (max-width: 1150px) {
   .hero__container {
     grid-template-columns:
-      minmax(0, 0.95fr)
-      minmax(380px, 1.05fr);
+      minmax(0, 0.96fr)
+      minmax(390px, 1.04fr);
+    gap: 22px;
 
-    gap: 24px;
+    min-height: 510px;
   }
 
   .hero__title-small {
@@ -285,6 +313,7 @@
 
   .hero__description {
     max-width: 390px;
+
     font-size: 17px;
   }
 
@@ -296,17 +325,16 @@
     min-height: 490px;
   }
 
-  .hero__yellow-shape {
-    left: 52%;
-    top: 145px;
+  .hero__main-image {
+    width: 660px;
 
-    width: 340px;
-    height: 280px;
+    transform: translateY(17px);
   }
 
-  .hero__main-image {
-    width: min(470px, 96%);
-    max-height: 480px;
+  .hero__visual:hover .hero__main-image {
+    transform:
+      translateY(13px)
+      scale(1.012);
   }
 }
 
@@ -321,7 +349,9 @@
 
   .hero__container {
     grid-template-columns: 1fr;
-    gap: 24px;
+    gap: 20px;
+
+    min-height: auto;
   }
 
   .hero__content {
@@ -337,9 +367,7 @@
 
   .hero__description {
     max-width: 500px;
-
-    margin-inline: auto;
-    margin-top: 32px;
+    margin: 32px auto 0;
   }
 
   .hero__actions,
@@ -348,21 +376,19 @@
   }
 
   .hero__visual {
-    min-height: 480px;
-  }
-
-  .hero__yellow-shape {
-    left: 50%;
-    top: 140px;
-
-    width: 350px;
-    height: 285px;
+    min-height: 485px;
   }
 
   .hero__main-image {
-    width: 450px;
-    max-width: 92%;
-    max-height: 470px;
+    width: 690px;
+
+    transform: translateY(22px);
+  }
+
+  .hero__visual:hover .hero__main-image {
+    transform:
+      translateY(18px)
+      scale(1.01);
   }
 }
 
@@ -375,10 +401,10 @@
     padding: 25px 0 20px;
   }
 
- .hero__container {
-  width: 100%;
-  min-height: auto;
-}
+  .hero__container {
+    width: 100%;
+    min-height: auto;
+  }
 
   .hero__title {
     letter-spacing: -2px;
@@ -439,20 +465,36 @@
   }
 
   .hero__visual {
-    min-height: 360px;
+    min-height: 370px;
   }
 
-  .hero__yellow-shape {
-    left: 50%;
-    top: 110px;
-
-    width: 255px;
-    height: 215px;
+  .hero__image-frame {
+    border-radius: 22px;
   }
 
   .hero__main-image {
-    width: 330px;
-    max-width: 96%;
-    max-height: 350px;
+    width: 500px;
+
+    transform: translateY(17px);
+  }
+
+  .hero__visual:hover .hero__main-image {
+    transform: translateY(14px);
+  }
+}
+
+/* ========================================
+   CELULARES PEQUEÑOS
+======================================== */
+
+@media (max-width: 380px) {
+  .hero__visual {
+    min-height: 335px;
+  }
+
+  .hero__main-image {
+    width: 445px;
+
+    transform: translateY(14px);
   }
 }

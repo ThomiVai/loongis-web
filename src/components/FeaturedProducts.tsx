@@ -1,6 +1,8 @@
+import { Link } from "react-router-dom";
+
 import { AddToCartButton } from "./AddToCartButton";
 
-import { featuredProducts as products } from "../data/menuProducts";
+import { featuredProducts } from "../data/menuProducts";
 
 import "../styles/FeaturedProducts.css";
 
@@ -14,40 +16,53 @@ export function FeaturedProducts() {
   return (
     <section
       className="featured-products"
-      id="menu"
       aria-labelledby="featured-products-title"
     >
       <div className="featured-products__container">
-        <div className="featured-products__heading">
-          <span className="featured-products__line" />
+        <header className="featured-products__header">
+          <span
+            className="featured-products__line"
+            aria-hidden="true"
+          />
 
           <h2
-            id="featured-products-title"
             className="featured-products__title"
+            id="featured-products-title"
           >
             Las 3 principales
           </h2>
 
-          <span className="featured-products__line" />
-        </div>
+          <span
+            className="featured-products__line"
+            aria-hidden="true"
+          />
+        </header>
 
         <div className="featured-products__grid">
-          {products.map((product) => (
+          {featuredProducts.map((product) => (
             <article
-              className="featured-product"
+              className={`featured-product featured-product--${product.id}`}
               key={product.id}
             >
-              <div className="featured-product__image-wrapper">
-                <img
-                  className="featured-product__image"
-                  src={product.image}
-                  alt={product.imageAlt}
-                />
-              </div>
+              <Link
+                className="featured-product__image-link"
+                to={`/producto/${product.id}`}
+                aria-label={`Ver detalle de ${product.name}`}
+              >
+                <div className="featured-product__visual">
+                  <img
+                    className="featured-product__image"
+                    src={product.image}
+                    alt={product.imageAlt}
+                  />
+                </div>
+              </Link>
 
               <div className="featured-product__content">
                 <h3 className="featured-product__name">
-                  {product.name}
+                  <Link to={`/producto/${product.id}`}>
+                    {product.name}
+                  </Link>
                 </h3>
 
                 <p className="featured-product__description">
@@ -55,13 +70,14 @@ export function FeaturedProducts() {
                 </p>
 
                 <div className="featured-product__footer">
-                  <span className="featured-product__price">
+                  <strong className="featured-product__price">
                     {priceFormatter.format(product.price)}
-                  </span>
+                  </strong>
 
                   <AddToCartButton
                     product={product}
-                    className="featured-product__button"
+                    className="featured-product__add"
+                    label="Agregar"
                   />
                 </div>
               </div>
