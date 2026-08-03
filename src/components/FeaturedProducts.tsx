@@ -16,6 +16,7 @@ export function FeaturedProducts() {
   return (
     <section
       className="featured-products"
+       id="destacadas"
       aria-labelledby="featured-products-title"
     >
       <div className="featured-products__container">

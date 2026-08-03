@@ -1,110 +1,118 @@
-.checkout-page {
-  width: 100%;
-  min-height: 100vh;
+/* ========================================
+   PÁGINA DE CHECKOUT
+======================================== */
 
-  background-color: var(--color-cream);
+.checkout-page {
+  min-height: 100vh;
+  padding: 44px 20px 90px;
+
+  background:
+    radial-gradient(
+      circle at 8% 10%,
+      rgba(255, 202, 32, 0.12),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 92% 85%,
+      rgba(7, 95, 234, 0.06),
+      transparent 30%
+    ),
+    var(--color-cream);
 }
 
 .checkout-page__container {
   width: 100%;
   max-width: 1180px;
   margin-inline: auto;
-  padding-inline: 20px;
 }
 
 /* ========================================
-   ENCABEZADO
+   VOLVER AL CARRITO
 ======================================== */
-
-.checkout-page__hero {
-  padding: 46px 0 52px;
-
-  background:
-    radial-gradient(
-      circle at 84% 35%,
-      rgba(244, 201, 40, 0.22) 0%,
-      rgba(244, 201, 40, 0) 32%
-    ),
-    var(--color-cream);
-}
 
 .checkout-page__back {
   display: inline-flex;
   align-items: center;
   gap: 9px;
 
-  margin-bottom: 34px;
+  margin-bottom: 32px;
 
   color: var(--color-primary);
 
   font-family: "Fredoka", sans-serif;
-  font-size: 0.95rem;
+  font-size: 15px;
   font-weight: 700;
 
   transition:
-    color 160ms ease,
-    transform 160ms ease;
+    gap 180ms ease,
+    color 180ms ease;
 }
 
 .checkout-page__back:hover {
-  color: var(--color-primary-dark);
+  gap: 13px;
 
-  transform: translateX(-4px);
+  color: var(--color-primary-dark);
+}
+
+/* ========================================
+   ENCABEZADO
+======================================== */
+
+.checkout-page__header {
+  max-width: 670px;
+  margin-bottom: 38px;
 }
 
 .checkout-page__eyebrow {
-  display: table;
+  display: inline-flex;
 
-  margin-bottom: 14px;
-  padding: 7px 15px;
+  margin-bottom: 10px;
+  padding: 7px 13px;
 
   border-radius: 999px;
 
-  background-color: rgba(244, 201, 40, 0.3);
-  color: var(--color-primary-dark);
+  background-color: rgba(7, 95, 234, 0.09);
+  color: var(--color-primary);
 
   font-family: "Fredoka", sans-serif;
-  font-size: 0.78rem;
+  font-size: 13px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.045em;
+  letter-spacing: 0.06em;
 }
 
 .checkout-page__title {
   margin: 0;
 
-  color: var(--color-primary);
+  color: var(--color-black);
 
   font-family: "Fredoka", sans-serif;
-  font-size: clamp(3rem, 7vw, 5.3rem);
+  font-size: clamp(2.3rem, 5vw, 3.5rem);
   font-weight: 700;
-  line-height: 0.95;
+  line-height: 1;
   letter-spacing: -0.035em;
 }
 
-.checkout-page__subtitle {
-  max-width: 650px;
-  margin: 20px 0 0;
+.checkout-page__description {
+  max-width: 590px;
+  margin: 15px 0 0;
 
-  color: rgba(23, 23, 23, 0.74);
+  color: rgba(23, 23, 23, 0.68);
 
-  font-family: "Nunito", sans-serif;
-  font-size: 1.05rem;
+  font-size: 17px;
   font-weight: 600;
-  line-height: 1.6;
+  line-height: 1.55;
 }
 
 /* ========================================
    DISTRIBUCIÓN
 ======================================== */
 
-.checkout-content {
-  padding: 10px 0 86px;
-}
-
 .checkout-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 350px;
+  grid-template-columns:
+    minmax(0, 1.45fr)
+    minmax(330px, 0.75fr);
   align-items: start;
   gap: 28px;
 }
@@ -116,54 +124,58 @@
 .checkout-form {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 22px;
 
-  min-width: 0;
   padding: 30px;
 
-  border: 1px solid rgba(7, 95, 234, 0.12);
+  border: 1px solid rgba(23, 23, 23, 0.08);
   border-radius: 26px;
 
-  background-color: rgba(255, 255, 255, 0.92);
+  background-color: rgba(255, 255, 255, 0.9);
 
   box-shadow:
-    0 16px 36px rgba(7, 60, 166, 0.07),
-    0 4px 10px rgba(23, 23, 23, 0.025);
+    0 18px 45px rgba(23, 23, 23, 0.07);
 }
 
-.checkout-form__header {
-  padding-bottom: 20px;
+/* ========================================
+   SECCIONES
+======================================== */
 
-  border-bottom: 1px solid rgba(23, 23, 23, 0.1);
+.checkout-section {
+  padding-bottom: 24px;
+
+  border-bottom:
+    1px solid rgba(23, 23, 23, 0.09);
 }
 
-.checkout-form__label {
-  color: var(--color-primary);
+.checkout-section:last-of-type {
+  padding-bottom: 0;
 
-  font-family: "Fredoka", sans-serif;
-  font-size: 0.82rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.045em;
+  border-bottom: none;
 }
 
-.checkout-form__title {
-  margin: 5px 0 0;
+.checkout-section__title {
+  margin: 0 0 17px;
 
   color: var(--color-black);
 
   font-family: "Fredoka", sans-serif;
-  font-size: 1.85rem;
+  font-size: 1.35rem;
   font-weight: 700;
+  line-height: 1.2;
 }
 
-.checkout-form__group {
+/* ========================================
+   CAMPOS
+======================================== */
+
+.checkout-form__grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 18px;
+  gap: 17px;
 }
 
-.checkout-form__field {
+.checkout-field {
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -172,148 +184,165 @@
 
   color: var(--color-black);
 
-  font-family: "Nunito", sans-serif;
-  font-size: 0.9rem;
-  font-weight: 800;
+  font-size: 14px;
+  font-weight: 700;
 }
 
-.checkout-form__field > span {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.checkout-form__field strong {
-  color: #a62222;
-}
-
-.checkout-form__field input,
-.checkout-form__field textarea,
-.checkout-form__field select {
+.checkout-field--full {
   width: 100%;
-  min-width: 0;
+  margin-top: 17px;
+}
 
-  border: 1px solid rgba(7, 95, 234, 0.16);
+.checkout-field input,
+.checkout-field textarea {
+  width: 100%;
+
+  border: 1.5px solid rgba(23, 23, 23, 0.14);
   border-radius: 14px;
 
   background-color: #ffffff;
   color: var(--color-black);
 
   font-family: "Nunito", sans-serif;
-  font-size: 0.94rem;
+  font-size: 15px;
   font-weight: 600;
 
   outline: none;
 
   transition:
-    border-color 150ms ease,
-    box-shadow 150ms ease;
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    background-color 180ms ease;
 }
 
-.checkout-form__field input,
-.checkout-form__field select {
-  min-height: 48px;
+.checkout-field input {
+  min-height: 50px;
   padding: 0 15px;
 }
 
-.checkout-form__field textarea {
-  min-height: 116px;
-  padding: 13px 15px;
+.checkout-field textarea {
+  min-height: 110px;
+  padding: 14px 15px;
+
+  line-height: 1.5;
 
   resize: vertical;
 }
 
-.checkout-form__field input:focus,
-.checkout-form__field textarea:focus,
-.checkout-form__field select:focus {
-  border-color: var(--color-primary);
-
-  box-shadow: 0 0 0 4px rgba(7, 95, 234, 0.1);
+.checkout-field input::placeholder,
+.checkout-field textarea::placeholder {
+  color: rgba(23, 23, 23, 0.4);
 }
 
-.checkout-form__field input::placeholder,
-.checkout-form__field textarea::placeholder {
-  color: rgba(23, 23, 23, 0.42);
+.checkout-field input:hover,
+.checkout-field textarea:hover {
+  border-color: rgba(7, 95, 234, 0.38);
+}
+
+.checkout-field input:focus,
+.checkout-field textarea:focus {
+  border-color: var(--color-primary);
+
+  background-color: #ffffff;
+
+  box-shadow:
+    0 0 0 4px rgba(7, 95, 234, 0.1);
 }
 
 /* ========================================
-   OPCIONES
+   INPUT CON ÍCONO
 ======================================== */
 
-.checkout-form__fieldset {
-  min-width: 0;
-  margin: 0;
-  padding: 0;
+.checkout-field__icon-wrapper {
+  position: relative;
 
-  border: none;
+  width: 100%;
 }
 
-.checkout-form__fieldset legend {
-  margin-bottom: 10px;
+.checkout-field__icon-wrapper svg {
+  position: absolute;
+  top: 50%;
+  left: 16px;
 
-  color: var(--color-black);
+  z-index: 2;
 
-  font-family: "Nunito", sans-serif;
-  font-size: 0.9rem;
-  font-weight: 800;
+  color: var(--color-primary);
+
+  font-size: 17px;
+
+  pointer-events: none;
+
+  transform: translateY(-50%);
 }
 
-.checkout-form__options {
+.checkout-field__icon-wrapper input {
+  padding-left: 45px;
+}
+
+/* ========================================
+   OPCIONES DE ENTREGA Y PAGO
+======================================== */
+
+.checkout-options {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
+  gap: 13px;
 }
 
 .checkout-option {
-  position: relative;
-
   display: flex;
-  align-items: flex-start;
-  gap: 11px;
+  align-items: center;
+  gap: 13px;
 
-  min-width: 0;
-  padding: 15px;
+  width: 100%;
+  min-height: 78px;
+  padding: 14px 16px;
 
-  border: 1px solid rgba(7, 95, 234, 0.14);
+  border: 1.5px solid rgba(7, 95, 234, 0.18);
   border-radius: 16px;
 
-  background-color: rgba(225, 235, 255, 0.25);
+  background-color: rgba(7, 95, 234, 0.025);
+  color: var(--color-black);
+
+  text-align: left;
 
   cursor: pointer;
 
   transition:
-    border-color 150ms ease,
-    background-color 150ms ease,
-    transform 150ms ease;
+    border-color 180ms ease,
+    background-color 180ms ease,
+    transform 180ms ease,
+    box-shadow 180ms ease;
 }
 
 .checkout-option:hover {
+  border-color: rgba(7, 95, 234, 0.5);
+
+  background-color: rgba(7, 95, 234, 0.055);
+
   transform: translateY(-2px);
-
-  border-color: rgba(7, 95, 234, 0.3);
-
-  background-color: rgba(225, 235, 255, 0.5);
 }
 
-.checkout-option:has(input:checked) {
-  border-color: var(--color-primary);
-
-  background-color: rgba(225, 235, 255, 0.75);
-
-  box-shadow: 0 0 0 3px rgba(7, 95, 234, 0.08);
-}
-
-.checkout-option input {
+.checkout-option > svg {
   flex-shrink: 0;
 
-  width: 17px;
-  height: 17px;
-  margin-top: 2px;
+  width: 39px;
+  height: 39px;
+  padding: 10px;
 
-  accent-color: var(--color-primary);
+  border-radius: 12px;
+
+  background-color: rgba(7, 95, 234, 0.09);
+  color: var(--color-primary);
+
+  font-size: 18px;
+
+  transition:
+    color 180ms ease,
+    background-color 180ms ease;
 }
 
-.checkout-option__content {
+.checkout-option > span {
   display: flex;
   flex-direction: column;
   gap: 3px;
@@ -321,313 +350,312 @@
   min-width: 0;
 }
 
-.checkout-option__content strong {
+.checkout-option strong {
   color: var(--color-black);
 
   font-family: "Fredoka", sans-serif;
-  font-size: 0.95rem;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.15;
 }
 
-.checkout-option__content small {
-  color: rgba(23, 23, 23, 0.6);
+.checkout-option small {
+  color: rgba(23, 23, 23, 0.58);
 
   font-family: "Nunito", sans-serif;
-  font-size: 0.78rem;
+  font-size: 12px;
   font-weight: 600;
-  line-height: 1.35;
+  line-height: 1.3;
+}
+
+.checkout-option--active {
+  border-color: var(--color-primary);
+
+  background-color: rgba(7, 95, 234, 0.08);
+
+  box-shadow:
+    0 0 0 3px rgba(7, 95, 234, 0.08);
+}
+
+.checkout-option--active > svg {
+  background-color: var(--color-primary);
+  color: var(--color-white);
 }
 
 /* ========================================
-   ERROR Y BOTÓN
+   BOTÓN DE WHATSAPP
 ======================================== */
 
-.checkout-form__error {
-  padding: 13px 15px;
-
-  border: 1px solid rgba(166, 34, 34, 0.22);
-  border-radius: 13px;
-
-  background-color: rgba(166, 34, 34, 0.07);
-  color: #8c1f1f;
-
-  font-family: "Nunito", sans-serif;
-  font-size: 0.87rem;
-  font-weight: 800;
-}
-
-.checkout-form__submit {
+.checkout-submit {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 9px;
+  gap: 11px;
 
-  min-height: 52px;
-  padding: 0 24px;
+  width: 100%;
+  min-height: 57px;
+  padding: 13px 20px;
 
-  border: none;
-  border-radius: 999px;
+  border: 2px solid var(--color-black);
+  border-radius: 16px;
 
   background-color: #25d366;
-  color: #ffffff;
+  color: #102e1d;
 
   font-family: "Fredoka", sans-serif;
-  font-size: 1rem;
+  font-size: 17px;
   font-weight: 700;
+
+  box-shadow:
+    5px 5px 0 var(--color-black);
 
   cursor: pointer;
 
-  box-shadow: 0 11px 24px rgba(37, 211, 102, 0.24);
-
   transition:
-    background-color 160ms ease,
-    box-shadow 160ms ease,
-    transform 160ms ease;
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    background-color 180ms ease;
 }
 
-.checkout-form__submit:hover {
-  transform: translateY(-2px);
+.checkout-submit svg {
+  flex-shrink: 0;
 
-  background-color: #1fbd5a;
-
-  box-shadow: 0 14px 28px rgba(37, 211, 102, 0.32);
+  font-size: 22px;
 }
 
-.checkout-form__submit:active {
-  transform: translateY(0);
+.checkout-submit:hover {
+  background-color: #2be070;
+
+  transform: translate(2px, 2px);
+
+  box-shadow:
+    3px 3px 0 var(--color-black);
 }
 
-.checkout-form__submit svg {
-  width: 22px;
-  height: 22px;
+.checkout-submit:active {
+  transform: translate(5px, 5px);
+
+  box-shadow: none;
 }
 
 .checkout-form__notice {
-  margin: -11px 0 0;
+  margin: -7px 0 0;
 
-  color: rgba(23, 23, 23, 0.56);
+  color: rgba(23, 23, 23, 0.52);
 
-  font-family: "Nunito", sans-serif;
-  font-size: 0.78rem;
+  font-size: 12px;
   font-weight: 600;
-  line-height: 1.4;
+  line-height: 1.45;
   text-align: center;
 }
 
 /* ========================================
-   RESUMEN
+   RESUMEN DEL PEDIDO
 ======================================== */
 
 .checkout-summary {
   position: sticky;
   top: 118px;
 
-  padding: 26px;
+  padding: 25px;
 
-  border: 1px solid rgba(7, 95, 234, 0.13);
+  border: 1px solid rgba(23, 23, 23, 0.09);
   border-radius: 24px;
 
-  background-color: rgba(255, 255, 255, 0.95);
+  background-color: rgba(255, 255, 255, 0.92);
 
   box-shadow:
-    0 16px 36px rgba(7, 60, 166, 0.08),
-    0 4px 9px rgba(23, 23, 23, 0.03);
-}
-
-.checkout-summary__eyebrow {
-  color: var(--color-primary);
-
-  font-family: "Fredoka", sans-serif;
-  font-size: 0.8rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.045em;
+    0 18px 45px rgba(23, 23, 23, 0.07);
 }
 
 .checkout-summary__title {
-  margin: 5px 0 20px;
+  margin: 0 0 21px;
 
   color: var(--color-black);
 
   font-family: "Fredoka", sans-serif;
-  font-size: 1.55rem;
+  font-size: 1.45rem;
   font-weight: 700;
 }
 
-.checkout-summary__products {
+/* ========================================
+   PRODUCTOS DEL RESUMEN
+======================================== */
+
+.checkout-summary__items {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 5px;
 
-  padding-bottom: 20px;
+  max-height: 460px;
+  padding-right: 4px;
 
-  border-bottom: 1px solid rgba(23, 23, 23, 0.1);
+  overflow-y: auto;
 }
 
-.checkout-summary__product {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 14px;
+.checkout-summary__item {
+  display: grid;
+  grid-template-columns: 78px minmax(0, 1fr);
+  align-items: center;
+  gap: 13px;
+
+  padding: 14px 0;
+
+  border-bottom:
+    1px solid rgba(23, 23, 23, 0.08);
 }
 
-.checkout-summary__product > div {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
+.checkout-summary__item:last-child {
+  border-bottom: none;
+}
 
+.checkout-summary__item-image {
+  display: block;
+
+  width: 78px;
+  height: 78px;
+  padding: 4px;
+
+  border-radius: 15px;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(255, 202, 32, 0.14),
+      transparent 72%
+    );
+
+  object-fit: contain;
+  object-position: center;
+}
+
+.checkout-summary__item-content {
   min-width: 0;
 }
 
-.checkout-summary__product strong {
-  color: var(--color-black);
-
-  font-family: "Nunito", sans-serif;
-  font-size: 0.86rem;
-  font-weight: 800;
+.checkout-summary__item-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
 }
 
-.checkout-summary__product > strong {
+.checkout-summary__item-heading h3 {
+  min-width: 0;
+  margin: 0;
+
+  color: var(--color-black);
+
+  font-family: "Fredoka", sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.checkout-summary__item-heading strong {
   flex-shrink: 0;
 
   color: var(--color-primary);
 
-  text-align: right;
+  font-family: "Fredoka", sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
 }
 
-.checkout-summary__product span {
-  color: rgba(23, 23, 23, 0.56);
+.checkout-summary__item-content p {
+  margin: 5px 0 0;
 
-  font-family: "Nunito", sans-serif;
-  font-size: 0.76rem;
+  color: rgba(23, 23, 23, 0.55);
+
+  font-size: 11px;
   font-weight: 600;
+  line-height: 1.4;
 }
+
+/* ========================================
+   TOTALES
+======================================== */
 
 .checkout-summary__row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: 15px;
 
-  padding-top: 15px;
+  margin-top: 18px;
+  padding-top: 17px;
 
-  color: rgba(23, 23, 23, 0.68);
+  border-top:
+    1px solid rgba(23, 23, 23, 0.1);
 
-  font-family: "Nunito", sans-serif;
-  font-size: 0.87rem;
-  font-weight: 600;
-}
+  color: rgba(23, 23, 23, 0.64);
 
-.checkout-summary__row strong {
-  color: var(--color-black);
-
-  font-weight: 800;
+  font-size: 14px;
+  font-weight: 700;
 }
 
 .checkout-summary__total {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: 15px;
 
-  margin-top: 19px;
-  padding-top: 20px;
+  margin-top: 13px;
+  padding: 16px;
 
-  border-top: 1px solid rgba(23, 23, 23, 0.1);
+  border-radius: 16px;
+
+  background-color: rgba(255, 202, 32, 0.16);
 
   color: var(--color-black);
 
   font-family: "Fredoka", sans-serif;
-  font-size: 1rem;
+  font-size: 18px;
   font-weight: 700;
 }
 
 .checkout-summary__total strong {
   color: var(--color-primary);
 
-  font-size: 1.55rem;
-  text-align: right;
-}
-
-.checkout-summary__edit {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  min-height: 44px;
-  margin-top: 22px;
-
-  border: 1px solid rgba(7, 95, 234, 0.2);
-  border-radius: 999px;
-
-  color: var(--color-primary);
-
-  font-family: "Fredoka", sans-serif;
-  font-size: 0.9rem;
-  font-weight: 700;
-
-  transition:
-    background-color 150ms ease,
-    color 150ms ease,
-    transform 150ms ease;
-}
-
-.checkout-summary__edit:hover {
-  transform: translateY(-2px);
-
-  background-color: var(--color-primary);
-  color: #ffffff;
+  font-size: 1.35rem;
 }
 
 /* ========================================
-   ESTADO VACÍO
+   CARRITO VACÍO
 ======================================== */
 
 .checkout-empty {
-  display: grid;
-  place-items: center;
+  max-width: 650px;
+  margin: 65px auto;
+  padding: 55px 35px;
 
-  min-height: 70vh;
-  padding: 60px 20px;
-}
+  border: 1px solid rgba(23, 23, 23, 0.08);
+  border-radius: 28px;
 
-.checkout-empty__content {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-
-  width: 100%;
-  max-width: 570px;
-  padding: 54px 28px;
-
-  border: 1px solid rgba(7, 95, 234, 0.12);
-  border-radius: 26px;
-
-  background-color: rgba(255, 255, 255, 0.9);
-
-  box-shadow:
-    0 16px 38px rgba(7, 60, 166, 0.07),
-    0 4px 10px rgba(23, 23, 23, 0.025);
+  background-color: rgba(255, 255, 255, 0.92);
 
   text-align: center;
+
+  box-shadow:
+    0 18px 45px rgba(23, 23, 23, 0.07);
 }
 
-.checkout-empty__icon {
-  display: grid;
-  place-items: center;
+.checkout-empty__eyebrow {
+  display: inline-flex;
 
-  width: 82px;
-  height: 82px;
-  margin-bottom: 22px;
+  margin-bottom: 12px;
+  padding: 7px 13px;
 
-  border-radius: 50%;
+  border-radius: 999px;
 
-  background-color: rgba(244, 201, 40, 0.25);
-  color: var(--color-primary);
-}
+  background-color: rgba(255, 202, 32, 0.2);
+  color: var(--color-black);
 
-.checkout-empty__icon svg {
-  width: 35px;
-  height: 35px;
+  font-family: "Fredoka", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
 }
 
 .checkout-empty__title {
@@ -636,20 +664,19 @@
   color: var(--color-black);
 
   font-family: "Fredoka", sans-serif;
-  font-size: 2rem;
+  font-size: clamp(2rem, 5vw, 3rem);
   font-weight: 700;
 }
 
 .checkout-empty__description {
-  max-width: 430px;
-  margin: 13px 0 24px;
+  max-width: 450px;
+  margin: 15px auto 25px;
 
-  color: rgba(23, 23, 23, 0.67);
+  color: rgba(23, 23, 23, 0.63);
 
-  font-family: "Nunito", sans-serif;
-  font-size: 0.98rem;
+  font-size: 16px;
   font-weight: 600;
-  line-height: 1.55;
+  line-height: 1.5;
 }
 
 .checkout-empty__button {
@@ -657,95 +684,84 @@
   align-items: center;
   justify-content: center;
 
-  min-height: 46px;
-  padding: 0 24px;
+  min-height: 50px;
+  padding: 12px 24px;
 
-  border-radius: 999px;
+  border: 2px solid var(--color-black);
+  border-radius: 15px;
 
   background-color: var(--color-yellow);
   color: var(--color-black);
 
   font-family: "Fredoka", sans-serif;
-  font-size: 0.95rem;
   font-weight: 700;
 
+  box-shadow:
+    4px 4px 0 var(--color-black);
+
   transition:
-    background-color 160ms ease,
-    transform 160ms ease;
+    transform 180ms ease,
+    box-shadow 180ms ease;
 }
 
 .checkout-empty__button:hover {
-  transform: translateY(-2px);
+  transform: translate(2px, 2px);
 
-  background-color: #ffd83d;
+  box-shadow:
+    2px 2px 0 var(--color-black);
 }
 
 /* ========================================
-   INFORMACIÓN DE ENTREGA
+   NOTEBOOKS
 ======================================== */
 
-.checkout-delivery-info {
-  display: grid;
-  grid-template-columns:
-    repeat(2, minmax(0, 1fr));
-  gap: 14px;
+@media (max-width: 1050px) {
+  .checkout-layout {
+    grid-template-columns:
+      minmax(0, 1.2fr)
+      minmax(300px, 0.8fr);
+    gap: 22px;
+  }
 
-  padding: 17px;
+  .checkout-form {
+    padding: 25px;
+  }
 
-  border: 1px solid rgba(7, 95, 234, 0.13);
-  border-radius: 16px;
+  .checkout-summary {
+    padding: 21px;
+  }
 
-  background-color: rgba(225, 235, 255, 0.38);
-}
-
-.checkout-delivery-info > div {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
-
-.checkout-delivery-info span {
-  color: rgba(23, 23, 23, 0.58);
-
-  font-family: "Nunito", sans-serif;
-  font-size: 0.78rem;
-  font-weight: 700;
-}
-
-.checkout-delivery-info strong {
-  color: var(--color-primary);
-
-  font-family: "Fredoka", sans-serif;
-  font-size: 1rem;
-  font-weight: 700;
-}
-
-.checkout-delivery-info--pickup {
-  grid-template-columns: 1fr;
-}
-
-.checkout-delivery-info--pickup p {
-  margin: 3px 0 0;
-
-  color: rgba(23, 23, 23, 0.62);
-
-  font-family: "Nunito", sans-serif;
-  font-size: 0.82rem;
-  font-weight: 600;
-  line-height: 1.45;
+  .checkout-options {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* ========================================
    TABLETS
 ======================================== */
 
-@media (max-width: 900px) {
+@media (max-width: 820px) {
+  .checkout-page {
+    padding-top: 34px;
+  }
+
   .checkout-layout {
     grid-template-columns: 1fr;
   }
 
   .checkout-summary {
     position: static;
+
+    grid-row: 1;
+  }
+
+  .checkout-summary__items {
+    max-height: none;
+  }
+
+  .checkout-options {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
   }
 }
 
@@ -753,59 +769,92 @@
    CELULARES
 ======================================== */
 
-@media (max-width: 650px) {
-  .checkout-page__container {
-    padding-inline: 16px;
-  }
-
-  .checkout-page__hero {
-    padding: 32px 0 42px;
+@media (max-width: 580px) {
+  .checkout-page {
+    padding: 25px 14px 65px;
   }
 
   .checkout-page__back {
+    margin-bottom: 24px;
+  }
+
+  .checkout-page__header {
     margin-bottom: 28px;
   }
 
-  .checkout-page__title {
-    font-size: clamp(3rem, 16vw, 4.2rem);
+  .checkout-page__description {
+    font-size: 15px;
   }
 
-  .checkout-page__subtitle {
-    font-size: 1rem;
-  }
+  .checkout-form,
+  .checkout-summary {
+    padding: 19px;
 
-  .checkout-content {
-    padding: 8px 0 62px;
+    border-radius: 20px;
   }
 
   .checkout-form {
-    gap: 21px;
-
-    padding: 22px 18px;
+    gap: 19px;
   }
 
-  .checkout-form__title {
-    font-size: 1.55rem;
+  .checkout-section {
+    padding-bottom: 21px;
   }
 
-  .checkout-form__group,
-  .checkout-form__options {
+  .checkout-form__grid,
+  .checkout-options {
     grid-template-columns: 1fr;
   }
 
-  .checkout-summary {
-    padding: 22px;
+  .checkout-option {
+    min-height: 72px;
   }
 
-  .checkout-empty__content {
-    padding: 44px 20px;
+  .checkout-summary__item {
+    grid-template-columns: 68px minmax(0, 1fr);
   }
 
-  .checkout-empty__title {
-    font-size: 1.7rem;
+  .checkout-summary__item-image {
+    width: 68px;
+    height: 68px;
   }
 
-  .checkout-delivery-info {
-  grid-template-columns: 1fr;
+  .checkout-summary__item-heading {
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .checkout-submit {
+    font-size: 16px;
+  }
 }
+
+/* ========================================
+   CELULARES PEQUEÑOS
+======================================== */
+
+@media (max-width: 370px) {
+  .checkout-form,
+  .checkout-summary {
+    padding: 16px;
+  }
+
+  .checkout-option {
+    padding: 12px;
+  }
+
+  .checkout-option > svg {
+    width: 36px;
+    height: 36px;
+  }
+
+  .checkout-summary__item {
+    grid-template-columns: 59px minmax(0, 1fr);
+    gap: 10px;
+  }
+
+  .checkout-summary__item-image {
+    width: 59px;
+    height: 59px;
+  }
 }

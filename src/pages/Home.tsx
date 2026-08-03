@@ -1,3 +1,4 @@
+import { BurgerCombos } from "../components/BurgerCombos";
 import { BusinessBenefits } from "../components/BusinessBenefits";
 import { Categories } from "../components/Categories";
 import { DailyPromo } from "../components/DailyPromo";
@@ -9,10 +10,17 @@ export function Home() {
   return (
     <main id="inicio">
       <Hero />
+
       <Categories />
-      <FeaturedProducts />
+
       <DailyPromo />
+
+      <BurgerCombos />
+
+      <FeaturedProducts />
+
       <BusinessBenefits />
+
       <StoreInfo />
     </main>
   );

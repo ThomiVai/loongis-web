@@ -1,0 +1,814 @@
+/* ========================================
+   SECCIÓN DE COMBOS
+======================================== */
+
+.burger-combos {
+  position: relative;
+
+  width: 100%;
+  padding: 76px 20px 72px;
+
+  /*
+    Al entrar desde la categoría,
+    la sección azul comienza debajo del navbar.
+  */
+  scroll-margin-top: 112px;
+
+  overflow: hidden;
+
+  background:
+    radial-gradient(
+      circle at 10% 15%,
+      rgba(244, 201, 40, 0.19),
+      transparent 27%
+    ),
+    radial-gradient(
+      circle at 92% 87%,
+      rgba(255, 255, 255, 0.12),
+      transparent 31%
+    ),
+    var(--color-primary);
+}
+
+.burger-combos::before {
+  position: absolute;
+  top: -150px;
+  right: -120px;
+
+  width: 330px;
+  height: 330px;
+
+  border: 55px solid rgba(255, 255, 255, 0.04);
+  border-radius: 50%;
+
+  content: "";
+}
+
+.burger-combos::after {
+  position: absolute;
+  bottom: -100px;
+  left: -75px;
+
+  width: 230px;
+  height: 230px;
+
+  border-radius: 50%;
+
+  background-color: rgba(244, 201, 40, 0.1);
+
+  content: "";
+}
+
+.burger-combos__container {
+  position: relative;
+  z-index: 2;
+
+  width: 100%;
+  max-width: 1280px;
+  margin-inline: auto;
+}
+
+/* ========================================
+   ENCABEZADO
+======================================== */
+
+.burger-combos__header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 35px;
+
+  max-width: 1140px;
+  margin: 0 auto 38px;
+}
+
+.burger-combos__heading {
+  max-width: 660px;
+}
+
+.burger-combos__eyebrow {
+  display: inline-flex;
+
+  margin-bottom: 12px;
+  padding: 7px 13px;
+
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--color-yellow);
+
+  font-family: "Fredoka", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+
+.burger-combos__title {
+  margin: 0;
+
+  color: var(--color-white);
+
+  font-family: "Fredoka", sans-serif;
+  font-size: clamp(2.25rem, 5vw, 3.7rem);
+  font-weight: 700;
+  line-height: 0.96;
+  letter-spacing: -0.035em;
+}
+
+.burger-combos__description {
+  max-width: 590px;
+  margin: 16px 0 0;
+
+  color: rgba(255, 255, 255, 0.77);
+
+  font-family: "Nunito", sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.55;
+}
+
+/* ========================================
+   VER MENÚ
+======================================== */
+
+.burger-combos__menu-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 11px;
+
+  flex-shrink: 0;
+
+  min-height: 49px;
+  padding: 11px 18px;
+
+  border: 1.5px solid rgba(255, 255, 255, 0.55);
+  border-radius: 14px;
+
+  color: var(--color-white);
+
+  font-family: "Fredoka", sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+
+  transition:
+    color 180ms ease,
+    background-color 180ms ease,
+    border-color 180ms ease,
+    transform 180ms ease;
+}
+
+.burger-combos__menu-link svg {
+  font-size: 14px;
+
+  transition: transform 180ms ease;
+}
+
+.burger-combos__menu-link:hover {
+  border-color: var(--color-yellow);
+
+  background-color: var(--color-yellow);
+  color: var(--color-black);
+
+  transform: translateY(-2px);
+}
+
+.burger-combos__menu-link:hover svg {
+  transform: translateX(4px);
+}
+
+/* ========================================
+   CARRUSEL
+======================================== */
+
+.burger-combos__carousel {
+  position: relative;
+
+  width: 100%;
+}
+
+.burger-combos__viewport {
+  width: auto;
+  margin-inline: 68px;
+
+  overflow: hidden;
+}
+
+.burger-combos__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 25px;
+
+  animation: burger-combos-enter 260ms ease;
+}
+
+@keyframes burger-combos-enter {
+  from {
+    opacity: 0;
+
+    transform: translateX(18px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform: translateX(0);
+  }
+}
+
+/* ========================================
+   FLECHAS LATERALES
+======================================== */
+
+.burger-combos__control {
+  position: absolute;
+  top: 50%;
+  z-index: 6;
+
+  display: grid;
+  place-items: center;
+
+  width: 50px;
+  height: 50px;
+  padding: 0;
+
+  border: 2px solid var(--color-black);
+  border-radius: 50%;
+
+  background-color: var(--color-yellow);
+  color: var(--color-black);
+
+  font-size: 17px;
+
+  box-shadow: 4px 4px 0 var(--color-black);
+
+  cursor: pointer;
+
+  transform: translateY(-50%);
+
+  transition:
+    background-color 180ms ease,
+    color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.burger-combos__control--previous {
+  left: 2px;
+}
+
+.burger-combos__control--next {
+  right: 2px;
+}
+
+.burger-combos__control:hover {
+  background-color: var(--color-white);
+  color: var(--color-primary);
+
+  box-shadow: 2px 2px 0 var(--color-black);
+
+  transform:
+    translateY(-50%)
+    translate(2px, 2px);
+}
+
+.burger-combos__control:active {
+  box-shadow: none;
+
+  transform:
+    translateY(-50%)
+    translate(4px, 4px);
+}
+
+.burger-combos__control:focus-visible {
+  outline: 3px solid rgba(255, 255, 255, 0.9);
+  outline-offset: 4px;
+}
+
+/* ========================================
+   TARJETA
+======================================== */
+
+.burger-combo-card {
+  --combo-image-scale: 1;
+  --combo-image-y: 0px;
+
+  display: grid;
+  grid-template-columns:
+    minmax(210px, 0.9fr)
+    minmax(0, 1.1fr);
+  align-items: stretch;
+
+  min-width: 0;
+  min-height: 330px;
+
+  overflow: hidden;
+
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 26px;
+
+  background-color: var(--color-cream);
+
+  box-shadow: 0 20px 45px rgba(0, 25, 72, 0.18);
+
+  transition:
+    transform 200ms ease,
+    box-shadow 200ms ease;
+}
+
+.burger-combo-card:hover {
+  transform: translateY(-6px);
+
+  box-shadow: 0 27px 55px rgba(0, 25, 72, 0.24);
+}
+
+/* Combo Clásico */
+
+.burger-combo-card--101 {
+  --combo-image-scale: 1.04;
+  --combo-image-y: 5px;
+}
+
+/* Combo Bacon */
+
+.burger-combo-card--102 {
+  --combo-image-scale: 1.18;
+  --combo-image-y: 6px;
+}
+
+/* Combo Crispy */
+
+.burger-combo-card--109 {
+  --combo-image-scale: 1.16;
+  --combo-image-y: 7px;
+}
+
+/* Combo Simple Queso */
+
+.burger-combo-card--110 {
+  --combo-image-scale: 1.2;
+  --combo-image-y: 8px;
+}
+
+/* ========================================
+   IMAGEN
+======================================== */
+
+.burger-combo-card__image-link {
+  display: block;
+
+  min-width: 0;
+  height: 100%;
+}
+
+.burger-combo-card__visual {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  height: 100%;
+  min-height: 330px;
+  padding: 24px 14px;
+
+  overflow: hidden;
+
+  background:
+    radial-gradient(
+      circle at 50% 48%,
+      rgba(244, 201, 40, 0.28),
+      rgba(244, 201, 40, 0.07) 48%,
+      transparent 74%
+    );
+}
+
+.burger-combo-card__visual::after {
+  position: absolute;
+  bottom: 42px;
+  left: 50%;
+
+  width: 63%;
+  height: 20px;
+
+  border-radius: 50%;
+
+  background-color: rgba(23, 23, 23, 0.14);
+
+  content: "";
+
+  filter: blur(13px);
+
+  transform: translateX(-50%);
+}
+
+.burger-combo-card__badge {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  z-index: 4;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 30px;
+  padding: 5px 11px;
+
+  border: 1.5px solid var(--color-black);
+  border-radius: 999px;
+
+  background-color: var(--color-yellow);
+  color: var(--color-black);
+
+  font-family: "Fredoka", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+
+  box-shadow: 3px 3px 0 var(--color-black);
+}
+
+.burger-combo-card__image {
+  position: relative;
+  z-index: 2;
+
+  display: block;
+
+  width: 100%;
+  height: 100%;
+  max-height: 275px;
+
+  object-fit: contain;
+  object-position: center;
+
+  filter:
+    drop-shadow(
+      0 13px 11px rgba(23, 23, 23, 0.14)
+    );
+
+  transform:
+    translateY(var(--combo-image-y))
+    scale(var(--combo-image-scale));
+
+  transition:
+    transform 220ms ease,
+    filter 220ms ease;
+}
+
+.burger-combo-card:hover
+  .burger-combo-card__image {
+  filter:
+    drop-shadow(
+      0 17px 14px rgba(23, 23, 23, 0.19)
+    )
+    saturate(1.03);
+
+  transform:
+    translateY(
+      calc(var(--combo-image-y) - 3px)
+    )
+    scale(
+      calc(var(--combo-image-scale) + 0.025)
+    );
+}
+
+/* ========================================
+   CONTENIDO
+======================================== */
+
+.burger-combo-card__content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 22px;
+
+  min-width: 0;
+  padding: 30px 27px 27px;
+
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.burger-combo-card__name {
+  margin: 0;
+
+  color: var(--color-black);
+
+  font-family: "Fredoka", sans-serif;
+  font-size: 1.65rem;
+  font-weight: 700;
+  line-height: 1.05;
+}
+
+.burger-combo-card__name a {
+  color: inherit;
+
+  transition: color 160ms ease;
+}
+
+.burger-combo-card__name a:hover {
+  color: var(--color-primary);
+}
+
+.burger-combo-card__description {
+  margin: 12px 0 0;
+
+  color: rgba(23, 23, 23, 0.66);
+
+  font-family: "Nunito", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+/* ========================================
+   PRECIO Y BOTÓN
+======================================== */
+
+.burger-combo-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 13px;
+
+  padding-top: 18px;
+
+  border-top: 1px solid rgba(23, 23, 23, 0.1);
+}
+
+.burger-combo-card__price {
+  flex-shrink: 0;
+
+  color: var(--color-primary);
+
+  font-family: "Fredoka", sans-serif;
+  font-size: 1.48rem;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.burger-combo-card__add {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+
+  min-height: 44px;
+  padding: 0 17px;
+
+  border: 2px solid var(--color-black);
+  border-radius: 999px;
+
+  background-color: var(--color-yellow);
+  color: var(--color-black);
+
+  font-family: "Fredoka", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+
+  box-shadow: 3px 3px 0 var(--color-black);
+
+  cursor: pointer;
+
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    background-color 160ms ease;
+}
+
+.burger-combo-card__add:hover {
+  background-color: #ffd83d;
+
+  transform: translate(2px, 2px);
+
+  box-shadow: 1px 1px 0 var(--color-black);
+}
+
+/* ========================================
+   INDICADORES
+======================================== */
+
+.burger-combos__pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+
+  margin-top: 29px;
+}
+
+.burger-combos__dot {
+  width: 10px;
+  height: 10px;
+  padding: 0;
+
+  border: none;
+  border-radius: 999px;
+
+  background-color: rgba(255, 255, 255, 0.38);
+
+  cursor: pointer;
+
+  transition:
+    width 180ms ease,
+    background-color 180ms ease,
+    transform 180ms ease;
+}
+
+.burger-combos__dot:hover {
+  background-color: rgba(255, 255, 255, 0.75);
+
+  transform: scale(1.15);
+}
+
+.burger-combos__dot--active {
+  width: 30px;
+
+  background-color: var(--color-yellow);
+}
+
+/* ========================================
+   NOTEBOOKS
+======================================== */
+
+@media (max-width: 1100px) {
+  .burger-combos__viewport {
+    margin-inline: 62px;
+  }
+
+  .burger-combo-card {
+    grid-template-columns: 1fr;
+  }
+
+  .burger-combo-card__visual {
+    min-height: 260px;
+  }
+
+  .burger-combo-card__image {
+    max-height: 235px;
+  }
+
+  .burger-combo-card__content {
+    padding: 24px;
+  }
+}
+
+/* ========================================
+   TABLETS
+======================================== */
+
+@media (max-width: 780px) {
+  .burger-combos {
+    padding-block: 66px 68px;
+
+    scroll-margin-top: 100px;
+  }
+
+  .burger-combos__header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .burger-combos__grid {
+    grid-template-columns: 1fr;
+
+    max-width: 600px;
+    margin-inline: auto;
+  }
+
+  .burger-combo-card {
+    grid-template-columns:
+      minmax(210px, 0.9fr)
+      minmax(0, 1.1fr);
+  }
+
+  .burger-combo-card__visual {
+    min-height: 320px;
+  }
+}
+
+/* ========================================
+   CELULARES
+======================================== */
+
+@media (max-width: 560px) {
+  .burger-combos {
+    padding: 56px 15px 60px;
+
+    scroll-margin-top: 88px;
+  }
+
+  .burger-combos__description {
+    font-size: 15px;
+  }
+
+  .burger-combos__menu-link {
+    width: 100%;
+  }
+
+  .burger-combos__viewport {
+    margin-inline: 0;
+  }
+
+  .burger-combos__control {
+    top: 135px;
+
+    width: 43px;
+    height: 43px;
+
+    font-size: 14px;
+
+    box-shadow: 3px 3px 0 var(--color-black);
+  }
+
+  .burger-combos__control--previous {
+    left: 7px;
+  }
+
+  .burger-combos__control--next {
+    right: 7px;
+  }
+
+  .burger-combo-card {
+    grid-template-columns: 1fr;
+
+    border-radius: 22px;
+  }
+
+  .burger-combo-card__visual {
+    min-height: 270px;
+    padding-inline: 47px;
+  }
+
+  .burger-combo-card__content {
+    padding: 23px 20px 22px;
+  }
+
+  .burger-combo-card__footer {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .burger-combo-card__add {
+    width: 100%;
+  }
+}
+
+/* ========================================
+   CELULARES PEQUEÑOS
+======================================== */
+
+@media (max-width: 370px) {
+  .burger-combos {
+    scroll-margin-top: 82px;
+  }
+
+  .burger-combos__control {
+    top: 122px;
+
+    width: 40px;
+    height: 40px;
+  }
+
+  .burger-combos__control--previous {
+    left: 5px;
+  }
+
+  .burger-combos__control--next {
+    right: 5px;
+  }
+
+  .burger-combo-card__visual {
+    min-height: 245px;
+    padding-inline: 43px;
+  }
+
+  .burger-combo-card__name {
+    font-size: 1.45rem;
+  }
+
+  .burger-combo-card__price {
+    font-size: 1.35rem;
+  }
+}
+
+/* ========================================
+   MOVIMIENTO REDUCIDO
+======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .burger-combos__grid {
+    animation: none;
+  }
+
+  .burger-combos__control,
+  .burger-combo-card,
+  .burger-combo-card__image {
+    transition: none;
+  }
+}

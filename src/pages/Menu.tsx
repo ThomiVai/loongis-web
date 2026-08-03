@@ -1,282 +1,313 @@
 import {
-  useMemo,
-  useState,
-} from "react";
-import { FaArrowLeftLong } from "react-icons/fa6";
-import { Link } from "react-router-dom";
+  Link,
+  useSearchParams,
+} from "react-router-dom";
 
 import { AddToCartButton } from "../components/AddToCartButton";
-
 import { menuProducts } from "../data/menuProducts";
-
-import type {
-  Product,
-  ProductCategory,
-} from "../types/Product";
 
 import "../styles/Menu.css";
 
-type ProductFilter =
+/* ========================================
+   TIPOS
+======================================== */
+
+type MenuFilter =
   | "todos"
-  | ProductCategory;
+  | "hamburguesas"
+  | "combos";
 
-type CategoryOption = {
-  value: ProductFilter;
+type ProductMenuCategory =
+  | "hamburguesas"
+  | "combos";
+
+/* ========================================
+   FILTROS
+======================================== */
+
+const menuFilters: {
+  id: MenuFilter;
   label: string;
-};
-
-const categories: CategoryOption[] = [
+}[] = [
   {
-    value: "todos",
+    id: "todos",
     label: "Todos",
   },
   {
-    value: "hamburguesas",
+    id: "hamburguesas",
     label: "Hamburguesas",
   },
   {
-    value: "combos",
+    id: "combos",
     label: "Combos",
-  },
-  {
-    value: "papas",
-    label: "Papas",
-  },
-  {
-    value: "bebidas",
-    label: "Bebidas",
-  },
-  {
-    value: "postres",
-    label: "Postres",
   },
 ];
 
-const categoryLabels: Record<
-  ProductCategory,
-  string
-> = {
-  hamburguesas: "Hamburguesas",
-  combos: "Combos",
-  papas: "Papas",
-  bebidas: "Bebidas",
-  postres: "Postres",
-};
+/* ========================================
+   FUNCIONES AUXILIARES
+======================================== */
 
-const priceFormatter =
-  new Intl.NumberFormat("es-AR", {
-    style: "currency",
-    currency: "ARS",
-    maximumFractionDigits: 0,
-  });
-
-function getProductCategory(
-  product: Product,
-): ProductCategory {
+function isMenuFilter(
+  value: string | null,
+): value is MenuFilter {
   return (
-    product.category ?? "hamburguesas"
+    value === "todos" ||
+    value === "hamburguesas" ||
+    value === "combos"
   );
 }
 
+function getCategoryLabel(
+  category: ProductMenuCategory,
+) {
+  if (category === "hamburguesas") {
+    return "Hamburguesas";
+  }
+
+  return "Combos";
+}
+
+function formatPrice(price: number) {
+  return `$ ${price.toLocaleString("es-AR")}`;
+}
+
+/* ========================================
+   COMPONENTE
+======================================== */
+
 export function Menu() {
-  const [selectedCategory, setSelectedCategory] =
-    useState<ProductFilter>("todos");
+  const [
+    searchParams,
+    setSearchParams,
+  ] = useSearchParams();
 
-  const filteredProducts = useMemo(() => {
-    return menuProducts.filter((product) => {
-      const isAvailable =
-        product.available !== false;
+  const categoryParameter =
+    searchParams.get("categoria");
 
-      if (!isAvailable) {
-        return false;
-      }
+  const activeFilter: MenuFilter =
+    isMenuFilter(categoryParameter)
+      ? categoryParameter
+      : "todos";
 
-      if (selectedCategory === "todos") {
-        return true;
-      }
+  const visibleProducts =
+    activeFilter === "todos"
+      ? menuProducts
+      : menuProducts.filter(
+          (product) =>
+            product.productCategory ===
+            activeFilter,
+        );
 
-      return (
-        getProductCategory(product) ===
-        selectedCategory
-      );
+  const handleFilterChange = (
+    filter: MenuFilter,
+  ) => {
+    if (filter === "todos") {
+      setSearchParams({});
+      return;
+    }
+
+    setSearchParams({
+      categoria: filter,
     });
-  }, [selectedCategory]);
+  };
+
+  const productsCount =
+    visibleProducts.length;
 
   return (
     <main className="menu-page">
+      {/* =================================
+          PORTADA
+      ================================= */}
+
       <section className="menu-hero">
         <div className="menu-page__container">
           <Link
-            className="menu-hero__back"
             to="/"
+            className="menu-hero__back"
           >
-            <FaArrowLeftLong
-              aria-hidden="true"
-            />
+            <span aria-hidden="true">
+              ←
+            </span>
 
-            <span>Volver al inicio</span>
+            Volver al inicio
           </Link>
 
           <div className="menu-hero__content">
             <span className="menu-hero__eyebrow">
-              Elegí tu favorita
+              Menú Loongis
             </span>
 
             <h1 className="menu-hero__title">
-              Menú Loongis
+              Elegí tu favorita
             </h1>
 
             <p className="menu-hero__description">
-              Hamburguesas smash, combos,
-              papas, bebidas y algo dulce para
-              cerrar el pedido.
+              Hamburguesas smash y combos
+              para disfrutar Loongis como
+              más te gusta.
             </p>
           </div>
         </div>
       </section>
+
+      {/* =================================
+          PRODUCTOS
+      ================================= */}
 
       <section
         className="menu-products"
         aria-labelledby="menu-products-title"
       >
         <div className="menu-page__container">
-          <div className="menu-products__header">
+          <header className="menu-products__header">
             <div>
               <span className="menu-products__eyebrow">
-                Nuestro menú
+                Todo el sabor
               </span>
 
               <h2
                 className="menu-products__title"
                 id="menu-products-title"
               >
-                Encontrá lo que estás buscando
+                Nuestro menú
               </h2>
             </div>
 
-            <p className="menu-products__count">
-              {filteredProducts.length}{" "}
-              {filteredProducts.length === 1
+            <p
+              className="menu-products__count"
+              aria-live="polite"
+            >
+              {productsCount}{" "}
+              {productsCount === 1
                 ? "producto"
                 : "productos"}
             </p>
-          </div>
+          </header>
+
+          {/* =============================
+              FILTROS
+          ============================= */}
 
           <div
             className="menu-filters"
-            aria-label="Filtrar productos por categoría"
+            aria-label="Filtrar productos"
           >
-            {categories.map((category) => {
+            {menuFilters.map((filter) => {
               const isActive =
-                selectedCategory ===
-                category.value;
+                activeFilter === filter.id;
 
               return (
                 <button
-                  className={`menu-filter ${
-                    isActive
-                      ? "menu-filter--active"
-                      : ""
-                  }`}
+                  key={filter.id}
                   type="button"
-                  key={category.value}
+                  className={
+                    isActive
+                      ? "menu-filter menu-filter--active"
+                      : "menu-filter"
+                  }
                   aria-pressed={isActive}
                   onClick={() =>
-                    setSelectedCategory(
-                      category.value,
+                    handleFilterChange(
+                      filter.id,
                     )
                   }
                 >
-                  {category.label}
+                  {filter.label}
                 </button>
               );
             })}
           </div>
 
-          {filteredProducts.length > 0 ? (
+          {/* =============================
+              GRILLA
+          ============================= */}
+
+          {visibleProducts.length > 0 ? (
             <div className="menu-products__grid">
-              {filteredProducts.map(
-                (product) => {
-                  const productCategory =
-                    getProductCategory(product);
+              {visibleProducts.map(
+                (product) => (
+                  <article
+                    key={product.id}
+                    className={[
+                      "menu-product-card",
+                      `menu-product-card--${product.id}`,
+                      `menu-product-card--${product.productCategory}`,
+                    ].join(" ")}
+                  >
+                    {/* Imagen */}
 
-                  return (
-                    <article
-                      className={`menu-product-card menu-product-card--${product.id} menu-product-card--${productCategory}`}
-                      key={product.id}
+                    <Link
+                      to={`/producto/${product.id}`}
+                      className="menu-product-card__image-link"
+                      aria-label={`Ver detalle de ${product.name}`}
                     >
-                      <Link
-                        className="menu-product-card__image-link"
-                        to={`/producto/${product.id}`}
-                        aria-label={`Ver detalle de ${product.name}`}
-                      >
-                        <div className="menu-product-card__image-wrapper">
-                          <img
-                            className="menu-product-card__image"
-                            src={product.image}
-                            alt={product.imageAlt}
-                            loading="lazy"
-                          />
-                        </div>
-                      </Link>
+                      <div className="menu-product-card__image-wrapper">
+                        <img
+                          src={product.image}
+                          alt={product.imageAlt}
+                          className="menu-product-card__image"
+                          loading="lazy"
+                        />
+                      </div>
+                    </Link>
 
-                      <div className="menu-product-card__content">
-                        <span className="menu-product-card__category">
-                          {
-                            categoryLabels[
-                              productCategory
-                            ]
-                          }
-                        </span>
+                    {/* Información */}
 
-                        <h3 className="menu-product-card__name">
+                    <div className="menu-product-card__content">
+                      <span className="menu-product-card__category">
+                        {getCategoryLabel(
+                          product.productCategory,
+                        )}
+                      </span>
+
+                      <h3 className="menu-product-card__name">
+                        <Link
+                          to={`/producto/${product.id}`}
+                        >
+                          {product.name}
+                        </Link>
+                      </h3>
+
+                      <p className="menu-product-card__description">
+                        {product.description}
+                      </p>
+
+                      <footer className="menu-product-card__footer">
+                        <strong className="menu-product-card__price">
+                          {formatPrice(
+                            product.price,
+                          )}
+                        </strong>
+
+                        <div className="menu-product-card__actions">
                           <Link
                             to={`/producto/${product.id}`}
+                            className="menu-product-card__detail"
                           >
-                            {product.name}
+                            Ver detalle
                           </Link>
-                        </h3>
 
-                        <p className="menu-product-card__description">
-                          {product.description}
-                        </p>
-
-                        <div className="menu-product-card__footer">
-                          <span className="menu-product-card__price">
-                            {priceFormatter.format(
-                              product.price,
-                            )}
-                          </span>
-
-                          <div className="menu-product-card__actions">
-                            <Link
-                              className="menu-product-card__detail"
-                              to={`/producto/${product.id}`}
-                            >
-                              Ver detalle
-                            </Link>
-
-                            <AddToCartButton
-                              product={product}
-                              className="menu-product-card__button"
-                            />
-                          </div>
+                          <AddToCartButton
+                            product={product}
+                            className="menu-product-card__button"
+                          />
                         </div>
-                      </div>
-                    </article>
-                  );
-                },
+                      </footer>
+                    </div>
+                  </article>
+                ),
               )}
             </div>
           ) : (
             <div className="menu-products__empty">
               <h3>
-                No hay productos disponibles
+                No encontramos productos
               </h3>
 
               <p>
-                Por el momento no encontramos
-                productos en esta categoría.
+                Probá seleccionando otra
+                categoría del menú.
               </p>
             </div>
           )}
