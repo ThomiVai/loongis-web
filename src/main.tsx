@@ -8,6 +8,7 @@ import { CartProvider } from "./context/CartProvider";
 import { NotificationProvider } from "./context/NotificationProvider";
 
 import "./styles/global.css";
+import "./styles/Mobile.css";
 
 createRoot(
   document.getElementById("root")!,

@@ -1,0 +1,1357 @@
+/* ========================================
+   LOONGIS MOBILE V2
+   Ajustes exclusivos para celulares.
+   Desktop permanece sin cambios.
+======================================== */
+
+@media (max-width: 560px) {
+  html {
+    scroll-padding-top: 82px;
+  }
+
+  section,
+  main,
+  footer {
+    scroll-margin-top: 82px;
+  }
+
+  .container {
+    padding-inline: 12px;
+  }
+
+  /* ======================================
+     NAVBAR
+  ====================================== */
+
+  .navbar {
+    padding: 7px 0;
+  }
+
+  .navbar__container {
+    gap: 7px;
+
+    min-height: 58px;
+    padding: 5px 8px 5px 10px;
+
+    border-radius: 18px;
+
+    box-shadow: 0 8px 24px rgba(23, 23, 23, 0.07);
+  }
+
+  .navbar__logo {
+    width: 104px;
+    height: 37px;
+  }
+
+  .navbar__logo-image {
+    transform: scale(1.1);
+  }
+
+  .navbar__mobile-button {
+    width: 39px;
+    height: 39px;
+
+    border-radius: 11px;
+
+    font-size: 17px;
+  }
+
+  .navbar__order-button {
+    gap: 5px;
+
+    min-height: 39px;
+    padding: 6px 7px;
+
+    border-radius: 11px;
+
+    box-shadow: 3px 3px 0 var(--color-black);
+  }
+
+  .navbar__order-button svg {
+    font-size: 15px;
+  }
+
+  .navbar__cart-count {
+    width: 22px;
+    height: 22px;
+
+    font-size: 10px;
+  }
+
+  .navbar__navigation {
+    top: calc(100% + 6px);
+
+    gap: 2px;
+
+    padding: 10px;
+
+    border-radius: 16px;
+
+    box-shadow: 4px 4px 0 var(--color-black);
+  }
+
+  .navbar__link {
+    padding: 9px 10px;
+
+    border-radius: 10px;
+
+    font-size: 15px;
+  }
+
+  /* ======================================
+     ESTADO DEL LOCAL
+  ====================================== */
+
+  .store-status__container {
+    min-height: 48px;
+    padding: 6px 14px;
+  }
+
+  .store-status__information {
+    gap: 8px;
+  }
+
+  .store-status__icon {
+    width: 28px;
+    height: 28px;
+  }
+
+  .store-status__icon svg {
+    width: 13px;
+    height: 13px;
+  }
+
+  .store-status__text strong {
+    font-size: 0.76rem;
+  }
+
+  .store-status__text > span {
+    font-size: 0.66rem;
+  }
+
+  /* ======================================
+     HERO
+  ====================================== */
+
+  .hero {
+    padding: 18px 0 8px;
+  }
+
+  .hero__container {
+    gap: 4px;
+  }
+
+  .hero__content {
+    max-width: 100%;
+  }
+
+  .hero__title {
+    letter-spacing: -1.3px;
+  }
+
+  .hero__title-small {
+    font-size: clamp(25px, 7.5vw, 30px);
+  }
+
+  .hero__title-primary {
+    font-size: clamp(46px, 15vw, 58px);
+  }
+
+  .hero__title-underlined {
+    padding-bottom: 6px;
+  }
+
+  .hero__title-underlined::after {
+    right: -4px;
+    bottom: 0;
+
+    height: 4px;
+  }
+
+  .hero__description {
+    max-width: 340px;
+    margin-top: 18px;
+
+    font-size: 14px;
+    line-height: 1.45;
+  }
+
+  .hero__actions {
+    gap: 8px;
+
+    margin-top: 18px;
+  }
+
+  .hero__button {
+    min-height: 46px;
+    padding: 10px 16px;
+
+    border-radius: 13px;
+
+    font-size: 14px;
+  }
+
+  .hero__benefits {
+    gap: 4px;
+
+    margin-top: 22px;
+  }
+
+  .hero__benefit {
+    gap: 4px;
+  }
+
+  .hero__benefit-icon {
+    width: 26px;
+    height: 26px;
+
+    font-size: 17px;
+  }
+
+  .hero__benefit strong {
+    font-size: 11px;
+  }
+
+  .hero__benefit div span {
+    font-size: 10px;
+  }
+
+  .hero__visual {
+    min-height: 285px;
+  }
+
+  .hero__image-frame {
+    border-radius: 18px;
+  }
+
+  .hero__main-image {
+    width: 410px;
+
+    transform: translateY(12px);
+  }
+
+  .hero__visual:hover .hero__main-image {
+    transform: translateY(10px);
+  }
+
+  /* ======================================
+     CATEGORÍAS
+  ====================================== */
+
+  .categories {
+    padding: 18px 14px 24px;
+  }
+
+  .categories__header {
+    margin-bottom: 14px;
+  }
+
+  .categories__title {
+    font-size: clamp(1.65rem, 8vw, 2rem);
+  }
+
+  .categories__eyebrow {
+    font-size: 10px;
+  }
+
+  .categories__grid {
+    gap: 8px;
+  }
+
+  .category-card {
+    grid-template-columns: 46px minmax(0, 1fr) 30px;
+    gap: 10px;
+
+    min-height: 74px;
+    padding: 10px 12px;
+
+    border-radius: 15px;
+  }
+
+  .category-card__icon {
+    width: 46px;
+    height: 46px;
+
+    border-radius: 13px;
+  }
+
+  .category-card__icon svg {
+    width: 31px;
+    height: 31px;
+  }
+
+  .category-card__name {
+    font-size: 14px;
+  }
+
+  .category-card__description {
+    font-size: 10.5px;
+  }
+
+  .category-card__arrow {
+    width: 30px;
+    height: 30px;
+  }
+
+  /* ======================================
+     PROMO DEL DÍA
+  ====================================== */
+
+  .promo-banner {
+    padding: 34px 14px 40px;
+  }
+
+  .promo-banner__container {
+    gap: 16px;
+  }
+
+  .promo-banner__visual {
+    min-height: 260px;
+
+    border-radius: 21px;
+  }
+
+  .promo-banner__image-wrapper {
+    height: 250px;
+  }
+
+  .promo-banner__combo-image {
+    max-width: 330px;
+
+    transform: scale(1.02);
+  }
+
+  .promo-banner__visual:hover .promo-banner__combo-image {
+    transform: translateY(-2px) scale(1.035);
+  }
+
+  .promo-banner__decoration {
+    top: 51%;
+    left: 48%;
+
+    width: 205px;
+    height: 205px;
+  }
+
+  .promo-banner__discount {
+    top: 10px;
+    right: 4px;
+
+    width: 64px;
+    height: 64px;
+  }
+
+  .promo-banner__discount strong {
+    font-size: 0.76rem;
+  }
+
+  .promo-banner__discount span {
+    margin-top: 3px;
+
+    font-size: 0.56rem;
+  }
+
+  .promo-banner__eyebrow {
+    margin-bottom: 10px;
+    padding: 6px 11px;
+
+    font-size: 0.68rem;
+  }
+
+  .promo-banner__title {
+    font-size: clamp(2.3rem, 11vw, 2.75rem);
+    line-height: 0.96;
+  }
+
+  .promo-banner__product-name {
+    margin-top: 11px;
+
+    font-size: 1.25rem;
+  }
+
+  .promo-banner__description {
+    margin: 9px 0 13px;
+
+    font-size: 0.85rem;
+    line-height: 1.45;
+  }
+
+  .promo-banner__includes {
+    gap: 6px;
+
+    margin-bottom: 16px;
+  }
+
+  .promo-banner__includes li {
+    padding-left: 22px;
+
+    font-size: 0.8rem;
+  }
+
+  .promo-banner__price {
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+    gap: 10px;
+
+    margin-bottom: 14px;
+    padding: 13px 0;
+  }
+
+  .promo-banner__price span {
+    font-size: 0.75rem;
+  }
+
+  .promo-banner__price strong {
+    font-size: 1.65rem;
+  }
+
+  .promo-banner__actions {
+    align-items: stretch;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 8px;
+
+    width: 100%;
+  }
+
+  .promo-banner__add-button,
+  .promo-banner__detail-button {
+    flex: 1;
+
+    width: auto;
+    min-width: 0;
+    min-height: 44px;
+    padding: 0 10px;
+
+    font-size: 0.8rem;
+  }
+
+  .promo-banner__notice {
+    margin-top: 11px;
+
+    font-size: 0.68rem;
+  }
+
+  /* ======================================
+     CARRUSEL DE COMBOS
+  ====================================== */
+
+  .burger-combos {
+    padding: 38px 14px 42px;
+
+    scroll-margin-top: 76px;
+  }
+
+  .burger-combos__header {
+    gap: 16px;
+
+    margin-bottom: 22px;
+  }
+
+  .burger-combos__eyebrow {
+    margin-bottom: 9px;
+    padding: 6px 11px;
+
+    font-size: 10px;
+  }
+
+  .burger-combos__title {
+    font-size: 2.45rem;
+    line-height: 0.98;
+  }
+
+  .burger-combos__description {
+    margin-top: 10px;
+
+    font-size: 13.5px;
+    line-height: 1.45;
+  }
+
+  .burger-combos__menu-link {
+    min-height: 44px;
+    padding: 9px 14px;
+
+    border-radius: 12px;
+
+    font-size: 13px;
+  }
+
+  .burger-combos__viewport {
+    margin-inline: 0;
+  }
+
+  .burger-combo-card {
+    min-height: 0;
+
+    border-radius: 20px;
+  }
+
+  .burger-combo-card__visual {
+    min-height: 215px;
+    padding: 18px 34px;
+  }
+
+  .burger-combo-card__image {
+    max-height: 200px;
+  }
+
+  .burger-combo-card__badge {
+    top: 12px;
+    left: 12px;
+
+    min-height: 26px;
+    padding: 4px 9px;
+
+    font-size: 10px;
+
+    box-shadow: 2px 2px 0 var(--color-black);
+  }
+
+  .burger-combos__control {
+    top: 107px;
+
+    width: 38px;
+    height: 38px;
+
+    font-size: 12px;
+
+    box-shadow: 2px 2px 0 var(--color-black);
+  }
+
+  .burger-combos__control--previous {
+    left: 6px;
+  }
+
+  .burger-combos__control--next {
+    right: 6px;
+  }
+
+  .burger-combo-card__content {
+    gap: 14px;
+
+    padding: 16px 16px 17px;
+  }
+
+  .burger-combo-card__name {
+    font-size: 1.35rem;
+  }
+
+  .burger-combo-card__description {
+    margin-top: 8px;
+
+    font-size: 12.5px;
+    line-height: 1.42;
+  }
+
+  .burger-combo-card__footer {
+    align-items: center;
+    flex-direction: row;
+    gap: 10px;
+
+    padding-top: 13px;
+  }
+
+  .burger-combo-card__price {
+    font-size: 1.28rem;
+  }
+
+  .burger-combo-card__add {
+    width: auto;
+    min-height: 40px;
+    padding: 0 15px;
+
+    font-size: 12px;
+
+    box-shadow: 2px 2px 0 var(--color-black);
+  }
+
+  .burger-combos__pagination {
+    margin-top: 20px;
+  }
+
+  /* ======================================
+     LAS 3 PRINCIPALES
+  ====================================== */
+
+  .featured-products {
+    padding: 40px 14px 46px;
+  }
+
+  .featured-products__header {
+    gap: 10px;
+
+    margin-bottom: 20px;
+  }
+
+  .featured-products__title {
+    font-size: 1.25rem;
+  }
+
+  .featured-products__grid {
+    gap: 22px;
+  }
+
+  .featured-product {
+    --product-image-scale: 1.38;
+
+    padding-bottom: 24px;
+  }
+
+  .featured-product--3 {
+    --product-image-scale: 1.4;
+    --product-image-y: 12px;
+  }
+
+  .featured-product--4 {
+    --product-image-scale: 1.38;
+  }
+
+  .featured-product__visual {
+    height: 195px;
+  }
+
+  .featured-product__content {
+    padding-top: 0;
+  }
+
+  .featured-product__name {
+    font-size: 1.3rem;
+  }
+
+  .featured-product__description {
+    margin: 8px 0 12px;
+
+    font-size: 0.8rem;
+    line-height: 1.42;
+  }
+
+  .featured-product__footer {
+    align-items: center;
+    flex-direction: row;
+    gap: 10px;
+
+    padding: 10px 11px;
+
+    border-radius: 14px;
+  }
+
+  .featured-product__price {
+    font-size: 1.23rem;
+  }
+
+  .featured-product__add {
+    width: auto;
+    min-height: 40px;
+    padding: 0 14px;
+
+    font-size: 0.78rem;
+  }
+
+  /* ======================================
+     BENEFICIOS
+  ====================================== */
+
+  .business-benefits {
+    padding: 0 14px 34px;
+  }
+
+  .business-benefits__grid {
+    gap: 8px;
+  }
+
+  .business-benefit {
+    gap: 6px;
+
+    min-height: 105px;
+    padding: 11px 8px;
+
+    border-radius: 14px;
+  }
+
+  .business-benefit__icon {
+    width: 42px;
+    height: 42px;
+  }
+
+  .business-benefit__icon svg {
+    width: 38px;
+    height: 38px;
+  }
+
+  .business-benefit__title {
+    font-size: 0.85rem;
+  }
+
+  .business-benefit__description {
+    margin-top: 2px;
+
+    font-size: 0.76rem;
+  }
+
+  /* ======================================
+     INFORMACIÓN DEL LOCAL
+  ====================================== */
+
+  .store-info {
+    padding: 12px 14px 40px;
+  }
+
+  .store-info__heading {
+    margin-bottom: 20px;
+  }
+
+  .store-info__eyebrow {
+    margin-bottom: 8px;
+    padding: 6px 11px;
+
+    font-size: 0.68rem;
+  }
+
+  .store-info__title {
+    font-size: 1.75rem;
+  }
+
+  .store-info__subtitle {
+    margin-top: 9px;
+
+    font-size: 0.88rem;
+    line-height: 1.45;
+  }
+
+  .store-info__grid {
+    gap: 10px;
+  }
+
+  .store-info-card,
+  .store-info-card:last-child {
+    min-height: 128px;
+    padding: 15px;
+
+    border-radius: 17px;
+  }
+
+  .store-info-card {
+    gap: 12px;
+  }
+
+  .store-info-card__icon {
+    width: 46px;
+    height: 46px;
+
+    border-radius: 13px;
+  }
+
+  .store-info-card__icon svg {
+    width: 31px;
+    height: 31px;
+  }
+
+  .store-info-card__title {
+    font-size: 1.05rem;
+  }
+
+  .store-info-card__description {
+    gap: 2px;
+
+    margin: 8px 0 11px;
+
+    font-size: 0.8rem;
+    line-height: 1.35;
+  }
+
+  .store-info-card__action {
+    gap: 6px;
+
+    font-size: 0.8rem;
+  }
+
+  .store-info-card__action svg {
+    width: 15px;
+    height: 15px;
+  }
+
+  /* ======================================
+     FOOTER
+  ====================================== */
+
+  .site-footer {
+    padding: 64px 14px 16px;
+  }
+
+  .site-footer__wave {
+    height: 44px;
+  }
+
+  .site-footer__main {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px 16px;
+  }
+
+  .site-footer__logo {
+    width: 190px;
+    height: 70px;
+
+    transform: scale(1.06);
+  }
+
+  .site-footer__description {
+    max-width: 290px;
+    margin: 8px auto 12px;
+
+    font-size: 0.82rem;
+    line-height: 1.4;
+  }
+
+  .site-footer__socials {
+    gap: 8px;
+  }
+
+  .site-footer__social-button {
+    width: 38px;
+    height: 38px;
+  }
+
+  .site-footer__social-button svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .site-footer__column {
+    gap: 6px;
+  }
+
+  .site-footer__column-title {
+    margin-bottom: 5px;
+
+    font-size: 0.78rem;
+  }
+
+  .site-footer__column a,
+  .site-footer__column button,
+  .site-footer__column p,
+  .site-footer__column strong {
+    font-size: 0.75rem;
+    line-height: 1.3;
+  }
+
+  .site-footer__schedule {
+    gap: 6px;
+  }
+
+  .site-footer__mascot-wrapper {
+    min-height: 120px;
+  }
+
+  .site-footer__mascot {
+    width: 165px;
+    height: 130px;
+
+    transform: scale(1);
+  }
+
+  .site-footer:hover .site-footer__mascot {
+    transform: translateY(-2px) scale(1.02);
+  }
+
+  .site-footer__bottom {
+    gap: 5px;
+
+    margin-top: 16px;
+    padding-top: 14px;
+
+    font-size: 0.68rem;
+    line-height: 1.35;
+  }
+
+  /* ======================================
+     PÁGINA MENÚ
+  ====================================== */
+
+  .menu-page__container {
+    width: min(100% - 24px, 480px);
+  }
+
+  .menu-hero {
+    padding: 24px 0 30px;
+  }
+
+  .menu-hero__back {
+    margin-bottom: 20px;
+
+    font-size: 13px;
+  }
+
+  .menu-hero__eyebrow {
+    margin-bottom: 9px;
+
+    font-size: 10px;
+  }
+
+  .menu-hero__title {
+    font-size: 2.35rem;
+  }
+
+  .menu-hero__description {
+    margin-top: 14px;
+
+    font-size: 14px;
+    line-height: 1.45;
+  }
+
+  .menu-products {
+    padding: 34px 0 48px;
+  }
+
+  .menu-products__header {
+    gap: 12px;
+
+    margin-bottom: 20px;
+  }
+
+  .menu-products__title {
+    font-size: 2rem;
+  }
+
+  .menu-products__count {
+    padding: 7px 11px;
+
+    font-size: 11px;
+  }
+
+  .menu-filters {
+    gap: 7px;
+
+    margin-bottom: 22px;
+  }
+
+  .menu-filter {
+    min-height: 36px;
+    padding: 7px 12px;
+
+    font-size: 11px;
+  }
+
+  .menu-products__grid {
+    gap: 16px;
+  }
+
+  .menu-product-card {
+    border-radius: 18px;
+  }
+
+  .menu-product-card__image-wrapper {
+    height: 220px;
+  }
+
+  .menu-product-card__content {
+    padding: 16px;
+  }
+
+  .menu-product-card__category {
+    margin-bottom: 8px;
+    padding: 5px 9px;
+
+    font-size: 9px;
+  }
+
+  .menu-product-card__name {
+    font-size: 1.28rem;
+  }
+
+  .menu-product-card__description {
+    margin: 8px 0 14px;
+
+    font-size: 12.5px;
+    line-height: 1.42;
+  }
+
+  .menu-product-card__footer {
+    gap: 11px;
+
+    padding-top: 13px;
+  }
+
+  .menu-product-card__price {
+    font-size: 1.28rem;
+  }
+
+  .menu-product-card__actions {
+    align-items: stretch;
+    flex-direction: row;
+    gap: 8px;
+  }
+
+  .menu-product-card__detail,
+  .menu-product-card__button {
+    flex: 1;
+
+    width: auto;
+    min-width: 0;
+    min-height: 40px;
+    padding: 8px 10px;
+
+    font-size: 11px;
+  }
+
+  /* ======================================
+     DETALLE DE PRODUCTO
+  ====================================== */
+
+  .product-detail__content {
+    padding: 24px 0 48px;
+  }
+
+  .product-detail__container {
+    padding-inline: 14px;
+  }
+
+  .product-detail__back {
+    margin-bottom: 18px;
+  }
+
+  .product-detail__layout {
+    gap: 22px;
+  }
+
+  .product-detail__image-background {
+    min-height: 270px;
+    padding: 16px;
+
+    border-radius: 21px;
+  }
+
+  .product-detail__image {
+    max-width: 280px;
+    height: 240px;
+  }
+
+  .product-detail__decoration--one {
+    top: 18px;
+    right: 18px;
+
+    width: 58px;
+    height: 58px;
+  }
+
+  .product-detail__decoration--two {
+    bottom: 18px;
+    left: 18px;
+
+    width: 38px;
+    height: 38px;
+  }
+
+  .product-detail__category {
+    margin-bottom: 9px;
+  }
+
+  .product-detail__title {
+    font-size: clamp(2.05rem, 10vw, 2.6rem);
+  }
+
+  .product-detail__description {
+    margin-top: 12px;
+
+    font-size: 0.88rem;
+    line-height: 1.45;
+  }
+
+  .product-detail__price-row {
+    margin-top: 18px;
+  }
+
+  .product-detail__price {
+    font-size: 1.5rem;
+  }
+
+  .product-detail__add-button {
+    min-height: 46px;
+  }
+
+  .product-customization {
+    margin-top: 24px;
+  }
+
+  .product-customization__title {
+    font-size: 1.25rem;
+  }
+
+  .product-customization__subtitle {
+    font-size: 0.82rem;
+  }
+
+  .product-option {
+    padding: 10px;
+  }
+
+  /* ======================================
+     CARRITO
+  ====================================== */
+
+  .cart-page__container {
+    padding-inline: 14px;
+  }
+
+  .cart-page__hero {
+    padding: 24px 0 30px;
+  }
+
+  .cart-page__back {
+    margin-bottom: 20px;
+  }
+
+  .cart-page__title {
+    font-size: clamp(2.5rem, 12vw, 3.2rem);
+  }
+
+  .cart-page__subtitle {
+    font-size: 0.9rem;
+  }
+
+  .cart-content {
+    padding: 6px 0 48px;
+  }
+
+  .cart-products__header {
+    gap: 10px;
+  }
+
+  .cart-item {
+    grid-template-columns: 88px minmax(0, 1fr);
+    gap: 12px;
+
+    padding: 13px;
+  }
+
+  .cart-item__image-wrapper {
+    width: 88px;
+    height: 88px;
+  }
+
+  .cart-item__image {
+    max-width: 86px;
+    height: 82px;
+  }
+
+  .cart-item__name {
+    font-size: 1.08rem;
+  }
+
+  .cart-item__actions {
+    padding-top: 10px;
+  }
+
+  .cart-summary {
+    padding: 19px;
+  }
+
+  .cart-summary__checkout,
+  .cart-summary__continue {
+    min-height: 46px;
+  }
+
+  /* ======================================
+     CHECKOUT
+  ====================================== */
+
+  .checkout-page {
+    padding: 22px 12px 50px;
+  }
+
+  .checkout-page__back {
+    margin-bottom: 18px;
+  }
+
+  .checkout-page__header {
+    margin-bottom: 22px;
+  }
+
+  .checkout-page__title {
+    font-size: clamp(2.25rem, 10vw, 2.8rem);
+  }
+
+  .checkout-page__description {
+    font-size: 14px;
+    line-height: 1.45;
+  }
+
+  .checkout-form,
+  .checkout-summary {
+    padding: 16px;
+
+    border-radius: 18px;
+  }
+
+  .checkout-form {
+    gap: 16px;
+  }
+
+  .checkout-section {
+    padding-bottom: 18px;
+  }
+
+  .checkout-option {
+    min-height: 64px;
+    padding: 12px;
+  }
+
+  .checkout-summary__item {
+    grid-template-columns: 60px minmax(0, 1fr);
+    gap: 10px;
+  }
+
+  .checkout-summary__item-image {
+    width: 60px;
+    height: 60px;
+  }
+
+  .checkout-submit {
+    min-height: 48px;
+
+    font-size: 15px;
+  }
+}
+
+/* ========================================
+   CELULARES PEQUEÑOS
+======================================== */
+
+@media (max-width: 380px) {
+  .navbar__logo {
+    width: 92px;
+    height: 34px;
+  }
+
+  .navbar__mobile-button,
+  .navbar__order-button {
+    min-height: 37px;
+    height: 37px;
+  }
+
+  .navbar__mobile-button {
+    width: 37px;
+  }
+
+  .hero__title-small {
+    font-size: 24px;
+  }
+
+  .hero__title-primary {
+    font-size: 46px;
+  }
+
+  .hero__visual {
+    min-height: 255px;
+  }
+
+  .hero__main-image {
+    width: 365px;
+  }
+
+  .promo-banner__visual {
+    min-height: 235px;
+  }
+
+  .promo-banner__image-wrapper {
+    height: 230px;
+  }
+
+  .promo-banner__combo-image {
+    max-width: 300px;
+  }
+
+  .promo-banner__title {
+    font-size: 2.15rem;
+  }
+
+  .promo-banner__add-button,
+  .promo-banner__detail-button {
+    font-size: 0.73rem;
+  }
+
+  .burger-combo-card__visual {
+    min-height: 195px;
+    padding-inline: 30px;
+  }
+
+  .burger-combo-card__image {
+    max-height: 185px;
+  }
+
+  .burger-combos__control {
+    top: 98px;
+  }
+
+  .burger-combo-card__footer,
+  .featured-product__footer {
+    align-items: center;
+    flex-direction: row;
+  }
+
+  .burger-combo-card__add,
+  .featured-product__add {
+    width: auto;
+  }
+
+  .featured-product__visual {
+    height: 180px;
+  }
+
+  .business-benefits__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .business-benefit {
+    min-height: 98px;
+  }
+
+  .store-info-card,
+  .store-info-card:last-child {
+    min-height: 118px;
+    padding: 13px;
+  }
+
+  .site-footer__main {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .site-footer__column {
+    align-items: flex-start;
+
+    text-align: left;
+  }
+
+  .site-footer__brand,
+  .site-footer__schedule,
+  .site-footer__mascot-wrapper {
+    grid-column: 1 / -1;
+  }
+
+  .site-footer__schedule {
+    align-items: center;
+
+    text-align: center;
+  }
+
+  .menu-product-card__image-wrapper {
+    height: 205px;
+  }
+
+  .menu-product-card__actions {
+    flex-direction: row;
+  }
+
+  .menu-product-card__detail,
+  .menu-product-card__button {
+    width: auto;
+  }
+
+  .product-detail__image-background {
+    min-height: 245px;
+  }
+
+  .product-detail__image {
+    height: 220px;
+  }
+}
