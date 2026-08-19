@@ -47,16 +47,14 @@
 .cart-page__back {
   display: inline-flex;
   align-items: center;
+
   gap: 9px;
 
   margin-bottom: 24px;
 
   color: var(--color-primary);
 
-  font-family:
-    "Fredoka",
-    sans-serif;
-
+  font-family: "Fredoka", sans-serif;
   font-size: 0.95rem;
   font-weight: 700;
 
@@ -120,13 +118,9 @@
   background-color:
     rgba(244, 201, 40, 0.3);
 
-  color:
-    var(--color-primary-dark);
+  color: var(--color-primary-dark);
 
-  font-family:
-    "Fredoka",
-    sans-serif;
-
+  font-family: "Fredoka", sans-serif;
   font-size: 0.78rem;
   font-weight: 700;
 
@@ -139,9 +133,7 @@
 
   color: var(--color-primary);
 
-  font-family:
-    "Fredoka",
-    sans-serif;
+  font-family: "Fredoka", sans-serif;
 
   font-size: clamp(
     3rem,
@@ -163,10 +155,7 @@
   color:
     rgba(23, 23, 23, 0.74);
 
-  font-family:
-    "Nunito",
-    sans-serif;
-
+  font-family: "Nunito", sans-serif;
   font-size: 1.05rem;
   font-weight: 600;
 
@@ -193,12 +182,6 @@
   height: 290px;
 
   min-width: 0;
-
-  /*
-    La imagen es transparente,
-    por eso no necesitamos tarjeta,
-    fondo ni bordes.
-  */
 
   background: transparent;
 }
@@ -292,10 +275,7 @@
 .cart-products__label {
   color: var(--color-primary);
 
-  font-family:
-    "Fredoka",
-    sans-serif;
-
+  font-family: "Fredoka", sans-serif;
   font-size: 0.84rem;
   font-weight: 700;
 
@@ -308,10 +288,7 @@
 
   color: var(--color-black);
 
-  font-family:
-    "Fredoka",
-    sans-serif;
-
+  font-family: "Fredoka", sans-serif;
   font-size: 1.8rem;
   font-weight: 700;
 }
@@ -341,10 +318,7 @@
 
   color: #a62222;
 
-  font-family:
-    "Nunito",
-    sans-serif;
-
+  font-family: "Nunito", sans-serif;
   font-size: 0.84rem;
   font-weight: 800;
 
@@ -460,24 +434,12 @@
   min-width: 0;
 }
 
-.cart-item__heading {
-  display: flex;
-  align-items: center;
-
-  flex-wrap: wrap;
-
-  gap: 8px;
-}
-
 .cart-item__name {
   margin: 0;
 
   color: var(--color-black);
 
-  font-family:
-    "Fredoka",
-    sans-serif;
-
+  font-family: "Fredoka", sans-serif;
   font-size: 1.3rem;
   font-weight: 700;
 }
@@ -490,51 +452,19 @@
   color:
     rgba(23, 23, 23, 0.68);
 
-  font-family:
-    "Nunito",
-    sans-serif;
-
+  font-family: "Nunito", sans-serif;
   font-size: 0.9rem;
   font-weight: 600;
 
   line-height: 1.45;
 }
 
-.cart-item__price-information {
-  display: flex;
-  align-items: center;
-
-  flex-wrap: wrap;
-
-  gap: 12px;
-
-  margin-top: 10px;
-}
-
 .cart-item__unit-price {
   color: var(--color-primary);
 
-  font-family:
-    "Nunito",
-    sans-serif;
-
+  font-family: "Nunito", sans-serif;
   font-size: 0.84rem;
   font-weight: 800;
-}
-
-.cart-item__customize-again {
-  color:
-    var(--color-primary-dark);
-
-  font-family:
-    "Nunito",
-    sans-serif;
-
-  font-size: 0.8rem;
-  font-weight: 800;
-
-  text-decoration: underline;
-  text-underline-offset: 3px;
 }
 
 
@@ -613,10 +543,7 @@
 
   color: var(--color-black);
 
-  font-family:
-    "Fredoka",
-    sans-serif;
-
+  font-family: "Fredoka", sans-serif;
   font-size: 1rem;
   font-weight: 700;
 
@@ -631,10 +558,7 @@
 .cart-item__subtotal {
   color: var(--color-primary);
 
-  font-family:
-    "Fredoka",
-    sans-serif;
-
+  font-family: "Fredoka", sans-serif;
   font-size: 1.18rem;
   font-weight: 700;
 }
@@ -658,10 +582,7 @@
 
   color: #a62222;
 
-  font-family:
-    "Nunito",
-    sans-serif;
-
+  font-family: "Nunito", sans-serif;
   font-size: 0.8rem;
   font-weight: 800;
 
@@ -709,10 +630,7 @@
 .cart-summary__eyebrow {
   color: var(--color-primary);
 
-  font-family:
-    "Fredoka",
-    sans-serif;
-
+  font-family: "Fredoka", sans-serif;
   font-size: 0.8rem;
   font-weight: 700;
 
@@ -725,10 +643,7 @@
 
   color: var(--color-black);
 
-  font-family:
-    "Fredoka",
-    sans-serif;
-
+  font-family: "Fredoka", sans-serif;
   font-size: 1.55rem;
   font-weight: 700;
 }
@@ -761,10 +676,7 @@
   color:
     rgba(23, 23, 23, 0.7);
 
-  font-family:
-    "Nunito",
-    sans-serif;
-
+  font-family: "Nunito", sans-serif;
   font-size: 0.9rem;
   font-weight: 600;
 }
@@ -793,10 +705,7 @@
 
   color: var(--color-black);
 
-  font-family:
-    "Fredoka",
-    sans-serif;
-
+  font-family: "Fredoka", sans-serif;
   font-size: 1.15rem;
   font-weight: 700;
 }
@@ -818,10 +727,7 @@
   color:
     rgba(23, 23, 23, 0.6);
 
-  font-family:
-    "Nunito",
-    sans-serif;
-
+  font-family: "Nunito", sans-serif;
   font-size: 0.8rem;
   font-weight: 600;
 
@@ -849,10 +755,7 @@
 
   color: #ffffff;
 
-  font-family:
-    "Fredoka",
-    sans-serif;
-
+  font-family: "Fredoka", sans-serif;
   font-size: 0.96rem;
   font-weight: 700;
 
@@ -896,10 +799,7 @@
 
   color: var(--color-black);
 
-  font-family:
-    "Fredoka",
-    sans-serif;
-
+  font-family: "Fredoka", sans-serif;
   font-size: 0.94rem;
   font-weight: 700;
 
@@ -985,10 +885,7 @@
 
   color: var(--color-black);
 
-  font-family:
-    "Fredoka",
-    sans-serif;
-
+  font-family: "Fredoka", sans-serif;
   font-size: 2rem;
   font-weight: 700;
 }
@@ -1001,10 +898,7 @@
   color:
     rgba(23, 23, 23, 0.67);
 
-  font-family:
-    "Nunito",
-    sans-serif;
-
+  font-family: "Nunito", sans-serif;
   font-size: 0.98rem;
   font-weight: 600;
 
@@ -1027,10 +921,7 @@
 
   color: var(--color-black);
 
-  font-family:
-    "Fredoka",
-    sans-serif;
-
+  font-family: "Fredoka", sans-serif;
   font-size: 0.95rem;
   font-weight: 700;
 
@@ -1056,14 +947,10 @@
 
 
 /* ========================================
-   TABLETS / NOTEBOOKS
+   NOTEBOOK / TABLET GRANDE
 ======================================== */
 
 @media (max-width: 1000px) {
-
-  /* ----------------------------------------
-     HERO
-  ---------------------------------------- */
 
   .cart-page__hero-layout {
     grid-template-columns:
@@ -1121,6 +1008,7 @@
 
   .cart-page__visual-image {
     width: 270px;
+    max-width: none;
 
     height: 220px;
   }
@@ -1138,61 +1026,41 @@
   }
 
 
-  /* ----------------------------------------
-     HERO
-  ---------------------------------------- */
+  /* ========================================
+     HERO MOBILE
+  ======================================== */
+
+  /*
+    En mobile eliminamos la ilustración.
+
+    "Mi pedido" pasa a utilizar todo
+    el ancho disponible.
+  */
 
   .cart-page__hero {
-    padding: 30px 0 36px;
+    padding: 27px 0 31px;
 
     background:
-      radial-gradient(
-        circle at 92% 52%,
-        rgba(244, 201, 40, 0.17) 0%,
-        rgba(244, 201, 40, 0) 27%
-      ),
       var(--color-cream);
   }
 
   .cart-page__back {
-    margin-bottom: 22px;
+    margin-bottom: 19px;
   }
 
-  /*
-    En mobile mantenemos la mascota
-    a la derecha, como un detalle de marca.
-  */
-
   .cart-page__hero-layout {
-    grid-template-columns:
-      minmax(0, 1fr)
-      125px;
+    display: block;
 
-    align-items: center;
-
-    gap: 8px;
+    width: 100%;
   }
 
   .cart-page__heading {
-    min-width: 0;
-  }
-
-  .cart-page__title {
-    font-size:
-      clamp(
-        2.75rem,
-        13vw,
-        4rem
-      );
-  }
-
-  .cart-page__subtitle {
+    width: 100%;
     max-width: 100%;
+  }
 
-    margin-top: 13px;
-
-    font-size: 0.9rem;
-    line-height: 1.45;
+  .cart-page__visual {
+    display: none;
   }
 
   .cart-page__eyebrow {
@@ -1203,51 +1071,38 @@
     font-size: 0.67rem;
   }
 
+  .cart-page__title {
+    width: 100%;
 
-  /* ----------------------------------------
-     VISUAL MOBILE
-  ---------------------------------------- */
-
-  .cart-page__visual {
-    justify-self: end;
-
-    width: 125px;
-    height: 145px;
+    font-size: clamp(
+      3rem,
+      15vw,
+      4rem
+    );
   }
 
-  .cart-page__visual-image {
-    width: 150px;
-    max-width: none;
+  .cart-page__subtitle {
+    max-width: 350px;
 
-    height: 145px;
+    margin-top: 13px;
 
-    filter:
-      drop-shadow(
-        0 9px 9px
-        rgba(23, 23, 23, 0.07)
-      );
-
-    transform: none;
-  }
-
-  .cart-page__visual:hover
-    .cart-page__visual-image {
-    transform: none;
+    font-size: 0.9rem;
+    line-height: 1.45;
   }
 
 
-  /* ----------------------------------------
+  /* ========================================
      CONTENIDO
-  ---------------------------------------- */
+  ======================================== */
 
   .cart-content {
     padding: 8px 0 62px;
   }
 
 
-  /* ----------------------------------------
+  /* ========================================
      ENCABEZADO PRODUCTOS
-  ---------------------------------------- */
+  ======================================== */
 
   .cart-products__header {
     align-items: flex-start;
@@ -1258,9 +1113,9 @@
   }
 
 
-  /* ----------------------------------------
-     ITEM
-  ---------------------------------------- */
+  /* ========================================
+     PRODUCTO
+  ======================================== */
 
   .cart-item {
     grid-template-columns:
@@ -1309,18 +1164,18 @@
   }
 
 
-  /* ----------------------------------------
+  /* ========================================
      RESUMEN
-  ---------------------------------------- */
+  ======================================== */
 
   .cart-summary {
     padding: 22px;
   }
 
 
-  /* ----------------------------------------
+  /* ========================================
      CARRITO VACÍO
-  ---------------------------------------- */
+  ======================================== */
 
   .cart-empty {
     padding: 44px 20px;
@@ -1336,43 +1191,25 @@
    CELULARES PEQUEÑOS
 ======================================== */
 
-@media (max-width: 420px) {
+@media (max-width: 380px) {
 
-  /*
-    Reducimos un poco más la ilustración
-    sin eliminarla.
-  */
-
-  .cart-page__hero-layout {
-    grid-template-columns:
-      minmax(0, 1fr)
-      108px;
-
-    gap: 4px;
-  }
-
-  .cart-page__visual {
-    width: 108px;
-    height: 128px;
-  }
-
-  .cart-page__visual-image {
-    width: 128px;
-
-    height: 128px;
+  .cart-page__hero {
+    padding-top: 24px;
+    padding-bottom: 28px;
   }
 
   .cart-page__title {
-    font-size: 2.7rem;
+    font-size: 2.75rem;
   }
 
   .cart-page__subtitle {
     font-size: 0.84rem;
   }
-}
 
 
-@media (max-width: 380px) {
+  /* ----------------------------------------
+     PRODUCTO
+  ---------------------------------------- */
 
   .cart-item {
     grid-template-columns:
@@ -1387,6 +1224,7 @@
 
   .cart-item__image {
     max-width: 84px;
+
     height: 82px;
   }
 
@@ -1400,22 +1238,6 @@
 
   .cart-item__actions {
     flex-wrap: wrap;
-  }
-
-  .cart-page__hero-layout {
-    grid-template-columns:
-      minmax(0, 1fr)
-      98px;
-  }
-
-  .cart-page__visual {
-    width: 98px;
-    height: 118px;
-  }
-
-  .cart-page__visual-image {
-    width: 118px;
-    height: 118px;
   }
 }
 
