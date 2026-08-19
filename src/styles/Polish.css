@@ -1,0 +1,865 @@
+/* ========================================
+   LOONGIS - PULIDO VISUAL
+   Navbar + Hero + encabezado del menú
+======================================== */
+
+
+/* ========================================
+   CONTROL GENERAL
+======================================== */
+
+html,
+body,
+#root {
+  width: 100%;
+  max-width: 100%;
+
+  overflow-x: hidden;
+}
+
+.menu-page,
+.menu-hero,
+.menu-products {
+  width: 100%;
+  max-width: 100%;
+
+  overflow-x: hidden;
+}
+
+.menu-page__container {
+  width: min(
+    1180px,
+    calc(100% - 48px)
+  );
+
+  max-width: 1180px;
+  min-width: 0;
+
+  margin-inline: auto;
+}
+
+
+/* ========================================
+   NAVBAR - LOGO
+======================================== */
+
+.navbar__logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  width: 132px;
+  height: 58px;
+
+  overflow: hidden;
+}
+
+.navbar__logo-image {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+  object-position: center;
+
+  transform: scale(1.5);
+  transform-origin: center;
+
+  transition:
+    transform 180ms ease;
+}
+
+.navbar__logo:hover
+  .navbar__logo-image {
+  transform: scale(1.54);
+}
+
+
+/* ========================================
+   HERO DEL INICIO
+======================================== */
+
+/*
+  La nueva imagen tiene transparencia real
+  y una composición distinta a la anterior.
+
+  Ya no necesitamos una imagen de 900px
+  sobresaliendo del contenedor.
+*/
+
+.hero__image-frame {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  min-width: 0;
+  min-height: 470px;
+
+  overflow: visible;
+}
+
+
+/* ========================================
+   IMAGEN PRINCIPAL DEL HERO
+======================================== */
+
+.hero__main-image {
+  display: block;
+
+  width: 680px;
+  max-width: 100%;
+  height: auto;
+
+  object-fit: contain;
+  object-position: center;
+
+  /*
+    La dejamos casi neutra.
+    El archivo ya tiene su composición.
+  */
+
+  transform:
+    translateY(4px);
+
+  transform-origin: center;
+
+  filter:
+    drop-shadow(
+      0 18px 18px
+      rgba(23, 23, 23, 0.1)
+    );
+
+  transition:
+    transform 250ms ease,
+    filter 250ms ease;
+}
+
+
+/* Hover muy suave */
+
+.hero__image-frame:hover
+  .hero__main-image {
+  transform:
+    translateY(-2px)
+    scale(1.015);
+
+  filter:
+    drop-shadow(
+      0 22px 21px
+      rgba(23, 23, 23, 0.13)
+    );
+}
+
+
+/* ========================================
+   MENÚ - HERO
+======================================== */
+
+.menu-hero {
+  position: relative;
+
+  width: 100%;
+
+  padding-top: 30px;
+  padding-bottom: 44px;
+
+  overflow: hidden;
+}
+
+
+/* Eliminamos decoraciones anteriores */
+
+.menu-hero::before,
+.menu-hero::after {
+  display: none !important;
+
+  content: none !important;
+}
+
+
+/* ========================================
+   VOLVER AL INICIO
+======================================== */
+
+.menu-hero__back {
+  margin-bottom: 16px;
+}
+
+
+/* ========================================
+   LAYOUT DEL MENÚ
+======================================== */
+
+.menu-hero__layout {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1.12fr)
+    minmax(360px, 0.88fr);
+
+  align-items: center;
+
+  gap: clamp(
+    35px,
+    5vw,
+    75px
+  );
+
+  width: 100%;
+  min-width: 0;
+}
+
+
+/* ========================================
+   TEXTO DEL MENÚ
+======================================== */
+
+.menu-hero__content {
+  position: relative;
+
+  width: 100%;
+  min-width: 0;
+  max-width: 670px;
+}
+
+.menu-hero__eyebrow {
+  margin-bottom: 12px;
+}
+
+.menu-hero__title {
+  max-width: 670px;
+
+  font-size: clamp(
+    3.3rem,
+    5vw,
+    4.45rem
+  );
+
+  line-height: 0.96;
+}
+
+.menu-hero__description {
+  max-width: 600px;
+
+  margin-top: 18px;
+
+  line-height: 1.55;
+}
+
+
+/* ========================================
+   ETIQUETA DEL MENÚ
+======================================== */
+
+.menu-hero__brand-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-top: 19px;
+  padding: 7px 14px;
+
+  border:
+    1px solid
+    rgba(7, 95, 234, 0.14);
+
+  border-radius: 999px;
+
+  background-color:
+    rgba(255, 255, 255, 0.62);
+
+  color: var(--color-primary);
+
+  font-family:
+    "Fredoka",
+    sans-serif;
+
+  font-size: 10.5px;
+  font-weight: 700;
+
+  text-transform: uppercase;
+  letter-spacing: 0.055em;
+
+  box-shadow:
+    0 6px 16px
+    rgba(23, 23, 23, 0.03);
+}
+
+.menu-hero__content::after {
+  display: none !important;
+
+  content: none !important;
+}
+
+
+/* ========================================
+   VISUAL DEL MENÚ
+======================================== */
+
+.menu-hero__visual {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  justify-self: end;
+
+  width: 100%;
+  max-width: 460px;
+  height: 320px;
+
+  min-width: 0;
+
+  margin: 0;
+
+  overflow: visible;
+
+  border: none;
+  border-radius: 0;
+
+  background: transparent;
+
+  box-shadow: none;
+
+  transform:
+    translateX(-24px);
+}
+
+
+/* No necesitamos glow */
+
+.menu-hero__visual-glow {
+  display: none;
+}
+
+
+/* ========================================
+   IMAGEN DEL MENÚ
+======================================== */
+
+.menu-hero__visual-image {
+  position: relative;
+
+  display: block;
+
+  width: 100%;
+  max-width: 445px;
+
+  height: 320px;
+
+  object-fit: contain;
+  object-position: center;
+
+  background: transparent;
+
+  filter:
+    drop-shadow(
+      0 17px 16px
+      rgba(23, 23, 23, 0.08)
+    );
+
+  transform:
+    translateY(3px)
+    scale(1.04);
+
+  transform-origin: center;
+
+  transition:
+    transform 220ms ease,
+    filter 220ms ease;
+}
+
+.menu-hero__visual:hover
+  .menu-hero__visual-image {
+  filter:
+    drop-shadow(
+      0 20px 19px
+      rgba(23, 23, 23, 0.11)
+    );
+
+  transform:
+    translateY(-1px)
+    scale(1.055);
+}
+
+
+/* ========================================
+   PRODUCTOS
+======================================== */
+
+.menu-products {
+  padding-top: 40px;
+}
+
+
+/* ========================================
+   NOTEBOOKS
+======================================== */
+
+@media (max-width: 1150px) {
+
+  /* ----------------------------------------
+     HERO INICIO
+  ---------------------------------------- */
+
+  .hero__image-frame {
+    min-height: 440px;
+  }
+
+  .hero__main-image {
+    width: 620px;
+
+    transform:
+      translateY(5px);
+  }
+}
+
+
+@media (max-width: 1100px) {
+
+  /* ----------------------------------------
+     NAVBAR
+  ---------------------------------------- */
+
+  .navbar__logo {
+    width: 124px;
+    height: 54px;
+  }
+
+  .navbar__logo-image {
+    transform: scale(1.46);
+  }
+
+  .navbar__logo:hover
+    .navbar__logo-image {
+    transform: scale(1.5);
+  }
+
+
+  /* ----------------------------------------
+     MENÚ
+  ---------------------------------------- */
+
+  .menu-page__container {
+    width: min(
+      100% - 40px,
+      1000px
+    );
+  }
+
+  .menu-hero__layout {
+    grid-template-columns:
+      minmax(0, 1.1fr)
+      minmax(320px, 0.9fr);
+
+    gap: 35px;
+  }
+
+  .menu-hero__visual {
+    max-width: 390px;
+    height: 285px;
+
+    transform:
+      translateX(-12px);
+  }
+
+  .menu-hero__visual-image {
+    max-width: 390px;
+    height: 285px;
+
+    transform:
+      translateY(3px)
+      scale(1.03);
+  }
+}
+
+
+/* ========================================
+   TABLETS
+======================================== */
+
+@media (max-width: 900px) {
+
+  /* ----------------------------------------
+     HERO INICIO
+  ---------------------------------------- */
+
+  .hero__image-frame {
+    min-height: 410px;
+  }
+
+  .hero__main-image {
+    width: 570px;
+
+    transform:
+      translateY(3px);
+  }
+}
+
+
+@media (max-width: 850px) {
+
+  /* ----------------------------------------
+     NAVBAR
+  ---------------------------------------- */
+
+  .navbar__logo {
+    width: 116px;
+    height: 52px;
+  }
+
+  .navbar__logo-image {
+    transform: scale(1.42);
+  }
+
+  .navbar__logo:hover
+    .navbar__logo-image {
+    transform: scale(1.44);
+  }
+
+
+  /* ----------------------------------------
+     MENÚ
+  ---------------------------------------- */
+
+  .menu-page__container {
+    width: min(
+      100% - 34px,
+      760px
+    );
+  }
+
+  .menu-hero {
+    padding-top: 30px;
+    padding-bottom: 40px;
+  }
+
+  .menu-hero__layout {
+    grid-template-columns:
+      minmax(0, 1fr)
+      260px;
+
+    gap: 22px;
+  }
+
+  .menu-hero__title {
+    font-size: clamp(
+      2.7rem,
+      7vw,
+      3.5rem
+    );
+  }
+
+  .menu-hero__description {
+    font-size: 15px;
+  }
+
+  .menu-hero__visual {
+    width: 260px;
+    height: 230px;
+
+    transform: none;
+  }
+
+  .menu-hero__visual-image {
+    width: 275px;
+    max-width: none;
+
+    height: 230px;
+
+    transform:
+      translateY(2px)
+      scale(1.02);
+  }
+}
+
+
+/* ========================================
+   MOBILE
+======================================== */
+
+@media (max-width: 560px) {
+
+  /* ----------------------------------------
+     CONTENEDOR MENÚ
+  ---------------------------------------- */
+
+  .menu-page__container {
+    width: calc(100% - 28px);
+
+    margin-inline: auto;
+  }
+
+
+  /* ----------------------------------------
+     NAVBAR
+  ---------------------------------------- */
+
+  .navbar__logo {
+    width: 102px;
+    height: 46px;
+  }
+
+  .navbar__logo-image {
+    transform: scale(1.38);
+  }
+
+  .navbar__logo:hover
+    .navbar__logo-image {
+    transform: scale(1.38);
+  }
+
+
+  /* ========================================
+     HERO INICIO MOBILE
+  ======================================== */
+
+  /*
+    Acá evitamos que vuelva a ocupar
+    prácticamente una pantalla completa.
+  */
+
+  .hero__image-frame {
+    width: 100%;
+
+    min-height: 300px;
+
+    margin-top: 4px;
+
+    overflow: visible;
+  }
+
+  .hero__main-image {
+    width: 390px;
+    max-width: 108%;
+
+    height: auto;
+
+    object-fit: contain;
+
+    transform:
+      translateY(0);
+
+    filter:
+      drop-shadow(
+        0 12px 12px
+        rgba(23, 23, 23, 0.08)
+      );
+  }
+
+  .hero__image-frame:hover
+    .hero__main-image {
+    transform: none;
+  }
+
+
+  /* ========================================
+     HERO MENÚ MOBILE
+  ======================================== */
+
+  .menu-hero {
+    padding-top: 25px;
+    padding-bottom: 31px;
+  }
+
+  .menu-hero__back {
+    margin-bottom: 20px;
+  }
+
+  .menu-hero__layout {
+    display: grid;
+
+    grid-template-columns:
+      minmax(0, 1fr)
+      135px;
+
+    align-items: center;
+
+    gap: 8px;
+
+    width: 100%;
+  }
+
+  .menu-hero__content {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .menu-hero__eyebrow {
+    margin-bottom: 8px;
+  }
+
+  .menu-hero__title {
+    max-width: 100%;
+
+    font-size: clamp(
+      2.15rem,
+      10.5vw,
+      2.8rem
+    );
+
+    line-height: 0.98;
+  }
+
+  .menu-hero__description {
+    max-width: 100%;
+
+    margin-top: 12px;
+
+    font-size: 13.5px;
+    line-height: 1.45;
+  }
+
+  .menu-hero__brand-tag {
+    display: none;
+  }
+
+
+  /* ----------------------------------------
+     IMAGEN MENÚ MOBILE
+  ---------------------------------------- */
+
+  .menu-hero__visual {
+    justify-self: end;
+
+    width: 135px;
+    height: 145px;
+
+    overflow: visible;
+
+    transform: none;
+  }
+
+  .menu-hero__visual-image {
+    width: 155px;
+    max-width: none;
+
+    height: 145px;
+
+    object-fit: contain;
+
+    filter:
+      drop-shadow(
+        0 8px 8px
+        rgba(23, 23, 23, 0.07)
+      );
+
+    transform: none;
+  }
+
+  .menu-hero__visual:hover
+    .menu-hero__visual-image {
+    transform: none;
+  }
+
+
+  /* ----------------------------------------
+     PRODUCTOS
+  ---------------------------------------- */
+
+  .menu-products {
+    padding-top: 30px;
+  }
+}
+
+
+/* ========================================
+   CELULARES PEQUEÑOS
+======================================== */
+
+@media (max-width: 380px) {
+
+  /* ----------------------------------------
+     NAVBAR
+  ---------------------------------------- */
+
+  .navbar__logo {
+    width: 90px;
+    height: 42px;
+  }
+
+  .navbar__logo-image {
+    transform: scale(1.34);
+  }
+
+  .navbar__logo:hover
+    .navbar__logo-image {
+    transform: scale(1.34);
+  }
+
+
+  /* ----------------------------------------
+     HERO INICIO
+  ---------------------------------------- */
+
+  .hero__image-frame {
+    min-height: 270px;
+  }
+
+  .hero__main-image {
+    width: 350px;
+    max-width: 110%;
+  }
+
+
+  /* ----------------------------------------
+     MENÚ
+  ---------------------------------------- */
+
+  .menu-page__container {
+    width: calc(100% - 22px);
+  }
+
+  .menu-hero__layout {
+    grid-template-columns:
+      minmax(0, 1fr)
+      115px;
+
+    gap: 5px;
+  }
+
+  .menu-hero__title {
+    font-size: 2.1rem;
+  }
+
+  .menu-hero__description {
+    font-size: 13px;
+  }
+
+  .menu-hero__visual {
+    width: 115px;
+    height: 125px;
+
+    transform: none;
+  }
+
+  .menu-hero__visual-image {
+    width: 135px;
+    height: 125px;
+  }
+
+  .menu-products {
+    padding-top: 28px;
+  }
+}
+
+
+/* ========================================
+   MOVIMIENTO REDUCIDO
+======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .navbar__logo-image,
+  .hero__main-image,
+  .menu-hero__visual-image {
+    transition: none;
+  }
+}

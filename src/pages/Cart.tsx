@@ -30,7 +30,9 @@ type CustomizationDetail = {
   type?: "normal" | "removed" | "notes";
 };
 
-function getCustomizationDetails(item: CartItem): CustomizationDetail[] {
+function getCustomizationDetails(
+  item: CartItem,
+): CustomizationDetail[] {
   const details: CustomizationDetail[] = [];
 
   if (item.customization.size) {
@@ -40,10 +42,15 @@ function getCustomizationDetails(item: CartItem): CustomizationDetail[] {
     });
   }
 
-  if (item.customization.extras && item.customization.extras.length > 0) {
+  if (
+    item.customization.extras &&
+    item.customization.extras.length > 0
+  ) {
     details.push({
       label: "Extras",
-      value: item.customization.extras.map((extra) => extra.name).join(", "),
+      value: item.customization.extras
+        .map((extra) => extra.name)
+        .join(", "),
     });
   }
 
@@ -53,7 +60,10 @@ function getCustomizationDetails(item: CartItem): CustomizationDetail[] {
   ) {
     details.push({
       label: "Sin",
-      value: item.customization.removedIngredients.join(", "),
+      value:
+        item.customization.removedIngredients.join(
+          ", ",
+        ),
       type: "removed",
     });
   }
@@ -80,98 +90,201 @@ export function Cart() {
     clearCart,
   } = useCart();
 
-  const { showNotification } = useNotification();
+  const { showNotification } =
+    useNotification();
 
-  const [isClearModalOpen, setIsClearModalOpen] = useState(false);
+  const [
+    isClearModalOpen,
+    setIsClearModalOpen,
+  ] = useState(false);
 
   const handleConfirmClearCart = () => {
     clearCart();
+
     setIsClearModalOpen(false);
 
-    showNotification("El pedido fue vaciado.", "info");
+    showNotification(
+      "El pedido fue vaciado.",
+      "info",
+    );
   };
 
-  const handleRemoveProduct = (item: CartItem) => {
+  const handleRemoveProduct = (
+    item: CartItem,
+  ) => {
     removeProduct(item.cartItemId);
 
-    showNotification(`${item.name} fue eliminado del pedido.`, "info");
+    showNotification(
+      `${item.name} fue eliminado del pedido.`,
+      "info",
+    );
   };
 
   return (
     <main className="cart-page">
-      <section className="cart-page__hero" aria-labelledby="cart-page-title">
+      {/* =================================
+          HERO
+      ================================= */}
+
+      <section
+        className="cart-page__hero"
+        aria-labelledby="cart-page-title"
+      >
         <div className="cart-page__container">
-          <Link className="cart-page__back" to="/menu">
-            <FaArrowLeftLong aria-hidden="true" />
+          <Link
+            className="cart-page__back"
+            to="/menu"
+          >
+            <FaArrowLeftLong
+              aria-hidden="true"
+            />
 
             <span>Volver al menú</span>
           </Link>
 
-          <div className="cart-page__heading">
-            <span className="cart-page__eyebrow">Tu selección</span>
+          <div className="cart-page__hero-layout">
+            {/* =============================
+                TEXTO
+            ============================= */}
 
-            <h1 className="cart-page__title" id="cart-page-title">
-              Mi pedido
-            </h1>
+            <div className="cart-page__heading">
+              <span className="cart-page__eyebrow">
+                Tu selección
+              </span>
 
-            <p className="cart-page__subtitle">
-              Revisá los productos, sus personalizaciones y las cantidades antes
-              de finalizar.
-            </p>
+              <h1
+                className="cart-page__title"
+                id="cart-page-title"
+              >
+                Mi pedido
+              </h1>
+
+              <p className="cart-page__subtitle">
+                Revisá los productos, sus
+                personalizaciones y las
+                cantidades antes de finalizar.
+              </p>
+            </div>
+
+            {/* =============================
+                MASCOTA + BURGER
+            ============================= */}
+
+            <div
+              className="cart-page__visual"
+              aria-hidden="true"
+            >
+              <img
+                className="cart-page__visual-image"
+                src="/images/hero/cart-loongis.png"
+                alt=""
+              />
+            </div>
           </div>
         </div>
       </section>
 
-      <section className="cart-content" aria-label="Contenido del pedido">
+      {/* =================================
+          CONTENIDO
+      ================================= */}
+
+      <section
+        className="cart-content"
+        aria-label="Contenido del pedido"
+      >
         <div className="cart-page__container">
           {cart.length === 0 ? (
+            /* =============================
+               CARRITO VACÍO
+            ============================= */
+
             <div className="cart-empty">
               <div className="cart-empty__icon">
-                <FaBagShopping aria-hidden="true" />
+                <FaBagShopping
+                  aria-hidden="true"
+                />
               </div>
 
-              <h2 className="cart-empty__title">Tu pedido está vacío</h2>
+              <h2 className="cart-empty__title">
+                Tu pedido está vacío
+              </h2>
 
               <p className="cart-empty__description">
-                Todavía no agregaste ningún producto. Entrá al menú y elegí tu
-                favorito.
+                Todavía no agregaste ningún
+                producto. Entrá al menú y elegí
+                tu favorito.
               </p>
 
-              <Link className="cart-empty__button" to="/menu">
+              <Link
+                className="cart-empty__button"
+                to="/menu"
+              >
                 Ver el menú
               </Link>
             </div>
           ) : (
+            /* =============================
+               CARRITO CON PRODUCTOS
+            ============================= */
+
             <div className="cart-layout">
+              {/* ===========================
+                  PRODUCTOS
+              =========================== */}
+
               <div className="cart-products">
                 <div className="cart-products__header">
                   <div>
-                    <span className="cart-products__label">Productos</span>
+                    <span className="cart-products__label">
+                      Productos
+                    </span>
 
-                    <h2 className="cart-products__title">Tu selección</h2>
+                    <h2 className="cart-products__title">
+                      Tu selección
+                    </h2>
                   </div>
 
                   <button
                     className="cart-products__clear"
                     type="button"
-                    onClick={() => setIsClearModalOpen(true)}
+                    onClick={() =>
+                      setIsClearModalOpen(true)
+                    }
                   >
-                    <FaTrashCan aria-hidden="true" />
+                    <FaTrashCan
+                      aria-hidden="true"
+                    />
 
-                    <span>Vaciar pedido</span>
+                    <span>
+                      Vaciar pedido
+                    </span>
                   </button>
                 </div>
 
                 <div className="cart-products__list">
                   {cart.map((item) => {
-                    const itemSubtotal = item.unitPrice * item.quantity;
+                    const itemSubtotal =
+                      item.unitPrice *
+                      item.quantity;
 
-                    const customizationDetails = getCustomizationDetails(item);
+                    const customizationDetails =
+                      getCustomizationDetails(
+                        item,
+                      );
 
-                    const isCustomized = customizationDetails.length > 0;
+                    const isCustomized =
+                      customizationDetails.length >
+                      0;
 
                     return (
-                      <article className="cart-item" key={item.cartItemId}>
+                      <article
+                        className="cart-item"
+                        key={item.cartItemId}
+                      >
+                        {/* =================
+                            IMAGEN
+                        ================= */}
+
                         <div className="cart-item__image-wrapper">
                           <img
                             className="cart-item__image"
@@ -180,9 +293,15 @@ export function Cart() {
                           />
                         </div>
 
+                        {/* =================
+                            INFORMACIÓN
+                        ================= */}
+
                         <div className="cart-item__information">
                           <div className="cart-item__heading">
-                            <h3 className="cart-item__name">{item.name}</h3>
+                            <h3 className="cart-item__name">
+                              {item.name}
+                            </h3>
 
                             {isCustomized && (
                               <span className="cart-item__personalized-badge">
@@ -195,31 +314,44 @@ export function Cart() {
                             {item.description}
                           </p>
 
+                          {/* ===============
+                              PERSONALIZACIÓN
+                          =============== */}
+
                           {isCustomized && (
                             <div className="cart-item-customization">
-                              {customizationDetails.map((detail) => (
-                                <div
-                                  className={`cart-item-customization__detail cart-item-customization__detail--${
-                                    detail.type ?? "normal"
-                                  }`}
-                                  key={`${item.cartItemId}-${detail.label}`}
-                                >
-                                  <span className="cart-item-customization__label">
-                                    {detail.label}
-                                  </span>
+                              {customizationDetails.map(
+                                (detail) => (
+                                  <div
+                                    className={`cart-item-customization__detail cart-item-customization__detail--${
+                                      detail.type ??
+                                      "normal"
+                                    }`}
+                                    key={`${item.cartItemId}-${detail.label}`}
+                                  >
+                                    <span className="cart-item-customization__label">
+                                      {
+                                        detail.label
+                                      }
+                                    </span>
 
-                                  <span className="cart-item-customization__value">
-                                    {detail.value}
-                                  </span>
-                                </div>
-                              ))}
+                                    <span className="cart-item-customization__value">
+                                      {
+                                        detail.value
+                                      }
+                                    </span>
+                                  </div>
+                                ),
+                              )}
                             </div>
                           )}
 
                           <div className="cart-item__price-information">
                             <span className="cart-item__unit-price">
                               Precio unitario:{" "}
-                              {priceFormatter.format(item.unitPrice)}
+                              {priceFormatter.format(
+                                item.unitPrice,
+                              )}
                             </span>
 
                             <Link
@@ -233,6 +365,10 @@ export function Cart() {
                           </div>
                         </div>
 
+                        {/* =================
+                            ACCIONES
+                        ================= */}
+
                         <div className="cart-item__actions">
                           <div
                             className="cart-item__quantity"
@@ -242,9 +378,15 @@ export function Cart() {
                               className="cart-item__quantity-button"
                               type="button"
                               aria-label={`Disminuir cantidad de ${item.name}`}
-                              onClick={() => decreaseQuantity(item.cartItemId)}
+                              onClick={() =>
+                                decreaseQuantity(
+                                  item.cartItemId,
+                                )
+                              }
                             >
-                              <FaMinus aria-hidden="true" />
+                              <FaMinus
+                                aria-hidden="true"
+                              />
                             </button>
 
                             <span className="cart-item__quantity-value">
@@ -255,25 +397,41 @@ export function Cart() {
                               className="cart-item__quantity-button"
                               type="button"
                               aria-label={`Aumentar cantidad de ${item.name}`}
-                              onClick={() => increaseQuantity(item.cartItemId)}
+                              onClick={() =>
+                                increaseQuantity(
+                                  item.cartItemId,
+                                )
+                              }
                             >
-                              <FaPlus aria-hidden="true" />
+                              <FaPlus
+                                aria-hidden="true"
+                              />
                             </button>
                           </div>
 
                           <strong className="cart-item__subtotal">
-                            {priceFormatter.format(itemSubtotal)}
+                            {priceFormatter.format(
+                              itemSubtotal,
+                            )}
                           </strong>
 
                           <button
                             className="cart-item__remove"
                             type="button"
                             aria-label={`Eliminar ${item.name} del pedido`}
-                            onClick={() => handleRemoveProduct(item)}
+                            onClick={() =>
+                              handleRemoveProduct(
+                                item,
+                              )
+                            }
                           >
-                            <FaTrashCan aria-hidden="true" />
+                            <FaTrashCan
+                              aria-hidden="true"
+                            />
 
-                            <span>Eliminar</span>
+                            <span>
+                              Eliminar
+                            </span>
                           </button>
                         </div>
                       </article>
@@ -282,52 +440,82 @@ export function Cart() {
                 </div>
               </div>
 
+              {/* ===========================
+                  RESUMEN
+              =========================== */}
+
               <aside
                 className="cart-summary"
                 aria-labelledby="cart-summary-title"
               >
-                <span className="cart-summary__eyebrow">Resumen</span>
+                <span className="cart-summary__eyebrow">
+                  Resumen
+                </span>
 
-                <h2 className="cart-summary__title" id="cart-summary-title">
+                <h2
+                  className="cart-summary__title"
+                  id="cart-summary-title"
+                >
                   Resumen del pedido
                 </h2>
 
                 <div className="cart-summary__rows">
                   <div className="cart-summary__row">
-                    <span>Configuraciones distintas</span>
+                    <span>
+                      Configuraciones distintas
+                    </span>
 
-                    <strong>{cart.length}</strong>
+                    <strong>
+                      {cart.length}
+                    </strong>
                   </div>
 
                   <div className="cart-summary__row">
-                    <span>Unidades totales</span>
+                    <span>
+                      Unidades totales
+                    </span>
 
-                    <strong>{totalUnits}</strong>
+                    <strong>
+                      {totalUnits}
+                    </strong>
                   </div>
 
                   <div className="cart-summary__row">
                     <span>Envío</span>
 
-                    <strong>Se calcula al finalizar</strong>
+                    <strong>
+                      Se calcula al finalizar
+                    </strong>
                   </div>
                 </div>
 
                 <div className="cart-summary__total">
                   <span>Total</span>
 
-                  <strong>{priceFormatter.format(totalPrice)}</strong>
+                  <strong>
+                    {priceFormatter.format(
+                      totalPrice,
+                    )}
+                  </strong>
                 </div>
 
                 <p className="cart-summary__notice">
-                  Seleccioná tu localidad al finalizar para conocer el total con
-                  envío.
+                  Seleccioná tu localidad al
+                  finalizar para conocer el
+                  total con envío.
                 </p>
 
-                <Link className="cart-summary__checkout" to="/finalizar-pedido">
+                <Link
+                  className="cart-summary__checkout"
+                  to="/finalizar-pedido"
+                >
                   Finalizar pedido
                 </Link>
 
-                <Link className="cart-summary__continue" to="/menu">
+                <Link
+                  className="cart-summary__continue"
+                  to="/menu"
+                >
                   Agregar más productos
                 </Link>
               </aside>
@@ -335,6 +523,10 @@ export function Cart() {
           )}
         </div>
       </section>
+
+      {/* =================================
+          MODAL VACIAR CARRITO
+      ================================= */}
 
       <ConfirmModal
         isOpen={isClearModalOpen}
@@ -344,7 +536,9 @@ export function Cart() {
         cancelLabel="Cancelar"
         danger
         onConfirm={handleConfirmClearCart}
-        onCancel={() => setIsClearModalOpen(false)}
+        onCancel={() =>
+          setIsClearModalOpen(false)
+        }
       />
     </main>
   );

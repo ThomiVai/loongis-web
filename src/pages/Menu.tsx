@@ -133,20 +133,47 @@ export function Menu() {
             Volver al inicio
           </Link>
 
-          <div className="menu-hero__content">
-            <span className="menu-hero__eyebrow">
-              Menú Loongis
-            </span>
+          <div className="menu-hero__layout">
+            {/* =============================
+                TEXTO
+            ============================= */}
 
-            <h1 className="menu-hero__title">
-              Elegí tu favorita
-            </h1>
+            <div className="menu-hero__content">
+              <span className="menu-hero__eyebrow">
+                Menú Loongis
+              </span>
 
-            <p className="menu-hero__description">
-              Hamburguesas smash y combos
-              para disfrutar Loongis como
-              más te gusta.
-            </p>
+              <h1 className="menu-hero__title">
+                Elegí tu favorita
+              </h1>
+
+              <p className="menu-hero__description">
+                Hamburguesas smash y combos
+                para disfrutar Loongis como
+                más te gusta.
+              </p>
+
+              <span className="menu-hero__brand-tag">
+                Smash · hechas al momento
+              </span>
+            </div>
+
+            {/* =============================
+                VISUAL
+            ============================= */}
+
+            <div
+              className="menu-hero__visual"
+              aria-hidden="true"
+            >
+              <div className="menu-hero__visual-glow" />
+
+              <img
+                src="/images/hero/menu-loongis.png"
+                alt=""
+                className="menu-hero__visual-image"
+              />
+            </div>
           </div>
         </div>
       </section>
@@ -235,8 +262,6 @@ export function Menu() {
                       `menu-product-card--${product.productCategory}`,
                     ].join(" ")}
                   >
-                    {/* Imagen */}
-
                     <Link
                       to={`/producto/${product.id}`}
                       className="menu-product-card__image-link"
@@ -251,8 +276,6 @@ export function Menu() {
                         />
                       </div>
                     </Link>
-
-                    {/* Información */}
 
                     <div className="menu-product-card__content">
                       <span className="menu-product-card__category">

@@ -9,6 +9,7 @@ import { NotificationProvider } from "./context/NotificationProvider";
 
 import "./styles/global.css";
 import "./styles/Mobile.css";
+import "./styles/Polish.css";
 
 createRoot(
   document.getElementById("root")!,
