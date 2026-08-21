@@ -61,9 +61,7 @@ function getCustomizationDetails(
     details.push({
       label: "Sin",
       value:
-        item.customization.removedIngredients.join(
-          ", ",
-        ),
+        item.customization.removedIngredients.join(", "),
       type: "removed",
     });
   }
@@ -122,9 +120,9 @@ export function Cart() {
 
   return (
     <main className="cart-page">
-      {/* =================================
+      {/* ========================================
           HERO
-      ================================= */}
+      ======================================== */}
 
       <section
         className="cart-page__hero"
@@ -143,9 +141,9 @@ export function Cart() {
           </Link>
 
           <div className="cart-page__hero-layout">
-            {/* =============================
+            {/* ========================================
                 TEXTO
-            ============================= */}
+            ======================================== */}
 
             <div className="cart-page__heading">
               <span className="cart-page__eyebrow">
@@ -161,14 +159,14 @@ export function Cart() {
 
               <p className="cart-page__subtitle">
                 Revisá los productos, sus
-                personalizaciones y las
-                cantidades antes de finalizar.
+                personalizaciones y las cantidades
+                antes de finalizar.
               </p>
             </div>
 
-            {/* =============================
+            {/* ========================================
                 MASCOTA + BURGER
-            ============================= */}
+            ======================================== */}
 
             <div
               className="cart-page__visual"
@@ -184,9 +182,9 @@ export function Cart() {
         </div>
       </section>
 
-      {/* =================================
+      {/* ========================================
           CONTENIDO
-      ================================= */}
+      ======================================== */}
 
       <section
         className="cart-content"
@@ -194,9 +192,9 @@ export function Cart() {
       >
         <div className="cart-page__container">
           {cart.length === 0 ? (
-            /* =============================
+            /* ========================================
                CARRITO VACÍO
-            ============================= */
+            ======================================== */
 
             <div className="cart-empty">
               <div className="cart-empty__icon">
@@ -210,9 +208,8 @@ export function Cart() {
               </h2>
 
               <p className="cart-empty__description">
-                Todavía no agregaste ningún
-                producto. Entrá al menú y elegí
-                tu favorito.
+                Todavía no agregaste ningún producto.
+                Entrá al menú y elegí tu favorito.
               </p>
 
               <Link
@@ -223,16 +220,16 @@ export function Cart() {
               </Link>
             </div>
           ) : (
-            /* =============================
+            /* ========================================
                CARRITO CON PRODUCTOS
-            ============================= */
+            ======================================== */
 
             <div className="cart-layout">
-              {/* ===========================
-                  PRODUCTOS
-              =========================== */}
-
               <div className="cart-products">
+                {/* ========================================
+                    ENCABEZADO PRODUCTOS
+                ======================================== */}
+
                 <div className="cart-products__header">
                   <div>
                     <span className="cart-products__label">
@@ -255,11 +252,13 @@ export function Cart() {
                       aria-hidden="true"
                     />
 
-                    <span>
-                      Vaciar pedido
-                    </span>
+                    <span>Vaciar pedido</span>
                   </button>
                 </div>
+
+                {/* ========================================
+                    LISTA
+                ======================================== */}
 
                 <div className="cart-products__list">
                   {cart.map((item) => {
@@ -278,12 +277,15 @@ export function Cart() {
 
                     return (
                       <article
-                        className="cart-item"
+                        className={[
+                          "cart-item",
+                          `cart-item--${item.id}`,
+                        ].join(" ")}
                         key={item.cartItemId}
                       >
-                        {/* =================
+                        {/* ========================================
                             IMAGEN
-                        ================= */}
+                        ======================================== */}
 
                         <div className="cart-item__image-wrapper">
                           <img
@@ -293,9 +295,9 @@ export function Cart() {
                           />
                         </div>
 
-                        {/* =================
+                        {/* ========================================
                             INFORMACIÓN
-                        ================= */}
+                        ======================================== */}
 
                         <div className="cart-item__information">
                           <div className="cart-item__heading">
@@ -314,9 +316,9 @@ export function Cart() {
                             {item.description}
                           </p>
 
-                          {/* ===============
+                          {/* ========================================
                               PERSONALIZACIÓN
-                          =============== */}
+                          ======================================== */}
 
                           {isCustomized && (
                             <div className="cart-item-customization">
@@ -330,21 +332,21 @@ export function Cart() {
                                     key={`${item.cartItemId}-${detail.label}`}
                                   >
                                     <span className="cart-item-customization__label">
-                                      {
-                                        detail.label
-                                      }
+                                      {detail.label}
                                     </span>
 
                                     <span className="cart-item-customization__value">
-                                      {
-                                        detail.value
-                                      }
+                                      {detail.value}
                                     </span>
                                   </div>
                                 ),
                               )}
                             </div>
                           )}
+
+                          {/* ========================================
+                              PRECIO UNITARIO
+                          ======================================== */}
 
                           <div className="cart-item__price-information">
                             <span className="cart-item__unit-price">
@@ -365,9 +367,9 @@ export function Cart() {
                           </div>
                         </div>
 
-                        {/* =================
+                        {/* ========================================
                             ACCIONES
-                        ================= */}
+                        ======================================== */}
 
                         <div className="cart-item__actions">
                           <div
@@ -429,9 +431,7 @@ export function Cart() {
                               aria-hidden="true"
                             />
 
-                            <span>
-                              Eliminar
-                            </span>
+                            <span>Eliminar</span>
                           </button>
                         </div>
                       </article>
@@ -440,9 +440,9 @@ export function Cart() {
                 </div>
               </div>
 
-              {/* ===========================
+              {/* ========================================
                   RESUMEN
-              =========================== */}
+              ======================================== */}
 
               <aside
                 className="cart-summary"
@@ -460,20 +460,16 @@ export function Cart() {
                 </h2>
 
                 <div className="cart-summary__rows">
-                  <div className="cart-summary__row">
-                    <span>
-                      Configuraciones distintas
-                    </span>
+                  {/* 
+                    Quitamos "Configuraciones distintas".
 
-                    <strong>
-                      {cart.length}
-                    </strong>
-                  </div>
+                    Para el cliente interesa cuánto
+                    está pidiendo, no cuántas
+                    configuraciones internas existen.
+                  */}
 
                   <div className="cart-summary__row">
-                    <span>
-                      Unidades totales
-                    </span>
+                    <span>Unidades totales</span>
 
                     <strong>
                       {totalUnits}
@@ -500,9 +496,8 @@ export function Cart() {
                 </div>
 
                 <p className="cart-summary__notice">
-                  Seleccioná tu localidad al
-                  finalizar para conocer el
-                  total con envío.
+                  Seleccioná tu localidad al finalizar
+                  para conocer el total con envío.
                 </p>
 
                 <Link
@@ -524,9 +519,9 @@ export function Cart() {
         </div>
       </section>
 
-      {/* =================================
-          MODAL VACIAR CARRITO
-      ================================= */}
+      {/* ========================================
+          MODAL VACIAR
+      ======================================== */}
 
       <ConfirmModal
         isOpen={isClearModalOpen}
@@ -535,7 +530,9 @@ export function Cart() {
         confirmLabel="Sí, vaciar"
         cancelLabel="Cancelar"
         danger
-        onConfirm={handleConfirmClearCart}
+        onConfirm={
+          handleConfirmClearCart
+        }
         onCancel={() =>
           setIsClearModalOpen(false)
         }

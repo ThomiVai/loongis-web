@@ -1,0 +1,630 @@
+/* ========================================
+   FLOATING LOONGIS
+======================================== */
+
+.floating-loongis {
+  position: fixed;
+
+  right: 0;
+  bottom: 58px;
+
+  z-index: 80;
+
+  display: flex;
+  align-items: flex-end;
+
+  gap: 8px;
+
+  pointer-events: none;
+
+  opacity: 0;
+
+  transform: translateX(120px);
+
+  transition:
+    opacity 280ms ease,
+    transform 420ms
+      cubic-bezier(
+        0.22,
+        1,
+        0.36,
+        1
+      );
+}
+
+
+/* ========================================
+   VISIBLE
+======================================== */
+
+.floating-loongis--visible {
+  pointer-events: auto;
+
+  opacity: 1;
+
+  transform: translateX(0);
+}
+
+
+/* ========================================
+   CONTENEDOR MASCOTA
+======================================== */
+
+.floating-loongis__mascot {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  width: 175px;
+  height: 255px;
+
+  padding: 0;
+
+  border: none;
+
+  background: transparent;
+
+  overflow: visible;
+
+  cursor: pointer;
+
+  -webkit-tap-highlight-color:
+    transparent;
+}
+
+
+/* ========================================
+   IMAGEN
+======================================== */
+
+.floating-loongis__image {
+  position: absolute;
+
+  z-index: 2;
+
+  top: 0;
+  right: -3px;
+
+  display: block;
+
+  width: 185px;
+  height: 250px;
+
+  max-width: none;
+
+  object-fit: contain;
+
+  object-position:
+    right center;
+
+  transform:
+    translateX(5px);
+
+  transform-origin:
+    right center;
+
+  filter:
+    drop-shadow(
+      -3px
+      9px
+      8px
+      rgba(
+        23,
+        23,
+        23,
+        0.12
+      )
+    );
+
+  animation:
+    loongisFloat
+    3.3s
+    ease-in-out
+    infinite;
+
+  transition:
+    filter 180ms ease;
+}
+
+
+/* ========================================
+   HOVER
+======================================== */
+
+.floating-loongis__mascot:hover
+  .floating-loongis__image {
+  filter:
+    drop-shadow(
+      -4px
+      12px
+      10px
+      rgba(
+        23,
+        23,
+        23,
+        0.17
+      )
+    );
+}
+
+
+/* ========================================
+   DESTELLOS
+======================================== */
+
+.floating-loongis__spark {
+  position: absolute;
+
+  z-index: 4;
+
+  color:
+    var(--color-primary);
+
+  font-family:
+    "Fredoka",
+    sans-serif;
+
+  line-height: 1;
+
+  pointer-events: none;
+}
+
+.floating-loongis__spark--one {
+  top: 22px;
+  right: 42px;
+
+  font-size: 17px;
+
+  animation:
+    loongisSpark
+    2.4s
+    ease-in-out
+    infinite;
+}
+
+.floating-loongis__spark--two {
+  top: 52px;
+  right: 22px;
+
+  color:
+    var(--color-yellow);
+
+  font-size: 10px;
+
+  animation:
+    loongisSpark
+    2.4s
+    0.5s
+    ease-in-out
+    infinite;
+}
+
+
+/* ========================================
+   BURBUJA
+======================================== */
+
+.floating-loongis__bubble {
+  position: relative;
+
+  width: 230px;
+
+  margin-right: -3px;
+  margin-bottom: 94px;
+
+  padding:
+    17px
+    17px
+    15px;
+
+  border:
+    1px solid
+    rgba(
+      7,
+      95,
+      234,
+      0.13
+    );
+
+  border-radius: 18px;
+
+  background-color:
+    rgba(
+      255,
+      255,
+      255,
+      0.98
+    );
+
+  box-shadow:
+    0 15px 35px
+    rgba(
+      23,
+      23,
+      23,
+      0.12
+    );
+
+  pointer-events: none;
+
+  opacity: 0;
+
+  transform:
+    translateY(8px)
+    scale(0.96);
+
+  transform-origin:
+    bottom right;
+
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease;
+}
+
+
+/* ========================================
+   BURBUJA VISIBLE
+======================================== */
+
+.floating-loongis__bubble--visible {
+  pointer-events: auto;
+
+  opacity: 1;
+
+  transform:
+    translateY(0)
+    scale(1);
+}
+
+
+/* ========================================
+   PUNTA BURBUJA
+======================================== */
+
+.floating-loongis__bubble::after {
+  position: absolute;
+
+  right: 28px;
+  bottom: -8px;
+
+  width: 16px;
+  height: 16px;
+
+  border-right:
+    1px solid
+    rgba(
+      7,
+      95,
+      234,
+      0.1
+    );
+
+  border-bottom:
+    1px solid
+    rgba(
+      7,
+      95,
+      234,
+      0.1
+    );
+
+  background-color: #ffffff;
+
+  content: "";
+
+  transform:
+    rotate(45deg);
+}
+
+
+/* ========================================
+   CERRAR BURBUJA
+======================================== */
+
+.floating-loongis__close {
+  position: absolute;
+
+  top: 8px;
+  right: 8px;
+
+  display: grid;
+
+  place-items: center;
+
+  width: 26px;
+  height: 26px;
+
+  padding: 0;
+
+  border: none;
+
+  border-radius: 50%;
+
+  background-color:
+    rgba(
+      7,
+      95,
+      234,
+      0.07
+    );
+
+  color:
+    var(--color-primary);
+
+  cursor: pointer;
+}
+
+.floating-loongis__close svg {
+  width: 12px;
+  height: 12px;
+}
+
+
+/* ========================================
+   TEXTO
+======================================== */
+
+.floating-loongis__eyebrow {
+  display: block;
+
+  margin-bottom: 4px;
+
+  color:
+    var(--color-primary);
+
+  font-family:
+    "Nunito",
+    sans-serif;
+
+  font-size: 9px;
+  font-weight: 900;
+
+  text-transform: uppercase;
+
+  letter-spacing:
+    0.06em;
+}
+
+.floating-loongis__title {
+  display: block;
+
+  padding-right: 17px;
+
+  color:
+    var(--color-black);
+
+  font-family:
+    "Fredoka",
+    sans-serif;
+
+  font-size: 16px;
+  font-weight: 700;
+
+  line-height: 1.2;
+}
+
+
+/* ========================================
+   CTA
+======================================== */
+
+.floating-loongis__link {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  margin-top: 11px;
+
+  color:
+    var(--color-primary);
+
+  font-family:
+    "Fredoka",
+    sans-serif;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  transition:
+    gap 160ms ease,
+    color 160ms ease;
+}
+
+.floating-loongis__link:hover {
+  gap: 9px;
+
+  color:
+    var(--color-primary-dark);
+}
+
+.floating-loongis__link svg {
+  width: 12px;
+  height: 12px;
+}
+
+
+/* ========================================
+   ANIMACIÓN MASCOTA
+======================================== */
+
+@keyframes loongisFloat {
+
+  0%,
+  100% {
+    translate:
+      0
+      0;
+
+    rotate: -0.3deg;
+  }
+
+  50% {
+    translate:
+      0
+      -3px;
+
+    rotate: 0.3deg;
+  }
+}
+
+
+/* ========================================
+   ANIMACIÓN DESTELLOS
+======================================== */
+
+@keyframes loongisSpark {
+
+  0%,
+  100% {
+    opacity: 0.3;
+
+    transform:
+      scale(0.85)
+      rotate(0deg);
+  }
+
+  50% {
+    opacity: 1;
+
+    transform:
+      scale(1.15)
+      rotate(12deg);
+  }
+}
+
+
+/* ========================================
+   NOTEBOOK
+======================================== */
+
+@media (max-width: 1100px) {
+
+  .floating-loongis {
+    bottom: 52px;
+  }
+
+  .floating-loongis__mascot {
+    width: 158px;
+    height: 230px;
+  }
+
+  .floating-loongis__image {
+    width: 168px;
+    height: 225px;
+
+    right: -3px;
+
+    transform:
+      translateX(5px);
+  }
+
+  .floating-loongis__bubble {
+    width: 215px;
+
+    margin-bottom: 84px;
+  }
+}
+
+
+/* ========================================
+   TABLET
+======================================== */
+
+@media (max-width: 850px) {
+
+  .floating-loongis {
+    bottom: 45px;
+  }
+
+  .floating-loongis__mascot {
+    width: 138px;
+    height: 202px;
+  }
+
+  .floating-loongis__image {
+    width: 148px;
+    height: 198px;
+
+    transform:
+      translateX(4px);
+  }
+
+  .floating-loongis__bubble {
+    width: 205px;
+
+    margin-bottom: 74px;
+  }
+}
+
+
+/* ========================================
+   CELULARES
+======================================== */
+
+/*
+  En mobile ocultamos completamente
+  la mascota flotante.
+
+  En pantallas pequeñas puede tapar:
+  - botones
+  - precios
+  - filtros
+  - acciones del carrito
+  - contenido importante
+
+  La mascota sigue apareciendo en las
+  ilustraciones normales de la marca,
+  simplemente eliminamos este elemento
+  flotante de la interfaz.
+*/
+
+@media (max-width: 600px) {
+
+  .floating-loongis {
+    display: none;
+  }
+}
+
+
+/* ========================================
+   ACCESIBILIDAD
+======================================== */
+
+.floating-loongis__mascot:focus-visible,
+.floating-loongis__close:focus-visible,
+.floating-loongis__link:focus-visible {
+  outline:
+    3px solid
+    rgba(
+      7,
+      95,
+      234,
+      0.28
+    );
+
+  outline-offset: 3px;
+}
+
+
+/* ========================================
+   MOVIMIENTO REDUCIDO
+======================================== */
+
+@media (
+  prefers-reduced-motion:
+  reduce
+) {
+
+  .floating-loongis,
+  .floating-loongis__bubble,
+  .floating-loongis__image,
+  .floating-loongis__spark {
+    animation: none;
+
+    transition: none;
+  }
+}

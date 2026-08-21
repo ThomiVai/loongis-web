@@ -18,6 +18,10 @@ import { useCart } from "../hooks/useCart";
 
 import "../styles/Checkout.css";
 
+/* ========================================
+   WHATSAPP
+======================================== */
+
 /*
   Reemplazá este número por el WhatsApp real
   de Loongis.
@@ -30,7 +34,13 @@ import "../styles/Checkout.css";
 
   No uses +, espacios ni guiones.
 */
-const WHATSAPP_NUMBER = "5491138065902";
+
+const WHATSAPP_NUMBER =
+  "5491138065902";
+
+/* ========================================
+   TIPOS
+======================================== */
 
 type DeliveryMethod =
   | "delivery"
@@ -66,24 +76,33 @@ type CheckoutCustomization = {
 
 type CheckoutCartItem = {
   id: number | string;
+
   cartItemId?: string;
 
   name: string;
   description?: string;
+
   image?: string;
   imageAlt?: string;
 
   price: number;
   unitPrice?: number;
+
   quantity: number;
 
   customization?: CheckoutCustomization;
 
   selectedSize?: CheckoutOption;
   selectedExtras?: CheckoutOption[];
+
   removedIngredients?: string[];
+
   notes?: string;
 };
+
+/* ========================================
+   FORMATO DE PRECIO
+======================================== */
 
 const priceFormatter =
   new Intl.NumberFormat("es-AR", {
@@ -91,6 +110,10 @@ const priceFormatter =
     currency: "ARS",
     maximumFractionDigits: 0,
   });
+
+/* ========================================
+   FUNCIONES AUXILIARES
+======================================== */
 
 function getOptionName(
   option?: CheckoutOption,
@@ -105,7 +128,10 @@ function getOptionName(
 function getUnitPrice(
   item: CheckoutCartItem,
 ): number {
-  return item.unitPrice ?? item.price;
+  return (
+    item.unitPrice ??
+    item.price
+  );
 }
 
 function getItemCustomization(
@@ -142,13 +168,19 @@ function getItemCustomization(
   };
 }
 
+/* ========================================
+   TEXTO DE PRODUCTO PARA WHATSAPP
+======================================== */
+
 function createProductMessage(
   item: CheckoutCartItem,
 ): string {
-  const unitPrice = getUnitPrice(item);
+  const unitPrice =
+    getUnitPrice(item);
 
   const subtotal =
-    unitPrice * item.quantity;
+    unitPrice *
+    item.quantity;
 
   const {
     size,
@@ -172,10 +204,11 @@ function createProductMessage(
   }
 
   if (extras.length > 0) {
-    const extrasNames = extras
-      .map(getOptionName)
-      .filter(Boolean)
-      .join(", ");
+    const extrasNames =
+      extras
+        .map(getOptionName)
+        .filter(Boolean)
+        .join(", ");
 
     if (extrasNames) {
       lines.push(
@@ -203,21 +236,38 @@ function createProductMessage(
   return lines.join("\n");
 }
 
+/* ========================================
+   COMPONENTE
+======================================== */
+
 export function Checkout() {
-  const { cart } = useCart();
+  const { cart } =
+    useCart();
 
   const checkoutItems =
     cart as CheckoutCartItem[];
 
-  const [form, setForm] =
-    useState<CheckoutForm>({
-      customerName: "",
-      phone: "",
-      deliveryMethod: "delivery",
-      address: "",
-      paymentMethod: "cash",
-      notes: "",
-    });
+  const [
+    form,
+    setForm,
+  ] = useState<CheckoutForm>({
+    customerName: "",
+    phone: "",
+
+    deliveryMethod:
+      "delivery",
+
+    address: "",
+
+    paymentMethod:
+      "cash",
+
+    notes: "",
+  });
+
+  /* ========================================
+     TOTALES
+  ======================================== */
 
   const totalPrice =
     checkoutItems.reduce(
@@ -231,53 +281,86 @@ export function Checkout() {
   const totalUnits =
     checkoutItems.reduce(
       (total, item) =>
-        total + item.quantity,
+        total +
+        item.quantity,
       0,
     );
 
+  /* ========================================
+     INPUTS
+  ======================================== */
+
   const handleInputChange = (
     event: ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement
+      HTMLInputElement |
+      HTMLTextAreaElement
     >,
   ) => {
-    const { name, value } =
-      event.target;
+    const {
+      name,
+      value,
+    } = event.target;
 
-    setForm((currentForm) => ({
-      ...currentForm,
-      [name]: value,
-    }));
+    setForm(
+      (currentForm) => ({
+        ...currentForm,
+
+        [name]: value,
+      }),
+    );
   };
+
+  /* ========================================
+     ENTREGA
+  ======================================== */
 
   const selectDeliveryMethod = (
     method: DeliveryMethod,
   ) => {
-    setForm((currentForm) => ({
-      ...currentForm,
-      deliveryMethod: method,
+    setForm(
+      (currentForm) => ({
+        ...currentForm,
 
-      /*
-        Al elegir retiro limpiamos la dirección,
-        porque deja de ser necesaria.
-      */
-      address:
-        method === "pickup"
-          ? ""
-          : currentForm.address,
-    }));
+        deliveryMethod:
+          method,
+
+        /*
+          Si elegimos retiro,
+          limpiamos la dirección.
+        */
+
+        address:
+          method === "pickup"
+            ? ""
+            : currentForm.address,
+      }),
+    );
   };
+
+  /* ========================================
+     PAGO
+  ======================================== */
 
   const selectPaymentMethod = (
     method: PaymentMethod,
   ) => {
-    setForm((currentForm) => ({
-      ...currentForm,
-      paymentMethod: method,
-    }));
+    setForm(
+      (currentForm) => ({
+        ...currentForm,
+
+        paymentMethod:
+          method,
+      }),
+    );
   };
 
+  /* ========================================
+     FINALIZAR
+  ======================================== */
+
   const handleSubmit = (
-    event: FormEvent<HTMLFormElement>,
+    event:
+      FormEvent<HTMLFormElement>,
   ) => {
     event.preventDefault();
 
@@ -293,7 +376,10 @@ export function Checkout() {
     const notes =
       form.notes.trim();
 
-    if (!customerName || !phone) {
+    if (
+      !customerName ||
+      !phone
+    ) {
       return;
     }
 
@@ -305,7 +391,9 @@ export function Checkout() {
       return;
     }
 
-    if (checkoutItems.length === 0) {
+    if (
+      checkoutItems.length === 0
+    ) {
       return;
     }
 
@@ -316,13 +404,16 @@ export function Checkout() {
         : "Retiro por el local";
 
     const paymentText =
-      form.paymentMethod === "cash"
+      form.paymentMethod ===
+      "cash"
         ? "Efectivo"
         : "Transferencia";
 
     const productsText =
       checkoutItems
-        .map(createProductMessage)
+        .map(
+          createProductMessage,
+        )
         .join("\n\n");
 
     const messageLines = [
@@ -370,18 +461,18 @@ export function Checkout() {
         message,
       )}`;
 
-    /*
-      Redirección directa.
-
-      Ya no aparece ninguna pregunta del tipo:
-      "¿Querés enviar el pedido?".
-    */
     window.location.assign(
       whatsappUrl,
     );
   };
 
-  if (checkoutItems.length === 0) {
+  /* ========================================
+     CARRITO VACÍO
+  ======================================== */
+
+  if (
+    checkoutItems.length === 0
+  ) {
     return (
       <main className="checkout-page">
         <div className="checkout-page__container">
@@ -395,8 +486,9 @@ export function Checkout() {
             </h1>
 
             <p className="checkout-empty__description">
-              Agregá algún producto antes de
-              finalizar el pedido.
+              Agregá algún producto
+              antes de finalizar el
+              pedido.
             </p>
 
             <Link
@@ -411,9 +503,17 @@ export function Checkout() {
     );
   }
 
+  /* ========================================
+     CHECKOUT
+  ======================================== */
+
   return (
     <main className="checkout-page">
       <div className="checkout-page__container">
+        {/* ========================================
+            VOLVER
+        ======================================== */}
+
         <Link
           className="checkout-page__back"
           to="/carrito"
@@ -422,8 +522,14 @@ export function Checkout() {
             aria-hidden="true"
           />
 
-          <span>Volver al carrito</span>
+          <span>
+            Volver al carrito
+          </span>
         </Link>
+
+        {/* ========================================
+            ENCABEZADO
+        ======================================== */}
 
         <header className="checkout-page__header">
           <span className="checkout-page__eyebrow">
@@ -437,15 +543,30 @@ export function Checkout() {
           <p className="checkout-page__description">
             Completá tus datos y te
             llevamos directamente a
-            WhatsApp con el pedido escrito.
+            WhatsApp con el pedido
+            escrito.
           </p>
         </header>
 
+        {/* ========================================
+            LAYOUT
+        ======================================== */}
+
         <div className="checkout-layout">
+          {/* ========================================
+              FORMULARIO
+          ======================================== */}
+
           <form
             className="checkout-form"
-            onSubmit={handleSubmit}
+            onSubmit={
+              handleSubmit
+            }
           >
+            {/* ========================================
+                DATOS
+            ======================================== */}
+
             <section className="checkout-section">
               <h2 className="checkout-section__title">
                 Tus datos
@@ -453,12 +574,16 @@ export function Checkout() {
 
               <div className="checkout-form__grid">
                 <label className="checkout-field">
-                  <span>Nombre completo</span>
+                  <span>
+                    Nombre completo
+                  </span>
 
                   <input
                     type="text"
                     name="customerName"
-                    value={form.customerName}
+                    value={
+                      form.customerName
+                    }
                     placeholder="Ej: Tomás Vai"
                     autoComplete="name"
                     minLength={2}
@@ -470,12 +595,16 @@ export function Checkout() {
                 </label>
 
                 <label className="checkout-field">
-                  <span>Teléfono</span>
+                  <span>
+                    Teléfono
+                  </span>
 
                   <input
                     type="tel"
                     name="phone"
-                    value={form.phone}
+                    value={
+                      form.phone
+                    }
                     placeholder="Ej: 11 2345 6789"
                     autoComplete="tel"
                     minLength={6}
@@ -487,6 +616,10 @@ export function Checkout() {
                 </label>
               </div>
             </section>
+
+            {/* ========================================
+                ENTREGA
+            ======================================== */}
 
             <section className="checkout-section">
               <h2 className="checkout-section__title">
@@ -576,7 +709,9 @@ export function Checkout() {
                     <input
                       type="text"
                       name="address"
-                      value={form.address}
+                      value={
+                        form.address
+                      }
                       placeholder="Calle, número, localidad y referencias"
                       autoComplete="street-address"
                       required
@@ -588,6 +723,10 @@ export function Checkout() {
                 </label>
               )}
             </section>
+
+            {/* ========================================
+                PAGO
+            ======================================== */}
 
             <section className="checkout-section">
               <h2 className="checkout-section__title">
@@ -663,6 +802,10 @@ export function Checkout() {
               </div>
             </section>
 
+            {/* ========================================
+                ACLARACIONES
+            ======================================== */}
+
             <section className="checkout-section">
               <h2 className="checkout-section__title">
                 Aclaraciones
@@ -675,7 +818,9 @@ export function Checkout() {
 
                 <textarea
                   name="notes"
-                  value={form.notes}
+                  value={
+                    form.notes
+                  }
                   placeholder="Ej: tocar timbre, entregar en portería..."
                   rows={4}
                   maxLength={300}
@@ -685,6 +830,10 @@ export function Checkout() {
                 />
               </label>
             </section>
+
+            {/* ========================================
+                WHATSAPP
+            ======================================== */}
 
             <button
               className="checkout-submit"
@@ -701,10 +850,14 @@ export function Checkout() {
 
             <p className="checkout-form__notice">
               Al continuar se abrirá
-              WhatsApp directamente con tu
-              pedido preparado.
+              WhatsApp directamente con
+              tu pedido preparado.
             </p>
           </form>
+
+          {/* ========================================
+              RESUMEN
+          ======================================== */}
 
           <aside className="checkout-summary">
             <h2 className="checkout-summary__title">
@@ -712,101 +865,127 @@ export function Checkout() {
             </h2>
 
             <div className="checkout-summary__items">
-              {checkoutItems.map((item) => {
-                const unitPrice =
-                  getUnitPrice(item);
+              {checkoutItems.map(
+                (item) => {
+                  const unitPrice =
+                    getUnitPrice(
+                      item,
+                    );
 
-                const customization =
-                  getItemCustomization(
-                    item,
-                  );
+                  const customization =
+                    getItemCustomization(
+                      item,
+                    );
 
-                const sizeName =
-                  getOptionName(
-                    customization.size,
-                  );
+                  const sizeName =
+                    getOptionName(
+                      customization.size,
+                    );
 
-                const itemKey =
-                  item.cartItemId ??
-                  item.id;
+                  const itemKey =
+                    item.cartItemId ??
+                    item.id;
 
-                return (
-                  <article
-                    className="checkout-summary__item"
-                    key={itemKey}
-                  >
-                    {item.image && (
-                      <img
-                        className="checkout-summary__item-image"
-                        src={item.image}
-                        alt={
-                          item.imageAlt ??
-                          item.name
-                        }
-                      />
-                    )}
-
-                    <div className="checkout-summary__item-content">
-                      <div className="checkout-summary__item-heading">
-                        <h3>
-                          {item.quantity}x{" "}
-                          {item.name}
-                        </h3>
-
-                        <strong>
-                          {priceFormatter.format(
-                            unitPrice *
-                              item.quantity,
-                          )}
-                        </strong>
-                      </div>
-
-                      {sizeName && (
-                        <p>
-                          Tamaño: {sizeName}
-                        </p>
-                      )}
-
-                      {customization.extras
-                        .length > 0 && (
-                        <p>
-                          Extras:{" "}
-                          {customization.extras
-                            .map(
-                              getOptionName,
-                            )
-                            .filter(Boolean)
-                            .join(", ")}
-                        </p>
-                      )}
-
-                      {customization
-                        .removedIngredients
-                        .length > 0 && (
-                        <p>
-                          Sin:{" "}
-                          {customization.removedIngredients.join(
-                            ", ",
-                          )}
-                        </p>
-                      )}
-
-                      {customization.notes && (
-                        <p>
-                          Aclaración:{" "}
-                          {
-                            customization.notes
+                  return (
+                    <article
+                      className={[
+                        "checkout-summary__item",
+                        `checkout-summary__item--${item.id}`,
+                      ].join(" ")}
+                      key={
+                        itemKey
+                      }
+                    >
+                      {item.image && (
+                        <img
+                          className="checkout-summary__item-image"
+                          src={
+                            item.image
                           }
-                        </p>
+                          alt={
+                            item.imageAlt ??
+                            item.name
+                          }
+                        />
                       )}
-                    </div>
-                  </article>
-                );
-              })}
+
+                      <div className="checkout-summary__item-content">
+                        <div className="checkout-summary__item-heading">
+                          <h3>
+                            {
+                              item.quantity
+                            }
+                            x{" "}
+                            {
+                              item.name
+                            }
+                          </h3>
+
+                          <strong>
+                            {priceFormatter.format(
+                              unitPrice *
+                                item.quantity,
+                            )}
+                          </strong>
+                        </div>
+
+                        {sizeName && (
+                          <p>
+                            Tamaño:{" "}
+                            {sizeName}
+                          </p>
+                        )}
+
+                        {customization
+                          .extras
+                          .length >
+                          0 && (
+                          <p>
+                            Extras:{" "}
+                            {customization.extras
+                              .map(
+                                getOptionName,
+                              )
+                              .filter(
+                                Boolean,
+                              )
+                              .join(
+                                ", ",
+                              )}
+                          </p>
+                        )}
+
+                        {customization
+                          .removedIngredients
+                          .length >
+                          0 && (
+                          <p>
+                            Sin:{" "}
+                            {customization.removedIngredients.join(
+                              ", ",
+                            )}
+                          </p>
+                        )}
+
+                        {customization.notes && (
+                          <p>
+                            Aclaración:{" "}
+                            {
+                              customization.notes
+                            }
+                          </p>
+                        )}
+                      </div>
+                    </article>
+                  );
+                },
+              )}
             </div>
 
             <div className="checkout-summary__row">
-              <span>Unidades</span>
+              <span>
+                Unidades
+              </span>
 
               <strong>
                 {totalUnits}
@@ -814,7 +993,9 @@ export function Checkout() {
             </div>
 
             <div className="checkout-summary__total">
-              <span>Total</span>
+              <span>
+                Total
+              </span>
 
               <strong>
                 {priceFormatter.format(

@@ -2,8 +2,18 @@ import {
   useState,
   type ChangeEvent,
 } from "react";
-import { FaArrowLeftLong } from "react-icons/fa6";
-import { Link, useParams } from "react-router-dom";
+
+import {
+  FaArrowLeftLong,
+  FaArrowRightLong,
+  FaBagShopping,
+  FaCircleCheck,
+} from "react-icons/fa6";
+
+import {
+  Link,
+  useParams,
+} from "react-router-dom";
 
 import { AddToCartButton } from "../components/AddToCartButton";
 
@@ -17,14 +27,27 @@ import type {
 } from "../types/Product";
 
 import "../styles/ProductDetail.css";
+import "../styles/ProductAddedActions.css";
 
-const priceFormatter = new Intl.NumberFormat("es-AR", {
-  style: "currency",
-  currency: "ARS",
-  maximumFractionDigits: 0,
-});
+/* ========================================
+   FORMATO DE PRECIO
+======================================== */
 
-const categoryNames: Record<ProductCategory, string> = {
+const priceFormatter =
+  new Intl.NumberFormat("es-AR", {
+    style: "currency",
+    currency: "ARS",
+    maximumFractionDigits: 0,
+  });
+
+/* ========================================
+   NOMBRES DE CATEGORÍAS
+======================================== */
+
+const categoryNames: Record<
+  ProductCategory,
+  string
+> = {
   hamburguesas: "Hamburguesas",
   combos: "Combos",
   papas: "Papas",
@@ -32,112 +55,280 @@ const categoryNames: Record<ProductCategory, string> = {
   postres: "Postres",
 };
 
+/* ========================================
+   TAMAÑO POR DEFECTO
+======================================== */
+
 function getDefaultSizeId(
   sizeOptions?: ProductOption[],
 ): string {
-  if (!sizeOptions || sizeOptions.length === 0) {
+  if (
+    !sizeOptions ||
+    sizeOptions.length === 0
+  ) {
     return "";
   }
 
-  const baseOption = sizeOptions.find(
-    (option) => option.priceModifier === 0,
-  );
+  const baseOption =
+    sizeOptions.find(
+      (option) =>
+        option.priceModifier === 0,
+    );
 
-  return baseOption?.id ?? sizeOptions[0].id;
+  return (
+    baseOption?.id ??
+    sizeOptions[0].id
+  );
 }
+
+/* ========================================
+   PROPS
+======================================== */
 
 type ProductDetailContentProps = {
   product: Product;
 };
 
+/* ========================================
+   CONTENIDO DEL PRODUCTO
+======================================== */
+
 function ProductDetailContent({
   product,
 }: ProductDetailContentProps) {
-  const [selectedSizeId, setSelectedSizeId] =
-    useState(() =>
-      getDefaultSizeId(product.sizeOptions),
-    );
+  /* ========================================
+     ESTADOS DE PERSONALIZACIÓN
+  ======================================== */
 
-  const [selectedExtraIds, setSelectedExtraIds] =
-    useState<string[]>([]);
+  const [
+    selectedSizeId,
+    setSelectedSizeId,
+  ] = useState(() =>
+    getDefaultSizeId(
+      product.sizeOptions,
+    ),
+  );
+
+  const [
+    selectedExtraIds,
+    setSelectedExtraIds,
+  ] = useState<string[]>([]);
 
   const [
     removedIngredients,
     setRemovedIngredients,
   ] = useState<string[]>([]);
 
-  const [notes, setNotes] = useState("");
+  const [
+    notes,
+    setNotes,
+  ] = useState("");
+
+  /* ========================================
+     CONFIRMACIÓN POST-AGREGADO
+  ======================================== */
+
+  const [
+    showAddedActions,
+    setShowAddedActions,
+  ] = useState(false);
+
+  /* ========================================
+     DATOS DEL PRODUCTO
+  ======================================== */
 
   const productCategory =
-    product.category ?? "hamburguesas";
+    product.category ??
+    "hamburguesas";
 
   const selectedSize =
     product.sizeOptions?.find(
-      (option) => option.id === selectedSizeId,
+      (option) =>
+        option.id ===
+        selectedSizeId,
     );
 
   const selectedExtras =
-    product.extraOptions?.filter((option) =>
-      selectedExtraIds.includes(option.id),
+    product.extraOptions?.filter(
+      (option) =>
+        selectedExtraIds.includes(
+          option.id,
+        ),
     ) ?? [];
 
-  const extrasPrice = selectedExtras.reduce(
-    (total, extra) =>
-      total + extra.priceModifier,
-    0,
-  );
+  /* ========================================
+     PRECIO
+  ======================================== */
 
-  const selectedPrice = Math.max(
-    0,
-    product.price +
-      (selectedSize?.priceModifier ?? 0) +
-      extrasPrice,
-  );
+  const extrasPrice =
+    selectedExtras.reduce(
+      (
+        total,
+        extra,
+      ) =>
+        total +
+        extra.priceModifier,
+      0,
+    );
 
-  const customization: ProductCustomization = {
-    size: selectedSize,
-    extras: selectedExtras,
-    removedIngredients,
-    notes: notes.trim(),
+  const selectedPrice =
+    Math.max(
+      0,
+
+      product.price +
+        (
+          selectedSize?.priceModifier ??
+          0
+        ) +
+        extrasPrice,
+    );
+
+  /* ========================================
+     PERSONALIZACIÓN FINAL
+  ======================================== */
+
+  const customization:
+    ProductCustomization = {
+      size: selectedSize,
+
+      extras:
+        selectedExtras,
+
+      removedIngredients,
+
+      notes:
+        notes.trim(),
+    };
+
+  /* ========================================
+     CAMBIO DE TAMAÑO
+  ======================================== */
+
+  const handleSizeChange = (
+    optionId: string,
+  ) => {
+    setSelectedSizeId(
+      optionId,
+    );
+
+    /*
+      Si modifica la selección,
+      ocultamos la confirmación anterior.
+    */
+
+    setShowAddedActions(
+      false,
+    );
   };
+
+  /* ========================================
+     EXTRAS
+  ======================================== */
 
   const handleExtraChange = (
     optionId: string,
   ) => {
-    setSelectedExtraIds((currentIds) => {
-      if (currentIds.includes(optionId)) {
-        return currentIds.filter(
-          (currentId) => currentId !== optionId,
-        );
-      }
+    setSelectedExtraIds(
+      (currentIds) => {
+        if (
+          currentIds.includes(
+            optionId,
+          )
+        ) {
+          return currentIds.filter(
+            (currentId) =>
+              currentId !==
+              optionId,
+          );
+        }
 
-      return [...currentIds, optionId];
-    });
+        return [
+          ...currentIds,
+          optionId,
+        ];
+      },
+    );
+
+    setShowAddedActions(
+      false,
+    );
   };
+
+  /* ========================================
+     INGREDIENTES
+  ======================================== */
 
   const handleIngredientChange = (
     ingredient: string,
   ) => {
-    setRemovedIngredients((currentIngredients) => {
-      if (currentIngredients.includes(ingredient)) {
-        return currentIngredients.filter(
-          (currentIngredient) =>
-            currentIngredient !== ingredient,
-        );
-      }
+    setRemovedIngredients(
+      (
+        currentIngredients,
+      ) => {
+        if (
+          currentIngredients.includes(
+            ingredient,
+          )
+        ) {
+          return (
+            currentIngredients.filter(
+              (
+                currentIngredient,
+              ) =>
+                currentIngredient !==
+                ingredient,
+            )
+          );
+        }
 
-      return [
-        ...currentIngredients,
-        ingredient,
-      ];
-    });
+        return [
+          ...currentIngredients,
+          ingredient,
+        ];
+      },
+    );
+
+    setShowAddedActions(
+      false,
+    );
   };
+
+  /* ========================================
+     ACLARACIONES
+  ======================================== */
 
   const handleNotesChange = (
-    event: ChangeEvent<HTMLTextAreaElement>,
+    event:
+      ChangeEvent<HTMLTextAreaElement>,
   ) => {
-    setNotes(event.target.value);
+    setNotes(
+      event.target.value,
+    );
+
+    setShowAddedActions(
+      false,
+    );
   };
+
+  /* ========================================
+     PRODUCTO AGREGADO
+  ======================================== */
+
+  const handleProductAdded =
+    () => {
+      /*
+        AddToCartButton mantiene su propia
+        lógica de agregar y mostrar la
+        notificación global.
+
+        Nosotros solamente mostramos
+        acciones posteriores.
+      */
+
+      setShowAddedActions(
+        true,
+      );
+    };
 
   return (
     <main className="product-detail">
@@ -146,16 +337,32 @@ function ProductDetailContent({
         aria-labelledby="product-detail-title"
       >
         <div className="product-detail__container">
+          {/* ========================================
+              VOLVER
+          ======================================== */}
+
           <Link
             className="product-detail__back"
             to="/menu"
           >
-            <FaArrowLeftLong aria-hidden="true" />
+            <FaArrowLeftLong
+              aria-hidden="true"
+            />
 
-            <span>Volver al menú</span>
+            <span>
+              Volver al menú
+            </span>
           </Link>
 
+          {/* ========================================
+              LAYOUT
+          ======================================== */}
+
           <div className="product-detail__layout">
+            {/* ========================================
+                VISUAL
+            ======================================== */}
+
             <div className="product-detail__visual">
               <div className="product-detail__image-background">
                 <span
@@ -170,15 +377,27 @@ function ProductDetailContent({
 
                 <img
                   className="product-detail__image"
-                  src={product.image}
-                  alt={product.imageAlt}
+                  src={
+                    product.image
+                  }
+                  alt={
+                    product.imageAlt
+                  }
                 />
               </div>
             </div>
 
+            {/* ========================================
+                INFORMACIÓN
+            ======================================== */}
+
             <div className="product-detail__information">
               <span className="product-detail__category">
-                {categoryNames[productCategory]}
+                {
+                  categoryNames[
+                    productCategory
+                  ]
+                }
               </span>
 
               <h1
@@ -189,13 +408,20 @@ function ProductDetailContent({
               </h1>
 
               <p className="product-detail__description">
-                {product.description}
+                {
+                  product.description
+                }
               </p>
+
+              {/* ========================================
+                  PRECIO
+              ======================================== */}
 
               <div className="product-detail__price-row">
                 <div>
                   <span className="product-detail__price-label">
-                    Precio de tu selección
+                    Precio de tu
+                    selección
                   </span>
 
                   <strong className="product-detail__price">
@@ -205,7 +431,8 @@ function ProductDetailContent({
                   </strong>
                 </div>
 
-                {product.available !== false ? (
+                {product.available !==
+                false ? (
                   <span className="product-detail__available">
                     Disponible
                   </span>
@@ -216,8 +443,15 @@ function ProductDetailContent({
                 )}
               </div>
 
+              {/* ========================================
+                  TAMAÑO
+              ======================================== */}
+
               {product.sizeOptions &&
-                product.sizeOptions.length > 0 && (
+                product
+                  .sizeOptions
+                  .length >
+                  0 && (
                   <fieldset className="product-customization">
                     <legend className="product-customization__title">
                       Elegí el tamaño
@@ -225,7 +459,9 @@ function ProductDetailContent({
 
                     <div className="product-customization__options">
                       {product.sizeOptions.map(
-                        (option) => {
+                        (
+                          option,
+                        ) => {
                           const isSelected =
                             selectedSizeId ===
                             option.id;
@@ -237,15 +473,21 @@ function ProductDetailContent({
                                   ? "product-option--selected"
                                   : ""
                               }`}
-                              key={option.id}
+                              key={
+                                option.id
+                              }
                             >
                               <input
                                 type="radio"
                                 name="product-size"
-                                value={option.id}
-                                checked={isSelected}
+                                value={
+                                  option.id
+                                }
+                                checked={
+                                  isSelected
+                                }
                                 onChange={() =>
-                                  setSelectedSizeId(
+                                  handleSizeChange(
                                     option.id,
                                   )
                                 }
@@ -253,7 +495,9 @@ function ProductDetailContent({
 
                               <span className="product-option__information">
                                 <strong>
-                                  {option.name}
+                                  {
+                                    option.name
+                                  }
                                 </strong>
 
                                 <small>
@@ -280,20 +524,30 @@ function ProductDetailContent({
                   </fieldset>
                 )}
 
+              {/* ========================================
+                  EXTRAS
+              ======================================== */}
+
               {product.extraOptions &&
-                product.extraOptions.length > 0 && (
+                product
+                  .extraOptions
+                  .length >
+                  0 && (
                   <fieldset className="product-customization">
                     <legend className="product-customization__title">
                       Agregá extras
                     </legend>
 
                     <p className="product-customization__subtitle">
-                      Podés elegir más de uno.
+                      Podés elegir
+                      más de uno.
                     </p>
 
                     <div className="product-customization__options product-customization__options--two-columns">
                       {product.extraOptions.map(
-                        (option) => {
+                        (
+                          option,
+                        ) => {
                           const isSelected =
                             selectedExtraIds.includes(
                               option.id,
@@ -306,11 +560,15 @@ function ProductDetailContent({
                                   ? "product-option--selected"
                                   : ""
                               }`}
-                              key={option.id}
+                              key={
+                                option.id
+                              }
                             >
                               <input
                                 type="checkbox"
-                                checked={isSelected}
+                                checked={
+                                  isSelected
+                                }
                                 onChange={() =>
                                   handleExtraChange(
                                     option.id,
@@ -320,7 +578,9 @@ function ProductDetailContent({
 
                               <span className="product-option__information">
                                 <strong>
-                                  {option.name}
+                                  {
+                                    option.name
+                                  }
                                 </strong>
 
                                 <small>
@@ -338,21 +598,33 @@ function ProductDetailContent({
                   </fieldset>
                 )}
 
+              {/* ========================================
+                  QUITAR INGREDIENTES
+              ======================================== */}
+
               {product.ingredients &&
-                product.ingredients.length > 0 && (
+                product
+                  .ingredients
+                  .length >
+                  0 && (
                   <fieldset className="product-customization">
                     <legend className="product-customization__title">
-                      ¿Querés sacar algún ingrediente?
+                      ¿Querés sacar
+                      algún
+                      ingrediente?
                     </legend>
 
                     <p className="product-customization__subtitle">
-                      Marcá los ingredientes que no
-                      querés.
+                      Marcá los
+                      ingredientes que
+                      no querés.
                     </p>
 
                     <div className="product-ingredients">
                       {product.ingredients.map(
-                        (ingredient) => {
+                        (
+                          ingredient,
+                        ) => {
                           const isRemoved =
                             removedIngredients.includes(
                               ingredient,
@@ -365,11 +637,15 @@ function ProductDetailContent({
                                   ? "product-ingredient--removed"
                                   : ""
                               }`}
-                              key={ingredient}
+                              key={
+                                ingredient
+                              }
                             >
                               <input
                                 type="checkbox"
-                                checked={isRemoved}
+                                checked={
+                                  isRemoved
+                                }
                                 onChange={() =>
                                   handleIngredientChange(
                                     ingredient,
@@ -378,7 +654,10 @@ function ProductDetailContent({
                               />
 
                               <span>
-                                Sin {ingredient}
+                                Sin{" "}
+                                {
+                                  ingredient
+                                }
                               </span>
                             </label>
                           );
@@ -388,52 +667,147 @@ function ProductDetailContent({
                   </fieldset>
                 )}
 
+              {/* ========================================
+                  ACLARACIÓN
+              ======================================== */}
+
               <label
                 className="product-notes"
                 htmlFor="product-notes"
               >
                 <span className="product-notes__title">
-                  Aclaración para este producto
+                  Aclaración para
+                  este producto
                 </span>
 
                 <textarea
                   id="product-notes"
-                  value={notes}
-                  onChange={handleNotesChange}
+                  value={
+                    notes
+                  }
+                  onChange={
+                    handleNotesChange
+                  }
                   placeholder="Ejemplo: cocinar bien la carne, salsa aparte..."
-                  maxLength={140}
+                  maxLength={
+                    140
+                  }
                   rows={3}
                 />
 
                 <small className="product-notes__counter">
-                  {notes.length}/140
+                  {
+                    notes.length
+                  }
+                  /140
                 </small>
               </label>
 
-              {product.available !== false ? (
-                <AddToCartButton
-                  product={product}
-                  customization={customization}
-                  className="product-detail__add-button"
-                  label={`Agregar por ${priceFormatter.format(
-                    selectedPrice,
-                  )}`}
-                />
+              {/* ========================================
+                  AGREGAR AL PEDIDO
+              ======================================== */}
+
+              {product.available !==
+              false ? (
+                <div
+                  className="product-detail__add-wrapper"
+                  onClick={
+                    handleProductAdded
+                  }
+                >
+                  <AddToCartButton
+                    product={
+                      product
+                    }
+                    customization={
+                      customization
+                    }
+                    className="product-detail__add-button"
+                    label={`Agregar por ${priceFormatter.format(
+                      selectedPrice,
+                    )}`}
+                  />
+                </div>
               ) : (
                 <button
                   className="product-detail__add-button product-detail__add-button--disabled"
                   type="button"
                   disabled
                 >
-                  Producto sin stock
+                  Producto sin
+                  stock
                 </button>
               )}
 
-              <p className="product-detail__notice">
-                Las opciones seleccionadas aparecerán
-                como una línea independiente dentro de
-                tu pedido.
-              </p>
+              {/* ========================================
+                  CONFIRMACIÓN + ACCIONES
+              ======================================== */}
+
+              {showAddedActions ? (
+                <div
+                  className="product-added-actions"
+                  role="status"
+                  aria-live="polite"
+                >
+                  <div className="product-added-actions__message">
+                    <span className="product-added-actions__icon">
+                      <FaCircleCheck
+                        aria-hidden="true"
+                      />
+                    </span>
+
+                    <div className="product-added-actions__text">
+                      <strong>
+                        ¡Agregado a
+                        tu pedido!
+                      </strong>
+
+                      <span>
+                        {product.name}{" "}
+                        ya está en
+                        tu carrito.
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="product-added-actions__buttons">
+                    <Link
+                      className="product-added-actions__continue"
+                      to="/menu"
+                    >
+                      <span>
+                        Seguir viendo
+                        el menú
+                      </span>
+
+                      <FaArrowRightLong
+                        aria-hidden="true"
+                      />
+                    </Link>
+
+                    <Link
+                      className="product-added-actions__cart"
+                      to="/carrito"
+                    >
+                      <FaBagShopping
+                        aria-hidden="true"
+                      />
+
+                      <span>
+                        Ver mi pedido
+                      </span>
+                    </Link>
+                  </div>
+                </div>
+              ) : (
+                <p className="product-detail__notice">
+                  Las opciones
+                  seleccionadas aparecerán
+                  como una línea
+                  independiente dentro
+                  de tu pedido.
+                </p>
+              )}
             </div>
           </div>
         </div>
@@ -442,15 +816,30 @@ function ProductDetailContent({
   );
 }
 
+/* ========================================
+   PRODUCT DETAIL
+======================================== */
+
 export function ProductDetail() {
-  const { productId } = useParams();
+  const {
+    productId,
+  } = useParams();
 
-  const numericProductId = Number(productId);
+  const numericProductId =
+    Number(productId);
 
-  const product = menuProducts.find(
-    (currentProduct) =>
-      currentProduct.id === numericProductId,
-  );
+  const product =
+    menuProducts.find(
+      (
+        currentProduct,
+      ) =>
+        currentProduct.id ===
+        numericProductId,
+    );
+
+  /* ========================================
+     PRODUCTO NO ENCONTRADO
+  ======================================== */
 
   if (!product) {
     return (
@@ -464,12 +853,15 @@ export function ProductDetail() {
           </span>
 
           <h1 className="product-detail-empty__title">
-            Producto no encontrado
+            Producto no
+            encontrado
           </h1>
 
           <p className="product-detail-empty__description">
-            El producto que intentaste abrir no existe
-            o ya no está disponible.
+            El producto que
+            intentaste abrir no
+            existe o ya no está
+            disponible.
           </p>
 
           <Link
@@ -485,8 +877,12 @@ export function ProductDetail() {
 
   return (
     <ProductDetailContent
-      key={product.id}
-      product={product}
+      key={
+        product.id
+      }
+      product={
+        product
+      }
     />
   );
 }

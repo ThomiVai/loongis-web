@@ -19,7 +19,7 @@
 
 
 /* ========================================
-   ENCABEZADO
+   HERO
 ======================================== */
 
 .cart-page__hero {
@@ -38,11 +38,6 @@
     ),
     var(--color-cream);
 }
-
-
-/* ========================================
-   VOLVER
-======================================== */
 
 .cart-page__back {
   display: inline-flex;
@@ -76,7 +71,7 @@
 
 
 /* ========================================
-   HERO - LAYOUT
+   HERO LAYOUT
 ======================================== */
 
 .cart-page__hero-layout {
@@ -99,7 +94,7 @@
 
 
 /* ========================================
-   HERO - TEXTO
+   HERO TEXTO
 ======================================== */
 
 .cart-page__heading {
@@ -118,9 +113,13 @@
   background-color:
     rgba(244, 201, 40, 0.3);
 
-  color: var(--color-primary-dark);
+  color:
+    var(--color-primary-dark);
 
-  font-family: "Fredoka", sans-serif;
+  font-family:
+    "Fredoka",
+    sans-serif;
+
   font-size: 0.78rem;
   font-weight: 700;
 
@@ -133,13 +132,16 @@
 
   color: var(--color-primary);
 
-  font-family: "Fredoka", sans-serif;
+  font-family:
+    "Fredoka",
+    sans-serif;
 
-  font-size: clamp(
-    3rem,
-    7vw,
-    5.3rem
-  );
+  font-size:
+    clamp(
+      3rem,
+      7vw,
+      5.3rem
+    );
 
   font-weight: 700;
 
@@ -155,7 +157,10 @@
   color:
     rgba(23, 23, 23, 0.74);
 
-  font-family: "Nunito", sans-serif;
+  font-family:
+    "Nunito",
+    sans-serif;
+
   font-size: 1.05rem;
   font-weight: 600;
 
@@ -164,7 +169,7 @@
 
 
 /* ========================================
-   HERO - MASCOTA + BURGER
+   HERO VISUAL
 ======================================== */
 
 .cart-page__visual {
@@ -182,8 +187,6 @@
   height: 290px;
 
   min-width: 0;
-
-  background: transparent;
 }
 
 .cart-page__visual-image {
@@ -250,7 +253,7 @@
 
 
 /* ========================================
-   ENCABEZADO DE PRODUCTOS
+   PRODUCTOS
 ======================================== */
 
 .cart-products {
@@ -259,6 +262,7 @@
 
 .cart-products__header {
   display: flex;
+
   align-items: flex-end;
   justify-content: space-between;
 
@@ -275,7 +279,10 @@
 .cart-products__label {
   color: var(--color-primary);
 
-  font-family: "Fredoka", sans-serif;
+  font-family:
+    "Fredoka",
+    sans-serif;
+
   font-size: 0.84rem;
   font-weight: 700;
 
@@ -288,7 +295,10 @@
 
   color: var(--color-black);
 
-  font-family: "Fredoka", sans-serif;
+  font-family:
+    "Fredoka",
+    sans-serif;
+
   font-size: 1.8rem;
   font-weight: 700;
 }
@@ -300,6 +310,7 @@
 
 .cart-products__clear {
   display: inline-flex;
+
   align-items: center;
   justify-content: center;
 
@@ -318,7 +329,10 @@
 
   color: #a62222;
 
-  font-family: "Nunito", sans-serif;
+  font-family:
+    "Nunito",
+    sans-serif;
+
   font-size: 0.84rem;
   font-weight: 800;
 
@@ -331,20 +345,23 @@
 }
 
 .cart-products__clear:hover {
-  transform: translateY(-2px);
+  transform:
+    translateY(-2px);
 
-  background-color: #a62222;
+  background-color:
+    #a62222;
 
   color: #ffffff;
 }
 
 
 /* ========================================
-   LISTA DE PRODUCTOS
+   LISTA
 ======================================== */
 
 .cart-products__list {
   display: flex;
+
   flex-direction: column;
 
   gap: 16px;
@@ -352,14 +369,17 @@
 
 
 /* ========================================
-   PRODUCTO
+   CARD PRODUCTO
 ======================================== */
 
 .cart-item {
+  --cart-image-scale: 1.45;
+  --cart-image-y: 0px;
+
   display: grid;
 
   grid-template-columns:
-    155px
+    175px
     minmax(0, 1fr)
     auto;
 
@@ -393,41 +413,106 @@
 ======================================== */
 
 .cart-item__image-wrapper {
+  position: relative;
+
   display: flex;
   align-items: center;
   justify-content: center;
 
-  width: 155px;
-  height: 130px;
+  width: 175px;
+  height: 145px;
+
+  overflow: hidden;
 
   border-radius: 18px;
 
   background:
     radial-gradient(
       circle at center,
-      rgba(244, 201, 40, 0.2),
-      rgba(255, 255, 255, 0) 72%
+      rgba(244, 201, 40, 0.23),
+      rgba(255, 255, 255, 0) 70%
     );
 }
 
 .cart-item__image {
-  width: 100%;
-  max-width: 145px;
+  display: block;
 
-  height: 120px;
+  width: 100%;
+  height: 100%;
 
   object-fit: contain;
+  object-position: center;
 
   filter:
     drop-shadow(
       0 10px 9px
-      rgba(23, 23, 23, 0.12)
+      rgba(23, 23, 23, 0.13)
     );
+
+  transform:
+    translateY(
+      var(--cart-image-y)
+    )
+    scale(
+      var(--cart-image-scale)
+    );
+
+  transform-origin: center;
 }
 
 
 /* ========================================
-   INFORMACIÓN DEL PRODUCTO
+   ESCALA HAMBURGUESAS
+======================================== */
+
+.cart-item--1 {
+  --cart-image-scale: 1.63;
+  --cart-image-y: 2px;
+}
+
+.cart-item--2 {
+  --cart-image-scale: 1.58;
+  --cart-image-y: 2px;
+}
+
+.cart-item--3 {
+  --cart-image-scale: 1.68;
+  --cart-image-y: 4px;
+}
+
+.cart-item--4 {
+  --cart-image-scale: 1.61;
+  --cart-image-y: 2px;
+}
+
+
+/* ========================================
+   ESCALA COMBOS
+======================================== */
+
+.cart-item--101 {
+  --cart-image-scale: 1.15;
+  --cart-image-y: 2px;
+}
+
+.cart-item--102 {
+  --cart-image-scale: 1.22;
+  --cart-image-y: 2px;
+}
+
+.cart-item--109 {
+  --cart-image-scale: 1.2;
+  --cart-image-y: 3px;
+}
+
+.cart-item--110 {
+  --cart-image-scale: 1.23;
+  --cart-image-y: 3px;
+}
+
+
+/* ========================================
+   INFORMACIÓN
 ======================================== */
 
 .cart-item__information {
@@ -439,7 +524,10 @@
 
   color: var(--color-black);
 
-  font-family: "Fredoka", sans-serif;
+  font-family:
+    "Fredoka",
+    sans-serif;
+
   font-size: 1.3rem;
   font-weight: 700;
 }
@@ -452,7 +540,10 @@
   color:
     rgba(23, 23, 23, 0.68);
 
-  font-family: "Nunito", sans-serif;
+  font-family:
+    "Nunito",
+    sans-serif;
+
   font-size: 0.9rem;
   font-weight: 600;
 
@@ -460,20 +551,25 @@
 }
 
 .cart-item__unit-price {
-  color: var(--color-primary);
+  color:
+    var(--color-primary);
 
-  font-family: "Nunito", sans-serif;
+  font-family:
+    "Nunito",
+    sans-serif;
+
   font-size: 0.84rem;
   font-weight: 800;
 }
 
 
 /* ========================================
-   ACCIONES DEL PRODUCTO
+   ACCIONES
 ======================================== */
 
 .cart-item__actions {
   display: flex;
+
   align-items: flex-end;
 
   flex-direction: column;
@@ -490,6 +586,7 @@
 
 .cart-item__quantity {
   display: inline-flex;
+
   align-items: center;
 
   overflow: hidden;
@@ -506,6 +603,7 @@
 
 .cart-item__quantity-button {
   display: grid;
+
   place-items: center;
 
   width: 38px;
@@ -515,9 +613,11 @@
 
   border: none;
 
-  background-color: transparent;
+  background-color:
+    transparent;
 
-  color: var(--color-primary);
+  color:
+    var(--color-primary);
 
   cursor: pointer;
 
@@ -543,7 +643,10 @@
 
   color: var(--color-black);
 
-  font-family: "Fredoka", sans-serif;
+  font-family:
+    "Fredoka",
+    sans-serif;
+
   font-size: 1rem;
   font-weight: 700;
 
@@ -556,9 +659,13 @@
 ======================================== */
 
 .cart-item__subtotal {
-  color: var(--color-primary);
+  color:
+    var(--color-primary);
 
-  font-family: "Fredoka", sans-serif;
+  font-family:
+    "Fredoka",
+    sans-serif;
+
   font-size: 1.18rem;
   font-weight: 700;
 }
@@ -570,6 +677,7 @@
 
 .cart-item__remove {
   display: inline-flex;
+
   align-items: center;
 
   gap: 6px;
@@ -582,7 +690,10 @@
 
   color: #a62222;
 
-  font-family: "Nunito", sans-serif;
+  font-family:
+    "Nunito",
+    sans-serif;
+
   font-size: 0.8rem;
   font-weight: 800;
 
@@ -594,7 +705,8 @@
 }
 
 .cart-item__remove:hover {
-  transform: translateX(-2px);
+  transform:
+    translateX(-2px);
 
   color: #721515;
 }
@@ -628,9 +740,13 @@
 }
 
 .cart-summary__eyebrow {
-  color: var(--color-primary);
+  color:
+    var(--color-primary);
 
-  font-family: "Fredoka", sans-serif;
+  font-family:
+    "Fredoka",
+    sans-serif;
+
   font-size: 0.8rem;
   font-weight: 700;
 
@@ -639,22 +755,24 @@
 }
 
 .cart-summary__title {
-  margin: 5px 0 24px;
+  margin:
+    5px
+    0
+    24px;
 
   color: var(--color-black);
 
-  font-family: "Fredoka", sans-serif;
+  font-family:
+    "Fredoka",
+    sans-serif;
+
   font-size: 1.55rem;
   font-weight: 700;
 }
 
-
-/* ========================================
-   FILAS DEL RESUMEN
-======================================== */
-
 .cart-summary__rows {
   display: flex;
+
   flex-direction: column;
 
   gap: 15px;
@@ -668,21 +786,27 @@
 
 .cart-summary__row {
   display: flex;
+
   align-items: center;
-  justify-content: space-between;
+  justify-content:
+    space-between;
 
   gap: 18px;
 
   color:
     rgba(23, 23, 23, 0.7);
 
-  font-family: "Nunito", sans-serif;
+  font-family:
+    "Nunito",
+    sans-serif;
+
   font-size: 0.9rem;
   font-weight: 600;
 }
 
 .cart-summary__row strong {
-  color: var(--color-black);
+  color:
+    var(--color-black);
 
   font-weight: 800;
 
@@ -696,22 +820,32 @@
 
 .cart-summary__total {
   display: flex;
+
   align-items: center;
-  justify-content: space-between;
+  justify-content:
+    space-between;
 
   gap: 18px;
 
-  padding: 22px 0 16px;
+  padding:
+    22px
+    0
+    16px;
 
-  color: var(--color-black);
+  color:
+    var(--color-black);
 
-  font-family: "Fredoka", sans-serif;
+  font-family:
+    "Fredoka",
+    sans-serif;
+
   font-size: 1.15rem;
   font-weight: 700;
 }
 
 .cart-summary__total strong {
-  color: var(--color-primary);
+  color:
+    var(--color-primary);
 
   font-size: 1.7rem;
 }
@@ -722,12 +856,18 @@
 ======================================== */
 
 .cart-summary__notice {
-  margin: 0 0 20px;
+  margin:
+    0
+    0
+    20px;
 
   color:
     rgba(23, 23, 23, 0.6);
 
-  font-family: "Nunito", sans-serif;
+  font-family:
+    "Nunito",
+    sans-serif;
+
   font-size: 0.8rem;
   font-weight: 600;
 
@@ -736,11 +876,12 @@
 
 
 /* ========================================
-   FINALIZAR PEDIDO
+   FINALIZAR
 ======================================== */
 
 .cart-summary__checkout {
   display: flex;
+
   align-items: center;
   justify-content: center;
 
@@ -755,7 +896,10 @@
 
   color: #ffffff;
 
-  font-family: "Fredoka", sans-serif;
+  font-family:
+    "Fredoka",
+    sans-serif;
+
   font-size: 0.96rem;
   font-weight: 700;
 
@@ -770,7 +914,8 @@
 }
 
 .cart-summary__checkout:hover {
-  transform: translateY(-2px);
+  transform:
+    translateY(-2px);
 
   background-color:
     var(--color-primary-dark);
@@ -782,11 +927,12 @@
 
 
 /* ========================================
-   SEGUIR COMPRANDO
+   AGREGAR MÁS
 ======================================== */
 
 .cart-summary__continue {
   display: flex;
+
   align-items: center;
   justify-content: center;
 
@@ -797,9 +943,13 @@
   background-color:
     var(--color-yellow);
 
-  color: var(--color-black);
+  color:
+    var(--color-black);
 
-  font-family: "Fredoka", sans-serif;
+  font-family:
+    "Fredoka",
+    sans-serif;
+
   font-size: 0.94rem;
   font-weight: 700;
 
@@ -814,7 +964,8 @@
 }
 
 .cart-summary__continue:hover {
-  transform: translateY(-2px);
+  transform:
+    translateY(-2px);
 
   background-color: #ffd83d;
 
@@ -830,6 +981,7 @@
 
 .cart-empty {
   display: flex;
+
   align-items: center;
 
   flex-direction: column;
@@ -838,7 +990,9 @@
 
   margin: 0 auto;
 
-  padding: 54px 28px;
+  padding:
+    54px
+    28px;
 
   border:
     1px solid
@@ -860,6 +1014,7 @@
 
 .cart-empty__icon {
   display: grid;
+
   place-items: center;
 
   width: 82px;
@@ -872,7 +1027,8 @@
   background-color:
     rgba(244, 201, 40, 0.25);
 
-  color: var(--color-primary);
+  color:
+    var(--color-primary);
 }
 
 .cart-empty__icon svg {
@@ -883,9 +1039,13 @@
 .cart-empty__title {
   margin: 0;
 
-  color: var(--color-black);
+  color:
+    var(--color-black);
 
-  font-family: "Fredoka", sans-serif;
+  font-family:
+    "Fredoka",
+    sans-serif;
+
   font-size: 2rem;
   font-weight: 700;
 }
@@ -893,12 +1053,18 @@
 .cart-empty__description {
   max-width: 430px;
 
-  margin: 13px 0 24px;
+  margin:
+    13px
+    0
+    24px;
 
   color:
     rgba(23, 23, 23, 0.67);
 
-  font-family: "Nunito", sans-serif;
+  font-family:
+    "Nunito",
+    sans-serif;
+
   font-size: 0.98rem;
   font-weight: 600;
 
@@ -907,47 +1073,39 @@
 
 .cart-empty__button {
   display: inline-flex;
+
   align-items: center;
   justify-content: center;
 
   min-height: 46px;
 
-  padding: 0 24px;
+  padding:
+    0
+    24px;
 
   border-radius: 999px;
 
   background-color:
     var(--color-yellow);
 
-  color: var(--color-black);
+  color:
+    var(--color-black);
 
-  font-family: "Fredoka", sans-serif;
+  font-family:
+    "Fredoka",
+    sans-serif;
+
   font-size: 0.95rem;
   font-weight: 700;
 
   box-shadow:
     0 9px 20px
     rgba(244, 201, 40, 0.25);
-
-  transition:
-    background-color 160ms ease,
-    box-shadow 160ms ease,
-    transform 160ms ease;
-}
-
-.cart-empty__button:hover {
-  transform: translateY(-2px);
-
-  background-color: #ffd83d;
-
-  box-shadow:
-    0 12px 24px
-    rgba(244, 201, 40, 0.34);
 }
 
 
 /* ========================================
-   NOTEBOOK / TABLET GRANDE
+   NOTEBOOK
 ======================================== */
 
 @media (max-width: 1000px) {
@@ -975,7 +1133,7 @@
 
 
 /* ========================================
-   TABLETS
+   TABLET
 ======================================== */
 
 @media (max-width: 900px) {
@@ -987,11 +1145,6 @@
   .cart-summary {
     position: static;
   }
-
-
-  /* ----------------------------------------
-     HERO
-  ---------------------------------------- */
 
   .cart-page__hero-layout {
     grid-template-columns:
@@ -1016,7 +1169,7 @@
 
 
 /* ========================================
-   CELULARES
+   MOBILE
 ======================================== */
 
 @media (max-width: 650px) {
@@ -1027,18 +1180,14 @@
 
 
   /* ========================================
-     HERO MOBILE
+     HERO
   ======================================== */
 
-  /*
-    En mobile eliminamos la ilustración.
-
-    "Mi pedido" pasa a utilizar todo
-    el ancho disponible.
-  */
-
   .cart-page__hero {
-    padding: 27px 0 31px;
+    padding:
+      27px
+      0
+      31px;
 
     background:
       var(--color-cream);
@@ -1066,7 +1215,9 @@
   .cart-page__eyebrow {
     margin-bottom: 9px;
 
-    padding: 6px 12px;
+    padding:
+      6px
+      12px;
 
     font-size: 0.67rem;
   }
@@ -1074,11 +1225,12 @@
   .cart-page__title {
     width: 100%;
 
-    font-size: clamp(
-      3rem,
-      15vw,
-      4rem
-    );
+    font-size:
+      clamp(
+        3rem,
+        15vw,
+        4rem
+      );
   }
 
   .cart-page__subtitle {
@@ -1087,6 +1239,7 @@
     margin-top: 13px;
 
     font-size: 0.9rem;
+
     line-height: 1.45;
   }
 
@@ -1096,16 +1249,15 @@
   ======================================== */
 
   .cart-content {
-    padding: 8px 0 62px;
+    padding:
+      8px
+      0
+      62px;
   }
 
-
-  /* ========================================
-     ENCABEZADO PRODUCTOS
-  ======================================== */
-
   .cart-products__header {
-    align-items: flex-start;
+    align-items:
+      flex-start;
 
     flex-direction: column;
 
@@ -1114,45 +1266,118 @@
 
 
   /* ========================================
-     PRODUCTO
+     CARD MOBILE
   ======================================== */
 
   .cart-item {
     grid-template-columns:
-      105px
+      112px
       minmax(0, 1fr);
 
-    gap: 15px;
+    gap: 12px;
 
-    padding: 16px;
+    padding:
+      14px
+      13px;
+
+    border-radius: 18px;
   }
 
+
+  /* ========================================
+     IMAGEN MOBILE
+  ======================================== */
+
+  /*
+    Antes:
+    105 x 100 / imagen 100 x 92.
+
+    Ahora le damos bastante más
+    protagonismo sin ensanchar demasiado
+    la tarjeta.
+  */
+
   .cart-item__image-wrapper {
-    width: 105px;
-    height: 100px;
+    width: 112px;
+    height: 108px;
+
+    border-radius: 14px;
   }
 
   .cart-item__image {
-    max-width: 100px;
-
-    height: 92px;
+    width: 100%;
+    height: 100%;
   }
+
+
+  /* Hamburguesas */
+
+  .cart-item--1 {
+    --cart-image-scale: 1.55;
+  }
+
+  .cart-item--2 {
+    --cart-image-scale: 1.5;
+  }
+
+  .cart-item--3 {
+    --cart-image-scale: 1.59;
+  }
+
+  .cart-item--4 {
+    --cart-image-scale: 1.53;
+  }
+
+
+  /* Combos */
+
+  .cart-item--101 {
+    --cart-image-scale: 1.1;
+  }
+
+  .cart-item--102 {
+    --cart-image-scale: 1.16;
+  }
+
+  .cart-item--109 {
+    --cart-image-scale: 1.14;
+  }
+
+  .cart-item--110 {
+    --cart-image-scale: 1.17;
+  }
+
+
+  /* ========================================
+     INFORMACIÓN MOBILE
+  ======================================== */
 
   .cart-item__description {
     display: none;
   }
 
+  .cart-item__name {
+    font-size: 1.15rem;
+  }
+
+
+  /* ========================================
+     ACCIONES MOBILE
+  ======================================== */
+
   .cart-item__actions {
-    grid-column: 1 / -1;
+    grid-column:
+      1 / -1;
 
     align-items: center;
-    justify-content: space-between;
+    justify-content:
+      space-between;
 
     flex-direction: row;
 
     width: 100%;
 
-    padding-top: 14px;
+    padding-top: 12px;
 
     border-top:
       1px solid
@@ -1169,16 +1394,30 @@
   ======================================== */
 
   .cart-summary {
-    padding: 22px;
+    padding: 20px;
+
+    border-radius: 19px;
+  }
+
+  .cart-summary__title {
+    margin-bottom: 19px;
+  }
+
+  .cart-summary__rows {
+    gap: 12px;
+
+    padding-bottom: 17px;
   }
 
 
   /* ========================================
-     CARRITO VACÍO
+     VACÍO
   ======================================== */
 
   .cart-empty {
-    padding: 44px 20px;
+    padding:
+      44px
+      20px;
   }
 
   .cart-empty__title {
@@ -1188,7 +1427,7 @@
 
 
 /* ========================================
-   CELULARES PEQUEÑOS
+   MOBILE PEQUEÑO
 ======================================== */
 
 @media (max-width: 380px) {
@@ -1206,30 +1445,21 @@
     font-size: 0.84rem;
   }
 
-
-  /* ----------------------------------------
-     PRODUCTO
-  ---------------------------------------- */
-
   .cart-item {
     grid-template-columns:
-      86px
+      96px
       minmax(0, 1fr);
+
+    gap: 10px;
   }
 
   .cart-item__image-wrapper {
-    width: 86px;
-    height: 88px;
-  }
-
-  .cart-item__image {
-    max-width: 84px;
-
-    height: 82px;
+    width: 96px;
+    height: 96px;
   }
 
   .cart-item__name {
-    font-size: 1.12rem;
+    font-size: 1.08rem;
   }
 
   .cart-item__unit-price {

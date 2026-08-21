@@ -1,0 +1,475 @@
+/* ========================================
+   CONFIRMACIÓN POST AGREGADO
+======================================== */
+
+.product-detail__add-wrapper {
+  width: 100%;
+}
+
+
+/* ========================================
+   PANEL
+======================================== */
+
+.product-added-actions {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 14px;
+
+  width: 100%;
+
+  margin-top: 13px;
+
+  padding: 15px;
+
+  border:
+    1px solid
+    rgba(
+      34,
+      169,
+      90,
+      0.22
+    );
+
+  border-radius: 17px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(
+        34,
+        169,
+        90,
+        0.1
+      ),
+      rgba(
+        255,
+        255,
+        255,
+        0.88
+      )
+    );
+
+  box-shadow:
+    0 8px 22px
+    rgba(
+      23,
+      23,
+      23,
+      0.035
+    );
+
+  animation:
+    productAddedAppear
+    220ms
+    ease-out;
+}
+
+
+/* ========================================
+   MENSAJE
+======================================== */
+
+.product-added-actions__message {
+  display: flex;
+
+  align-items: center;
+
+  gap: 11px;
+
+  min-width: 0;
+}
+
+
+/* ========================================
+   ÍCONO
+======================================== */
+
+.product-added-actions__icon {
+  display: grid;
+
+  place-items: center;
+
+  flex-shrink: 0;
+
+  width: 39px;
+  height: 39px;
+
+  border-radius: 50%;
+
+  background-color:
+    rgba(
+      34,
+      169,
+      90,
+      0.13
+    );
+
+  color:
+    #168247;
+}
+
+.product-added-actions__icon svg {
+  width: 19px;
+  height: 19px;
+}
+
+
+/* ========================================
+   TEXTO
+======================================== */
+
+.product-added-actions__text {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 2px;
+
+  min-width: 0;
+}
+
+.product-added-actions__text strong {
+  color:
+    var(--color-black);
+
+  font-family:
+    "Fredoka",
+    sans-serif;
+
+  font-size: 0.98rem;
+  font-weight: 700;
+
+  line-height: 1.2;
+}
+
+.product-added-actions__text span {
+  color:
+    rgba(
+      23,
+      23,
+      23,
+      0.62
+    );
+
+  font-family:
+    "Nunito",
+    sans-serif;
+
+  font-size: 0.78rem;
+  font-weight: 600;
+
+  line-height: 1.35;
+}
+
+
+/* ========================================
+   BOTONES
+======================================== */
+
+.product-added-actions__buttons {
+  display: grid;
+
+  grid-template-columns:
+    1fr
+    1fr;
+
+  gap: 9px;
+}
+
+
+/* ========================================
+   SEGUIR VIENDO MENÚ
+======================================== */
+
+.product-added-actions__continue {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  min-height: 44px;
+
+  padding:
+    9px
+    13px;
+
+  border:
+    1.5px solid
+    rgba(
+      7,
+      95,
+      234,
+      0.24
+    );
+
+  border-radius: 12px;
+
+  background-color:
+    rgba(
+      255,
+      255,
+      255,
+      0.8
+    );
+
+  color:
+    var(--color-primary);
+
+  font-family:
+    "Fredoka",
+    sans-serif;
+
+  font-size: 0.82rem;
+  font-weight: 700;
+
+  text-align: center;
+
+  transition:
+    color 160ms ease,
+    border-color 160ms ease,
+    background-color 160ms ease,
+    transform 160ms ease;
+}
+
+.product-added-actions__continue svg {
+  flex-shrink: 0;
+
+  width: 13px;
+  height: 13px;
+}
+
+.product-added-actions__continue:hover {
+  border-color:
+    var(--color-primary);
+
+  background-color:
+    rgba(
+      7,
+      95,
+      234,
+      0.07
+    );
+
+  transform:
+    translateY(-1px);
+}
+
+
+/* ========================================
+   VER MI PEDIDO
+======================================== */
+
+.product-added-actions__cart {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  min-height: 44px;
+
+  padding:
+    9px
+    13px;
+
+  border:
+    1.5px solid
+    var(--color-primary);
+
+  border-radius: 12px;
+
+  background-color:
+    var(--color-primary);
+
+  color:
+    #ffffff;
+
+  font-family:
+    "Fredoka",
+    sans-serif;
+
+  font-size: 0.82rem;
+  font-weight: 700;
+
+  text-align: center;
+
+  box-shadow:
+    0 7px 17px
+    rgba(
+      7,
+      95,
+      234,
+      0.18
+    );
+
+  transition:
+    background-color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+}
+
+.product-added-actions__cart svg {
+  flex-shrink: 0;
+
+  width: 14px;
+  height: 14px;
+}
+
+.product-added-actions__cart:hover {
+  background-color:
+    var(--color-primary-dark);
+
+  transform:
+    translateY(-1px);
+
+  box-shadow:
+    0 9px 20px
+    rgba(
+      7,
+      95,
+      234,
+      0.24
+    );
+}
+
+
+/* ========================================
+   ANIMACIÓN
+======================================== */
+
+@keyframes productAddedAppear {
+
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(7px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0);
+  }
+}
+
+
+/* ========================================
+   MOBILE
+======================================== */
+
+@media (max-width: 600px) {
+
+  .product-added-actions {
+    gap: 11px;
+
+    margin-top: 10px;
+
+    padding: 12px;
+
+    border-radius: 14px;
+  }
+
+  .product-added-actions__message {
+    gap: 9px;
+  }
+
+  .product-added-actions__icon {
+    width: 34px;
+    height: 34px;
+  }
+
+  .product-added-actions__icon svg {
+    width: 17px;
+    height: 17px;
+  }
+
+  .product-added-actions__text strong {
+    font-size: 0.9rem;
+  }
+
+  .product-added-actions__text span {
+    font-size: 0.7rem;
+  }
+
+  .product-added-actions__buttons {
+    gap: 7px;
+  }
+
+  .product-added-actions__continue,
+  .product-added-actions__cart {
+    min-height: 42px;
+
+    padding:
+      8px
+      7px;
+
+    border-radius: 11px;
+
+    font-size: 0.72rem;
+  }
+}
+
+
+/* ========================================
+   MOBILE PEQUEÑO
+======================================== */
+
+@media (max-width: 360px) {
+
+  /*
+    En teléfonos muy angostos,
+    las acciones pasan a una debajo
+    de la otra para evitar texto apretado.
+  */
+
+  .product-added-actions__buttons {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* ========================================
+   ACCESIBILIDAD
+======================================== */
+
+.product-added-actions__continue:focus-visible,
+.product-added-actions__cart:focus-visible {
+  outline:
+    3px solid
+    rgba(
+      7,
+      95,
+      234,
+      0.25
+    );
+
+  outline-offset: 3px;
+}
+
+
+/* ========================================
+   MOVIMIENTO REDUCIDO
+======================================== */
+
+@media (
+  prefers-reduced-motion:
+  reduce
+) {
+
+  .product-added-actions {
+    animation: none;
+  }
+
+  .product-added-actions__continue,
+  .product-added-actions__cart {
+    transition: none;
+  }
+}

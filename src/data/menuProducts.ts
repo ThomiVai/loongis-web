@@ -28,6 +28,10 @@ export const hamburgerSizes = [
   },
 ];
 
+/* ========================================
+   EXTRAS
+======================================== */
+
 export const hamburgerExtras = [
   {
     id: "cheddar",
@@ -63,7 +67,10 @@ export const hamburgerExtras = [
    INGREDIENTES
 ======================================== */
 
-const ingredientsByProductId: Record<number, string[]> = {
+const ingredientsByProductId: Record<
+  number,
+  string[]
+> = {
   1: ["Queso"],
 
   2: [
@@ -97,16 +104,43 @@ const hamburgerProducts = originalProducts.map(
   (product) => ({
     ...product,
 
-    productCategory: "hamburguesas" as const,
-    category: "hamburguesas" as const,
+    productCategory:
+      "hamburguesas" as const,
 
-    featured: [2, 3, 4].includes(product.id),
+    category:
+      "hamburguesas" as const,
+
+    featured:
+      [2, 3, 4].includes(product.id),
+
+    /*
+      Las dejamos con ambos nombres
+      por compatibilidad.
+
+      ProductDetail usa:
+      sizeOptions / extraOptions
+
+      Si algún componente anterior usa:
+      sizes / extras
+
+      también seguirá funcionando.
+    */
 
     sizes: hamburgerSizes,
-    extras: hamburgerExtras,
+
+    sizeOptions:
+      hamburgerSizes,
+
+    extras:
+      hamburgerExtras,
+
+    extraOptions:
+      hamburgerExtras,
 
     ingredients:
-      ingredientsByProductId[product.id] ?? [],
+      ingredientsByProductId[
+        product.id
+      ] ?? [],
   }),
 );
 
@@ -125,18 +159,31 @@ const comboProducts = [
 
     price: 14500,
 
-    image: "/images/burgers/combo-promo.png",
+    image:
+      "/images/burgers/combo-promo.png",
 
     imageAlt:
       "Combo Clásico con hamburguesa Loongis Clasic, papas y bebida",
 
-    productCategory: "combos" as const,
-    category: "combos" as const,
+    productCategory:
+      "combos" as const,
+
+    category:
+      "combos" as const,
 
     featured: false,
 
-    sizes: hamburgerSizes,
-    extras: hamburgerExtras,
+    sizes:
+      hamburgerSizes,
+
+    sizeOptions:
+      hamburgerSizes,
+
+    extras:
+      hamburgerExtras,
+
+    extraOptions:
+      hamburgerExtras,
 
     ingredients:
       ingredientsByProductId[2],
@@ -152,18 +199,31 @@ const comboProducts = [
 
     price: 15800,
 
-    image: "/images/burgers/combo-bacon.png",
+    image:
+      "/images/burgers/combo-bacon.png",
 
     imageAlt:
       "Combo Bacon con hamburguesa Loongis Bacon, papas y bebida",
 
-    productCategory: "combos" as const,
-    category: "combos" as const,
+    productCategory:
+      "combos" as const,
+
+    category:
+      "combos" as const,
 
     featured: false,
 
-    sizes: hamburgerSizes,
-    extras: hamburgerExtras,
+    sizes:
+      hamburgerSizes,
+
+    sizeOptions:
+      hamburgerSizes,
+
+    extras:
+      hamburgerExtras,
+
+    extraOptions:
+      hamburgerExtras,
 
     ingredients:
       ingredientsByProductId[3],
@@ -179,18 +239,31 @@ const comboProducts = [
 
     price: 16100,
 
-    image: "/images/burgers/combo-crispy.png",
+    image:
+      "/images/burgers/combo-crispy.png",
 
     imageAlt:
       "Combo Crispy con hamburguesa Loongis Crispy, papas y bebida",
 
-    productCategory: "combos" as const,
-    category: "combos" as const,
+    productCategory:
+      "combos" as const,
+
+    category:
+      "combos" as const,
 
     featured: false,
 
-    sizes: hamburgerSizes,
-    extras: hamburgerExtras,
+    sizes:
+      hamburgerSizes,
+
+    sizeOptions:
+      hamburgerSizes,
+
+    extras:
+      hamburgerExtras,
+
+    extraOptions:
+      hamburgerExtras,
 
     ingredients:
       ingredientsByProductId[4],
@@ -212,13 +285,25 @@ const comboProducts = [
     imageAlt:
       "Combo Simple Queso con hamburguesa, papas y bebida",
 
-    productCategory: "combos" as const,
-    category: "combos" as const,
+    productCategory:
+      "combos" as const,
+
+    category:
+      "combos" as const,
 
     featured: false,
 
-    sizes: hamburgerSizes,
-    extras: hamburgerExtras,
+    sizes:
+      hamburgerSizes,
+
+    sizeOptions:
+      hamburgerSizes,
+
+    extras:
+      hamburgerExtras,
+
+    extraOptions:
+      hamburgerExtras,
 
     ingredients:
       ingredientsByProductId[1],
@@ -240,5 +325,6 @@ export const menuProducts = [
 
 export const featuredProducts =
   menuProducts.filter(
-    (product) => product.featured,
+    (product) =>
+      product.featured,
   );
