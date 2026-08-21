@@ -6,20 +6,20 @@
   position: fixed;
 
   right: 0;
-  bottom: 58px;
+  bottom: 54px;
 
   z-index: 80;
 
   display: flex;
   align-items: flex-end;
 
-  gap: 8px;
+  gap: 6px;
 
   pointer-events: none;
 
   opacity: 0;
 
-  transform: translateX(120px);
+  transform: translateX(105px);
 
   transition:
     opacity 280ms ease,
@@ -57,8 +57,26 @@
   align-items: center;
   justify-content: flex-end;
 
-  width: 175px;
-  height: 255px;
+  /*
+    Ahora el tamaño depende del viewport.
+
+    Nunca baja de ~115px
+    ni supera ~150px.
+  */
+
+  width:
+    clamp(
+      115px,
+      8vw,
+      150px
+    );
+
+  height:
+    clamp(
+      170px,
+      12vw,
+      215px
+    );
 
   padding: 0;
 
@@ -85,22 +103,40 @@
   z-index: 2;
 
   top: 0;
-  right: -3px;
+  right: -2px;
 
   display: block;
 
-  width: 185px;
-  height: 250px;
+  width:
+    clamp(
+      122px,
+      8.6vw,
+      158px
+    );
+
+  height:
+    clamp(
+      166px,
+      11.8vw,
+      210px
+    );
 
   max-width: none;
+  max-height: 210px;
 
   object-fit: contain;
 
   object-position:
     right center;
 
+  /*
+    Apenas escondemos la línea
+    vertical del dibujo contra el
+    borde real del navegador.
+  */
+
   transform:
-    translateX(5px);
+    translateX(4px);
 
   transform-origin:
     right center;
@@ -108,13 +144,13 @@
   filter:
     drop-shadow(
       -3px
-      9px
       8px
+      7px
       rgba(
         23,
         23,
         23,
-        0.12
+        0.11
       )
     );
 
@@ -138,13 +174,13 @@
   filter:
     drop-shadow(
       -4px
-      12px
-      10px
+      11px
+      9px
       rgba(
         23,
         23,
         23,
-        0.17
+        0.16
       )
     );
 }
@@ -171,11 +207,14 @@
   pointer-events: none;
 }
 
-.floating-loongis__spark--one {
-  top: 22px;
-  right: 42px;
 
-  font-size: 17px;
+/* Destello azul */
+
+.floating-loongis__spark--one {
+  top: 20px;
+  right: 36px;
+
+  font-size: 15px;
 
   animation:
     loongisSpark
@@ -184,14 +223,17 @@
     infinite;
 }
 
+
+/* Destello amarillo */
+
 .floating-loongis__spark--two {
-  top: 52px;
-  right: 22px;
+  top: 47px;
+  right: 19px;
 
   color:
     var(--color-yellow);
 
-  font-size: 10px;
+  font-size: 9px;
 
   animation:
     loongisSpark
@@ -209,15 +251,15 @@
 .floating-loongis__bubble {
   position: relative;
 
-  width: 230px;
+  width: 220px;
 
-  margin-right: -3px;
-  margin-bottom: 94px;
+  margin-right: -2px;
+  margin-bottom: 78px;
 
   padding:
-    17px
-    17px
-    15px;
+    16px
+    16px
+    14px;
 
   border:
     1px solid
@@ -228,7 +270,7 @@
       0.13
     );
 
-  border-radius: 18px;
+  border-radius: 17px;
 
   background-color:
     rgba(
@@ -239,12 +281,12 @@
     );
 
   box-shadow:
-    0 15px 35px
+    0 14px 32px
     rgba(
       23,
       23,
       23,
-      0.12
+      0.11
     );
 
   pointer-events: none;
@@ -286,7 +328,7 @@
 .floating-loongis__bubble::after {
   position: absolute;
 
-  right: 28px;
+  right: 26px;
   bottom: -8px;
 
   width: 16px;
@@ -330,7 +372,6 @@
   right: 8px;
 
   display: grid;
-
   place-items: center;
 
   width: 26px;
@@ -363,7 +404,7 @@
 
 
 /* ========================================
-   TEXTO
+   TEXTO BURBUJA
 ======================================== */
 
 .floating-loongis__eyebrow {
@@ -383,8 +424,7 @@
 
   text-transform: uppercase;
 
-  letter-spacing:
-    0.06em;
+  letter-spacing: 0.06em;
 }
 
 .floating-loongis__title {
@@ -399,7 +439,7 @@
     "Fredoka",
     sans-serif;
 
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 700;
 
   line-height: 1.2;
@@ -417,7 +457,7 @@
 
   gap: 6px;
 
-  margin-top: 11px;
+  margin-top: 10px;
 
   color:
     var(--color-primary);
@@ -459,7 +499,7 @@
       0
       0;
 
-    rotate: -0.3deg;
+    rotate: -0.25deg;
   }
 
   50% {
@@ -467,7 +507,7 @@
       0
       -3px;
 
-    rotate: 0.3deg;
+    rotate: 0.25deg;
   }
 }
 
@@ -498,56 +538,48 @@
 
 
 /* ========================================
-   NOTEBOOK
+   PANTALLAS GRANDES
 ======================================== */
 
-@media (max-width: 1100px) {
+@media (min-width: 1500px) {
 
-  .floating-loongis {
-    bottom: 52px;
-  }
+  /*
+    Incluso en monitores grandes
+    ponemos un techo para evitar
+    que el personaje gane demasiado
+    protagonismo.
+  */
 
   .floating-loongis__mascot {
-    width: 158px;
-    height: 230px;
+    width: 150px;
+    height: 215px;
   }
 
   .floating-loongis__image {
-    width: 168px;
-    height: 225px;
-
-    right: -3px;
-
-    transform:
-      translateX(5px);
-  }
-
-  .floating-loongis__bubble {
-    width: 215px;
-
-    margin-bottom: 84px;
+    width: 158px;
+    height: 210px;
   }
 }
 
 
 /* ========================================
-   TABLET
+   NOTEBOOK
 ======================================== */
 
-@media (max-width: 850px) {
+@media (max-width: 1200px) {
 
   .floating-loongis {
-    bottom: 45px;
+    bottom: 48px;
   }
 
   .floating-loongis__mascot {
-    width: 138px;
-    height: 202px;
+    width: 125px;
+    height: 185px;
   }
 
   .floating-loongis__image {
-    width: 148px;
-    height: 198px;
+    width: 133px;
+    height: 180px;
 
     transform:
       translateX(4px);
@@ -556,33 +588,40 @@
   .floating-loongis__bubble {
     width: 205px;
 
-    margin-bottom: 74px;
+    margin-bottom: 68px;
+  }
+
+  .floating-loongis__spark--one {
+    top: 17px;
+    right: 31px;
+
+    font-size: 13px;
+  }
+
+  .floating-loongis__spark--two {
+    top: 40px;
+    right: 16px;
+
+    font-size: 8px;
   }
 }
 
 
 /* ========================================
-   CELULARES
+   TABLET Y MOBILE
 ======================================== */
 
 /*
-  En mobile ocultamos completamente
-  la mascota flotante.
+  A partir de acá deja de sumar.
 
-  En pantallas pequeñas puede tapar:
-  - botones
-  - precios
-  - filtros
-  - acciones del carrito
-  - contenido importante
+  Además de mobile, una tablet o
+  una ventana angosta puede tener
+  botones/precios cerca del lateral.
 
-  La mascota sigue apareciendo en las
-  ilustraciones normales de la marca,
-  simplemente eliminamos este elemento
-  flotante de la interfaz.
+  Por eso desaparece completamente.
 */
 
-@media (max-width: 600px) {
+@media (max-width: 900px) {
 
   .floating-loongis {
     display: none;
