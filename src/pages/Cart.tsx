@@ -137,7 +137,9 @@ export function Cart() {
               aria-hidden="true"
             />
 
-            <span>Volver al menú</span>
+            <span>
+              Volver al menú
+            </span>
           </Link>
 
           <div className="cart-page__hero-layout">
@@ -197,10 +199,11 @@ export function Cart() {
             ======================================== */
 
             <div className="cart-empty">
-              <div className="cart-empty__icon">
-                <FaBagShopping
-                  aria-hidden="true"
-                />
+              <div
+                className="cart-empty__icon"
+                aria-hidden="true"
+              >
+                <FaBagShopping />
               </div>
 
               <h2 className="cart-empty__title">
@@ -244,6 +247,10 @@ export function Cart() {
                   <button
                     className="cart-products__clear"
                     type="button"
+                    aria-haspopup="dialog"
+                    aria-expanded={
+                      isClearModalOpen
+                    }
                     onClick={() =>
                       setIsClearModalOpen(true)
                     }
@@ -252,7 +259,9 @@ export function Cart() {
                       aria-hidden="true"
                     />
 
-                    <span>Vaciar pedido</span>
+                    <span>
+                      Vaciar pedido
+                    </span>
                   </button>
                 </div>
 
@@ -391,7 +400,11 @@ export function Cart() {
                               />
                             </button>
 
-                            <span className="cart-item__quantity-value">
+                            <span
+                              className="cart-item__quantity-value"
+                              aria-live="polite"
+                              aria-atomic="true"
+                            >
                               {item.quantity}
                             </span>
 
@@ -431,7 +444,9 @@ export function Cart() {
                               aria-hidden="true"
                             />
 
-                            <span>Eliminar</span>
+                            <span>
+                              Eliminar
+                            </span>
                           </button>
                         </div>
                       </article>
@@ -460,16 +475,10 @@ export function Cart() {
                 </h2>
 
                 <div className="cart-summary__rows">
-                  {/* 
-                    Quitamos "Configuraciones distintas".
-
-                    Para el cliente interesa cuánto
-                    está pidiendo, no cuántas
-                    configuraciones internas existen.
-                  */}
-
                   <div className="cart-summary__row">
-                    <span>Unidades totales</span>
+                    <span>
+                      Unidades totales
+                    </span>
 
                     <strong>
                       {totalUnits}
@@ -477,16 +486,20 @@ export function Cart() {
                   </div>
 
                   <div className="cart-summary__row">
-                    <span>Envío</span>
+                    <span>
+                      Envío
+                    </span>
 
                     <strong>
-                      Se calcula al finalizar
+                      A confirmar
                     </strong>
                   </div>
                 </div>
 
                 <div className="cart-summary__total">
-                  <span>Total</span>
+                  <span>
+                    Total productos
+                  </span>
 
                   <strong>
                     {priceFormatter.format(
@@ -496,8 +509,9 @@ export function Cart() {
                 </div>
 
                 <p className="cart-summary__notice">
-                  Seleccioná tu localidad al finalizar
-                  para conocer el total con envío.
+                  Realizamos envíos únicamente dentro
+                  de Hurlingham. El costo de envío se
+                  confirma al finalizar el pedido.
                 </p>
 
                 <Link

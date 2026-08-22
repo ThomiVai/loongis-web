@@ -6,7 +6,7 @@
   position: fixed;
 
   right: 0;
-  bottom: 54px;
+  bottom: 50px;
 
   z-index: 80;
 
@@ -19,7 +19,8 @@
 
   opacity: 0;
 
-  transform: translateX(105px);
+  transform:
+    translateX(95px);
 
   transition:
     opacity 280ms ease,
@@ -42,47 +43,43 @@
 
   opacity: 1;
 
-  transform: translateX(0);
+  transform:
+    translateX(0);
 }
 
 
 /* ========================================
-   CONTENEDOR MASCOTA
+   CONTENEDOR DE LA MASCOTA
 ======================================== */
 
 .floating-loongis__mascot {
   position: relative;
 
   display: flex;
+
   align-items: center;
   justify-content: flex-end;
 
-  /*
-    Ahora el tamaño depende del viewport.
-
-    Nunca baja de ~115px
-    ni supera ~150px.
-  */
-
   width:
     clamp(
-      115px,
-      8vw,
-      150px
+      98px,
+      6.8vw,
+      132px
     );
 
   height:
     clamp(
-      170px,
-      12vw,
-      215px
+      145px,
+      10vw,
+      188px
     );
 
   padding: 0;
 
   border: none;
 
-  background: transparent;
+  background:
+    transparent;
 
   overflow: visible;
 
@@ -109,34 +106,28 @@
 
   width:
     clamp(
-      122px,
-      8.6vw,
-      158px
+      104px,
+      7.2vw,
+      138px
     );
 
   height:
     clamp(
-      166px,
-      11.8vw,
-      210px
+      142px,
+      9.6vw,
+      182px
     );
 
   max-width: none;
-  max-height: 210px;
+  max-height: 182px;
 
   object-fit: contain;
 
   object-position:
     right center;
 
-  /*
-    Apenas escondemos la línea
-    vertical del dibujo contra el
-    borde real del navegador.
-  */
-
   transform:
-    translateX(4px);
+    translateX(3px);
 
   transform-origin:
     right center;
@@ -144,8 +135,8 @@
   filter:
     drop-shadow(
       -3px
-      8px
       7px
+      6px
       rgba(
         23,
         23,
@@ -174,8 +165,8 @@
   filter:
     drop-shadow(
       -4px
-      11px
-      9px
+      10px
+      8px
       rgba(
         23,
         23,
@@ -187,8 +178,20 @@
 
 
 /* ========================================
-   DESTELLOS
+   DESTELLO
 ======================================== */
+
+/*
+  La propia imagen ya posee varios
+  detalles alrededor de Loongis.
+
+  Dejamos solamente un destello azul
+  pequeño como refuerzo de la animación.
+
+  Eliminamos completamente el amarillo
+  para que nunca se superponga con
+  la cara del personaje.
+*/
 
 .floating-loongis__spark {
   position: absolute;
@@ -207,38 +210,15 @@
   pointer-events: none;
 }
 
-
-/* Destello azul */
-
 .floating-loongis__spark--one {
-  top: 20px;
-  right: 36px;
+  top: 17px;
+  right: 31px;
 
-  font-size: 15px;
-
-  animation:
-    loongisSpark
-    2.4s
-    ease-in-out
-    infinite;
-}
-
-
-/* Destello amarillo */
-
-.floating-loongis__spark--two {
-  top: 47px;
-  right: 19px;
-
-  color:
-    var(--color-yellow);
-
-  font-size: 9px;
+  font-size: 13px;
 
   animation:
     loongisSpark
     2.4s
-    0.5s
     ease-in-out
     infinite;
 }
@@ -251,10 +231,10 @@
 .floating-loongis__bubble {
   position: relative;
 
-  width: 220px;
+  width: 215px;
 
   margin-right: -2px;
-  margin-bottom: 78px;
+  margin-bottom: 69px;
 
   padding:
     16px
@@ -322,13 +302,13 @@
 
 
 /* ========================================
-   PUNTA BURBUJA
+   PUNTA DE BURBUJA
 ======================================== */
 
 .floating-loongis__bubble::after {
   position: absolute;
 
-  right: 26px;
+  right: 25px;
   bottom: -8px;
 
   width: 16px;
@@ -352,7 +332,8 @@
       0.1
     );
 
-  background-color: #ffffff;
+  background-color:
+    #ffffff;
 
   content: "";
 
@@ -372,6 +353,7 @@
   right: 8px;
 
   display: grid;
+
   place-items: center;
 
   width: 26px;
@@ -404,7 +386,7 @@
 
 
 /* ========================================
-   TEXTO BURBUJA
+   TEXTO
 ======================================== */
 
 .floating-loongis__eyebrow {
@@ -422,9 +404,11 @@
   font-size: 9px;
   font-weight: 900;
 
-  text-transform: uppercase;
+  text-transform:
+    uppercase;
 
-  letter-spacing: 0.06em;
+  letter-spacing:
+    0.06em;
 }
 
 .floating-loongis__title {
@@ -499,21 +483,23 @@
       0
       0;
 
-    rotate: -0.25deg;
+    rotate:
+      -0.2deg;
   }
 
   50% {
     translate:
       0
-      -3px;
+      -2px;
 
-    rotate: 0.25deg;
+    rotate:
+      0.2deg;
   }
 }
 
 
 /* ========================================
-   ANIMACIÓN DESTELLOS
+   ANIMACIÓN DESTELLO
 ======================================== */
 
 @keyframes loongisSpark {
@@ -543,21 +529,14 @@
 
 @media (min-width: 1500px) {
 
-  /*
-    Incluso en monitores grandes
-    ponemos un techo para evitar
-    que el personaje gane demasiado
-    protagonismo.
-  */
-
   .floating-loongis__mascot {
-    width: 150px;
-    height: 215px;
+    width: 132px;
+    height: 188px;
   }
 
   .floating-loongis__image {
-    width: 158px;
-    height: 210px;
+    width: 138px;
+    height: 182px;
   }
 }
 
@@ -569,57 +548,40 @@
 @media (max-width: 1200px) {
 
   .floating-loongis {
-    bottom: 48px;
+    bottom: 46px;
   }
 
   .floating-loongis__mascot {
-    width: 125px;
-    height: 185px;
+    width: 108px;
+    height: 160px;
   }
 
   .floating-loongis__image {
-    width: 133px;
-    height: 180px;
+    width: 114px;
+    height: 156px;
 
     transform:
-      translateX(4px);
+      translateX(3px);
   }
 
   .floating-loongis__bubble {
-    width: 205px;
+    width: 200px;
 
-    margin-bottom: 68px;
+    margin-bottom: 61px;
   }
 
   .floating-loongis__spark--one {
-    top: 17px;
-    right: 31px;
+    top: 14px;
+    right: 27px;
 
-    font-size: 13px;
-  }
-
-  .floating-loongis__spark--two {
-    top: 40px;
-    right: 16px;
-
-    font-size: 8px;
+    font-size: 12px;
   }
 }
 
 
 /* ========================================
-   TABLET Y MOBILE
+   TABLET + MOBILE
 ======================================== */
-
-/*
-  A partir de acá deja de sumar.
-
-  Además de mobile, una tablet o
-  una ventana angosta puede tener
-  botones/precios cerca del lateral.
-
-  Por eso desaparece completamente.
-*/
 
 @media (max-width: 900px) {
 

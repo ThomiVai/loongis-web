@@ -1,70 +1,169 @@
 <!doctype html>
-<html lang="es">
+<html lang="es-AR">
   <head>
     <meta charset="UTF-8" />
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
-      name="description"
-      content="Hamburguesas artesanales, combos, papas y mucho sabor. Conocé el menú de Loongis y armá tu pedido online."
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
     />
 
-    <meta name="theme-color" content="#075fea" />
+    <!-- ========================================
+         SEO BÁSICO
+    ======================================== -->
 
-    <meta name="robots" content="index, follow" />
+    <title>
+      Loongis | Hamburguesas smash en Hurlingham
+    </title>
 
-    <meta property="og:title" content="Hamburguesas artesanales | Loongis" />
+    <meta
+      name="description"
+      content="Hamburguesas smash en Hurlingham. Conocé el menú de Loongis, elegí tu favorita, personalizá tu pedido y pedí para envío o retiro."
+    />
+
+    <meta
+      name="robots"
+      content="index, follow"
+    />
+
+    <meta
+      name="theme-color"
+      content="#075fea"
+    />
+
+    <!-- ========================================
+         CANONICAL
+    ======================================== -->
+
+    <link
+      rel="canonical"
+      href="https://loongis-web.vercel.app/"
+    />
+
+    <!-- ========================================
+         FAVICON
+    ======================================== -->
+
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="/favicon.svg"
+    />
+
+    <!-- ========================================
+         OPEN GRAPH
+    ======================================== -->
+
+    <meta
+      property="og:type"
+      content="website"
+    />
+
+    <meta
+      property="og:site_name"
+      content="Loongis"
+    />
+
+    <meta
+      property="og:locale"
+      content="es_AR"
+    />
+
+    <meta
+      property="og:url"
+      content="https://loongis-web.vercel.app/"
+    />
+
+    <meta
+      property="og:title"
+      content="Loongis | Hamburguesas smash en Hurlingham"
+    />
 
     <meta
       property="og:description"
-      content="Hamburguesas artesanales, combos, papas y mucho sabor. Conocé el menú de Loongis y armá tu pedido online."
+      content="Hamburguesas smash en Hurlingham. Mirá el menú, personalizá tu favorita y armá tu pedido para envío o retiro."
     />
-
-    <meta property="og:type" content="website" />
-
-    <meta property="og:url" content="https://loongis-web.vercel.app/" />
 
     <meta
       property="og:image"
-      content="https://loongis-web.vercel.app/images/promo/combo-loongis.png"
+      content="https://loongis-web.vercel.app/images/burgers/combo-promo.png"
     />
 
     <meta
       property="og:image:alt"
-      content="Combo de hamburguesa, papas y bebida de Loongis"
+      content="Combo de hamburguesa smash, papas y bebida de Loongis"
     />
 
-    <meta property="og:site_name" content="Loongis" />
+    <!-- ========================================
+         TWITTER / X
+    ======================================== -->
 
-    <meta property="og:locale" content="es_AR" />
+    <meta
+      name="twitter:card"
+      content="summary_large_image"
+    />
 
-    <meta name="twitter:card" content="summary_large_image" />
-
-    <meta name="twitter:title" content="Hamburguesas artesanales | Loongis" />
+    <meta
+      name="twitter:title"
+      content="Loongis | Hamburguesas smash en Hurlingham"
+    />
 
     <meta
       name="twitter:description"
-      content="Hamburguesas artesanales, combos, papas y mucho sabor."
+      content="Hamburguesas smash en Hurlingham. Mirá el menú y armá tu pedido para envío o retiro."
     />
 
     <meta
       name="twitter:image"
-      content="https://loongis-web.vercel.app/images/promo/combo-loongis.png"
+      content="https://loongis-web.vercel.app/images/burgers/combo-promo.png"
     />
-
-    <link rel="canonical" href="https://loongis-web.vercel.app/" />
 
     <meta
-      name="description"
-      content="Loongis: hamburguesas smash, combos, papas y mucho sabor."
+      name="twitter:image:alt"
+      content="Combo de hamburguesa smash, papas y bebida de Loongis"
     />
 
-    <title>Loongis | Hamburguesas smash</title>
+    <!-- ========================================
+         DATOS ESTRUCTURADOS
+    ======================================== -->
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Restaurant",
+        "name": "Loongis",
+        "url": "https://loongis-web.vercel.app/",
+        "image": "https://loongis-web.vercel.app/images/burgers/combo-promo.png",
+        "description": "Hamburguesas smash en Hurlingham con opciones de envío y retiro.",
+        "servesCuisine": "Hamburguesas smash",
+        "hasMenu": "https://loongis-web.vercel.app/menu",
+        "areaServed": {
+          "@type": "City",
+          "name": "Hurlingham"
+        },
+        "openingHoursSpecification": [
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": [
+              "https://schema.org/Thursday",
+              "https://schema.org/Friday",
+              "https://schema.org/Saturday",
+              "https://schema.org/Sunday"
+            ],
+            "opens": "19:00",
+            "closes": "00:00"
+          }
+        ]
+      }
+    </script>
   </head>
 
   <body>
     <div id="root"></div>
 
-    <script type="module" src="/src/main.tsx"></script>
+    <script
+      type="module"
+      src="/src/main.tsx"
+    ></script>
   </body>
 </html>

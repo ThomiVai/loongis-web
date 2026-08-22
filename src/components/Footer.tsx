@@ -1,12 +1,23 @@
-import { FaInstagram, FaWhatsapp } from "react-icons/fa6";
+import {
+  FaInstagram,
+  FaWhatsapp,
+} from "react-icons/fa6";
+
+import {
+  Link,
+} from "react-router-dom";
 
 import "../styles/Footer.css";
 
-const currentYear = new Date().getFullYear();
+const currentYear =
+  new Date().getFullYear();
 
 export function Footer() {
   return (
-    <footer className="site-footer" id="contacto">
+    <footer
+      className="site-footer"
+      id="contacto"
+    >
       <svg
         className="site-footer__wave"
         viewBox="0 0 1440 80"
@@ -26,7 +37,9 @@ export function Footer() {
             />
 
             <p className="site-footer__description">
-              Hamburguesas hechas con amor, para los que aman comer rico.
+              Hamburguesas hechas con
+              amor, para los que aman
+              comer rico.
             </p>
 
             <div
@@ -36,17 +49,25 @@ export function Footer() {
               <button
                 className="site-footer__social-button"
                 type="button"
-                aria-label="Instagram de Loongis"
+                aria-label="Instagram de Loongis, próximamente"
+                title="Instagram próximamente"
+                disabled
               >
-                <FaInstagram aria-hidden="true" />
+                <FaInstagram
+                  aria-hidden="true"
+                />
               </button>
 
               <button
                 className="site-footer__social-button"
                 type="button"
-                aria-label="WhatsApp de Loongis"
+                aria-label="WhatsApp de Loongis, próximamente"
+                title="WhatsApp próximamente"
+                disabled
               >
-                <FaWhatsapp aria-hidden="true" />
+                <FaWhatsapp
+                  aria-hidden="true"
+                />
               </button>
             </div>
           </div>
@@ -55,37 +76,75 @@ export function Footer() {
             className="site-footer__column"
             aria-label="Navegación del pie de página"
           >
-            <h2 className="site-footer__column-title">Navegación</h2>
+            <h2 className="site-footer__column-title">
+              Navegación
+            </h2>
 
-            <a href="#inicio">Inicio</a>
-            <a href="#featured-products-title">Menú</a>
-            <a href="#daily-promo-title">Combos</a>
-            <a href="#beneficios">Nosotros</a>
-            <a href="#contacto">Contacto</a>
+            <Link to="/">
+              Inicio
+            </Link>
+
+            <Link to="/menu">
+              Menú
+            </Link>
+
+            <Link to="/#combos-loongis">
+              Combos
+            </Link>
+
+            <Link to="/#nosotros">
+              Nosotros
+            </Link>
+
+            <Link to="/#contacto">
+              Contacto
+            </Link>
           </nav>
 
           <div className="site-footer__column">
-            <h2 className="site-footer__column-title">Ayuda</h2>
+            <h2 className="site-footer__column-title">
+              Pedidos
+            </h2>
 
-            <button type="button">Preguntas frecuentes</button>
+            <span>
+              Envíos solo en Hurlingham
+            </span>
 
-            <button type="button">Envíos</button>
+            <span>
+              Retiro por el local
+            </span>
 
-            <button type="button">Cambios y devoluciones</button>
+            <span>
+              Efectivo
+            </span>
 
-            <button type="button">Términos y condiciones</button>
+            <span>
+              Transferencia
+            </span>
           </div>
 
           <div className="site-footer__column site-footer__schedule">
-            <h2 className="site-footer__column-title">Horarios</h2>
+            <h2 className="site-footer__column-title">
+              Horarios
+            </h2>
 
-            <p>Jueves a domingo</p>
+            <p>
+              Jueves a domingo
+            </p>
 
-            <strong>19:00 a 00:00</strong>
+            <strong>
+              19:00 a 00:00
+            </strong>
 
-            <p className="site-footer__location">Hurlingham, Buenos Aires</p>
+            <p className="site-footer__location">
+              Hurlingham,
+              Buenos Aires
+            </p>
 
-            <a href="#contacto">Consultá tu zona de entrega</a>
+            <span>
+              Envíos únicamente en
+              Hurlingham
+            </span>
           </div>
 
           <div className="site-footer__mascot-wrapper">
@@ -98,10 +157,15 @@ export function Footer() {
         </div>
 
         <div className="site-footer__bottom">
-          <span>© {currentYear} Loongis. Todos los derechos reservados.</span>
+          <span>
+            © {currentYear} Loongis.
+            Todos los derechos
+            reservados.
+          </span>
 
           <span className="site-footer__made-with">
-            Hecho con amor y muchas hamburguesas.
+            Hecho con amor y muchas
+            hamburguesas.
           </span>
         </div>
       </div>

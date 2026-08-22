@@ -28,43 +28,39 @@ export const businessHours: Record<
 
   tuesday: {
     label: "Martes",
-    isClosed: false,
-    opensAt: "19:00",
-    closesAt: "23:30",
+    isClosed: true,
   },
 
   wednesday: {
     label: "Miércoles",
-    isClosed: false,
-    opensAt: "19:00",
-    closesAt: "23:30",
+    isClosed: true,
   },
 
   thursday: {
     label: "Jueves",
     isClosed: false,
     opensAt: "19:00",
-    closesAt: "23:30",
+    closesAt: "00:00",
   },
 
   friday: {
     label: "Viernes",
     isClosed: false,
     opensAt: "19:00",
-    closesAt: "23:30",
+    closesAt: "00:00",
   },
 
   saturday: {
     label: "Sábado",
     isClosed: false,
     opensAt: "19:00",
-    closesAt: "23:30",
+    closesAt: "00:00",
   },
 
   sunday: {
     label: "Domingo",
     isClosed: false,
     opensAt: "19:00",
-    closesAt: "23:30",
+    closesAt: "00:00",
   },
 };

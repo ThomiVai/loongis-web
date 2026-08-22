@@ -51,12 +51,10 @@ export function FloatingLoongis() {
             scrollableHeight;
 
           /*
-            No aparece en el Hero.
+            No aparece inmediatamente.
 
-            Entra cuando el usuario ya empezó
-            a recorrer el Home y desaparece
-            antes del final para no molestar
-            al Footer / StoreInfo.
+            Dejamos que el Hero conserve
+            el protagonismo inicial.
           */
 
           const shouldBeVisible =
@@ -66,6 +64,11 @@ export function FloatingLoongis() {
           setIsVisible(
             shouldBeVisible,
           );
+
+          /*
+            Al desaparecer también
+            cerramos la burbuja.
+          */
 
           if (!shouldBeVisible) {
             setIsBubbleOpen(
@@ -134,9 +137,7 @@ export function FloatingLoongis() {
           type="button"
           aria-label="Cerrar mensaje"
           onClick={() =>
-            setIsBubbleOpen(
-              false,
-            )
+            setIsBubbleOpen(false)
           }
         >
           <FaXmark
@@ -183,22 +184,21 @@ export function FloatingLoongis() {
         }
         onClick={() =>
           setIsBubbleOpen(
-            (
-              currentValue,
-            ) =>
+            (currentValue) =>
               !currentValue,
           )
         }
       >
-        <span
-          className="floating-loongis__spark floating-loongis__spark--one"
-          aria-hidden="true"
-        >
-          ✦
-        </span>
+        {/* 
+          Dejamos solamente un destello azul.
+
+          Eliminamos el destello amarillo
+          porque podía superponerse con
+          la cara de la mascota.
+        */}
 
         <span
-          className="floating-loongis__spark floating-loongis__spark--two"
+          className="floating-loongis__spark floating-loongis__spark--one"
           aria-hidden="true"
         >
           ✦

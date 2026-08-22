@@ -3,6 +3,7 @@ import {
   type ChangeEvent,
   type FormEvent,
 } from "react";
+
 import {
   FaArrowLeftLong,
   FaBuildingColumns,
@@ -12,6 +13,7 @@ import {
   FaTruck,
   FaWhatsapp,
 } from "react-icons/fa6";
+
 import { Link } from "react-router-dom";
 
 import { useCart } from "../hooks/useCart";
@@ -23,18 +25,11 @@ import "../styles/Checkout.css";
 ======================================== */
 
 /*
-  Reemplazá este número por el WhatsApp real
-  de Loongis.
+  Número de prueba.
 
-  Formato:
-  - Código de país: 54
-  - 9 para celulares argentinos
-  - Código de área
-  - Número
-
-  No uses +, espacios ni guiones.
+  Reemplazar por el WhatsApp definitivo
+  de Loongis antes de publicar.
 */
-
 const WHATSAPP_NUMBER =
   "5491138065902";
 
@@ -52,25 +47,39 @@ type PaymentMethod =
 
 type CheckoutForm = {
   customerName: string;
+
   phone: string;
-  deliveryMethod: DeliveryMethod;
+
+  deliveryMethod:
+    DeliveryMethod;
+
   address: string;
-  paymentMethod: PaymentMethod;
+
+  paymentMethod:
+    PaymentMethod;
+
   notes: string;
 };
 
 type CheckoutOption = {
   name?: string;
+
   label?: string;
+
   price?: number;
+
   priceModifier?: number;
 };
 
 type CheckoutCustomization = {
   size?: CheckoutOption;
+
   variant?: CheckoutOption;
+
   extras?: CheckoutOption[];
+
   removedIngredients?: string[];
+
   notes?: string;
 };
 
@@ -80,22 +89,30 @@ type CheckoutCartItem = {
   cartItemId?: string;
 
   name: string;
+
   description?: string;
 
   image?: string;
+
   imageAlt?: string;
 
   price: number;
+
   unitPrice?: number;
 
   quantity: number;
 
-  customization?: CheckoutCustomization;
+  customization?:
+    CheckoutCustomization;
 
-  selectedSize?: CheckoutOption;
-  selectedExtras?: CheckoutOption[];
+  selectedSize?:
+    CheckoutOption;
 
-  removedIngredients?: string[];
+  selectedExtras?:
+    CheckoutOption[];
+
+  removedIngredients?:
+    string[];
 
   notes?: string;
 };
@@ -105,14 +122,17 @@ type CheckoutCartItem = {
 ======================================== */
 
 const priceFormatter =
-  new Intl.NumberFormat("es-AR", {
-    style: "currency",
-    currency: "ARS",
-    maximumFractionDigits: 0,
-  });
+  new Intl.NumberFormat(
+    "es-AR",
+    {
+      style: "currency",
+      currency: "ARS",
+      maximumFractionDigits: 0,
+    },
+  );
 
 /* ========================================
-   FUNCIONES AUXILIARES
+   NOMBRE DE OPCIÓN
 ======================================== */
 
 function getOptionName(
@@ -125,6 +145,10 @@ function getOptionName(
   );
 }
 
+/* ========================================
+   PRECIO UNITARIO
+======================================== */
+
 function getUnitPrice(
   item: CheckoutCartItem,
 ): number {
@@ -133,6 +157,10 @@ function getUnitPrice(
     item.price
   );
 }
+
+/* ========================================
+   PERSONALIZACIÓN
+======================================== */
 
 function getItemCustomization(
   item: CheckoutCartItem,
@@ -151,12 +179,15 @@ function getItemCustomization(
     [];
 
   const removedIngredients =
-    customization?.removedIngredients ??
+    customization
+      ?.removedIngredients ??
     item.removedIngredients ??
     [];
 
   const notes =
-    customization?.notes?.trim() ||
+    customization
+      ?.notes
+      ?.trim() ||
     item.notes?.trim() ||
     "";
 
@@ -169,7 +200,7 @@ function getItemCustomization(
 }
 
 /* ========================================
-   TEXTO DE PRODUCTO PARA WHATSAPP
+   PRODUCTO PARA WHATSAPP
 ======================================== */
 
 function createProductMessage(
@@ -187,49 +218,76 @@ function createProductMessage(
     extras,
     removedIngredients,
     notes,
-  } = getItemCustomization(item);
+  } =
+    getItemCustomization(
+      item,
+    );
 
   const lines: string[] = [
-    `• ${item.quantity}x ${item.name}`,
-    `  ${priceFormatter.format(subtotal)}`,
+    `*${item.quantity}x ${item.name}*`,
+
+    `Subtotal: ${priceFormatter.format(
+      subtotal,
+    )}`,
   ];
+
+  /* ========================================
+     TAMAÑO
+  ======================================== */
 
   const sizeName =
     getOptionName(size);
 
   if (sizeName) {
     lines.push(
-      `  Tamaño: ${sizeName}`,
+      `Tamaño: ${sizeName}`,
     );
   }
 
-  if (extras.length > 0) {
+  /* ========================================
+     EXTRAS
+  ======================================== */
+
+  if (
+    extras.length > 0
+  ) {
     const extrasNames =
       extras
-        .map(getOptionName)
+        .map(
+          getOptionName,
+        )
         .filter(Boolean)
         .join(", ");
 
     if (extrasNames) {
       lines.push(
-        `  Extras: ${extrasNames}`,
+        `Extras: ${extrasNames}`,
       );
     }
   }
 
+  /* ========================================
+     INGREDIENTES QUITADOS
+  ======================================== */
+
   if (
-    removedIngredients.length > 0
+    removedIngredients.length >
+    0
   ) {
     lines.push(
-      `  Sin: ${removedIngredients.join(
+      `Sin: ${removedIngredients.join(
         ", ",
       )}`,
     );
   }
 
+  /* ========================================
+     ACLARACIÓN
+  ======================================== */
+
   if (notes) {
     lines.push(
-      `  Aclaración: ${notes}`,
+      `Aclaración: ${notes}`,
     );
   }
 
@@ -241,8 +299,9 @@ function createProductMessage(
 ======================================== */
 
 export function Checkout() {
-  const { cart } =
-    useCart();
+  const {
+    cart,
+  } = useCart();
 
   const checkoutItems =
     cart as CheckoutCartItem[];
@@ -250,39 +309,55 @@ export function Checkout() {
   const [
     form,
     setForm,
-  ] = useState<CheckoutForm>({
-    customerName: "",
-    phone: "",
+  ] =
+    useState<CheckoutForm>({
+      customerName: "",
 
-    deliveryMethod:
-      "delivery",
+      phone: "",
 
-    address: "",
+      deliveryMethod:
+        "delivery",
 
-    paymentMethod:
-      "cash",
+      address: "",
 
-    notes: "",
-  });
+      paymentMethod:
+        "cash",
+
+      notes: "",
+    });
 
   /* ========================================
-     TOTALES
+     TOTAL PRODUCTOS
   ======================================== */
 
   const totalPrice =
     checkoutItems.reduce(
-      (total, item) =>
+      (
+        total,
+        item,
+      ) =>
         total +
-        getUnitPrice(item) *
+        getUnitPrice(
+          item,
+        ) *
           item.quantity,
+
       0,
     );
 
+  /* ========================================
+     UNIDADES
+  ======================================== */
+
   const totalUnits =
     checkoutItems.reduce(
-      (total, item) =>
+      (
+        total,
+        item,
+      ) =>
         total +
         item.quantity,
+
       0,
     );
 
@@ -291,21 +366,26 @@ export function Checkout() {
   ======================================== */
 
   const handleInputChange = (
-    event: ChangeEvent<
-      HTMLInputElement |
-      HTMLTextAreaElement
-    >,
+    event:
+      ChangeEvent<
+        | HTMLInputElement
+        | HTMLTextAreaElement
+      >,
   ) => {
     const {
       name,
       value,
-    } = event.target;
+    } =
+      event.target;
 
     setForm(
-      (currentForm) => ({
+      (
+        currentForm,
+      ) => ({
         ...currentForm,
 
-        [name]: value,
+        [name]:
+          value,
       }),
     );
   };
@@ -315,22 +395,26 @@ export function Checkout() {
   ======================================== */
 
   const selectDeliveryMethod = (
-    method: DeliveryMethod,
+    method:
+      DeliveryMethod,
   ) => {
     setForm(
-      (currentForm) => ({
+      (
+        currentForm,
+      ) => ({
         ...currentForm,
 
         deliveryMethod:
           method,
 
         /*
-          Si elegimos retiro,
-          limpiamos la dirección.
+          Al seleccionar retiro
+          eliminamos la dirección porque
+          deja de ser necesaria.
         */
-
         address:
-          method === "pickup"
+          method ===
+          "pickup"
             ? ""
             : currentForm.address,
       }),
@@ -342,10 +426,13 @@ export function Checkout() {
   ======================================== */
 
   const selectPaymentMethod = (
-    method: PaymentMethod,
+    method:
+      PaymentMethod,
   ) => {
     setForm(
-      (currentForm) => ({
+      (
+        currentForm,
+      ) => ({
         ...currentForm,
 
         paymentMethod:
@@ -376,6 +463,10 @@ export function Checkout() {
     const notes =
       form.notes.trim();
 
+    /* ========================================
+       VALIDACIONES
+    ======================================== */
+
     if (
       !customerName ||
       !phone
@@ -392,22 +483,35 @@ export function Checkout() {
     }
 
     if (
-      checkoutItems.length === 0
+      checkoutItems.length ===
+      0
     ) {
       return;
     }
 
+    /* ========================================
+       ENTREGA
+    ======================================== */
+
     const deliveryText =
       form.deliveryMethod ===
       "delivery"
-        ? "Envío a domicilio"
+        ? "Envío a domicilio - Hurlingham"
         : "Retiro por el local";
+
+    /* ========================================
+       PAGO
+    ======================================== */
 
     const paymentText =
       form.paymentMethod ===
       "cash"
         ? "Efectivo"
         : "Transferencia";
+
+    /* ========================================
+       PRODUCTOS
+    ======================================== */
 
     const productsText =
       checkoutItems
@@ -416,50 +520,141 @@ export function Checkout() {
         )
         .join("\n\n");
 
-    const messageLines = [
-      "🍔 *NUEVO PEDIDO LOONGIS*",
-      "",
-      `👤 *Cliente:* ${customerName}`,
-      `📱 *Teléfono:* ${phone}`,
-      `📦 *Entrega:* ${deliveryText}`,
-    ];
+    /* ========================================
+       MENSAJE WHATSAPP
+    ======================================== */
+
+    /*
+      Mantenemos el mensaje sin emojis.
+
+      Esto evita los caracteres de
+      reemplazo que aparecieron en las
+      pruebas anteriores.
+    */
+
+    const messageLines:
+      string[] =
+      [
+        "*NUEVO PEDIDO LOONGIS*",
+
+        "------------------------------",
+
+        "",
+
+        `*Cliente:* ${customerName}`,
+
+        `*Teléfono:* ${phone}`,
+
+        `*Entrega:* ${deliveryText}`,
+      ];
+
+    /* ========================================
+       DIRECCIÓN
+    ======================================== */
 
     if (
       form.deliveryMethod ===
       "delivery"
     ) {
       messageLines.push(
-        `📍 *Dirección:* ${address}`,
+        `*Dirección:* ${address}`,
+
+        "*Zona:* Hurlingham",
       );
     }
 
+    /* ========================================
+       PAGO
+    ======================================== */
+
     messageLines.push(
-      `💳 *Pago:* ${paymentText}`,
+      `*Pago:* ${paymentText}`,
+
       "",
-      "🧾 *PEDIDO*",
+
+      "------------------------------",
+
+      "*PEDIDO*",
+
+      "------------------------------",
+
+      "",
+
       productsText,
+
       "",
-      `🔢 *Unidades:* ${totalUnits}`,
-      `💰 *TOTAL:* ${priceFormatter.format(
+
+      "------------------------------",
+
+      `*Unidades:* ${totalUnits}`,
+
+      `*TOTAL PRODUCTOS: ${priceFormatter.format(
         totalPrice,
-      )}`,
+      )}*`,
     );
+
+    /* ========================================
+       ENVÍO
+    ======================================== */
+
+    if (
+      form.deliveryMethod ===
+      "delivery"
+    ) {
+      messageLines.push(
+        "*Costo de envío:* A confirmar",
+      );
+    }
+
+    /* ========================================
+       ACLARACIONES GENERALES
+    ======================================== */
 
     if (notes) {
       messageLines.push(
         "",
-        `📝 *Aclaraciones generales:* ${notes}`,
+
+        "*Aclaraciones generales:*",
+
+        notes,
       );
     }
+
+    /* ========================================
+       FIRMA
+    ======================================== */
+
+    messageLines.push(
+      "",
+
+      "------------------------------",
+
+      "Pedido realizado desde Loongis",
+    );
+
+    /* ========================================
+       TEXTO FINAL
+    ======================================== */
 
     const message =
       messageLines.join("\n");
 
+    /* ========================================
+       URL WHATSAPP
+    ======================================== */
+
+    const encodedMessage =
+      encodeURIComponent(
+        message,
+      );
+
     const whatsappUrl =
       `https://wa.me/${WHATSAPP_NUMBER}` +
-      `?text=${encodeURIComponent(
-        message,
-      )}`;
+      `?text=${encodedMessage}`;
+
+    /* ========================================
+       ABRIR WHATSAPP
+    ======================================== */
 
     window.location.assign(
       whatsappUrl,
@@ -471,24 +666,30 @@ export function Checkout() {
   ======================================== */
 
   if (
-    checkoutItems.length === 0
+    checkoutItems.length ===
+    0
   ) {
     return (
       <main className="checkout-page">
         <div className="checkout-page__container">
-          <section className="checkout-empty">
+          <section
+            className="checkout-empty"
+            aria-labelledby="checkout-empty-title"
+          >
             <span className="checkout-empty__eyebrow">
               Tu pedido
             </span>
 
-            <h1 className="checkout-empty__title">
+            <h1
+              className="checkout-empty__title"
+              id="checkout-empty-title"
+            >
               El carrito está vacío
             </h1>
 
             <p className="checkout-empty__description">
-              Agregá algún producto
-              antes de finalizar el
-              pedido.
+              Agregá algún producto antes
+              de finalizar el pedido.
             </p>
 
             <Link
@@ -528,7 +729,7 @@ export function Checkout() {
         </Link>
 
         {/* ========================================
-            ENCABEZADO
+            HEADER
         ======================================== */}
 
         <header className="checkout-page__header">
@@ -607,6 +808,7 @@ export function Checkout() {
                     }
                     placeholder="Ej: 11 2345 6789"
                     autoComplete="tel"
+                    inputMode="tel"
                     minLength={6}
                     required
                     onChange={
@@ -621,12 +823,22 @@ export function Checkout() {
                 ENTREGA
             ======================================== */}
 
-            <section className="checkout-section">
-              <h2 className="checkout-section__title">
+            <section
+              className="checkout-section"
+              aria-labelledby="checkout-delivery-title"
+            >
+              <h2
+                className="checkout-section__title"
+                id="checkout-delivery-title"
+              >
                 Forma de entrega
               </h2>
 
-              <div className="checkout-options">
+              <div
+                className="checkout-options"
+                role="group"
+                aria-labelledby="checkout-delivery-title"
+              >
                 <button
                   className={`checkout-option ${
                     form.deliveryMethod ===
@@ -655,7 +867,7 @@ export function Checkout() {
                     </strong>
 
                     <small>
-                      Recibilo en tu casa
+                      Solo Hurlingham
                     </small>
                   </span>
                 </button>
@@ -712,8 +924,9 @@ export function Checkout() {
                       value={
                         form.address
                       }
-                      placeholder="Calle, número, localidad y referencias"
+                      placeholder="Calle, número y referencias"
                       autoComplete="street-address"
+                      aria-label="Dirección de entrega dentro de Hurlingham"
                       required
                       onChange={
                         handleInputChange
@@ -728,12 +941,22 @@ export function Checkout() {
                 PAGO
             ======================================== */}
 
-            <section className="checkout-section">
-              <h2 className="checkout-section__title">
+            <section
+              className="checkout-section"
+              aria-labelledby="checkout-payment-title"
+            >
+              <h2
+                className="checkout-section__title"
+                id="checkout-payment-title"
+              >
                 Forma de pago
               </h2>
 
-              <div className="checkout-options">
+              <div
+                className="checkout-options"
+                role="group"
+                aria-labelledby="checkout-payment-title"
+              >
                 <button
                   className={`checkout-option ${
                     form.paymentMethod ===
@@ -838,6 +1061,7 @@ export function Checkout() {
             <button
               className="checkout-submit"
               type="submit"
+              aria-describedby="checkout-whatsapp-notice"
             >
               <FaWhatsapp
                 aria-hidden="true"
@@ -848,7 +1072,10 @@ export function Checkout() {
               </span>
             </button>
 
-            <p className="checkout-form__notice">
+            <p
+              className="checkout-form__notice"
+              id="checkout-whatsapp-notice"
+            >
               Al continuar se abrirá
               WhatsApp directamente con
               tu pedido preparado.
@@ -859,8 +1086,14 @@ export function Checkout() {
               RESUMEN
           ======================================== */}
 
-          <aside className="checkout-summary">
-            <h2 className="checkout-summary__title">
+          <aside
+            className="checkout-summary"
+            aria-labelledby="checkout-summary-title"
+          >
+            <h2
+              className="checkout-summary__title"
+              id="checkout-summary-title"
+            >
               Resumen del pedido
             </h2>
 
@@ -982,6 +1215,10 @@ export function Checkout() {
               )}
             </div>
 
+            {/* ========================================
+                UNIDADES
+            ======================================== */}
+
             <div className="checkout-summary__row">
               <span>
                 Unidades
@@ -992,9 +1229,30 @@ export function Checkout() {
               </strong>
             </div>
 
+            {/* ========================================
+                ENVÍO
+            ======================================== */}
+
+            <div className="checkout-summary__row">
+              <span>
+                Envío
+              </span>
+
+              <strong>
+                {form.deliveryMethod ===
+                "delivery"
+                  ? "A confirmar"
+                  : "Retiro"}
+              </strong>
+            </div>
+
+            {/* ========================================
+                TOTAL PRODUCTOS
+            ======================================== */}
+
             <div className="checkout-summary__total">
               <span>
-                Total
+                Total productos
               </span>
 
               <strong>

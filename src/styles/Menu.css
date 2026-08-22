@@ -132,21 +132,30 @@
    SECCIÓN DE PRODUCTOS
 ======================================== */
 
+/*
+  Fondo apenas más cálido que antes.
+
+  La diferencia sigue siendo sutil,
+  pero permite que las cards blancas
+  se separen incluso con Night Light
+  desactivado.
+*/
+
 .menu-products {
   padding: 66px 0 90px;
 
   background:
     radial-gradient(
       circle at 5% 20%,
-      rgba(244, 201, 40, 0.08),
+      rgba(244, 201, 40, 0.1),
       transparent 25%
     ),
     radial-gradient(
       circle at 95% 85%,
-      rgba(7, 95, 234, 0.045),
+      rgba(7, 95, 234, 0.05),
       transparent 30%
     ),
-    var(--color-cream);
+    #fff8ec;
 }
 
 
@@ -249,8 +258,7 @@
 
   border-radius: 999px;
 
-  background-color:
-    rgba(255, 255, 255, 0.75);
+  background-color: #ffffff;
 
   color:
     rgba(23, 23, 23, 0.7);
@@ -261,6 +269,10 @@
   font-weight: 700;
 
   cursor: pointer;
+
+  box-shadow:
+    0 3px 8px
+    rgba(23, 23, 23, 0.025);
 
   transition:
     color 180ms ease,
@@ -341,18 +353,41 @@
 
   overflow: hidden;
 
+  /*
+    Antes:
+    border negro al 10%.
+
+    Ahora usamos un azul muy suave.
+    Sigue siendo delicado, pero separa
+    mucho mejor la card del fondo.
+  */
+
   border:
     1px solid
-    rgba(23, 23, 23, 0.1);
+    rgba(7, 60, 166, 0.14);
 
   border-radius: 24px;
 
-  background-color:
-    rgba(255, 255, 255, 0.9);
+  /*
+    Blanco sólido.
+
+    Evitamos que el crema del fondo
+    atraviese visualmente la card.
+  */
+
+  background-color: #ffffff;
+
+  /*
+    Dos sombras:
+    - azul muy suave para profundidad;
+    - negra muy ligera para definición.
+  */
 
   box-shadow:
-    0 14px 35px
-    rgba(23, 23, 23, 0.055);
+    0 16px 36px
+    rgba(7, 60, 166, 0.085),
+    0 4px 10px
+    rgba(23, 23, 23, 0.035);
 
   transition:
     border-color 200ms ease,
@@ -362,11 +397,13 @@
 
 .menu-product-card:hover {
   border-color:
-    rgba(7, 95, 234, 0.22);
+    rgba(7, 95, 234, 0.28);
 
   box-shadow:
-    0 21px 44px
-    rgba(23, 23, 23, 0.1);
+    0 22px 46px
+    rgba(7, 60, 166, 0.13),
+    0 5px 12px
+    rgba(23, 23, 23, 0.045);
 
   transform:
     translateY(-6px);
@@ -400,8 +437,8 @@
   background:
     radial-gradient(
       circle at 50% 49%,
-      rgba(244, 201, 40, 0.15),
-      rgba(244, 201, 40, 0.045) 47%,
+      rgba(244, 201, 40, 0.16),
+      rgba(244, 201, 40, 0.05) 47%,
       transparent 73%
     );
 }
@@ -550,8 +587,8 @@
   background:
     radial-gradient(
       circle at 50% 50%,
-      rgba(244, 201, 40, 0.14),
-      rgba(244, 201, 40, 0.04) 49%,
+      rgba(244, 201, 40, 0.15),
+      rgba(244, 201, 40, 0.045) 49%,
       transparent 74%
     );
 }
@@ -941,18 +978,17 @@
 
   border:
     1px solid
-    rgba(23, 23, 23, 0.09);
+    rgba(7, 60, 166, 0.13);
 
   border-radius: 25px;
 
-  background-color:
-    rgba(255, 255, 255, 0.86);
+  background-color: #ffffff;
 
   text-align: center;
 
   box-shadow:
-    0 14px 35px
-    rgba(23, 23, 23, 0.055);
+    0 14px 34px
+    rgba(7, 60, 166, 0.075);
 }
 
 .menu-products__empty h3 {
@@ -1052,13 +1088,6 @@
     gap: 19px;
   }
 
-  /*
-    Antes teníamos 310px.
-
-    Bajamos la altura porque ya
-    estamos entrando en formato vertical.
-  */
-
   .menu-product-card__image-wrapper {
     height: 260px;
   }
@@ -1104,11 +1133,6 @@
      HERO
   ======================================== */
 
-  /*
-    Polish.css termina de controlar
-    el Hero mobile y oculta la ilustración.
-  */
-
   .menu-hero {
     padding:
       28px
@@ -1142,11 +1166,6 @@
   /* ========================================
      ENCABEZADO
   ======================================== */
-
-  /*
-    Nombre y contador vuelven a convivir
-    horizontalmente para ahorrar altura.
-  */
 
   .menu-products__header {
     align-items: flex-end;
@@ -1184,13 +1203,6 @@
   /* ========================================
      FILTROS
   ======================================== */
-
-  /*
-    Los tres filtros entran en una sola fila.
-
-    Esto elimina wraps raros y deja una
-    navegación mucho más ordenada.
-  */
 
   .menu-filters {
     display: grid;
@@ -1239,25 +1251,30 @@
   ======================================== */
 
   .menu-product-card {
+    border:
+      1px solid
+      rgba(7, 60, 166, 0.13);
+
     border-radius: 18px;
 
-    box-shadow:
-      0 9px 24px
-      rgba(23, 23, 23, 0.045);
-  }
+    background-color: #ffffff;
 
-  /*
-    En pantallas táctiles no necesitamos
-    que la tarjeta "salte" como desktop.
-  */
+    box-shadow:
+      0 10px 24px
+      rgba(7, 60, 166, 0.07),
+      0 2px 6px
+      rgba(23, 23, 23, 0.025);
+  }
 
   .menu-product-card:hover {
     border-color:
-      rgba(23, 23, 23, 0.1);
+      rgba(7, 60, 166, 0.13);
 
     box-shadow:
-      0 9px 24px
-      rgba(23, 23, 23, 0.045);
+      0 10px 24px
+      rgba(7, 60, 166, 0.07),
+      0 2px 6px
+      rgba(23, 23, 23, 0.025);
 
     transform: none;
   }
@@ -1266,15 +1283,6 @@
   /* ========================================
      IMAGEN MOBILE
   ======================================== */
-
-  /*
-    Cambio principal:
-
-    270px -> 220px.
-
-    Sigue siendo la protagonista de la card,
-    pero ya no ocupa media pantalla.
-  */
 
   .menu-product-card__image-wrapper {
     height: 220px;
@@ -1310,12 +1318,6 @@
   /* ========================================
      ESCALA BURGERS MOBILE
   ======================================== */
-
-  /*
-    Bajamos un poco las escalas al reducir
-    la altura del contenedor para evitar
-    recortes.
-  */
 
   .menu-product-card--1 {
     --menu-image-scale: 1.58;
@@ -1398,13 +1400,6 @@
      DESCRIPCIÓN MOBILE
   ======================================== */
 
-  /*
-    Máximo dos líneas.
-
-    El detalle completo ya está disponible
-    al entrar al producto.
-  */
-
   .menu-product-card__description {
     display: -webkit-box;
 
@@ -1444,13 +1439,6 @@
   /* ========================================
      ACCIONES MOBILE
   ======================================== */
-
-  /*
-    Antes estaban una abajo de la otra.
-
-    Ahora vuelven a una fila para reducir
-    muchísimo la altura de cada card.
-  */
 
   .menu-product-card__actions {
     display: grid;

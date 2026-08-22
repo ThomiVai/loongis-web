@@ -1,9 +1,11 @@
 import { useState } from "react";
+
 import {
   FaBars,
   FaShoppingBag,
   FaTimes,
 } from "react-icons/fa";
+
 import {
   Link,
   NavLink,
@@ -15,21 +17,39 @@ import { useCart } from "../hooks/useCart";
 import "../styles/Navbar.css";
 
 export function Navbar() {
-  const [menuAbierto, setMenuAbierto] =
-    useState(false);
+  const [
+    menuAbierto,
+    setMenuAbierto,
+  ] = useState(false);
 
-  const navigate = useNavigate();
+  const navigate =
+    useNavigate();
 
-  const { totalUnits } = useCart();
+  const {
+    totalUnits,
+  } = useCart();
+
+  /* ========================================
+     CERRAR MENÚ MOBILE
+  ======================================== */
 
   const cerrarMenu = () => {
     setMenuAbierto(false);
   };
 
+  /* ========================================
+     ABRIR CARRITO
+  ======================================== */
+
   const abrirCarrito = () => {
     cerrarMenu();
+
     navigate("/carrito");
   };
+
+  /* ========================================
+     CLASE DE NAVLINK
+  ======================================== */
 
   const obtenerClaseLink = ({
     isActive,
@@ -43,6 +63,10 @@ export function Navbar() {
   return (
     <header className="navbar">
       <div className="container navbar__container">
+        {/* ========================================
+            LOGO
+        ======================================== */}
+
         <NavLink
           to="/"
           className="navbar__logo"
@@ -56,6 +80,10 @@ export function Navbar() {
           />
         </NavLink>
 
+        {/* ========================================
+            BOTÓN MOBILE
+        ======================================== */}
+
         <button
           className="navbar__mobile-button"
           type="button"
@@ -64,19 +92,32 @@ export function Navbar() {
               ? "Cerrar menú"
               : "Abrir menú"
           }
-          aria-expanded={menuAbierto}
+          aria-expanded={
+            menuAbierto
+          }
           onClick={() =>
             setMenuAbierto(
-              (estadoActual) => !estadoActual,
+              (
+                estadoActual,
+              ) =>
+                !estadoActual,
             )
           }
         >
           {menuAbierto ? (
-            <FaTimes aria-hidden="true" />
+            <FaTimes
+              aria-hidden="true"
+            />
           ) : (
-            <FaBars aria-hidden="true" />
+            <FaBars
+              aria-hidden="true"
+            />
           )}
         </button>
+
+        {/* ========================================
+            NAVEGACIÓN
+        ======================================== */}
 
         <nav
           className={`navbar__navigation ${
@@ -86,57 +127,101 @@ export function Navbar() {
           }`}
           aria-label="Navegación principal"
         >
+          {/* ========================================
+              INICIO
+          ======================================== */}
+
           <NavLink
             to="/"
             end
-            className={obtenerClaseLink}
-            onClick={cerrarMenu}
+            className={
+              obtenerClaseLink
+            }
+            onClick={
+              cerrarMenu
+            }
           >
             Inicio
           </NavLink>
 
+          {/* ========================================
+              MENÚ
+          ======================================== */}
+
           <NavLink
             to="/menu"
-            className={obtenerClaseLink}
-            onClick={cerrarMenu}
+            className={
+              obtenerClaseLink
+            }
+            onClick={
+              cerrarMenu
+            }
           >
             Menú
           </NavLink>
 
+          {/* ========================================
+              COMBOS LOONGIS
+          ======================================== */}
+
           <Link
-            to="/#combos"
+            to="/#combos-loongis"
             className="navbar__link"
-            onClick={cerrarMenu}
+            onClick={
+              cerrarMenu
+            }
           >
             Combos
           </Link>
 
+          {/* ========================================
+              NOSOTROS
+          ======================================== */}
+
           <Link
             to="/#nosotros"
             className="navbar__link"
-            onClick={cerrarMenu}
+            onClick={
+              cerrarMenu
+            }
           >
             Nosotros
           </Link>
 
+          {/* ========================================
+              CONTACTO
+          ======================================== */}
+
           <Link
             to="/#contacto"
             className="navbar__link"
-            onClick={cerrarMenu}
+            onClick={
+              cerrarMenu
+            }
           >
             Contacto
           </Link>
         </nav>
 
+        {/* ========================================
+            MI PEDIDO
+        ======================================== */}
+
         <button
           className="navbar__order-button"
           type="button"
           aria-label={`Ver mi pedido. ${totalUnits} unidades`}
-          onClick={abrirCarrito}
+          onClick={
+            abrirCarrito
+          }
         >
-          <FaShoppingBag aria-hidden="true" />
+          <FaShoppingBag
+            aria-hidden="true"
+          />
 
-          <span>Mi pedido</span>
+          <span>
+            Mi pedido
+          </span>
 
           <span className="navbar__cart-count">
             {totalUnits}

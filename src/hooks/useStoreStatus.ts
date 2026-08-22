@@ -50,28 +50,103 @@ function getCurrentMinutes(
 
   const hour = Number(
     parts.find(
-      (part) => part.type === "hour",
+      (part) =>
+        part.type === "hour",
     )?.value ?? 0,
   );
 
   const minute = Number(
     parts.find(
-      (part) => part.type === "minute",
+      (part) =>
+        part.type === "minute",
     )?.value ?? 0,
   );
 
-  return hour * 60 + minute;
+  return (
+    hour * 60 +
+    minute
+  );
 }
 
 function convertTimeToMinutes(
   time: string,
 ): number {
-  const [hour, minute] = time
+  const [
+    hour,
+    minute,
+  ] = time
     .split(":")
     .map(Number);
 
-  return hour * 60 + minute;
+  return (
+    hour * 60 +
+    minute
+  );
 }
+
+/* ========================================
+   COMPROBAR SI EL LOCAL ESTÁ ABIERTO
+======================================== */
+
+function isScheduleOpen(
+  currentMinutes: number,
+  schedule: BusinessDaySchedule,
+): boolean {
+  if (
+    schedule.isClosed ||
+    !schedule.opensAt ||
+    !schedule.closesAt
+  ) {
+    return false;
+  }
+
+  const openingMinutes =
+    convertTimeToMinutes(
+      schedule.opensAt,
+    );
+
+  const closingMinutes =
+    convertTimeToMinutes(
+      schedule.closesAt,
+    );
+
+  /*
+    Horario normal.
+
+    Ejemplo:
+    12:00 → 18:00
+  */
+  if (
+    closingMinutes >
+    openingMinutes
+  ) {
+    return (
+      currentMinutes >=
+        openingMinutes &&
+      currentMinutes <
+        closingMinutes
+    );
+  }
+
+  /*
+    Horario que termina a medianoche
+    o continúa después de medianoche.
+
+    Ejemplo:
+    19:00 → 00:00
+    19:00 → 00:30
+  */
+  return (
+    currentMinutes >=
+      openingMinutes ||
+    currentMinutes <
+      closingMinutes
+  );
+}
+
+/* ========================================
+   PRÓXIMA APERTURA
+======================================== */
 
 function getNextOpeningLabel(
   currentDate: Date,
@@ -81,16 +156,22 @@ function getNextOpeningLabel(
     dayOffset <= 7;
     dayOffset += 1
   ) {
-    const candidateDate = new Date(
-      currentDate.getTime() +
-        dayOffset * MILLISECONDS_PER_DAY,
-    );
+    const candidateDate =
+      new Date(
+        currentDate.getTime() +
+          dayOffset *
+            MILLISECONDS_PER_DAY,
+      );
 
     const candidateDay =
-      getBusinessDay(candidateDate);
+      getBusinessDay(
+        candidateDate,
+      );
 
     const candidateSchedule =
-      businessHours[candidateDay];
+      businessHours[
+        candidateDay
+      ];
 
     if (
       candidateSchedule.isClosed ||
@@ -99,23 +180,32 @@ function getNextOpeningLabel(
       continue;
     }
 
-    if (dayOffset === 0) {
+    if (
+      dayOffset === 0
+    ) {
       const currentMinutes =
-        getCurrentMinutes(currentDate);
+        getCurrentMinutes(
+          currentDate,
+        );
 
       const openingMinutes =
         convertTimeToMinutes(
           candidateSchedule.opensAt,
         );
 
-      if (currentMinutes < openingMinutes) {
+      if (
+        currentMinutes <
+        openingMinutes
+      ) {
         return `Abrimos hoy a las ${candidateSchedule.opensAt}`;
       }
 
       continue;
     }
 
-    if (dayOffset === 1) {
+    if (
+      dayOffset === 1
+    ) {
       return `Abrimos mañana a las ${candidateSchedule.opensAt}`;
     }
 
@@ -125,82 +215,90 @@ function getNextOpeningLabel(
   return "Consultá nuestros horarios";
 }
 
+/* ========================================
+   CALCULAR ESTADO
+======================================== */
+
 function calculateStoreStatus(
   currentDate: Date,
 ): StoreStatus {
   const currentDay =
-    getBusinessDay(currentDate);
+    getBusinessDay(
+      currentDate,
+    );
 
   const currentSchedule:
     BusinessDaySchedule =
-    businessHours[currentDay];
-
-  if (
-    currentSchedule.isClosed ||
-    !currentSchedule.opensAt ||
-    !currentSchedule.closesAt
-  ) {
-    return {
-      isOpen: false,
-      statusLabel: "Cerrado ahora",
-      detailLabel:
-        getNextOpeningLabel(currentDate),
-    };
-  }
+    businessHours[
+      currentDay
+    ];
 
   const currentMinutes =
-    getCurrentMinutes(currentDate);
-
-  const openingMinutes =
-    convertTimeToMinutes(
-      currentSchedule.opensAt,
-    );
-
-  const closingMinutes =
-    convertTimeToMinutes(
-      currentSchedule.closesAt,
+    getCurrentMinutes(
+      currentDate,
     );
 
   const isOpen =
-    currentMinutes >= openingMinutes &&
-    currentMinutes < closingMinutes;
+    isScheduleOpen(
+      currentMinutes,
+      currentSchedule,
+    );
 
   if (isOpen) {
     return {
       isOpen: true,
-      statusLabel: "Abierto ahora",
+      statusLabel:
+        "Abierto ahora",
       detailLabel: `Tomamos pedidos hasta las ${currentSchedule.closesAt}`,
     };
   }
 
   return {
     isOpen: false,
-    statusLabel: "Cerrado ahora",
+    statusLabel:
+      "Cerrado ahora",
     detailLabel:
-      getNextOpeningLabel(currentDate),
+      getNextOpeningLabel(
+        currentDate,
+      ),
   };
 }
 
+/* ========================================
+   HOOK
+======================================== */
+
 export function useStoreStatus() {
-  const [currentDate, setCurrentDate] =
-    useState(() => new Date());
+  const [
+    currentDate,
+    setCurrentDate,
+  ] = useState(
+    () => new Date(),
+  );
 
   useEffect(() => {
-    const intervalId = window.setInterval(
-      () => {
-        setCurrentDate(new Date());
-      },
-      60_000,
-    );
+    const intervalId =
+      window.setInterval(
+        () => {
+          setCurrentDate(
+            new Date(),
+          );
+        },
+        60_000,
+      );
 
     return () => {
-      window.clearInterval(intervalId);
+      window.clearInterval(
+        intervalId,
+      );
     };
   }, []);
 
   return useMemo(
     () =>
-      calculateStoreStatus(currentDate),
+      calculateStoreStatus(
+        currentDate,
+      ),
     [currentDate],
   );
 }
