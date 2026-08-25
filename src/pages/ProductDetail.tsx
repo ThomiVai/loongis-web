@@ -17,7 +17,7 @@ import {
 
 import { AddToCartButton } from "../components/AddToCartButton";
 
-import { menuProducts } from "../data/menuProducts";
+import { useProduct } from "../hooks/useProduct";
 
 import type {
   Product,
@@ -34,11 +34,14 @@ import "../styles/ProductAddedActions.css";
 ======================================== */
 
 const priceFormatter =
-  new Intl.NumberFormat("es-AR", {
-    style: "currency",
-    currency: "ARS",
-    maximumFractionDigits: 0,
-  });
+  new Intl.NumberFormat(
+    "es-AR",
+    {
+      style: "currency",
+      currency: "ARS",
+      maximumFractionDigits: 0,
+    },
+  );
 
 /* ========================================
    NOMBRES DE CATEGORÍAS
@@ -48,7 +51,8 @@ const categoryNames: Record<
   ProductCategory,
   string
 > = {
-  hamburguesas: "Hamburguesas",
+  hamburguesas:
+    "Hamburguesas",
   combos: "Combos",
   papas: "Papas",
   bebidas: "Bebidas",
@@ -72,7 +76,8 @@ function getDefaultSizeId(
   const baseOption =
     sizeOptions.find(
       (option) =>
-        option.priceModifier === 0,
+        option.priceModifier ===
+        0,
     );
 
   return (
@@ -174,7 +179,6 @@ function ProductDetailContent({
   const selectedPrice =
     Math.max(
       0,
-
       product.price +
         (
           selectedSize?.priceModifier ??
@@ -210,11 +214,6 @@ function ProductDetailContent({
     setSelectedSizeId(
       optionId,
     );
-
-    /*
-      Si modifica la selección,
-      ocultamos la confirmación anterior.
-    */
 
     setShowAddedActions(
       false,
@@ -270,14 +269,12 @@ function ProductDetailContent({
             ingredient,
           )
         ) {
-          return (
-            currentIngredients.filter(
-              (
-                currentIngredient,
-              ) =>
-                currentIngredient !==
-                ingredient,
-            )
+          return currentIngredients.filter(
+            (
+              currentIngredient,
+            ) =>
+              currentIngredient !==
+              ingredient,
           );
         }
 
@@ -316,15 +313,6 @@ function ProductDetailContent({
 
   const handleProductAdded =
     () => {
-      /*
-        AddToCartButton mantiene su propia
-        lógica de agregar y mostrar la
-        notificación global.
-
-        Nosotros solamente mostramos
-        acciones posteriores.
-      */
-
       setShowAddedActions(
         true,
       );
@@ -610,8 +598,7 @@ function ProductDetailContent({
                   <fieldset className="product-customization">
                     <legend className="product-customization__title">
                       ¿Querés sacar
-                      algún
-                      ingrediente?
+                      algún ingrediente?
                     </legend>
 
                     <p className="product-customization__subtitle">
@@ -734,13 +721,12 @@ function ProductDetailContent({
                   type="button"
                   disabled
                 >
-                  Producto sin
-                  stock
+                  Producto sin stock
                 </button>
               )}
 
               {/* ========================================
-                  CONFIRMACIÓN + ACCIONES
+                  CONFIRMACIÓN
               ======================================== */}
 
               {showAddedActions ? (
@@ -758,14 +744,14 @@ function ProductDetailContent({
 
                     <div className="product-added-actions__text">
                       <strong>
-                        ¡Agregado a
-                        tu pedido!
+                        ¡Agregado a tu
+                        pedido!
                       </strong>
 
                       <span>
                         {product.name}{" "}
-                        ya está en
-                        tu carrito.
+                        ya está en tu
+                        carrito.
                       </span>
                     </div>
                   </div>
@@ -776,8 +762,8 @@ function ProductDetailContent({
                       to="/menu"
                     >
                       <span>
-                        Seguir viendo
-                        el menú
+                        Seguir viendo el
+                        menú
                       </span>
 
                       <FaArrowRightLong
@@ -817,6 +803,117 @@ function ProductDetailContent({
 }
 
 /* ========================================
+   CARGANDO
+======================================== */
+
+function ProductLoading() {
+  return (
+    <main className="product-detail">
+      <section
+        className="product-detail-empty"
+        role="status"
+        aria-live="polite"
+      >
+        <span
+          className="product-detail-empty__icon"
+          aria-hidden="true"
+        >
+          🍔
+        </span>
+
+        <h1 className="product-detail-empty__title">
+          Cargando producto...
+        </h1>
+
+        <p className="product-detail-empty__description">
+          Estamos preparando los
+          detalles de tu Loongis.
+        </p>
+      </section>
+    </main>
+  );
+}
+
+/* ========================================
+   ERROR
+======================================== */
+
+function ProductError({
+  message,
+}: {
+  message: string;
+}) {
+  return (
+    <main className="product-detail">
+      <section
+        className="product-detail-empty"
+        role="alert"
+      >
+        <span
+          className="product-detail-empty__icon"
+          aria-hidden="true"
+        >
+          🍔
+        </span>
+
+        <h1 className="product-detail-empty__title">
+          No pudimos cargar el
+          producto
+        </h1>
+
+        <p className="product-detail-empty__description">
+          {message}
+        </p>
+
+        <Link
+          className="product-detail-empty__button"
+          to="/menu"
+        >
+          Volver al menú
+        </Link>
+      </section>
+    </main>
+  );
+}
+
+/* ========================================
+   PRODUCTO NO ENCONTRADO
+======================================== */
+
+function ProductNotFound() {
+  return (
+    <main className="product-detail">
+      <section className="product-detail-empty">
+        <span
+          className="product-detail-empty__icon"
+          aria-hidden="true"
+        >
+          🍔
+        </span>
+
+        <h1 className="product-detail-empty__title">
+          Producto no encontrado
+        </h1>
+
+        <p className="product-detail-empty__description">
+          El producto que
+          intentaste abrir no
+          existe o ya no está
+          disponible.
+        </p>
+
+        <Link
+          className="product-detail-empty__button"
+          to="/menu"
+        >
+          Volver al menú
+        </Link>
+      </section>
+    </main>
+  );
+}
+
+/* ========================================
    PRODUCT DETAIL
 ======================================== */
 
@@ -828,61 +925,50 @@ export function ProductDetail() {
   const numericProductId =
     Number(productId);
 
-  const product =
-    menuProducts.find(
-      (
-        currentProduct,
-      ) =>
-        currentProduct.id ===
-        numericProductId,
-    );
+  const validProductId =
+    Number.isInteger(
+      numericProductId,
+    ) &&
+    numericProductId > 0
+      ? numericProductId
+      : null;
 
-  /* ========================================
-     PRODUCTO NO ENCONTRADO
-  ======================================== */
+  const {
+    product,
+    loading,
+    error,
+    notFound,
+  } = useProduct(
+    validProductId,
+  );
 
-  if (!product) {
+  if (loading) {
     return (
-      <main className="product-detail">
-        <section className="product-detail-empty">
-          <span
-            className="product-detail-empty__icon"
-            aria-hidden="true"
-          >
-            🍔
-          </span>
+      <ProductLoading />
+    );
+  }
 
-          <h1 className="product-detail-empty__title">
-            Producto no
-            encontrado
-          </h1>
+  if (error) {
+    return (
+      <ProductError
+        message={error}
+      />
+    );
+  }
 
-          <p className="product-detail-empty__description">
-            El producto que
-            intentaste abrir no
-            existe o ya no está
-            disponible.
-          </p>
-
-          <Link
-            className="product-detail-empty__button"
-            to="/menu"
-          >
-            Volver al menú
-          </Link>
-        </section>
-      </main>
+  if (
+    notFound ||
+    !product
+  ) {
+    return (
+      <ProductNotFound />
     );
   }
 
   return (
     <ProductDetailContent
-      key={
-        product.id
-      }
-      product={
-        product
-      }
+      key={product.id}
+      product={product}
     />
   );
 }

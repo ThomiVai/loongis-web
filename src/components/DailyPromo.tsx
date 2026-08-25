@@ -2,26 +2,62 @@ import {
   FaArrowRightLong,
   FaFire,
 } from "react-icons/fa6";
+
 import { Link } from "react-router-dom";
 
 import { AddToCartButton } from "./AddToCartButton";
 
-import { menuProducts } from "../data/menuProducts";
+import type {
+  Product,
+} from "../types/Product";
 
 import "../styles/DailyPromo.css";
 
-const priceFormatter = new Intl.NumberFormat("es-AR", {
-  style: "currency",
-  currency: "ARS",
-  maximumFractionDigits: 0,
-});
+/* ========================================
+   FORMATO DE PRECIO
+======================================== */
 
-export function DailyPromo() {
-  const promoCombo = menuProducts.find(
-    (product) => product.id === 101,
+const priceFormatter =
+  new Intl.NumberFormat(
+    "es-AR",
+    {
+      style: "currency",
+      currency: "ARS",
+      maximumFractionDigits: 0,
+    },
   );
 
-  if (!promoCombo) {
+/* ========================================
+   PROPS
+======================================== */
+
+type DailyPromoProps = {
+  products: Product[];
+  loading: boolean;
+  error: string | null;
+};
+
+/* ========================================
+   COMPONENTE
+======================================== */
+
+export function DailyPromo({
+  products,
+  loading,
+  error,
+}: DailyPromoProps) {
+  const promoCombo =
+    products.find(
+      (product) =>
+        product.id === 101 &&
+        product.available !== false,
+    );
+
+  if (
+    loading ||
+    error ||
+    !promoCombo
+  ) {
     return null;
   }
 
@@ -41,23 +77,35 @@ export function DailyPromo() {
           <div className="promo-banner__image-wrapper">
             <img
               className="promo-banner__combo-image"
-              src={promoCombo.image}
-              alt={promoCombo.imageAlt}
+              src={
+                promoCombo.image
+              }
+              alt={
+                promoCombo.imageAlt
+              }
             />
           </div>
 
           <div className="promo-banner__discount">
-            <strong>Promo</strong>
+            <strong>
+              Promo
+            </strong>
 
-            <span>del día</span>
+            <span>
+              del día
+            </span>
           </div>
         </div>
 
         <div className="promo-banner__content">
           <div className="promo-banner__eyebrow">
-            <FaFire aria-hidden="true" />
+            <FaFire
+              aria-hidden="true"
+            />
 
-            <span>Promo especial</span>
+            <span>
+              Promo especial
+            </span>
           </div>
 
           <h2
@@ -72,17 +120,31 @@ export function DailyPromo() {
           </h3>
 
           <p className="promo-banner__description">
-            {promoCombo.description}
+            {
+              promoCombo.description
+            }
           </p>
 
           <ul className="promo-banner__includes">
-            <li>Hamburguesa Loongis Clasic</li>
-            <li>Porción de papas crocantes</li>
-            <li>Bebida individual</li>
+            <li>
+              Hamburguesa
+              Loongis Clasic
+            </li>
+
+            <li>
+              Porción de papas
+              crocantes
+            </li>
+
+            <li>
+              Bebida individual
+            </li>
           </ul>
 
           <div className="promo-banner__price">
-            <span>Precio del combo</span>
+            <span>
+              Precio del combo
+            </span>
 
             <strong>
               {priceFormatter.format(
@@ -93,7 +155,9 @@ export function DailyPromo() {
 
           <div className="promo-banner__actions">
             <AddToCartButton
-              product={promoCombo}
+              product={
+                promoCombo
+              }
               className="promo-banner__add-button"
               label="Agregar combo"
             />
@@ -102,15 +166,21 @@ export function DailyPromo() {
               className="promo-banner__detail-button"
               to={`/producto/${promoCombo.id}`}
             >
-              <span>Ver detalle</span>
+              <span>
+                Ver detalle
+              </span>
 
-              <FaArrowRightLong aria-hidden="true" />
+              <FaArrowRightLong
+                aria-hidden="true"
+              />
             </Link>
           </div>
 
           <p className="promo-banner__notice">
-            Sujeto a disponibilidad. El sabor de la
-            bebida se coordina al confirmar el pedido.
+            Sujeto a disponibilidad.
+            El sabor de la bebida se
+            coordina al confirmar el
+            pedido.
           </p>
         </div>
       </div>

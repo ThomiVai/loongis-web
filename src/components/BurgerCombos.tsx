@@ -3,28 +3,45 @@ import {
   useMemo,
   useState,
 } from "react";
+
 import {
   FaArrowLeftLong,
   FaArrowRightLong,
 } from "react-icons/fa6";
+
 import { Link } from "react-router-dom";
 
 import { AddToCartButton } from "./AddToCartButton";
-import { menuProducts } from "../data/menuProducts";
+
+import type {
+  Product,
+} from "../types/Product";
 
 import "../styles/BurgerCombos.css";
 
-const priceFormatter = new Intl.NumberFormat(
-  "es-AR",
-  {
-    style: "currency",
-    currency: "ARS",
-    maximumFractionDigits: 0,
-  },
-);
+/* ========================================
+   FORMATO DE PRECIO
+======================================== */
+
+const priceFormatter =
+  new Intl.NumberFormat(
+    "es-AR",
+    {
+      style: "currency",
+      currency: "ARS",
+      maximumFractionDigits: 0,
+    },
+  );
+
+/* ========================================
+   ITEMS POR PÁGINA
+======================================== */
 
 function getInitialItemsPerPage(): number {
-  if (typeof window === "undefined") {
+  if (
+    typeof window ===
+    "undefined"
+  ) {
     return 2;
   }
 
@@ -35,28 +52,59 @@ function getInitialItemsPerPage(): number {
     : 2;
 }
 
-export function BurgerCombos() {
-  const burgerCombos = useMemo(
-  () =>
-    menuProducts.filter(
-      (product) =>
-        product.productCategory === "combos",
-    ),
-  [],
-);
+/* ========================================
+   PROPS
+======================================== */
 
-  const [itemsPerPage, setItemsPerPage] =
-    useState<number>(
-      getInitialItemsPerPage,
+type BurgerCombosProps = {
+  products: Product[];
+  loading: boolean;
+  error: string | null;
+};
+
+/* ========================================
+   COMPONENTE
+======================================== */
+
+export function BurgerCombos({
+  products,
+  loading,
+  error,
+}: BurgerCombosProps) {
+  const burgerCombos =
+    useMemo(
+      () =>
+        products.filter(
+          (product) =>
+            product.category ===
+              "combos" &&
+            product.available !==
+              false,
+        ),
+      [products],
     );
 
-  const [currentPage, setCurrentPage] =
-    useState(0);
+  const [
+    itemsPerPage,
+    setItemsPerPage,
+  ] = useState<number>(
+    getInitialItemsPerPage,
+  );
+
+  const [
+    currentPage,
+    setCurrentPage,
+  ] = useState(0);
+
+  /* ========================================
+     RESPONSIVE
+  ======================================== */
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia(
-      "(max-width: 780px)",
-    );
+    const mediaQuery =
+      window.matchMedia(
+        "(max-width: 780px)",
+      );
 
     const handleScreenChange = (
       event: MediaQueryListEvent,
@@ -81,51 +129,89 @@ export function BurgerCombos() {
     };
   }, []);
 
-  if (burgerCombos.length === 0) {
+  /*
+    Igual que destacados:
+    si todavía estamos cargando,
+    o el backend falla,
+    no rompemos el Home.
+  */
+
+  if (
+    loading ||
+    error ||
+    burgerCombos.length === 0
+  ) {
     return null;
   }
 
-  const totalPages = Math.max(
-    1,
-    Math.ceil(
-      burgerCombos.length / itemsPerPage,
-    ),
-  );
+  /* ========================================
+     PAGINACIÓN
+  ======================================== */
 
-  const safeCurrentPage = Math.min(
-    currentPage,
-    totalPages - 1,
-  );
+  const totalPages =
+    Math.max(
+      1,
+      Math.ceil(
+        burgerCombos.length /
+          itemsPerPage,
+      ),
+    );
+
+  const safeCurrentPage =
+    Math.min(
+      currentPage,
+      totalPages - 1,
+    );
 
   const startIndex =
-    safeCurrentPage * itemsPerPage;
+    safeCurrentPage *
+    itemsPerPage;
 
   const visibleCombos =
     burgerCombos.slice(
       startIndex,
-      startIndex + itemsPerPage,
+      startIndex +
+        itemsPerPage,
     );
 
-  const handlePrevious = () => {
-    setCurrentPage((currentPageValue) =>
-      currentPageValue === 0
-        ? totalPages - 1
-        : currentPageValue - 1,
-    );
-  };
+  /* ========================================
+     CONTROLES
+  ======================================== */
 
-  const handleNext = () => {
-    setCurrentPage((currentPageValue) =>
-      currentPageValue === totalPages - 1
-        ? 0
-        : currentPageValue + 1,
-    );
-  };
+  const handlePrevious =
+    () => {
+      setCurrentPage(
+        (
+          currentPageValue,
+        ) =>
+          currentPageValue ===
+          0
+            ? totalPages - 1
+            : currentPageValue -
+              1,
+      );
+    };
+
+  const handleNext =
+    () => {
+      setCurrentPage(
+        (
+          currentPageValue,
+        ) =>
+          currentPageValue ===
+          totalPages - 1
+            ? 0
+            : currentPageValue +
+              1,
+      );
+    };
 
   const handlePageChange = (
     pageIndex: number,
   ) => {
-    setCurrentPage(pageIndex);
+    setCurrentPage(
+      pageIndex,
+    );
   };
 
   return (
@@ -135,6 +221,10 @@ export function BurgerCombos() {
       aria-labelledby="burger-combos-title"
     >
       <div className="burger-combos__container">
+        {/* =================================
+            HEADER
+        ================================= */}
+
         <header className="burger-combos__header">
           <div className="burger-combos__heading">
             <span className="burger-combos__eyebrow">
@@ -149,9 +239,10 @@ export function BurgerCombos() {
             </h2>
 
             <p className="burger-combos__description">
-              Elegí tu hamburguesa favorita
-              acompañada con papas crocantes y
-              una bebida individual.
+              Elegí tu hamburguesa
+              favorita acompañada con
+              papas crocantes y una
+              bebida individual.
             </p>
           </div>
 
@@ -159,13 +250,19 @@ export function BurgerCombos() {
             className="burger-combos__menu-link"
             to="/menu"
           >
-            <span>Ver menú completo</span>
+            <span>
+              Ver menú completo
+            </span>
 
             <FaArrowRightLong
               aria-hidden="true"
             />
           </Link>
         </header>
+
+        {/* =================================
+            CARRUSEL
+        ================================= */}
 
         <div className="burger-combos__carousel">
           {totalPages > 1 && (
@@ -174,7 +271,9 @@ export function BurgerCombos() {
               type="button"
               aria-label="Ver combos anteriores"
               aria-controls="burger-combos-grid"
-              onClick={handlePrevious}
+              onClick={
+                handlePrevious
+              }
             >
               <FaArrowLeftLong
                 aria-hidden="true"
@@ -188,60 +287,74 @@ export function BurgerCombos() {
               id="burger-combos-grid"
               key={`${safeCurrentPage}-${itemsPerPage}`}
             >
-              {visibleCombos.map((combo) => (
-                <article
-                  className={`burger-combo-card burger-combo-card--${combo.id}`}
-                  key={combo.id}
-                >
-                  <Link
-                    className="burger-combo-card__image-link"
-                    to={`/producto/${combo.id}`}
-                    aria-label={`Ver detalle de ${combo.name}`}
+              {visibleCombos.map(
+                (combo) => (
+                  <article
+                    className={`burger-combo-card burger-combo-card--${combo.id}`}
+                    key={
+                      combo.id
+                    }
                   >
-                    <div className="burger-combo-card__visual">
-                      <span className="burger-combo-card__badge">
-                        Combo
-                      </span>
+                    <Link
+                      className="burger-combo-card__image-link"
+                      to={`/producto/${combo.id}`}
+                      aria-label={`Ver detalle de ${combo.name}`}
+                    >
+                      <div className="burger-combo-card__visual">
+                        <span className="burger-combo-card__badge">
+                          Combo
+                        </span>
 
-                      <img
-                        className="burger-combo-card__image"
-                        src={combo.image}
-                        alt={combo.imageAlt}
-                      />
+                        <img
+                          className="burger-combo-card__image"
+                          src={
+                            combo.image
+                          }
+                          alt={
+                            combo.imageAlt
+                          }
+                        />
+                      </div>
+                    </Link>
+
+                    <div className="burger-combo-card__content">
+                      <div>
+                        <h3 className="burger-combo-card__name">
+                          <Link
+                            to={`/producto/${combo.id}`}
+                          >
+                            {
+                              combo.name
+                            }
+                          </Link>
+                        </h3>
+
+                        <p className="burger-combo-card__description">
+                          {
+                            combo.description
+                          }
+                        </p>
+                      </div>
+
+                      <div className="burger-combo-card__footer">
+                        <strong className="burger-combo-card__price">
+                          {priceFormatter.format(
+                            combo.price,
+                          )}
+                        </strong>
+
+                        <AddToCartButton
+                          product={
+                            combo
+                          }
+                          className="burger-combo-card__add"
+                          label="Agregar"
+                        />
+                      </div>
                     </div>
-                  </Link>
-
-                  <div className="burger-combo-card__content">
-                    <div>
-                      <h3 className="burger-combo-card__name">
-                        <Link
-                          to={`/producto/${combo.id}`}
-                        >
-                          {combo.name}
-                        </Link>
-                      </h3>
-
-                      <p className="burger-combo-card__description">
-                        {combo.description}
-                      </p>
-                    </div>
-
-                    <div className="burger-combo-card__footer">
-                      <strong className="burger-combo-card__price">
-                        {priceFormatter.format(
-                          combo.price,
-                        )}
-                      </strong>
-
-                      <AddToCartButton
-                        product={combo}
-                        className="burger-combo-card__add"
-                        label="Agregar"
-                      />
-                    </div>
-                  </div>
-                </article>
-              ))}
+                  </article>
+                ),
+              )}
             </div>
           </div>
 
@@ -251,7 +364,9 @@ export function BurgerCombos() {
               type="button"
               aria-label="Ver combos siguientes"
               aria-controls="burger-combos-grid"
-              onClick={handleNext}
+              onClick={
+                handleNext
+              }
             >
               <FaArrowRightLong
                 aria-hidden="true"
@@ -260,35 +375,48 @@ export function BurgerCombos() {
           )}
         </div>
 
+        {/* =================================
+            DOTS
+        ================================= */}
+
         {totalPages > 1 && (
           <div
             className="burger-combos__pagination"
             aria-label="Páginas del carrusel de combos"
           >
             {Array.from({
-              length: totalPages,
-            }).map((_, index) => (
-              <button
-                className={`burger-combos__dot ${
-                  safeCurrentPage === index
-                    ? "burger-combos__dot--active"
-                    : ""
-                }`}
-                type="button"
-                key={index}
-                aria-label={`Ir a la página ${
-                  index + 1
-                }`}
-                aria-current={
-                  safeCurrentPage === index
-                    ? "true"
-                    : undefined
-                }
-                onClick={() =>
-                  handlePageChange(index)
-                }
-              />
-            ))}
+              length:
+                totalPages,
+            }).map(
+              (_, index) => (
+                <button
+                  className={`burger-combos__dot ${
+                    safeCurrentPage ===
+                    index
+                      ? "burger-combos__dot--active"
+                      : ""
+                  }`}
+                  type="button"
+                  key={
+                    index
+                  }
+                  aria-label={`Ir a la página ${
+                    index + 1
+                  }`}
+                  aria-current={
+                    safeCurrentPage ===
+                    index
+                      ? "true"
+                      : undefined
+                  }
+                  onClick={() =>
+                    handlePageChange(
+                      index,
+                    )
+                  }
+                />
+              ),
+            )}
           </div>
         )}
       </div>

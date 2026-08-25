@@ -7,18 +7,38 @@ import { FloatingLoongis } from "../components/FloatingLoongis";
 import { Hero } from "../components/Hero";
 import { StoreInfo } from "../components/StoreInfo";
 
+import { useProducts } from "../hooks/useProducts";
+
 export function Home() {
+  const {
+    products,
+    loading,
+    error,
+  } = useProducts();
+
   return (
     <main id="inicio">
       <Hero />
 
       <Categories />
 
-      <DailyPromo />
+      <DailyPromo
+        products={products}
+        loading={loading}
+        error={error}
+      />
 
-      <BurgerCombos />
+      <BurgerCombos
+        products={products}
+        loading={loading}
+        error={error}
+      />
 
-      <FeaturedProducts />
+      <FeaturedProducts
+        products={products}
+        loading={loading}
+        error={error}
+      />
 
       <BusinessBenefits />
 

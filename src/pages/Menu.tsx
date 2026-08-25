@@ -4,7 +4,12 @@ import {
 } from "react-router-dom";
 
 import { AddToCartButton } from "../components/AddToCartButton";
-import { menuProducts } from "../data/menuProducts";
+
+import { useProducts } from "../hooks/useProducts";
+
+import type {
+  ProductCategory,
+} from "../types/Product";
 
 import "../styles/Menu.css";
 
@@ -57,18 +62,45 @@ function isMenuFilter(
   );
 }
 
+function isMenuCategory(
+  category:
+    | ProductCategory
+    | undefined,
+): category is ProductMenuCategory {
+  return (
+    category ===
+      "hamburguesas" ||
+    category === "combos"
+  );
+}
+
 function getCategoryLabel(
-  category: ProductMenuCategory,
-) {
-  if (category === "hamburguesas") {
+  category:
+    | ProductCategory
+    | undefined,
+): string {
+  if (
+    category ===
+    "hamburguesas"
+  ) {
     return "Hamburguesas";
   }
 
-  return "Combos";
+  if (
+    category === "combos"
+  ) {
+    return "Combos";
+  }
+
+  return "Producto";
 }
 
-function formatPrice(price: number) {
-  return `$ ${price.toLocaleString("es-AR")}`;
+function formatPrice(
+  price: number,
+) {
+  return `$ ${price.toLocaleString(
+    "es-AR",
+  )}`;
 }
 
 /* ========================================
@@ -76,25 +108,44 @@ function formatPrice(price: number) {
 ======================================== */
 
 export function Menu() {
+  const {
+    products,
+    loading,
+    error,
+  } = useProducts();
+
   const [
     searchParams,
     setSearchParams,
   ] = useSearchParams();
 
   const categoryParameter =
-    searchParams.get("categoria");
+    searchParams.get(
+      "categoria",
+    );
 
-  const activeFilter: MenuFilter =
-    isMenuFilter(categoryParameter)
+  const activeFilter:
+    MenuFilter =
+    isMenuFilter(
+      categoryParameter,
+    )
       ? categoryParameter
       : "todos";
+
+  const menuProducts =
+    products.filter(
+      (product) =>
+        isMenuCategory(
+          product.category,
+        ),
+    );
 
   const visibleProducts =
     activeFilter === "todos"
       ? menuProducts
       : menuProducts.filter(
           (product) =>
-            product.productCategory ===
+            product.category ===
             activeFilter,
         );
 
@@ -134,10 +185,6 @@ export function Menu() {
           </Link>
 
           <div className="menu-hero__layout">
-            {/* =============================
-                TEXTO
-            ============================= */}
-
             <div className="menu-hero__content">
               <span className="menu-hero__eyebrow">
                 Menú Loongis
@@ -148,19 +195,17 @@ export function Menu() {
               </h1>
 
               <p className="menu-hero__description">
-                Hamburguesas smash y combos
-                para disfrutar Loongis como
-                más te gusta.
+                Hamburguesas smash y
+                combos para disfrutar
+                Loongis como más te
+                gusta.
               </p>
 
               <span className="menu-hero__brand-tag">
-                Smash · hechas al momento
+                Smash · hechas al
+                momento
               </span>
             </div>
-
-            {/* =============================
-                VISUAL
-            ============================= */}
 
             <div
               className="menu-hero__visual"
@@ -201,15 +246,18 @@ export function Menu() {
               </h2>
             </div>
 
-            <p
-              className="menu-products__count"
-              aria-live="polite"
-            >
-              {productsCount}{" "}
-              {productsCount === 1
-                ? "producto"
-                : "productos"}
-            </p>
+            {!loading &&
+              !error && (
+                <p
+                  className="menu-products__count"
+                  aria-live="polite"
+                >
+                  {productsCount}{" "}
+                  {productsCount === 1
+                    ? "producto"
+                    : "productos"}
+                </p>
+              )}
           </header>
 
           {/* =============================
@@ -220,46 +268,101 @@ export function Menu() {
             className="menu-filters"
             aria-label="Filtrar productos"
           >
-            {menuFilters.map((filter) => {
-              const isActive =
-                activeFilter === filter.id;
+            {menuFilters.map(
+              (filter) => {
+                const isActive =
+                  activeFilter ===
+                  filter.id;
 
-              return (
-                <button
-                  key={filter.id}
-                  type="button"
-                  className={
-                    isActive
-                      ? "menu-filter menu-filter--active"
-                      : "menu-filter"
-                  }
-                  aria-pressed={isActive}
-                  onClick={() =>
-                    handleFilterChange(
-                      filter.id,
-                    )
-                  }
-                >
-                  {filter.label}
-                </button>
-              );
-            })}
+                return (
+                  <button
+                    key={
+                      filter.id
+                    }
+                    type="button"
+                    className={
+                      isActive
+                        ? "menu-filter menu-filter--active"
+                        : "menu-filter"
+                    }
+                    aria-pressed={
+                      isActive
+                    }
+                    onClick={() =>
+                      handleFilterChange(
+                        filter.id,
+                      )
+                    }
+                  >
+                    {
+                      filter.label
+                    }
+                  </button>
+                );
+              },
+            )}
           </div>
+
+          {/* =============================
+              CARGANDO
+          ============================= */}
+
+          {loading && (
+            <div
+              className="menu-products__empty"
+              role="status"
+              aria-live="polite"
+            >
+              <h3>
+                Cargando menú...
+              </h3>
+
+              <p>
+                Estamos preparando las
+                hamburguesas de
+                Loongis.
+              </p>
+            </div>
+          )}
+
+          {/* =============================
+              ERROR
+          ============================= */}
+
+          {!loading &&
+            error && (
+              <div
+                className="menu-products__empty"
+                role="alert"
+              >
+                <h3>
+                  No pudimos cargar el
+                  menú
+                </h3>
+
+                <p>{error}</p>
+              </div>
+            )}
 
           {/* =============================
               GRILLA
           ============================= */}
 
-          {visibleProducts.length > 0 ? (
+          {!loading &&
+          !error &&
+          visibleProducts.length >
+            0 ? (
             <div className="menu-products__grid">
               {visibleProducts.map(
                 (product) => (
                   <article
-                    key={product.id}
+                    key={
+                      product.id
+                    }
                     className={[
                       "menu-product-card",
                       `menu-product-card--${product.id}`,
-                      `menu-product-card--${product.productCategory}`,
+                      `menu-product-card--${product.category ?? "sin-categoria"}`,
                     ].join(" ")}
                   >
                     <Link
@@ -269,8 +372,12 @@ export function Menu() {
                     >
                       <div className="menu-product-card__image-wrapper">
                         <img
-                          src={product.image}
-                          alt={product.imageAlt}
+                          src={
+                            product.image
+                          }
+                          alt={
+                            product.imageAlt
+                          }
                           className="menu-product-card__image"
                           loading="lazy"
                         />
@@ -280,7 +387,7 @@ export function Menu() {
                     <div className="menu-product-card__content">
                       <span className="menu-product-card__category">
                         {getCategoryLabel(
-                          product.productCategory,
+                          product.category,
                         )}
                       </span>
 
@@ -288,12 +395,16 @@ export function Menu() {
                         <Link
                           to={`/producto/${product.id}`}
                         >
-                          {product.name}
+                          {
+                            product.name
+                          }
                         </Link>
                       </h3>
 
                       <p className="menu-product-card__description">
-                        {product.description}
+                        {
+                          product.description
+                        }
                       </p>
 
                       <footer className="menu-product-card__footer">
@@ -312,7 +423,9 @@ export function Menu() {
                           </Link>
 
                           <AddToCartButton
-                            product={product}
+                            product={
+                              product
+                            }
                             className="menu-product-card__button"
                           />
                         </div>
@@ -322,18 +435,25 @@ export function Menu() {
                 ),
               )}
             </div>
-          ) : (
-            <div className="menu-products__empty">
-              <h3>
-                No encontramos productos
-              </h3>
+          ) : null}
 
-              <p>
-                Probá seleccionando otra
-                categoría del menú.
-              </p>
-            </div>
-          )}
+          {!loading &&
+            !error &&
+            visibleProducts.length ===
+              0 && (
+              <div className="menu-products__empty">
+                <h3>
+                  No encontramos
+                  productos
+                </h3>
+
+                <p>
+                  Probá seleccionando
+                  otra categoría del
+                  menú.
+                </p>
+              </div>
+            )}
         </div>
       </section>
     </main>
