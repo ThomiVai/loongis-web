@@ -1,40 +1,143 @@
-import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import {
+  useEffect,
+} from "react";
+
+import {
+  useLocation,
+} from "react-router-dom";
+
+import {
+  scrollToHash,
+} from "../utils/scrollToHash";
 
 export function ScrollToTop() {
-  const { pathname, hash, key } = useLocation();
+  const {
+    pathname,
+    hash,
+  } = useLocation();
 
   useEffect(() => {
-    const animationFrame = window.requestAnimationFrame(() => {
-      if (hash) {
-        const elementId = decodeURIComponent(
-          hash.replace("#", ""),
-        );
+    let observer:
+      MutationObserver | null =
+      null;
 
-        const targetElement =
-          document.getElementById(elementId);
+    let observerTimeout:
+      number | null = null;
 
-        if (targetElement) {
-          targetElement.scrollIntoView({
-            behavior: "smooth",
-            block: "start",
+    const animationFrame =
+      window.requestAnimationFrame(
+        () => {
+          /* =================================
+             NAVEGACIÓN CON HASH
+          ================================= */
+
+          if (hash) {
+            const targetFound =
+              scrollToHash(
+                hash,
+                "smooth",
+              );
+
+            /*
+              Puede pasar que vengamos desde
+              /menu, /carrito, /producto...
+
+              Home ya cambió de ruta, pero
+              algunas secciones todavía no
+              existen porque los productos
+              están cargando desde la API.
+
+              En ese caso esperamos a que
+              aparezca el elemento.
+            */
+
+            if (!targetFound) {
+              observer =
+                new MutationObserver(
+                  () => {
+                    const found =
+                      scrollToHash(
+                        hash,
+                        "smooth",
+                      );
+
+                    if (found) {
+                      observer?.disconnect();
+
+                      observer = null;
+
+                      if (
+                        observerTimeout !==
+                        null
+                      ) {
+                        window.clearTimeout(
+                          observerTimeout,
+                        );
+                      }
+                    }
+                  },
+                );
+
+              observer.observe(
+                document.body,
+                {
+                  childList: true,
+                  subtree: true,
+                },
+              );
+
+              /*
+                Evitamos dejar un observer
+                vivo indefinidamente si
+                alguien escribe un hash que
+                no existe.
+              */
+
+              observerTimeout =
+                window.setTimeout(
+                  () => {
+                    observer?.disconnect();
+
+                    observer = null;
+                  },
+                  60000,
+                );
+            }
+
+            return;
+          }
+
+          /* =================================
+             NAVEGACIÓN NORMAL
+          ================================= */
+
+          window.scrollTo({
+            top: 0,
+            left: 0,
+            behavior: "auto",
           });
-
-          return;
-        }
-      }
-
-      window.scrollTo({
-        top: 0,
-        left: 0,
-        behavior: "auto",
-      });
-    });
+        },
+      );
 
     return () => {
-      window.cancelAnimationFrame(animationFrame);
+      window.cancelAnimationFrame(
+        animationFrame,
+      );
+
+      observer?.disconnect();
+
+      if (
+        observerTimeout !== null
+      ) {
+        window.clearTimeout(
+          observerTimeout,
+        );
+      }
     };
-  }, [pathname, hash, key]);
+  }, [
+    pathname,
+    hash,
+  ]);
 
   return null;
 }
