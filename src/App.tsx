@@ -1,30 +1,75 @@
-import { Route, Routes } from "react-router-dom";
+import {
+  Route,
+  Routes,
+  useLocation,
+} from "react-router-dom";
 
+import { AdminNoIndex } from "./components/AdminNoIndex";
 import { Footer } from "./components/Footer";
 import { Navbar } from "./components/Navbar";
+import { NotificationContainer } from "./components/NotificationContainer";
 import { PageTitle } from "./components/PageTitle";
+import { ProtectedAdminRoute } from "./components/ProtectedAdminRoute";
 import { ScrollToTop } from "./components/ScrollToTop";
+import { StoreStatus } from "./components/StoreStatus";
 
+import { AdminDashboard } from "./pages/AdminDashboard";
+import { AdminLogin } from "./pages/AdminLogin";
+import { AdminProductEdit } from "./pages/AdminProductEdit";
 import { Cart } from "./pages/Cart";
 import { Checkout } from "./pages/Checkout";
 import { Home } from "./pages/Home";
 import { Menu } from "./pages/Menu";
 import { NotFound } from "./pages/NotFound";
 import { ProductDetail } from "./pages/ProductDetail";
-import { NotificationContainer } from "./components/NotificationContainer";
-import { StoreStatus } from "./components/StoreStatus";
 
 function App() {
+  const location =
+    useLocation();
+
+  const isAdminRoute =
+    location.pathname.startsWith(
+      "/admin",
+    );
+
   return (
     <>
       <PageTitle />
+
       <ScrollToTop />
+
       <NotificationContainer />
 
-      <Navbar />
-      <StoreStatus />
+      {/* =================================
+          SEO ADMIN
+      ================================= */}
+
+      {isAdminRoute && (
+        <AdminNoIndex />
+      )}
+
+      {/* =================================
+          LAYOUT TIENDA
+      ================================= */}
+
+      {!isAdminRoute && (
+        <>
+          <Navbar />
+
+          <StoreStatus />
+        </>
+      )}
+
+      {/* =================================
+          RUTAS
+      ================================= */}
 
       <Routes>
+
+        {/* ===============================
+            TIENDA
+        =============================== */}
+
         <Route
           path="/"
           element={<Home />}
@@ -37,7 +82,9 @@ function App() {
 
         <Route
           path="/producto/:productId"
-          element={<ProductDetail />}
+          element={
+            <ProductDetail />
+          }
         />
 
         <Route
@@ -47,16 +94,66 @@ function App() {
 
         <Route
           path="/finalizar-pedido"
-          element={<Checkout />}
+          element={
+            <Checkout />
+          }
         />
+
+        {/* ===============================
+            LOGIN ADMIN
+        =============================== */}
+
+        <Route
+          path="/admin/login"
+          element={
+            <AdminLogin />
+          }
+        />
+
+        {/* ===============================
+            ADMIN PROTEGIDO
+        =============================== */}
+
+        <Route
+          element={
+            <ProtectedAdminRoute />
+          }
+        >
+          <Route
+            path="/admin"
+            element={
+              <AdminDashboard />
+            }
+          />
+
+          <Route
+            path="/admin/productos/:productId/editar"
+            element={
+              <AdminProductEdit />
+            }
+          />
+        </Route>
+
+        {/* ===============================
+            404
+        =============================== */}
 
         <Route
           path="*"
-          element={<NotFound />}
+          element={
+            <NotFound />
+          }
         />
+
       </Routes>
 
-      <Footer />
+      {/* =================================
+          FOOTER TIENDA
+      ================================= */}
+
+      {!isAdminRoute && (
+        <Footer />
+      )}
     </>
   );
 }

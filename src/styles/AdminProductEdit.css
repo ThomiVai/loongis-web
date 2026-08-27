@@ -1,0 +1,914 @@
+/* ========================================
+   EDITAR PRODUCTO
+======================================== */
+
+.admin-product-edit {
+  min-height: 70vh;
+
+  padding:
+    55px 20px 90px;
+
+  background-color:
+    var(--color-cream);
+}
+
+.admin-product-edit__container {
+  width: min(
+    960px,
+    100%
+  );
+
+  margin: 0 auto;
+}
+
+/* ========================================
+   VOLVER
+======================================== */
+
+.admin-product-edit__back {
+  display: inline-flex;
+
+  margin-bottom: 28px;
+
+  color:
+    var(--color-primary);
+
+  font-family:
+    "Fredoka",
+    sans-serif;
+
+  font-weight: 700;
+
+  text-decoration: none;
+}
+
+/* ========================================
+   HEADER
+======================================== */
+
+.admin-product-edit__header {
+  display: flex;
+  align-items: center;
+  justify-content:
+    space-between;
+
+  gap: 35px;
+
+  margin-bottom: 32px;
+}
+
+.admin-product-edit__eyebrow {
+  color:
+    var(--color-primary);
+
+  font-family:
+    "Fredoka",
+    sans-serif;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  text-transform:
+    uppercase;
+}
+
+.admin-product-edit__header h1 {
+  margin:
+    5px 0 10px;
+
+  font-family:
+    "Fredoka",
+    sans-serif;
+
+  font-size:
+    clamp(
+      36px,
+      5vw,
+      52px
+    );
+
+  line-height: 1;
+}
+
+.admin-product-edit__header p {
+  max-width: 540px;
+
+  margin: 0;
+
+  color:
+    rgba(
+      23,
+      23,
+      23,
+      0.65
+    );
+
+  line-height: 1.5;
+}
+
+/* ========================================
+   PREVIEW
+======================================== */
+
+.admin-product-edit__preview {
+  flex-shrink: 0;
+
+  width: 150px;
+  height: 150px;
+
+  overflow: hidden;
+
+  border:
+    2px solid
+    var(--color-black);
+
+  border-radius:
+    20px;
+
+  background-color:
+    var(--color-white);
+}
+
+.admin-product-edit__preview img {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+}
+
+/* ========================================
+   FORMULARIO
+======================================== */
+
+.admin-product-edit__form {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+/* ========================================
+   SECCIONES
+======================================== */
+
+.admin-product-edit__section {
+  padding: 30px;
+
+  border:
+    2px solid
+    var(--color-black);
+
+  border-radius:
+    22px;
+
+  background-color:
+    var(--color-white);
+
+  box-shadow:
+    5px 5px 0
+    var(--color-black);
+}
+
+.admin-product-edit__section h2 {
+  margin:
+    0 0 24px;
+
+  font-family:
+    "Fredoka",
+    sans-serif;
+
+  font-size: 26px;
+}
+
+.admin-product-edit__section-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content:
+    space-between;
+
+  gap: 20px;
+
+  margin-bottom: 24px;
+}
+
+.admin-product-edit__section-header
+  h2 {
+  margin: 0;
+}
+
+.admin-product-edit__section-header
+  p {
+  margin:
+    7px 0 0;
+
+  color:
+    rgba(
+      23,
+      23,
+      23,
+      0.62
+    );
+
+  font-size: 14px;
+
+  line-height: 1.5;
+}
+
+/* ========================================
+   CAMPOS
+======================================== */
+
+.admin-product-edit__fields {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.admin-product-edit__field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.admin-product-edit__field
+  > span {
+  font-family:
+    "Fredoka",
+    sans-serif;
+
+  font-weight: 700;
+}
+
+.admin-product-edit__field input,
+.admin-product-edit__field textarea,
+.admin-product-edit__ingredient
+  input,
+.admin-product-edit__option
+  input {
+  width: 100%;
+
+  padding:
+    13px 15px;
+
+  border:
+    2px solid
+    rgba(
+      23,
+      23,
+      23,
+      0.14
+    );
+
+  border-radius:
+    13px;
+
+  background-color:
+    var(--color-white);
+
+  color:
+    var(--color-black);
+
+  font: inherit;
+
+  outline: none;
+
+  transition:
+    border-color
+      0.2s ease,
+    box-shadow
+      0.2s ease;
+}
+
+.admin-product-edit__field
+  textarea {
+  resize: vertical;
+
+  min-height: 120px;
+}
+
+.admin-product-edit__field
+  input:focus,
+.admin-product-edit__field
+  textarea:focus,
+.admin-product-edit__ingredient
+  input:focus,
+.admin-product-edit__option
+  input:focus {
+  border-color:
+    var(--color-primary);
+
+  box-shadow:
+    0 0 0 4px
+    rgba(
+      7,
+      95,
+      234,
+      0.1
+    );
+}
+
+/* ========================================
+   PRECIO PRINCIPAL
+======================================== */
+
+.admin-product-edit__price-field {
+  display: flex;
+  align-items: center;
+
+  overflow: hidden;
+
+  border:
+    2px solid
+    rgba(
+      23,
+      23,
+      23,
+      0.14
+    );
+
+  border-radius:
+    13px;
+}
+
+.admin-product-edit__price-field
+  > span {
+  padding:
+    13px 0 13px 15px;
+
+  font-family:
+    "Fredoka",
+    sans-serif;
+
+  font-weight: 700;
+}
+
+.admin-product-edit__price-field
+  input {
+  border: 0;
+
+  box-shadow: none;
+}
+
+.admin-product-edit__price-field:focus-within {
+  border-color:
+    var(--color-primary);
+
+  box-shadow:
+    0 0 0 4px
+    rgba(
+      7,
+      95,
+      234,
+      0.1
+    );
+}
+
+/* ========================================
+   VISIBILIDAD
+======================================== */
+
+.admin-product-edit__toggles {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(
+        0,
+        1fr
+      )
+    );
+
+  gap: 16px;
+}
+
+.admin-product-edit__toggle {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 13px;
+
+  padding: 18px;
+
+  border:
+    2px solid
+    rgba(
+      23,
+      23,
+      23,
+      0.1
+    );
+
+  border-radius:
+    16px;
+
+  background-color:
+    var(--color-cream);
+
+  cursor: pointer;
+}
+
+.admin-product-edit__toggle
+  input {
+  width: 20px;
+  height: 20px;
+
+  margin-top: 2px;
+
+  accent-color:
+    var(--color-primary);
+}
+
+.admin-product-edit__toggle
+  div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.admin-product-edit__toggle
+  strong {
+  font-family:
+    "Fredoka",
+    sans-serif;
+}
+
+.admin-product-edit__toggle
+  span {
+  color:
+    rgba(
+      23,
+      23,
+      23,
+      0.62
+    );
+
+  font-size: 13px;
+
+  line-height: 1.4;
+}
+
+/* ========================================
+   LISTAS EDITABLES
+======================================== */
+
+.admin-product-edit__items {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ========================================
+   INGREDIENTE
+======================================== */
+
+.admin-product-edit__ingredient {
+  display: grid;
+
+  grid-template-columns:
+    minmax(
+      0,
+      1fr
+    )
+    46px;
+
+  gap: 10px;
+
+  align-items: center;
+}
+
+/* ========================================
+   TAMAÑO / EXTRA
+======================================== */
+
+.admin-product-edit__option {
+  display: grid;
+
+  grid-template-columns:
+    minmax(
+      0,
+      1fr
+    )
+    180px
+    46px;
+
+  gap: 12px;
+
+  align-items: end;
+
+  padding: 15px;
+
+  border:
+    2px solid
+    rgba(
+      23,
+      23,
+      23,
+      0.07
+    );
+
+  border-radius:
+    15px;
+
+  background-color:
+    var(--color-cream);
+}
+
+.admin-product-edit__option
+  label {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.admin-product-edit__option
+  label
+  > span {
+  font-family:
+    "Fredoka",
+    sans-serif;
+
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* ========================================
+   AGREGAR
+======================================== */
+
+.admin-product-edit__add {
+  flex-shrink: 0;
+
+  padding:
+    10px 14px;
+
+  border:
+    2px solid
+    var(--color-black);
+
+  border-radius:
+    12px;
+
+  background-color:
+    var(--color-yellow);
+
+  color:
+    var(--color-black);
+
+  font-family:
+    "Fredoka",
+    sans-serif;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  box-shadow:
+    3px 3px 0
+    var(--color-black);
+
+  transition:
+    transform
+      0.2s ease,
+    box-shadow
+      0.2s ease;
+}
+
+.admin-product-edit__add:hover:not(
+    :disabled
+  ) {
+  transform:
+    translate(
+      1px,
+      1px
+    );
+
+  box-shadow:
+    2px 2px 0
+    var(--color-black);
+}
+
+/* ========================================
+   ELIMINAR
+======================================== */
+
+.admin-product-edit__remove {
+  display: grid;
+  place-items: center;
+
+  width: 46px;
+  height: 46px;
+
+  border:
+    2px solid
+    rgba(
+      23,
+      23,
+      23,
+      0.16
+    );
+
+  border-radius:
+    12px;
+
+  background-color:
+    var(--color-white);
+
+  color:
+    var(--color-black);
+
+  font-family:
+    "Fredoka",
+    sans-serif;
+
+  font-size: 24px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+/* ========================================
+   VACÍO
+======================================== */
+
+.admin-product-edit__empty {
+  margin: 0;
+
+  padding: 18px;
+
+  border-radius:
+    13px;
+
+  background-color:
+    var(--color-cream);
+
+  color:
+    rgba(
+      23,
+      23,
+      23,
+      0.6
+    );
+
+  text-align: center;
+}
+
+/* ========================================
+   MENSAJES
+======================================== */
+
+.admin-product-edit__error,
+.admin-product-edit__success {
+  padding:
+    15px 17px;
+
+  border-radius:
+    14px;
+
+  font-weight: 600;
+}
+
+.admin-product-edit__error {
+  background-color:
+    rgba(
+      190,
+      35,
+      35,
+      0.09
+    );
+
+  color:
+    #991d1d;
+}
+
+.admin-product-edit__success {
+  background-color:
+    rgba(
+      41,
+      151,
+      76,
+      0.12
+    );
+
+  color:
+    #176a31;
+}
+
+/* ========================================
+   ACCIONES
+======================================== */
+
+.admin-product-edit__actions {
+  display: flex;
+  justify-content:
+    flex-end;
+
+  gap: 12px;
+
+  padding-top: 5px;
+}
+
+.admin-product-edit__cancel,
+.admin-product-edit__save,
+.admin-product-edit__back-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 48px;
+
+  padding:
+    11px 18px;
+
+  border:
+    2px solid
+    var(--color-black);
+
+  border-radius:
+    13px;
+
+  font-family:
+    "Fredoka",
+    sans-serif;
+
+  font-weight: 700;
+
+  text-decoration: none;
+}
+
+.admin-product-edit__cancel {
+  background-color:
+    var(--color-white);
+
+  color:
+    var(--color-black);
+}
+
+.admin-product-edit__save {
+  background-color:
+    var(--color-yellow);
+
+  color:
+    var(--color-black);
+
+  box-shadow:
+    4px 4px 0
+    var(--color-black);
+
+  cursor: pointer;
+}
+
+.admin-product-edit__save:disabled,
+.admin-product-edit__add:disabled,
+.admin-product-edit__remove:disabled {
+  opacity: 0.6;
+
+  cursor: wait;
+}
+
+/* ========================================
+   ERROR DE CARGA
+======================================== */
+
+.admin-product-edit__load-error {
+  padding: 35px;
+
+  border:
+    2px solid
+    var(--color-black);
+
+  border-radius:
+    22px;
+
+  background-color:
+    var(--color-white);
+
+  box-shadow:
+    5px 5px 0
+    var(--color-black);
+}
+
+.admin-product-edit__load-error
+  h1 {
+  margin-top: 0;
+
+  font-family:
+    "Fredoka",
+    sans-serif;
+}
+
+.admin-product-edit__back-button {
+  margin-top: 15px;
+
+  background-color:
+    var(--color-yellow);
+
+  color:
+    var(--color-black);
+}
+
+/* ========================================
+   LOADING
+======================================== */
+
+.admin-product-edit__loading {
+  width: min(
+    600px,
+    100%
+  );
+
+  margin:
+    100px auto;
+
+  text-align: center;
+
+  font-family:
+    "Fredoka",
+    sans-serif;
+
+  font-size: 20px;
+  font-weight: 600;
+}
+
+/* ========================================
+   TABLET
+======================================== */
+
+@media (
+  max-width: 700px
+) {
+  .admin-product-edit {
+    padding:
+      40px 16px 70px;
+  }
+
+  .admin-product-edit__header {
+    align-items:
+      flex-start;
+
+    flex-direction:
+      column;
+  }
+
+  .admin-product-edit__preview {
+    width: 120px;
+    height: 120px;
+  }
+
+  .admin-product-edit__toggles {
+    grid-template-columns:
+      1fr;
+  }
+
+  .admin-product-edit__section {
+    padding: 22px;
+  }
+
+  .admin-product-edit__section-header {
+    flex-direction:
+      column;
+  }
+
+  .admin-product-edit__option {
+    grid-template-columns:
+      minmax(
+        0,
+        1fr
+      )
+      130px
+      46px;
+  }
+}
+
+/* ========================================
+   MOBILE
+======================================== */
+
+@media (
+  max-width: 520px
+) {
+  .admin-product-edit__option {
+    grid-template-columns:
+      1fr;
+  }
+
+  .admin-product-edit__option
+    .admin-product-edit__remove {
+    width: 100%;
+  }
+}
+
+@media (
+  max-width: 480px
+) {
+  .admin-product-edit__actions {
+    flex-direction:
+      column-reverse;
+  }
+
+  .admin-product-edit__cancel,
+  .admin-product-edit__save {
+    width: 100%;
+  }
+}

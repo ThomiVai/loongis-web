@@ -1,0 +1,257 @@
+/* ========================================
+   ADMIN LOGIN
+======================================== */
+
+.admin-login {
+  display: grid;
+  place-items: center;
+
+  min-height: 70vh;
+  padding: 70px 20px;
+
+  background-color:
+    var(--color-cream);
+}
+
+/* ========================================
+   CARD
+======================================== */
+
+.admin-login__card {
+  width: min(
+    100%,
+    460px
+  );
+
+  padding: 42px;
+
+  border: 2px solid
+    var(--color-black);
+  border-radius: 26px;
+
+  background-color:
+    var(--color-white);
+
+  box-shadow:
+    7px 7px 0
+      var(--color-black);
+}
+
+/* ========================================
+   TEXTOS
+======================================== */
+
+.admin-login__eyebrow {
+  display: inline-block;
+
+  margin-bottom: 10px;
+
+  color:
+    var(--color-primary);
+
+  font-family:
+    "Fredoka",
+    sans-serif;
+
+  font-weight: 700;
+
+  text-transform:
+    uppercase;
+}
+
+.admin-login__title {
+  margin: 0;
+
+  font-family:
+    "Fredoka",
+    sans-serif;
+
+  font-size:
+    clamp(
+      32px,
+      5vw,
+      46px
+    );
+
+  line-height: 1;
+}
+
+.admin-login__description {
+  margin:
+    16px 0 28px;
+
+  color:
+    rgba(
+      23,
+      23,
+      23,
+      0.7
+    );
+
+  line-height: 1.6;
+}
+
+/* ========================================
+   FORMULARIO
+======================================== */
+
+.admin-login__form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.admin-login__field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  font-family:
+    "Fredoka",
+    sans-serif;
+
+  font-weight: 600;
+}
+
+.admin-login__field input {
+  width: 100%;
+  min-height: 50px;
+  padding: 12px 15px;
+
+  border: 2px solid
+    rgba(
+      23,
+      23,
+      23,
+      0.15
+    );
+  border-radius: 14px;
+
+  background-color:
+    var(--color-white);
+
+  color:
+    var(--color-black);
+
+  font: inherit;
+
+  outline: none;
+
+  transition:
+    border-color
+      0.2s ease,
+    box-shadow
+      0.2s ease;
+}
+
+.admin-login__field input:focus {
+  border-color:
+    var(--color-primary);
+
+  box-shadow:
+    0 0 0 4px
+      rgba(
+        7,
+        95,
+        234,
+        0.1
+      );
+}
+
+/* ========================================
+   ERROR
+======================================== */
+
+.admin-login__error {
+  margin: 0;
+  padding: 12px 14px;
+
+  border-radius: 12px;
+
+  background-color:
+    rgba(
+      200,
+      30,
+      30,
+      0.08
+    );
+
+  color:
+    #a61616;
+
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* ========================================
+   BOTÓN
+======================================== */
+
+.admin-login__button {
+  min-height: 52px;
+
+  border: 2px solid
+    var(--color-black);
+  border-radius: 15px;
+
+  background-color:
+    var(--color-yellow);
+  color:
+    var(--color-black);
+
+  font-family:
+    "Fredoka",
+    sans-serif;
+
+  font-size: 16px;
+  font-weight: 700;
+
+  box-shadow:
+    4px 4px 0
+      var(--color-black);
+
+  cursor: pointer;
+
+  transition:
+    transform
+      0.2s ease,
+    box-shadow
+      0.2s ease;
+}
+
+.admin-login__button:hover:not(
+    :disabled
+  ) {
+  transform:
+    translate(
+      2px,
+      2px
+    );
+
+  box-shadow:
+    2px 2px 0
+      var(--color-black);
+}
+
+.admin-login__button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+/* ========================================
+   MOBILE
+======================================== */
+
+@media (
+  max-width: 520px
+) {
+  .admin-login {
+    padding:
+      45px 16px;
+  }
+
+  .admin-login__card {
+    padding:
+      30px 22px;
+  }
+}
