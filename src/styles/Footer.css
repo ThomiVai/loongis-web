@@ -49,7 +49,9 @@
     minmax(190px, 0.9fr)
     minmax(220px, 1fr)
     260px;
+
   align-items: center;
+
   gap: 30px;
 }
 
@@ -59,6 +61,7 @@
 
 .site-footer__brand {
   min-width: 0;
+
   overflow: visible;
 }
 
@@ -79,21 +82,16 @@
 
 .site-footer__description {
   max-width: 270px;
+
   margin: 12px 0 20px;
 
-  /*
-    Antes: 0.88.
-
-    Subimos levemente el contraste
-    para garantizar una lectura más
-    clara sobre el fondo azul.
-  */
-  color: rgba(
-    255,
-    255,
-    255,
-    0.94
-  );
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.94
+    );
 
   font-family:
     "Nunito",
@@ -101,6 +99,7 @@
 
   font-size: 0.95rem;
   font-weight: 600;
+
   line-height: 1.55;
 }
 
@@ -110,19 +109,18 @@
 
 .site-footer__socials {
   display: flex;
+
   align-items: center;
+
   gap: 10px;
 }
 
 .site-footer__social-button {
   display: inline-flex;
-  align-items: center;
-  justify-content: center;
 
-  /*
-    44 x 44 es un objetivo táctil
-    más cómodo y accesible.
-  */
+  align-items: center;
+
+  justify-content: center;
 
   width: 44px;
   height: 44px;
@@ -198,8 +196,11 @@
 
 .site-footer__column {
   display: flex;
+
   flex-direction: column;
+
   align-items: flex-start;
+
   gap: 9px;
 
   min-width: 0;
@@ -217,6 +218,7 @@
 
   font-size: 0.97rem;
   font-weight: 700;
+
   line-height: 1.2;
 
   text-transform:
@@ -225,20 +227,6 @@
   letter-spacing:
     0.045em;
 }
-
-/*
-  Antes los enlaces, párrafos y
-  otros textos estaban en 0.84.
-
-  Sobre el azul de Loongis ese valor
-  quedaba apenas por debajo del
-  contraste WCAG para texto normal.
-
-  Con 0.94 seguimos manteniendo una
-  pequeña jerarquía visual respecto
-  del blanco puro, pero superamos
-  cómodamente el contraste requerido.
-*/
 
 .site-footer__column a,
 .site-footer__column button,
@@ -261,6 +249,7 @@
 
   font-size: 0.9rem;
   font-weight: 600;
+
   line-height: 1.35;
 }
 
@@ -270,6 +259,7 @@
 
 .site-footer__column a {
   display: inline-flex;
+
   align-items: center;
 
   min-height: 44px;
@@ -280,14 +270,6 @@
     color 150ms ease,
     transform 150ms ease;
 }
-
-/*
-  Al convertir los links en objetivos
-  táctiles de 44px reducimos el gap
-  específico de la columna de
-  navegación para no hacer el footer
-  innecesariamente alto.
-*/
 
 nav.site-footer__column {
   gap: 0;
@@ -366,6 +348,7 @@ nav.site-footer__column {
 
 .site-footer__location::before {
   position: absolute;
+
   top: 4px;
   left: 0;
 
@@ -383,6 +366,7 @@ nav.site-footer__column {
 
 .site-footer__location::after {
   position: absolute;
+
   top: 13px;
   left: 4px;
 
@@ -409,7 +393,9 @@ nav.site-footer__column {
 
 .site-footer__mascot-wrapper {
   display: flex;
+
   align-items: flex-end;
+
   justify-content: center;
 
   align-self: end;
@@ -426,6 +412,7 @@ nav.site-footer__column {
   height: 245px;
 
   object-fit: contain;
+
   object-position:
     center bottom;
 
@@ -437,7 +424,9 @@ nav.site-footer__column {
 
   filter:
     drop-shadow(
-      0 10px 10px
+      0
+      10px
+      10px
       rgba(
         0,
         0,
@@ -462,14 +451,19 @@ nav.site-footer__column {
 ======================================== */
 
 .site-footer__bottom {
-  display: flex;
+  display: grid;
+
+  grid-template-columns:
+    1fr
+    auto
+    1fr;
+
   align-items: center;
-  justify-content:
-    space-between;
 
   gap: 24px;
 
   margin-top: 34px;
+
   padding-top: 20px;
 
   border-top:
@@ -480,12 +474,6 @@ nav.site-footer__column {
       255,
       0.28
     );
-
-  /*
-    Antes: 0.72.
-    Era uno de los contrastes más
-    bajos del footer.
-  */
 
   color:
     rgba(
@@ -503,8 +491,105 @@ nav.site-footer__column {
   font-weight: 600;
 }
 
+.site-footer__copyright {
+  justify-self: start;
+}
+
 .site-footer__made-with {
+  justify-self: end;
+
   text-align: right;
+}
+
+/* ========================================
+   ACCESO ENCARGADOS
+======================================== */
+
+.site-footer__admin-link {
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 7px;
+
+  min-height: 44px;
+
+  padding:
+    8px
+    13px;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.32
+    );
+
+  border-radius: 999px;
+
+  background-color:
+    rgba(
+      0,
+      0,
+      0,
+      0.08
+    );
+
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.9
+    );
+
+  font-family:
+    "Nunito",
+    sans-serif;
+
+  font-size: 0.78rem;
+  font-weight: 700;
+
+  text-decoration: none;
+
+  white-space: nowrap;
+
+  transition:
+    color 160ms ease,
+    background-color 160ms ease,
+    border-color 160ms ease,
+    transform 160ms ease;
+}
+
+.site-footer__admin-link svg {
+  width: 12px;
+  height: 12px;
+}
+
+.site-footer__admin-link:hover {
+  border-color:
+    var(--color-yellow);
+
+  background-color:
+    var(--color-yellow);
+
+  color:
+    var(--color-black);
+
+  transform:
+    translateY(-2px);
+}
+
+.site-footer__admin-link:focus-visible {
+  outline:
+    3px solid
+    var(--color-yellow);
+
+  outline-offset: 3px;
 }
 
 /* ========================================
@@ -616,6 +701,25 @@ nav.site-footer__column {
 
     transform:
       scale(1.04);
+  }
+
+  .site-footer__bottom {
+    grid-template-columns:
+      1fr
+      auto;
+
+    gap:
+      12px
+      20px;
+  }
+
+  .site-footer__made-with {
+    grid-column:
+      1 / -1;
+
+    justify-self: center;
+
+    text-align: center;
   }
 }
 
@@ -733,8 +837,11 @@ nav.site-footer__column {
   }
 
   .site-footer__bottom {
-    align-items: center;
+    display: flex;
+
     flex-direction: column;
+
+    align-items: center;
 
     gap: 8px;
 
@@ -743,8 +850,13 @@ nav.site-footer__column {
     text-align: center;
   }
 
+  .site-footer__copyright,
   .site-footer__made-with {
     text-align: center;
+  }
+
+  .site-footer__admin-link {
+    margin-block: 3px;
   }
 }
 

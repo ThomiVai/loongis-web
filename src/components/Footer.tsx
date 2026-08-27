@@ -1,5 +1,6 @@
 import {
   FaInstagram,
+  FaLock,
   FaWhatsapp,
 } from "react-icons/fa6";
 
@@ -29,6 +30,11 @@ export function Footer() {
 
       <div className="site-footer__container">
         <div className="site-footer__main">
+
+          {/* ========================================
+              MARCA
+          ======================================== */}
+
           <div className="site-footer__brand">
             <img
               className="site-footer__logo"
@@ -72,6 +78,10 @@ export function Footer() {
             </div>
           </div>
 
+          {/* ========================================
+              NAVEGACIÓN
+          ======================================== */}
+
           <nav
             className="site-footer__column"
             aria-label="Navegación del pie de página"
@@ -101,6 +111,10 @@ export function Footer() {
             </Link>
           </nav>
 
+          {/* ========================================
+              PEDIDOS
+          ======================================== */}
+
           <div className="site-footer__column">
             <h2 className="site-footer__column-title">
               Pedidos
@@ -122,6 +136,10 @@ export function Footer() {
               Transferencia
             </span>
           </div>
+
+          {/* ========================================
+              HORARIOS
+          ======================================== */}
 
           <div className="site-footer__column site-footer__schedule">
             <h2 className="site-footer__column-title">
@@ -147,6 +165,10 @@ export function Footer() {
             </span>
           </div>
 
+          {/* ========================================
+              MASCOTA
+          ======================================== */}
+
           <div className="site-footer__mascot-wrapper">
             <img
               className="site-footer__mascot"
@@ -156,12 +178,35 @@ export function Footer() {
           </div>
         </div>
 
+        {/* ========================================
+            PARTE INFERIOR
+        ======================================== */}
+
         <div className="site-footer__bottom">
-          <span>
+
+          <span className="site-footer__copyright">
             © {currentYear} Loongis.
             Todos los derechos
             reservados.
           </span>
+
+          {/* ======================================
+              ACCESO ENCARGADOS
+          ====================================== */}
+
+          <Link
+            className="site-footer__admin-link"
+            to="/admin"
+            aria-label="Ingresar al panel de administración de Loongis"
+          >
+            <FaLock
+              aria-hidden="true"
+            />
+
+            <span>
+              Acceso encargados
+            </span>
+          </Link>
 
           <span className="site-footer__made-with">
             Hecho con amor y muchas
