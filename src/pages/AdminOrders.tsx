@@ -422,6 +422,13 @@ export function AdminOrders() {
           >
             Pedidos
           </Link>
+
+          <Link
+            to="/admin/inventario"
+            className="admin-dashboard__nav-link"
+          >
+            Inventario
+          </Link>
         </nav>
 
         <section className="admin-orders">

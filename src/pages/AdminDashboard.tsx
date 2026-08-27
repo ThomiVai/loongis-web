@@ -331,6 +331,13 @@ export function AdminDashboard() {
           >
             Pedidos
           </Link>
+
+          <Link
+            to="/admin/inventario"
+            className="admin-dashboard__nav-link"
+          >
+            Inventario
+          </Link>
         </nav>
 
         {/* =================================
