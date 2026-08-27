@@ -1,4 +1,5 @@
 <!doctype html>
+
 <html lang="es-AR">
   <head>
     <meta charset="UTF-8" />
@@ -18,7 +19,7 @@
 
     <meta
       name="description"
-      content="Hamburguesas smash en Hurlingham. Conocé el menú de Loongis, elegí tu favorita, personalizá tu pedido y pedí para envío o retiro."
+      content="Hamburguesas smash en Hurlingham. Conocé el menú de Loongis, personalizá tu favorita y armá tu pedido para delivery o retiro."
     />
 
     <meta
@@ -81,7 +82,7 @@
 
     <meta
       property="og:description"
-      content="Hamburguesas smash en Hurlingham. Mirá el menú, personalizá tu favorita y armá tu pedido para envío o retiro."
+      content="Hamburguesas smash en Hurlingham. Mirá el menú, personalizá tu favorita y armá tu pedido para delivery o retiro."
     />
 
     <meta
@@ -91,7 +92,7 @@
 
     <meta
       property="og:image:alt"
-      content="Combo de hamburguesa smash, papas y bebida de Loongis"
+      content="Combo de hamburguesa smash de Loongis"
     />
 
     <!-- ========================================
@@ -110,7 +111,7 @@
 
     <meta
       name="twitter:description"
-      content="Hamburguesas smash en Hurlingham. Mirá el menú y armá tu pedido para envío o retiro."
+      content="Hamburguesas smash en Hurlingham. Mirá el menú y armá tu pedido para delivery o retiro."
     />
 
     <meta
@@ -120,7 +121,7 @@
 
     <meta
       name="twitter:image:alt"
-      content="Combo de hamburguesa smash, papas y bebida de Loongis"
+      content="Combo de hamburguesa smash de Loongis"
     />
 
     <!-- ========================================
@@ -130,13 +131,24 @@
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "Restaurant",
+        "@type": "FastFoodRestaurant",
+        "@id": "https://loongis-web.vercel.app/#restaurant",
         "name": "Loongis",
         "url": "https://loongis-web.vercel.app/",
         "image": "https://loongis-web.vercel.app/images/burgers/combo-promo.png",
-        "description": "Hamburguesas smash en Hurlingham con opciones de envío y retiro.",
-        "servesCuisine": "Hamburguesas smash",
+        "description": "Hamburguesas smash en Hurlingham con opciones de delivery y retiro.",
+        "servesCuisine": [
+          "Hamburguesas",
+          "Hamburguesas smash"
+        ],
         "hasMenu": "https://loongis-web.vercel.app/menu",
+        "priceRange": "$$",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Hurlingham",
+          "addressRegion": "Buenos Aires",
+          "addressCountry": "AR"
+        },
         "areaServed": {
           "@type": "City",
           "name": "Hurlingham"

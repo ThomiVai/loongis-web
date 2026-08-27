@@ -1,7 +1,4 @@
 User-agent: *
 Allow: /
 
-Disallow: /carrito
-Disallow: /finalizar-pedido
-
 Sitemap: https://loongis-web.vercel.app/sitemap.xml

@@ -3,17 +3,29 @@
 <urlset
   xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
 >
+  <!-- ========================================
+       HOME
+  ======================================== -->
+
   <url>
     <loc>https://loongis-web.vercel.app/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
 
+  <!-- ========================================
+       MENÚ
+  ======================================== -->
+
   <url>
     <loc>https://loongis-web.vercel.app/menu</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
+
+  <!-- ========================================
+       HAMBURGUESAS
+  ======================================== -->
 
   <url>
     <loc>https://loongis-web.vercel.app/producto/1</loc>
@@ -34,6 +46,16 @@
   </url>
 
   <url>
+    <loc>https://loongis-web.vercel.app/producto/4</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- ========================================
+       COMBOS
+  ======================================== -->
+
+  <url>
     <loc>https://loongis-web.vercel.app/producto/101</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -46,38 +68,14 @@
   </url>
 
   <url>
-    <loc>https://loongis-web.vercel.app/producto/103</loc>
+    <loc>https://loongis-web.vercel.app/producto/109</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://loongis-web.vercel.app/producto/104</loc>
+    <loc>https://loongis-web.vercel.app/producto/110</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://loongis-web.vercel.app/producto/105</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://loongis-web.vercel.app/producto/106</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://loongis-web.vercel.app/producto/107</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://loongis-web.vercel.app/producto/108</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
   </url>
 </urlset>
