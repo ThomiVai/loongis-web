@@ -1,0 +1,561 @@
+/* ========================================
+   DETALLE DE PEDIDO
+======================================== */
+
+.admin-order-detail__back {
+  display: inline-flex;
+
+  margin-bottom: 18px;
+
+  color:
+    var(--color-primary);
+
+  font-family:
+    "Fredoka",
+    sans-serif;
+
+  font-weight: 700;
+
+  text-decoration: none;
+}
+
+.admin-order-detail {
+  padding: 34px;
+
+  border:
+    2px solid
+    var(--color-black);
+
+  border-radius: 24px;
+
+  background-color:
+    var(--color-white);
+
+  box-shadow:
+    6px 6px 0
+    var(--color-black);
+}
+
+/* ========================================
+   HEADER
+======================================== */
+
+.admin-order-detail__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 24px;
+
+  padding-bottom: 26px;
+
+  border-bottom:
+    2px solid
+    rgba(
+      23,
+      23,
+      23,
+      0.08
+    );
+}
+
+.admin-order-detail__header h2 {
+  margin:
+    8px 0 6px;
+
+  font-family:
+    "Fredoka",
+    sans-serif;
+
+  font-size:
+    clamp(
+      30px,
+      4vw,
+      42px
+    );
+}
+
+.admin-order-detail__header p {
+  margin: 0;
+
+  color:
+    rgba(
+      23,
+      23,
+      23,
+      0.68
+    );
+}
+
+.admin-order-detail__grand-total {
+  flex-shrink: 0;
+
+  color:
+    var(--color-primary);
+
+  font-family:
+    "Fredoka",
+    sans-serif;
+
+  font-size:
+    clamp(
+      24px,
+      4vw,
+      32px
+    );
+}
+
+/* ========================================
+   INFORMACIÓN
+======================================== */
+
+.admin-order-detail__info-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0, 1fr)
+    );
+
+  gap: 18px;
+
+  margin-top: 24px;
+}
+
+.admin-order-detail__section {
+  padding: 22px;
+
+  border-radius: 18px;
+
+  background-color:
+    var(--color-cream);
+}
+
+.admin-order-detail__section h3 {
+  margin:
+    0 0 15px;
+
+  font-family:
+    "Fredoka",
+    sans-serif;
+
+  font-size: 20px;
+}
+
+.admin-order-detail__data {
+  display: flex;
+  flex-direction: column;
+
+  gap: 13px;
+
+  margin: 0;
+}
+
+.admin-order-detail__data div {
+  display: grid;
+  grid-template-columns:
+    105px 1fr;
+
+  gap: 12px;
+}
+
+.admin-order-detail__data dt {
+  color:
+    rgba(
+      23,
+      23,
+      23,
+      0.62
+    );
+
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.admin-order-detail__data dd {
+  min-width: 0;
+
+  margin: 0;
+
+  font-weight: 700;
+
+  overflow-wrap: anywhere;
+}
+
+/* ========================================
+   PRODUCTOS
+======================================== */
+
+.admin-order-detail__section--items {
+  margin-top: 18px;
+}
+
+.admin-order-detail__section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+}
+
+.admin-order-detail__section-heading span {
+  padding:
+    7px 11px;
+
+  border-radius: 999px;
+
+  background-color:
+    var(--color-white);
+
+  font-family:
+    "Fredoka",
+    sans-serif;
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.admin-order-detail__items {
+  display: flex;
+  flex-direction: column;
+
+  gap: 12px;
+}
+
+.admin-order-detail__item {
+  padding: 18px;
+
+  border:
+    2px solid
+    rgba(
+      23,
+      23,
+      23,
+      0.08
+    );
+
+  border-radius: 16px;
+
+  background-color:
+    var(--color-white);
+}
+
+.admin-order-detail__item-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 20px;
+}
+
+.admin-order-detail__item-heading h4 {
+  margin: 0;
+
+  font-family:
+    "Fredoka",
+    sans-serif;
+
+  font-size: 19px;
+}
+
+.admin-order-detail__item-heading strong {
+  flex-shrink: 0;
+
+  font-family:
+    "Fredoka",
+    sans-serif;
+
+  font-size: 18px;
+}
+
+.admin-order-detail__unit-price {
+  display: block;
+
+  margin-top: 4px;
+
+  color:
+    rgba(
+      23,
+      23,
+      23,
+      0.6
+    );
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.admin-order-detail__customization {
+  margin-top: 12px;
+}
+
+.admin-order-detail__customization p {
+  margin:
+    5px 0 0;
+
+  color:
+    rgba(
+      23,
+      23,
+      23,
+      0.78
+    );
+
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.admin-order-detail__notes {
+  margin: 0;
+
+  line-height: 1.6;
+}
+
+/* ========================================
+   TOTALES
+======================================== */
+
+.admin-order-detail__totals {
+  display: flex;
+  flex-direction: column;
+
+  gap: 12px;
+
+  margin-top: 18px;
+
+  padding: 22px;
+
+  border:
+    2px solid
+    rgba(
+      23,
+      23,
+      23,
+      0.08
+    );
+
+  border-radius: 18px;
+}
+
+.admin-order-detail__totals div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+}
+
+.admin-order-detail__totals strong {
+  font-family:
+    "Fredoka",
+    sans-serif;
+}
+
+.admin-order-detail__total-row {
+  padding-top: 14px;
+
+  border-top:
+    2px solid
+    rgba(
+      23,
+      23,
+      23,
+      0.08
+    );
+
+  font-size: 18px;
+}
+
+.admin-order-detail__total-row strong {
+  color:
+    var(--color-primary);
+
+  font-size: 23px;
+}
+
+/* ========================================
+   ACCIONES
+======================================== */
+
+.admin-order-detail__actions {
+  display: flex;
+
+  gap: 12px;
+
+  margin-top: 22px;
+}
+
+.admin-order-detail__confirm,
+.admin-order-detail__cancel {
+  flex: 1;
+
+  min-height: 50px;
+
+  padding:
+    12px 18px;
+
+  border:
+    2px solid
+    var(--color-black);
+
+  border-radius: 14px;
+
+  font-family:
+    "Fredoka",
+    sans-serif;
+
+  font-size: 15px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.admin-order-detail__confirm {
+  background-color:
+    var(--color-yellow);
+
+  color:
+    var(--color-black);
+
+  box-shadow:
+    3px 3px 0
+    var(--color-black);
+}
+
+.admin-order-detail__cancel {
+  border-color:
+    #9e1c1c;
+
+  background-color:
+    var(--color-white);
+
+  color:
+    #9e1c1c;
+}
+
+.admin-order-detail__confirm:disabled,
+.admin-order-detail__cancel:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.admin-order-detail__final-state {
+  margin-top: 22px;
+
+  padding: 16px;
+
+  border-radius: 14px;
+
+  background-color:
+    var(--color-cream);
+
+  text-align: center;
+}
+
+.admin-order-detail__error,
+.admin-order-detail__load-error {
+  padding: 18px;
+
+  border-radius: 16px;
+
+  background-color:
+    rgba(
+      190,
+      35,
+      35,
+      0.08
+    );
+
+  color:
+    #941d1d;
+}
+
+.admin-order-detail__error {
+  margin-top: 20px;
+}
+
+.admin-order-detail__load-error {
+  width: min(
+    620px,
+    100%
+  );
+
+  margin:
+    90px auto;
+
+  text-align: center;
+}
+
+.admin-order-detail__load-error h1 {
+  margin-top: 0;
+
+  font-family:
+    "Fredoka",
+    sans-serif;
+}
+
+.admin-order-detail__back-button {
+  display: inline-flex;
+
+  margin-top: 10px;
+
+  color:
+    var(--color-primary);
+
+  font-family:
+    "Fredoka",
+    sans-serif;
+
+  font-weight: 700;
+}
+
+/* ========================================
+   RESPONSIVE
+======================================== */
+
+@media (
+  max-width: 700px
+) {
+  .admin-order-detail {
+    padding: 22px;
+  }
+
+  .admin-order-detail__header {
+    flex-direction: column;
+  }
+
+  .admin-order-detail__info-grid {
+    grid-template-columns:
+      1fr;
+  }
+}
+
+@media (
+  max-width: 480px
+) {
+  .admin-order-detail__section {
+    padding: 17px;
+  }
+
+  .admin-order-detail__data div {
+    grid-template-columns:
+      1fr;
+
+    gap: 3px;
+  }
+
+  .admin-order-detail__item-heading {
+    flex-direction: column;
+
+    gap: 6px;
+  }
+
+  .admin-order-detail__actions {
+    flex-direction: column;
+  }
+
+  .admin-order-detail__confirm,
+  .admin-order-detail__cancel {
+    width: 100%;
+  }
+}

@@ -4,24 +4,81 @@ import {
   useLocation,
 } from "react-router-dom";
 
-import { AdminNoIndex } from "./components/AdminNoIndex";
-import { Footer } from "./components/Footer";
-import { Navbar } from "./components/Navbar";
-import { NotificationContainer } from "./components/NotificationContainer";
-import { PageTitle } from "./components/PageTitle";
-import { ProtectedAdminRoute } from "./components/ProtectedAdminRoute";
-import { ScrollToTop } from "./components/ScrollToTop";
-import { StoreStatus } from "./components/StoreStatus";
+import {
+  AdminNoIndex,
+} from "./components/AdminNoIndex";
 
-import { AdminDashboard } from "./pages/AdminDashboard";
-import { AdminLogin } from "./pages/AdminLogin";
-import { AdminProductEdit } from "./pages/AdminProductEdit";
-import { Cart } from "./pages/Cart";
-import { Checkout } from "./pages/Checkout";
-import { Home } from "./pages/Home";
-import { Menu } from "./pages/Menu";
-import { NotFound } from "./pages/NotFound";
-import { ProductDetail } from "./pages/ProductDetail";
+import {
+  Footer,
+} from "./components/Footer";
+
+import {
+  Navbar,
+} from "./components/Navbar";
+
+import {
+  NotificationContainer,
+} from "./components/NotificationContainer";
+
+import {
+  PageTitle,
+} from "./components/PageTitle";
+
+import {
+  ProtectedAdminRoute,
+} from "./components/ProtectedAdminRoute";
+
+import {
+  ScrollToTop,
+} from "./components/ScrollToTop";
+
+import {
+  StoreStatus,
+} from "./components/StoreStatus";
+
+import {
+  AdminDashboard,
+} from "./pages/AdminDashboard";
+
+import {
+  AdminOrderDetail,
+} from "./pages/AdminOrderDetail";
+
+import {
+  AdminOrders,
+} from "./pages/AdminOrders";
+
+import {
+  AdminLogin,
+} from "./pages/AdminLogin";
+
+import {
+  AdminProductEdit,
+} from "./pages/AdminProductEdit";
+
+import {
+  Cart,
+} from "./pages/Cart";
+
+import {
+  Checkout,
+} from "./pages/Checkout";
+
+import {
+  Home,
+} from "./pages/Home";
+
+import {
+  Menu,
+} from "./pages/Menu";
+
+import {
+  NotFound,
+} from "./pages/NotFound";
+
+import {
+  ProductDetail,
+} from "./pages/ProductDetail";
 
 function App() {
   const location =
@@ -72,12 +129,16 @@ function App() {
 
         <Route
           path="/"
-          element={<Home />}
+          element={
+            <Home />
+          }
         />
 
         <Route
           path="/menu"
-          element={<Menu />}
+          element={
+            <Menu />
+          }
         />
 
         <Route
@@ -89,7 +150,9 @@ function App() {
 
         <Route
           path="/carrito"
-          element={<Cart />}
+          element={
+            <Cart />
+          }
         />
 
         <Route
@@ -127,6 +190,20 @@ function App() {
           />
 
           <Route
+            path="/admin/pedidos"
+            element={
+              <AdminOrders />
+            }
+          />
+
+          <Route
+            path="/admin/pedidos/:orderId"
+            element={
+              <AdminOrderDetail />
+            }
+          />
+
+          <Route
             path="/admin/productos/:productId/editar"
             element={
               <AdminProductEdit />
@@ -144,7 +221,6 @@ function App() {
             <NotFound />
           }
         />
-
       </Routes>
 
       {/* =================================

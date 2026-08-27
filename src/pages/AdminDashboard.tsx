@@ -313,6 +313,26 @@ export function AdminDashboard() {
           </div>
         </header>
 
+        <nav
+          className="admin-dashboard__nav"
+          aria-label="Secciones del panel administrador"
+        >
+          <Link
+            to="/admin"
+            className="admin-dashboard__nav-link admin-dashboard__nav-link--active"
+            aria-current="page"
+          >
+            Productos
+          </Link>
+
+          <Link
+            to="/admin/pedidos"
+            className="admin-dashboard__nav-link"
+          >
+            Pedidos
+          </Link>
+        </nav>
+
         {/* =================================
             PRODUCTOS
         ================================= */}

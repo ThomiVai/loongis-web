@@ -1,0 +1,536 @@
+/* ========================================
+   PEDIDOS ADMIN
+======================================== */
+
+.admin-orders {
+  padding: 34px;
+
+  border:
+    2px solid
+    var(--color-black);
+
+  border-radius: 24px;
+
+  background-color:
+    var(--color-white);
+
+  box-shadow:
+    6px 6px 0
+    var(--color-black);
+}
+
+/* ========================================
+   HEADER
+======================================== */
+
+.admin-orders__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 25px;
+
+  margin-bottom: 22px;
+}
+
+.admin-orders__eyebrow {
+  display: inline-block;
+
+  margin-bottom: 5px;
+
+  color:
+    var(--color-primary);
+
+  font-family:
+    "Fredoka",
+    sans-serif;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  text-transform: uppercase;
+}
+
+.admin-orders__header h2 {
+  margin: 0;
+
+  font-family:
+    "Fredoka",
+    sans-serif;
+
+  font-size:
+    clamp(
+      28px,
+      4vw,
+      38px
+    );
+}
+
+.admin-orders__header p {
+  max-width: 620px;
+
+  margin:
+    8px 0 0;
+
+  color:
+    rgba(
+      23,
+      23,
+      23,
+      0.7
+    );
+
+  line-height: 1.55;
+}
+
+.admin-orders__header-actions {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  flex-shrink: 0;
+}
+
+.admin-orders__count {
+  padding:
+    9px 13px;
+
+  border-radius: 999px;
+
+  background-color:
+    var(--color-cream);
+
+  font-family:
+    "Fredoka",
+    sans-serif;
+
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.admin-orders__refresh {
+  min-height: 42px;
+
+  padding:
+    9px 15px;
+
+  border:
+    2px solid
+    var(--color-black);
+
+  border-radius: 12px;
+
+  background-color:
+    var(--color-yellow);
+
+  color:
+    var(--color-black);
+
+  font-family:
+    "Fredoka",
+    sans-serif;
+
+  font-weight: 700;
+
+  box-shadow:
+    3px 3px 0
+    var(--color-black);
+
+  cursor: pointer;
+}
+
+.admin-orders__refresh:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+/* ========================================
+   FILTROS
+======================================== */
+
+.admin-orders__filters {
+  display: flex;
+  flex-wrap: wrap;
+
+  gap: 9px;
+
+  margin-bottom: 24px;
+}
+
+.admin-orders__filter {
+  min-height: 40px;
+
+  padding:
+    8px 14px;
+
+  border:
+    2px solid
+    rgba(
+      23,
+      23,
+      23,
+      0.12
+    );
+
+  border-radius: 999px;
+
+  background-color:
+    var(--color-cream);
+
+  color:
+    var(--color-black);
+
+  font-family:
+    "Fredoka",
+    sans-serif;
+
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.admin-orders__filter--active {
+  border-color:
+    var(--color-black);
+
+  background-color:
+    var(--color-primary);
+
+  color:
+    var(--color-white);
+}
+
+/* ========================================
+   LISTADO
+======================================== */
+
+.admin-orders__list {
+  display: flex;
+  flex-direction: column;
+
+  gap: 14px;
+}
+
+.admin-order-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 22px;
+
+  padding: 18px;
+
+  border:
+    2px solid
+    rgba(
+      23,
+      23,
+      23,
+      0.08
+    );
+
+  border-radius: 18px;
+
+  background-color:
+    var(--color-cream);
+}
+
+.admin-order-card__main {
+  min-width: 0;
+  flex: 1;
+}
+
+.admin-order-card__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 20px;
+}
+
+.admin-order-card__top h3 {
+  margin:
+    7px 0 0;
+
+  font-family:
+    "Fredoka",
+    sans-serif;
+
+  font-size: 23px;
+}
+
+.admin-order-card__total {
+  flex-shrink: 0;
+
+  font-family:
+    "Fredoka",
+    sans-serif;
+
+  font-size: 21px;
+}
+
+.admin-order-card__customer {
+  display: flex;
+  flex-wrap: wrap;
+
+  gap:
+    4px 12px;
+
+  margin-top: 10px;
+}
+
+.admin-order-card__customer strong {
+  font-family:
+    "Fredoka",
+    sans-serif;
+}
+
+.admin-order-card__customer span {
+  color:
+    rgba(
+      23,
+      23,
+      23,
+      0.7
+    );
+}
+
+.admin-order-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+
+  gap: 8px;
+
+  margin-top: 12px;
+}
+
+.admin-order-card__meta span {
+  padding:
+    6px 10px;
+
+  border-radius: 999px;
+
+  background-color:
+    var(--color-white);
+
+  color:
+    rgba(
+      23,
+      23,
+      23,
+      0.78
+    );
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.admin-order-card__detail {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 42px;
+
+  padding:
+    10px 16px;
+
+  border:
+    2px solid
+    var(--color-black);
+
+  border-radius: 12px;
+
+  background-color:
+    var(--color-yellow);
+
+  color:
+    var(--color-black);
+
+  font-family:
+    "Fredoka",
+    sans-serif;
+
+  font-weight: 700;
+
+  text-decoration: none;
+
+  box-shadow:
+    3px 3px 0
+    var(--color-black);
+}
+
+/* ========================================
+   ESTADOS
+======================================== */
+
+.admin-order-status {
+  display: inline-flex;
+  align-items: center;
+
+  min-height: 28px;
+
+  padding:
+    5px 10px;
+
+  border-radius: 999px;
+
+  font-family:
+    "Fredoka",
+    sans-serif;
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.admin-order-status--pending {
+  background-color:
+    rgba(
+      244,
+      201,
+      40,
+      0.35
+    );
+
+  color:
+    #5d4900;
+}
+
+.admin-order-status--confirmed {
+  background-color:
+    rgba(
+      41,
+      151,
+      76,
+      0.14
+    );
+
+  color:
+    #176a31;
+}
+
+.admin-order-status--cancelled {
+  background-color:
+    rgba(
+      190,
+      35,
+      35,
+      0.1
+    );
+
+  color:
+    #9e1c1c;
+}
+
+/* ========================================
+   MENSAJES
+======================================== */
+
+.admin-orders__message {
+  padding: 35px;
+
+  border-radius: 16px;
+
+  background-color:
+    var(--color-cream);
+
+  text-align: center;
+
+  font-family:
+    "Fredoka",
+    sans-serif;
+
+  font-weight: 600;
+}
+
+.admin-orders__error {
+  display: flex;
+  flex-direction: column;
+
+  gap: 5px;
+
+  margin-bottom: 20px;
+
+  padding: 18px;
+
+  border-radius: 16px;
+
+  background-color:
+    rgba(
+      190,
+      35,
+      35,
+      0.08
+    );
+
+  color:
+    #941d1d;
+}
+
+/* ========================================
+   RESPONSIVE
+======================================== */
+
+@media (
+  max-width: 700px
+) {
+  .admin-orders {
+    padding: 22px;
+  }
+
+  .admin-orders__header {
+    flex-direction: column;
+  }
+
+  .admin-orders__header-actions {
+    width: 100%;
+
+    justify-content: space-between;
+  }
+
+  .admin-order-card {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .admin-order-card__detail {
+    width: 100%;
+  }
+}
+
+@media (
+  max-width: 480px
+) {
+  .admin-orders__header-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .admin-orders__refresh {
+    width: 100%;
+  }
+
+  .admin-orders__filters {
+    display: grid;
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
+  }
+
+  .admin-orders__filter {
+    width: 100%;
+  }
+
+  .admin-order-card__top {
+    flex-direction: column;
+
+    gap: 9px;
+  }
+
+  .admin-order-card__total {
+    font-size: 19px;
+  }
+}
