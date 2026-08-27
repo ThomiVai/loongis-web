@@ -1,4 +1,7 @@
-import { useState } from "react";
+import {
+  useState,
+} from "react";
+
 import {
   FaArrowLeftLong,
   FaBagShopping,
@@ -6,111 +9,248 @@ import {
   FaPlus,
   FaTrashCan,
 } from "react-icons/fa6";
-import { Link } from "react-router-dom";
 
-import { ConfirmModal } from "../components/ConfirmModal";
+import {
+  Link,
+} from "react-router-dom";
 
-import type { CartItem } from "../context/CartContext";
+import {
+  ConfirmModal,
+} from "../components/ConfirmModal";
 
-import { useCart } from "../hooks/useCart";
-import { useNotification } from "../hooks/useNotification";
+import type {
+  CartItem,
+} from "../context/CartContext";
+
+import {
+  useCart,
+} from "../hooks/useCart";
+
+import {
+  useNotification,
+} from "../hooks/useNotification";
 
 import "../styles/Cart.css";
 import "../styles/CartCustomization.css";
 
-const priceFormatter = new Intl.NumberFormat("es-AR", {
-  style: "currency",
-  currency: "ARS",
-  maximumFractionDigits: 0,
-});
+/* ========================================
+   FORMATO DE PRECIO
+======================================== */
+
+const priceFormatter =
+  new Intl.NumberFormat(
+    "es-AR",
+    {
+      style: "currency",
+      currency: "ARS",
+      maximumFractionDigits: 0,
+    },
+  );
+
+/* ========================================
+   DETALLE DE PERSONALIZACIÓN
+======================================== */
 
 type CustomizationDetail = {
   label: string;
   value: string;
-  type?: "normal" | "removed" | "notes";
+
+  type?:
+    | "normal"
+    | "removed"
+    | "notes";
 };
+
+/* ========================================
+   OBTENER PERSONALIZACIÓN
+======================================== */
 
 function getCustomizationDetails(
   item: CartItem,
 ): CustomizationDetail[] {
-  const details: CustomizationDetail[] = [];
+  const details:
+    CustomizationDetail[] =
+    [];
 
-  if (item.customization.size) {
-    details.push({
-      label: "Tamaño",
-      value: item.customization.size.name,
-    });
-  }
-
-  if (
-    item.customization.extras &&
-    item.customization.extras.length > 0
-  ) {
-    details.push({
-      label: "Extras",
-      value: item.customization.extras
-        .map((extra) => extra.name)
-        .join(", "),
-    });
-  }
+  /* ========================================
+     TAMAÑO
+  ======================================== */
 
   if (
-    item.customization.removedIngredients &&
-    item.customization.removedIngredients.length > 0
+    item.customization.size
   ) {
     details.push({
-      label: "Sin",
+      label:
+        "Tamaño",
+
       value:
-        item.customization.removedIngredients.join(", "),
-      type: "removed",
+        item.customization
+          .size.name,
     });
   }
 
-  if (item.customization.notes?.trim()) {
+  /* ========================================
+     EXTRAS
+  ======================================== */
+
+  if (
+    item.customization
+      .extras &&
+    item.customization
+      .extras.length > 0
+  ) {
     details.push({
-      label: "Aclaración",
-      value: item.customization.notes.trim(),
-      type: "notes",
+      label:
+        "Extras",
+
+      value:
+        item.customization
+          .extras
+          .map(
+            (extra) =>
+              extra.name,
+          )
+          .join(", "),
+    });
+  }
+
+  /* ========================================
+     INGREDIENTES QUITADOS
+  ======================================== */
+
+  if (
+    item.customization
+      .removedIngredients &&
+    item.customization
+      .removedIngredients
+      .length > 0
+  ) {
+    details.push({
+      label:
+        "Sin",
+
+      value:
+        item.customization
+          .removedIngredients
+          .join(", "),
+
+      type:
+        "removed",
+    });
+  }
+
+  /* ========================================
+     ACLARACIÓN
+  ======================================== */
+
+  if (
+    item.customization
+      .notes?.trim()
+  ) {
+    details.push({
+      label:
+        "Aclaración",
+
+      value:
+        item.customization
+          .notes.trim(),
+
+      type:
+        "notes",
     });
   }
 
   return details;
 }
 
+/* ========================================
+   URL DE EDICIÓN
+======================================== */
+
+function getEditProductPath(
+  item: CartItem,
+): string {
+  /*
+    Usamos URLSearchParams porque
+    cartItemId contiene información de
+    la personalización y puede tener
+    caracteres especiales.
+
+    Ejemplo final:
+
+    /producto/3?editar=...
+  */
+
+  const searchParams =
+    new URLSearchParams({
+      editar:
+        item.cartItemId,
+    });
+
+  return `/producto/${item.id}?${searchParams.toString()}`;
+}
+
+/* ========================================
+   CARRITO
+======================================== */
+
 export function Cart() {
   const {
     cart,
-    totalUnits,
-    totalPrice,
-    increaseQuantity,
-    decreaseQuantity,
-    removeProduct,
-    clearCart,
-  } = useCart();
 
-  const { showNotification } =
+    totalUnits,
+
+    totalPrice,
+
+    increaseQuantity,
+
+    decreaseQuantity,
+
+    removeProduct,
+
+    clearCart,
+  } =
+    useCart();
+
+  const {
+    showNotification,
+  } =
     useNotification();
 
   const [
     isClearModalOpen,
     setIsClearModalOpen,
-  ] = useState(false);
+  ] =
+    useState(false);
 
-  const handleConfirmClearCart = () => {
-    clearCart();
+  /* ========================================
+     VACIAR CARRITO
+  ======================================== */
 
-    setIsClearModalOpen(false);
+  const handleConfirmClearCart =
+    () => {
+      clearCart();
 
-    showNotification(
-      "El pedido fue vaciado.",
-      "info",
-    );
-  };
+      setIsClearModalOpen(
+        false,
+      );
+
+      showNotification(
+        "El pedido fue vaciado.",
+        "info",
+      );
+    };
+
+  /* ========================================
+     ELIMINAR PRODUCTO
+  ======================================== */
 
   const handleRemoveProduct = (
     item: CartItem,
   ) => {
-    removeProduct(item.cartItemId);
+    removeProduct(
+      item.cartItemId,
+    );
 
     showNotification(
       `${item.name} fue eliminado del pedido.`,
@@ -118,8 +258,13 @@ export function Cart() {
     );
   };
 
+  /* ========================================
+     RENDER
+  ======================================== */
+
   return (
     <main className="cart-page">
+
       {/* ========================================
           HERO
       ======================================== */}
@@ -129,6 +274,7 @@ export function Cart() {
         aria-labelledby="cart-page-title"
       >
         <div className="cart-page__container">
+
           <Link
             className="cart-page__back"
             to="/menu"
@@ -143,11 +289,13 @@ export function Cart() {
           </Link>
 
           <div className="cart-page__hero-layout">
+
             {/* ========================================
                 TEXTO
             ======================================== */}
 
             <div className="cart-page__heading">
+
               <span className="cart-page__eyebrow">
                 Tu selección
               </span>
@@ -160,9 +308,10 @@ export function Cart() {
               </h1>
 
               <p className="cart-page__subtitle">
-                Revisá los productos, sus
-                personalizaciones y las cantidades
-                antes de finalizar.
+                Revisá los productos,
+                sus personalizaciones
+                y las cantidades antes
+                de finalizar.
               </p>
             </div>
 
@@ -193,12 +342,16 @@ export function Cart() {
         aria-label="Contenido del pedido"
       >
         <div className="cart-page__container">
-          {cart.length === 0 ? (
+
+          {cart.length ===
+          0 ? (
+
             /* ========================================
                CARRITO VACÍO
             ======================================== */
 
             <div className="cart-empty">
+
               <div
                 className="cart-empty__icon"
                 aria-hidden="true"
@@ -211,8 +364,10 @@ export function Cart() {
               </h2>
 
               <p className="cart-empty__description">
-                Todavía no agregaste ningún producto.
-                Entrá al menú y elegí tu favorito.
+                Todavía no agregaste
+                ningún producto. Entrá
+                al menú y elegí tu
+                favorito.
               </p>
 
               <Link
@@ -223,17 +378,21 @@ export function Cart() {
               </Link>
             </div>
           ) : (
+
             /* ========================================
                CARRITO CON PRODUCTOS
             ======================================== */
 
             <div className="cart-layout">
+
               <div className="cart-products">
+
                 {/* ========================================
                     ENCABEZADO PRODUCTOS
                 ======================================== */}
 
                 <div className="cart-products__header">
+
                   <div>
                     <span className="cart-products__label">
                       Productos
@@ -252,7 +411,9 @@ export function Cart() {
                       isClearModalOpen
                     }
                     onClick={() =>
-                      setIsClearModalOpen(true)
+                      setIsClearModalOpen(
+                        true,
+                      )
                     }
                   >
                     <FaTrashCan
@@ -270,188 +431,252 @@ export function Cart() {
                 ======================================== */}
 
                 <div className="cart-products__list">
-                  {cart.map((item) => {
-                    const itemSubtotal =
-                      item.unitPrice *
-                      item.quantity;
 
-                    const customizationDetails =
-                      getCustomizationDetails(
-                        item,
-                      );
+                  {cart.map(
+                    (
+                      item,
+                    ) => {
+                      const itemSubtotal =
+                        item.unitPrice *
+                        item.quantity;
 
-                    const isCustomized =
-                      customizationDetails.length >
-                      0;
+                      const customizationDetails =
+                        getCustomizationDetails(
+                          item,
+                        );
 
-                    return (
-                      <article
-                        className={[
-                          "cart-item",
-                          `cart-item--${item.id}`,
-                        ].join(" ")}
-                        key={item.cartItemId}
-                      >
-                        {/* ========================================
-                            IMAGEN
-                        ======================================== */}
+                      const isCustomized =
+                        customizationDetails.length >
+                        0;
 
-                        <div className="cart-item__image-wrapper">
-                          <img
-                            className="cart-item__image"
-                            src={item.image}
-                            alt={item.imageAlt}
-                          />
-                        </div>
-
-                        {/* ========================================
-                            INFORMACIÓN
-                        ======================================== */}
-
-                        <div className="cart-item__information">
-                          <div className="cart-item__heading">
-                            <h3 className="cart-item__name">
-                              {item.name}
-                            </h3>
-
-                            {isCustomized && (
-                              <span className="cart-item__personalized-badge">
-                                Personalizado
-                              </span>
-                            )}
-                          </div>
-
-                          <p className="cart-item__description">
-                            {item.description}
-                          </p>
+                      return (
+                        <article
+                          className={[
+                            "cart-item",
+                            `cart-item--${item.id}`,
+                          ].join(
+                            " ",
+                          )}
+                          key={
+                            item.cartItemId
+                          }
+                        >
 
                           {/* ========================================
-                              PERSONALIZACIÓN
+                              IMAGEN
                           ======================================== */}
 
-                          {isCustomized && (
-                            <div className="cart-item-customization">
-                              {customizationDetails.map(
-                                (detail) => (
-                                  <div
-                                    className={`cart-item-customization__detail cart-item-customization__detail--${
-                                      detail.type ??
-                                      "normal"
-                                    }`}
-                                    key={`${item.cartItemId}-${detail.label}`}
-                                  >
-                                    <span className="cart-item-customization__label">
-                                      {detail.label}
-                                    </span>
+                          <div className="cart-item__image-wrapper">
+                            <img
+                              className="cart-item__image"
+                              src={
+                                item.image
+                              }
+                              alt={
+                                item.imageAlt
+                              }
+                            />
+                          </div>
 
-                                    <span className="cart-item-customization__value">
-                                      {detail.value}
-                                    </span>
-                                  </div>
-                                ),
+                          {/* ========================================
+                              INFORMACIÓN
+                          ======================================== */}
+
+                          <div className="cart-item__information">
+
+                            <div className="cart-item__heading">
+
+                              <h3 className="cart-item__name">
+                                {
+                                  item.name
+                                }
+                              </h3>
+
+                              {isCustomized && (
+                                <span className="cart-item__personalized-badge">
+                                  Personalizado
+                                </span>
                               )}
                             </div>
-                          )}
+
+                            <p className="cart-item__description">
+                              {
+                                item.description
+                              }
+                            </p>
+
+                            {/* ========================================
+                                PERSONALIZACIÓN
+                            ======================================== */}
+
+                            {isCustomized && (
+                              <div className="cart-item-customization">
+
+                                {customizationDetails.map(
+                                  (
+                                    detail,
+                                  ) => (
+                                    <div
+                                      className={`cart-item-customization__detail cart-item-customization__detail--${
+                                        detail.type ??
+                                        "normal"
+                                      }`}
+                                      key={`${item.cartItemId}-${detail.label}`}
+                                    >
+                                      <span className="cart-item-customization__label">
+                                        {
+                                          detail.label
+                                        }
+                                      </span>
+
+                                      <span className="cart-item-customization__value">
+                                        {
+                                          detail.value
+                                        }
+                                      </span>
+                                    </div>
+                                  ),
+                                )}
+                              </div>
+                            )}
+
+                            {/* ========================================
+                                PRECIO + PERSONALIZACIÓN
+                            ======================================== */}
+
+                            <div className="cart-item__price-information">
+
+                              <span className="cart-item__unit-price">
+                                Precio
+                                unitario:{" "}
+                                {priceFormatter.format(
+                                  item.unitPrice,
+                                )}
+                              </span>
+
+                              {isCustomized ? (
+                                <>
+                                  {/* =================================
+                                      EDITAR ESTA LÍNEA
+                                  ================================= */}
+
+                                  <Link
+                                    className="cart-item__customize-again"
+                                    to={getEditProductPath(
+                                      item,
+                                    )}
+                                  >
+                                    Editar personalización
+                                  </Link>
+
+                                  <span
+                                    aria-hidden="true"
+                                  >
+                                    ·
+                                  </span>
+
+                                  {/* =================================
+                                      CREAR OTRA
+                                  ================================= */}
+
+                                  <Link
+                                    className="cart-item__customize-again"
+                                    to={`/producto/${item.id}`}
+                                  >
+                                    Personalizar otra
+                                  </Link>
+                                </>
+                              ) : (
+                                <Link
+                                  className="cart-item__customize-again"
+                                  to={`/producto/${item.id}`}
+                                >
+                                  Ver producto
+                                </Link>
+                              )}
+                            </div>
+                          </div>
 
                           {/* ========================================
-                              PRECIO UNITARIO
+                              ACCIONES
                           ======================================== */}
 
-                          <div className="cart-item__price-information">
-                            <span className="cart-item__unit-price">
-                              Precio unitario:{" "}
+                          <div className="cart-item__actions">
+
+                            <div
+                              className="cart-item__quantity"
+                              aria-label={`Cantidad de ${item.name}`}
+                            >
+                              <button
+                                className="cart-item__quantity-button"
+                                type="button"
+                                aria-label={`Disminuir cantidad de ${item.name}`}
+                                onClick={() =>
+                                  decreaseQuantity(
+                                    item.cartItemId,
+                                  )
+                                }
+                              >
+                                <FaMinus
+                                  aria-hidden="true"
+                                />
+                              </button>
+
+                              <span
+                                className="cart-item__quantity-value"
+                                aria-live="polite"
+                                aria-atomic="true"
+                              >
+                                {
+                                  item.quantity
+                                }
+                              </span>
+
+                              <button
+                                className="cart-item__quantity-button"
+                                type="button"
+                                aria-label={`Aumentar cantidad de ${item.name}`}
+                                onClick={() =>
+                                  increaseQuantity(
+                                    item.cartItemId,
+                                  )
+                                }
+                              >
+                                <FaPlus
+                                  aria-hidden="true"
+                                />
+                              </button>
+                            </div>
+
+                            <strong className="cart-item__subtotal">
                               {priceFormatter.format(
-                                item.unitPrice,
+                                itemSubtotal,
                               )}
-                            </span>
+                            </strong>
 
-                            <Link
-                              className="cart-item__customize-again"
-                              to={`/producto/${item.id}`}
-                            >
-                              {isCustomized
-                                ? "Personalizar otra"
-                                : "Ver producto"}
-                            </Link>
-                          </div>
-                        </div>
-
-                        {/* ========================================
-                            ACCIONES
-                        ======================================== */}
-
-                        <div className="cart-item__actions">
-                          <div
-                            className="cart-item__quantity"
-                            aria-label={`Cantidad de ${item.name}`}
-                          >
                             <button
-                              className="cart-item__quantity-button"
+                              className="cart-item__remove"
                               type="button"
-                              aria-label={`Disminuir cantidad de ${item.name}`}
+                              aria-label={`Eliminar ${item.name} del pedido`}
                               onClick={() =>
-                                decreaseQuantity(
-                                  item.cartItemId,
+                                handleRemoveProduct(
+                                  item,
                                 )
                               }
                             >
-                              <FaMinus
+                              <FaTrashCan
                                 aria-hidden="true"
                               />
-                            </button>
 
-                            <span
-                              className="cart-item__quantity-value"
-                              aria-live="polite"
-                              aria-atomic="true"
-                            >
-                              {item.quantity}
-                            </span>
-
-                            <button
-                              className="cart-item__quantity-button"
-                              type="button"
-                              aria-label={`Aumentar cantidad de ${item.name}`}
-                              onClick={() =>
-                                increaseQuantity(
-                                  item.cartItemId,
-                                )
-                              }
-                            >
-                              <FaPlus
-                                aria-hidden="true"
-                              />
+                              <span>
+                                Eliminar
+                              </span>
                             </button>
                           </div>
-
-                          <strong className="cart-item__subtotal">
-                            {priceFormatter.format(
-                              itemSubtotal,
-                            )}
-                          </strong>
-
-                          <button
-                            className="cart-item__remove"
-                            type="button"
-                            aria-label={`Eliminar ${item.name} del pedido`}
-                            onClick={() =>
-                              handleRemoveProduct(
-                                item,
-                              )
-                            }
-                          >
-                            <FaTrashCan
-                              aria-hidden="true"
-                            />
-
-                            <span>
-                              Eliminar
-                            </span>
-                          </button>
-                        </div>
-                      </article>
-                    );
-                  })}
+                        </article>
+                      );
+                    },
+                  )}
                 </div>
               </div>
 
@@ -475,13 +700,16 @@ export function Cart() {
                 </h2>
 
                 <div className="cart-summary__rows">
+
                   <div className="cart-summary__row">
                     <span>
                       Unidades totales
                     </span>
 
                     <strong>
-                      {totalUnits}
+                      {
+                        totalUnits
+                      }
                     </strong>
                   </div>
 
@@ -497,6 +725,7 @@ export function Cart() {
                 </div>
 
                 <div className="cart-summary__total">
+
                   <span>
                     Total productos
                   </span>
@@ -509,9 +738,11 @@ export function Cart() {
                 </div>
 
                 <p className="cart-summary__notice">
-                  Realizamos envíos únicamente dentro
-                  de Hurlingham. El costo de envío se
-                  confirma al finalizar el pedido.
+                  Realizamos envíos
+                  únicamente dentro de
+                  Hurlingham. El costo
+                  de envío se confirma
+                  al finalizar el pedido.
                 </p>
 
                 <Link
@@ -538,7 +769,9 @@ export function Cart() {
       ======================================== */}
 
       <ConfirmModal
-        isOpen={isClearModalOpen}
+        isOpen={
+          isClearModalOpen
+        }
         title="¿Vaciar todo el pedido?"
         message="Se eliminarán todos los productos y personalizaciones que agregaste."
         confirmLabel="Sí, vaciar"
@@ -548,7 +781,9 @@ export function Cart() {
           handleConfirmClearCart
         }
         onCancel={() =>
-          setIsClearModalOpen(false)
+          setIsClearModalOpen(
+            false,
+          )
         }
       />
     </main>

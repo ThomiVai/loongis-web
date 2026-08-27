@@ -9,9 +9,17 @@ import {
   FaArrowRightLong,
 } from "react-icons/fa6";
 
-import { Link } from "react-router-dom";
+import {
+  Link,
+} from "react-router-dom";
 
-import { AddToCartButton } from "./AddToCartButton";
+import {
+  AddToCartButton,
+} from "./AddToCartButton";
+
+import {
+  BurgerCombosSkeleton,
+} from "./HomeCatalogSkeletons";
 
 import type {
   Product,
@@ -37,7 +45,8 @@ const priceFormatter =
    ITEMS POR PÁGINA
 ======================================== */
 
-function getInitialItemsPerPage(): number {
+function getInitialItemsPerPage():
+  number {
   if (
     typeof window ===
     "undefined"
@@ -71,6 +80,10 @@ export function BurgerCombos({
   loading,
   error,
 }: BurgerCombosProps) {
+  /* ========================================
+     COMBOS
+  ======================================== */
+
   const burgerCombos =
     useMemo(
       () =>
@@ -84,21 +97,23 @@ export function BurgerCombos({
       [products],
     );
 
+  /* ========================================
+     RESPONSIVE
+  ======================================== */
+
   const [
     itemsPerPage,
     setItemsPerPage,
-  ] = useState<number>(
-    getInitialItemsPerPage,
-  );
+  ] =
+    useState<number>(
+      getInitialItemsPerPage,
+    );
 
   const [
     currentPage,
     setCurrentPage,
-  ] = useState(0);
-
-  /* ========================================
-     RESPONSIVE
-  ======================================== */
+  ] =
+    useState(0);
 
   useEffect(() => {
     const mediaQuery =
@@ -107,10 +122,13 @@ export function BurgerCombos({
       );
 
     const handleScreenChange = (
-      event: MediaQueryListEvent,
+      event:
+        MediaQueryListEvent,
     ) => {
       setItemsPerPage(
-        event.matches ? 1 : 2,
+        event.matches
+          ? 1
+          : 2,
       );
 
       setCurrentPage(0);
@@ -129,17 +147,24 @@ export function BurgerCombos({
     };
   }, []);
 
-  /*
-    Igual que destacados:
-    si todavía estamos cargando,
-    o el backend falla,
-    no rompemos el Home.
-  */
+  /* ========================================
+     CARGANDO
+  ======================================== */
+
+  if (loading) {
+    return (
+      <BurgerCombosSkeleton />
+    );
+  }
+
+  /* ========================================
+     SIN DATOS
+  ======================================== */
 
   if (
-    loading ||
     error ||
-    burgerCombos.length === 0
+    burgerCombos.length ===
+      0
   ) {
     return null;
   }
@@ -214,6 +239,10 @@ export function BurgerCombos({
     );
   };
 
+  /* ========================================
+     SECCIÓN
+  ======================================== */
+
   return (
     <section
       className="burger-combos"
@@ -221,12 +250,14 @@ export function BurgerCombos({
       aria-labelledby="burger-combos-title"
     >
       <div className="burger-combos__container">
+
         {/* =================================
             HEADER
         ================================= */}
 
         <header className="burger-combos__header">
           <div className="burger-combos__heading">
+
             <span className="burger-combos__eyebrow">
               Para comer completo
             </span>
@@ -265,6 +296,7 @@ export function BurgerCombos({
         ================================= */}
 
         <div className="burger-combos__carousel">
+
           {totalPages > 1 && (
             <button
               className="burger-combos__control burger-combos__control--previous"
@@ -301,6 +333,7 @@ export function BurgerCombos({
                       aria-label={`Ver detalle de ${combo.name}`}
                     >
                       <div className="burger-combo-card__visual">
+
                         <span className="burger-combo-card__badge">
                           Combo
                         </span>
@@ -318,6 +351,7 @@ export function BurgerCombos({
                     </Link>
 
                     <div className="burger-combo-card__content">
+
                       <div>
                         <h3 className="burger-combo-card__name">
                           <Link
@@ -337,6 +371,7 @@ export function BurgerCombos({
                       </div>
 
                       <div className="burger-combo-card__footer">
+
                         <strong className="burger-combo-card__price">
                           {priceFormatter.format(
                             combo.price,
@@ -388,7 +423,10 @@ export function BurgerCombos({
               length:
                 totalPages,
             }).map(
-              (_, index) => (
+              (
+                _,
+                index,
+              ) => (
                 <button
                   className={`burger-combos__dot ${
                     safeCurrentPage ===

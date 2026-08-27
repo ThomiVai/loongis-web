@@ -1,6 +1,14 @@
-import { Link } from "react-router-dom";
+import {
+  Link,
+} from "react-router-dom";
 
-import { AddToCartButton } from "./AddToCartButton";
+import {
+  AddToCartButton,
+} from "./AddToCartButton";
+
+import {
+  FeaturedProductsSkeleton,
+} from "./HomeCatalogSkeletons";
 
 import type {
   Product,
@@ -41,28 +49,44 @@ export function FeaturedProducts({
   loading,
   error,
 }: FeaturedProductsProps) {
+  /* ========================================
+     CARGANDO
+  ======================================== */
+
+  if (loading) {
+    return (
+      <FeaturedProductsSkeleton />
+    );
+  }
+
+  /* ========================================
+     DESTACADAS
+  ======================================== */
+
   const featuredProducts =
     products.filter(
       (product) =>
-        product.featured === true &&
-        product.available !== false,
+        product.featured ===
+          true &&
+        product.available !==
+          false,
     );
 
-  /*
-    Mientras cargamos o si el backend
-    falla, no rompemos el Home.
-
-    Las demás secciones siguen
-    funcionando normalmente.
-  */
+  /* ========================================
+     SIN DATOS
+  ======================================== */
 
   if (
-    loading ||
     error ||
-    featuredProducts.length === 0
+    featuredProducts.length ===
+      0
   ) {
     return null;
   }
+
+  /* ========================================
+     SECCIÓN
+  ======================================== */
 
   return (
     <section
@@ -71,6 +95,11 @@ export function FeaturedProducts({
       aria-labelledby="featured-products-title"
     >
       <div className="featured-products__container">
+
+        {/* =================================
+            HEADER
+        ================================= */}
+
         <header className="featured-products__header">
           <span
             className="featured-products__line"
@@ -90,12 +119,18 @@ export function FeaturedProducts({
           />
         </header>
 
+        {/* =================================
+            PRODUCTOS
+        ================================= */}
+
         <div className="featured-products__grid">
           {featuredProducts.map(
             (product) => (
               <article
                 className={`featured-product featured-product--${product.id}`}
-                key={product.id}
+                key={
+                  product.id
+                }
               >
                 <Link
                   className="featured-product__image-link"
@@ -116,6 +151,7 @@ export function FeaturedProducts({
                 </Link>
 
                 <div className="featured-product__content">
+
                   <h3 className="featured-product__name">
                     <Link
                       to={`/producto/${product.id}`}
@@ -133,6 +169,7 @@ export function FeaturedProducts({
                   </p>
 
                   <div className="featured-product__footer">
+
                     <strong className="featured-product__price">
                       {priceFormatter.format(
                         product.price,

@@ -6,6 +6,7 @@ import {
 import { Link } from "react-router-dom";
 
 import { AddToCartButton } from "./AddToCartButton";
+import { DailyPromoSkeleton } from "./HomeCatalogSkeletons";
 
 import type {
   Product,
@@ -46,20 +47,42 @@ export function DailyPromo({
   loading,
   error,
 }: DailyPromoProps) {
+  /* ========================================
+     CARGANDO
+  ======================================== */
+
+  if (loading) {
+    return (
+      <DailyPromoSkeleton />
+    );
+  }
+
+  /* ========================================
+     PRODUCTO
+  ======================================== */
+
   const promoCombo =
     products.find(
       (product) =>
         product.id === 101 &&
-        product.available !== false,
+        product.available !==
+          false,
     );
 
+  /* ========================================
+     SIN DATOS
+  ======================================== */
+
   if (
-    loading ||
     error ||
     !promoCombo
   ) {
     return null;
   }
+
+  /* ========================================
+     PROMO
+  ======================================== */
 
   return (
     <section
@@ -68,6 +91,11 @@ export function DailyPromo({
       aria-labelledby="promo-banner-title"
     >
       <div className="promo-banner__container">
+
+        {/* =================================
+            VISUAL
+        ================================= */}
+
         <div className="promo-banner__visual">
           <span
             className="promo-banner__decoration"
@@ -97,7 +125,12 @@ export function DailyPromo({
           </div>
         </div>
 
+        {/* =================================
+            CONTENIDO
+        ================================= */}
+
         <div className="promo-banner__content">
+
           <div className="promo-banner__eyebrow">
             <FaFire
               aria-hidden="true"
@@ -154,6 +187,7 @@ export function DailyPromo({
           </div>
 
           <div className="promo-banner__actions">
+
             <AddToCartButton
               product={
                 promoCombo

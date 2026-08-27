@@ -4,6 +4,7 @@ import {
 } from "react-router-dom";
 
 import { AddToCartButton } from "../components/AddToCartButton";
+import { MenuSkeleton } from "../components/MenuSkeleton";
 
 import { useProducts } from "../hooks/useProducts";
 
@@ -70,7 +71,8 @@ function isMenuCategory(
   return (
     category ===
       "hamburguesas" ||
-    category === "combos"
+    category ===
+      "combos"
   );
 }
 
@@ -87,7 +89,8 @@ function getCategoryLabel(
   }
 
   if (
-    category === "combos"
+    category ===
+    "combos"
   ) {
     return "Combos";
   }
@@ -152,8 +155,11 @@ export function Menu() {
   const handleFilterChange = (
     filter: MenuFilter,
   ) => {
-    if (filter === "todos") {
+    if (
+      filter === "todos"
+    ) {
       setSearchParams({});
+
       return;
     }
 
@@ -167,12 +173,14 @@ export function Menu() {
 
   return (
     <main className="menu-page">
+
       {/* =================================
           PORTADA
       ================================= */}
 
       <section className="menu-hero">
         <div className="menu-page__container">
+
           <Link
             to="/"
             className="menu-hero__back"
@@ -185,7 +193,9 @@ export function Menu() {
           </Link>
 
           <div className="menu-hero__layout">
+
             <div className="menu-hero__content">
+
               <span className="menu-hero__eyebrow">
                 Menú Loongis
               </span>
@@ -232,6 +242,11 @@ export function Menu() {
         aria-labelledby="menu-products-title"
       >
         <div className="menu-page__container">
+
+          {/* =============================
+              HEADER
+          ============================= */}
+
           <header className="menu-products__header">
             <div>
               <span className="menu-products__eyebrow">
@@ -304,25 +319,11 @@ export function Menu() {
           </div>
 
           {/* =============================
-              CARGANDO
+              SKELETON
           ============================= */}
 
           {loading && (
-            <div
-              className="menu-products__empty"
-              role="status"
-              aria-live="polite"
-            >
-              <h3>
-                Cargando menú...
-              </h3>
-
-              <p>
-                Estamos preparando las
-                hamburguesas de
-                Loongis.
-              </p>
-            </div>
+            <MenuSkeleton />
           )}
 
           {/* =============================
@@ -340,7 +341,9 @@ export function Menu() {
                   menú
                 </h3>
 
-                <p>{error}</p>
+                <p>
+                  {error}
+                </p>
               </div>
             )}
 
@@ -385,6 +388,7 @@ export function Menu() {
                     </Link>
 
                     <div className="menu-product-card__content">
+
                       <span className="menu-product-card__category">
                         {getCategoryLabel(
                           product.category,
@@ -408,6 +412,7 @@ export function Menu() {
                       </p>
 
                       <footer className="menu-product-card__footer">
+
                         <strong className="menu-product-card__price">
                           {formatPrice(
                             product.price,
@@ -415,6 +420,7 @@ export function Menu() {
                         </strong>
 
                         <div className="menu-product-card__actions">
+
                           <Link
                             to={`/producto/${product.id}`}
                             className="menu-product-card__detail"
@@ -437,11 +443,16 @@ export function Menu() {
             </div>
           ) : null}
 
+          {/* =============================
+              VACÍO
+          ============================= */}
+
           {!loading &&
             !error &&
             visibleProducts.length ===
               0 && (
               <div className="menu-products__empty">
+
                 <h3>
                   No encontramos
                   productos
