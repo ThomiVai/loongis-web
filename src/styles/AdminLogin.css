@@ -4,10 +4,14 @@
 
 .admin-login {
   display: grid;
+
   place-items: center;
 
   min-height: 70vh;
-  padding: 70px 20px;
+
+  padding:
+    70px
+    20px;
 
   background-color:
     var(--color-cream);
@@ -25,16 +29,20 @@
 
   padding: 42px;
 
-  border: 2px solid
+  border:
+    2px solid
     var(--color-black);
+
   border-radius: 26px;
 
   background-color:
     var(--color-white);
 
   box-shadow:
-    7px 7px 0
-      var(--color-black);
+    7px
+    7px
+    0
+    var(--color-black);
 }
 
 /* ========================================
@@ -78,7 +86,9 @@
 
 .admin-login__description {
   margin:
-    16px 0 28px;
+    16px
+    0
+    28px;
 
   color:
     rgba(
@@ -97,13 +107,17 @@
 
 .admin-login__form {
   display: flex;
+
   flex-direction: column;
+
   gap: 20px;
 }
 
 .admin-login__field {
   display: flex;
+
   flex-direction: column;
+
   gap: 8px;
 
   font-family:
@@ -115,16 +129,22 @@
 
 .admin-login__field input {
   width: 100%;
-  min-height: 50px;
-  padding: 12px 15px;
 
-  border: 2px solid
+  min-height: 50px;
+
+  padding:
+    12px
+    15px;
+
+  border:
+    2px solid
     rgba(
       23,
       23,
       23,
       0.15
     );
+
   border-radius: 14px;
 
   background-color:
@@ -149,13 +169,16 @@
     var(--color-primary);
 
   box-shadow:
-    0 0 0 4px
-      rgba(
-        7,
-        95,
-        234,
-        0.1
-      );
+    0
+    0
+    0
+    4px
+    rgba(
+      7,
+      95,
+      234,
+      0.1
+    );
 }
 
 /* ========================================
@@ -164,7 +187,10 @@
 
 .admin-login__error {
   margin: 0;
-  padding: 12px 14px;
+
+  padding:
+    12px
+    14px;
 
   border-radius: 12px;
 
@@ -180,22 +206,26 @@
     #a61616;
 
   font-size: 14px;
+
   font-weight: 600;
 }
 
 /* ========================================
-   BOTÓN
+   BOTÓN INGRESAR
 ======================================== */
 
 .admin-login__button {
   min-height: 52px;
 
-  border: 2px solid
+  border:
+    2px solid
     var(--color-black);
+
   border-radius: 15px;
 
   background-color:
     var(--color-yellow);
+
   color:
     var(--color-black);
 
@@ -204,11 +234,14 @@
     sans-serif;
 
   font-size: 16px;
+
   font-weight: 700;
 
   box-shadow:
-    4px 4px 0
-      var(--color-black);
+    4px
+    4px
+    0
+    var(--color-black);
 
   cursor: pointer;
 
@@ -229,13 +262,108 @@
     );
 
   box-shadow:
-    2px 2px 0
-      var(--color-black);
+    2px
+    2px
+    0
+    var(--color-black);
 }
 
 .admin-login__button:disabled {
   opacity: 0.6;
+
   cursor: wait;
+}
+
+.admin-login__button:focus-visible {
+  outline:
+    3px solid
+    var(--color-primary);
+
+  outline-offset: 3px;
+}
+
+/* ========================================
+   VOLVER A LA TIENDA
+======================================== */
+
+.admin-login__back {
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 8px;
+
+  width: 100%;
+
+  min-height: 46px;
+
+  margin-top: 18px;
+
+  border:
+    2px solid
+    rgba(
+      23,
+      23,
+      23,
+      0.16
+    );
+
+  border-radius: 14px;
+
+  background-color:
+    transparent;
+
+  color:
+    var(--color-black);
+
+  font-family:
+    "Fredoka",
+    sans-serif;
+
+  font-size: 14px;
+
+  font-weight: 700;
+
+  text-decoration: none;
+
+  transition:
+    border-color
+      0.2s ease,
+    background-color
+      0.2s ease,
+    color
+      0.2s ease,
+    transform
+      0.2s ease;
+}
+
+.admin-login__back:hover {
+  border-color:
+    var(--color-primary);
+
+  background-color:
+    rgba(
+      7,
+      95,
+      234,
+      0.06
+    );
+
+  color:
+    var(--color-primary);
+
+  transform:
+    translateY(-1px);
+}
+
+.admin-login__back:focus-visible {
+  outline:
+    3px solid
+    var(--color-primary);
+
+  outline-offset: 3px;
 }
 
 /* ========================================
@@ -247,11 +375,17 @@
 ) {
   .admin-login {
     padding:
-      45px 16px;
+      45px
+      16px;
   }
 
   .admin-login__card {
     padding:
-      30px 22px;
+      30px
+      22px;
+  }
+
+  .admin-login__back {
+    min-height: 48px;
   }
 }

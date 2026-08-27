@@ -75,7 +75,18 @@ export function DailyPromo({
   const promoCombo =
     products.find(
       (product) =>
+        product.category ===
+          "combos" &&
+        product.dailyPromo ===
+          true &&
+        product.available !==
+          false,
+    ) ??
+    products.find(
+      (product) =>
         product.id === 101 &&
+        product.category ===
+          "combos" &&
         product.available !==
           false,
     );
@@ -176,23 +187,6 @@ export function DailyPromo({
             }
           </p>
 
-          <ul className="promo-banner__includes">
-
-            <li>
-              Hamburguesa
-              Loongis Clasic
-            </li>
-
-            <li>
-              Porción de papas
-              crocantes
-            </li>
-
-            <li>
-              Bebida individual
-            </li>
-          </ul>
-
           <div className="promo-banner__price">
 
             <span>
@@ -232,9 +226,6 @@ export function DailyPromo({
 
           <p className="promo-banner__notice">
             Sujeto a disponibilidad.
-            El sabor de la bebida se
-            coordina al confirmar el
-            pedido.
           </p>
         </div>
       </div>

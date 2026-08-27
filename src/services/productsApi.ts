@@ -67,6 +67,7 @@ type ApiProduct = {
     | string;
 
   featured: boolean;
+  dailyPromo?: boolean;
   active: boolean;
   order: number;
 
@@ -239,6 +240,9 @@ function mapProduct(
 
     featured:
       product.featured,
+
+    dailyPromo:
+      product.dailyPromo ?? false,
 
     ingredients:
       product.ingredients,

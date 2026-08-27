@@ -21,21 +21,16 @@ export type ProductCustomization = {
 
 export type Product = {
   id: number;
-
   name: string;
   description: string;
   price: number;
-
   image: string;
   imageAlt: string;
-
   category?: ProductCategory;
-
   available?: boolean;
   featured?: boolean;
-
+  dailyPromo?: boolean;
   ingredients?: string[];
-
   sizeOptions?: ProductOption[];
   extraOptions?: ProductOption[];
 };

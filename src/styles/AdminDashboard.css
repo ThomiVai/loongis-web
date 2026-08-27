@@ -81,11 +81,25 @@
 }
 
 /* ========================================
-   LOGOUT
+   ACCIONES DEL HEADER
 ======================================== */
 
-.admin-dashboard__logout {
+.admin-dashboard__header-actions {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
   flex-shrink: 0;
+}
+
+.admin-dashboard__store-link,
+.admin-dashboard__logout {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 44px;
 
   padding:
     12px 18px;
@@ -97,29 +111,68 @@
   border-radius:
     14px;
 
-  background-color:
-    var(--color-white);
-
-  color:
-    var(--color-black);
-
   font-family:
     "Fredoka",
     sans-serif;
 
   font-weight: 700;
 
+  text-decoration: none;
+
   box-shadow:
     3px 3px 0
     var(--color-black);
-
-  cursor: pointer;
 
   transition:
     transform
       0.2s ease,
     box-shadow
+      0.2s ease,
+    background-color
+      0.2s ease,
+    color
       0.2s ease;
+}
+
+/* ========================================
+   VOLVER A LA TIENDA
+======================================== */
+
+.admin-dashboard__store-link {
+  background-color:
+    var(--color-primary);
+
+  color:
+    var(--color-white);
+}
+
+.admin-dashboard__store-link:hover {
+  background-color:
+    var(--color-primary-dark);
+
+  transform:
+    translate(
+      1px,
+      1px
+    );
+
+  box-shadow:
+    2px 2px 0
+    var(--color-black);
+}
+
+/* ========================================
+   LOGOUT
+======================================== */
+
+.admin-dashboard__logout {
+  background-color:
+    var(--color-white);
+
+  color:
+    var(--color-black);
+
+  cursor: pointer;
 }
 
 .admin-dashboard__logout:hover {
@@ -132,6 +185,15 @@
   box-shadow:
     2px 2px 0
     var(--color-black);
+}
+
+.admin-dashboard__store-link:focus-visible,
+.admin-dashboard__logout:focus-visible {
+  outline:
+    3px solid
+    var(--color-yellow);
+
+  outline-offset: 3px;
 }
 
 /* ========================================
@@ -763,8 +825,13 @@
       column;
   }
 
-  .admin-dashboard__logout {
+  .admin-dashboard__header-actions {
     width: 100%;
+  }
+
+  .admin-dashboard__store-link,
+  .admin-dashboard__logout {
+    flex: 1;
   }
 
   .admin-products {
@@ -808,6 +875,16 @@
 @media (
   max-width: 480px
 ) {
+  .admin-dashboard__header-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .admin-dashboard__store-link,
+  .admin-dashboard__logout {
+    width: 100%;
+  }
+
   .admin-products__header-actions {
     align-items:
       stretch;

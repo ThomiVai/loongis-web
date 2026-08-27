@@ -161,6 +161,12 @@ export function AdminProductEdit() {
   ] =
     useState(false);
 
+  const [
+    dailyPromo,
+    setDailyPromo,
+  ] =
+    useState(false);
+
   /* ========================================
      PERSONALIZACIÓN
   ======================================== */
@@ -291,6 +297,7 @@ export function AdminProductEdit() {
 
           setActive(true);
           setFeatured(false);
+          setDailyPromo(false);
 
           setIngredients([]);
           setSizes([]);
@@ -382,6 +389,10 @@ export function AdminProductEdit() {
           productData.featured,
         );
 
+        setDailyPromo(
+          productData.dailyPromo,
+        );
+
         setIngredients([
           ...productData.ingredients,
         ]);
@@ -431,6 +442,43 @@ export function AdminProductEdit() {
     productId,
     token,
   ]);
+
+  /* ========================================
+     CATEGORÍA SELECCIONADA
+  ======================================== */
+
+  const selectedCategory =
+    categories.find(
+      (category) =>
+        category._id ===
+        categoryId,
+    );
+
+  const isComboCategory =
+    selectedCategory?.slug ===
+    "combos";
+
+  const handleCategoryChange = (
+    newCategoryId: string,
+  ) => {
+    setCategoryId(
+      newCategoryId,
+    );
+
+    const newCategory =
+      categories.find(
+        (category) =>
+          category._id ===
+          newCategoryId,
+      );
+
+    if (
+      newCategory?.slug !==
+      "combos"
+    ) {
+      setDailyPromo(false);
+    }
+  };
 
   /* ========================================
      INGREDIENTES
@@ -854,6 +902,11 @@ export function AdminProductEdit() {
 
                 featured,
 
+                dailyPromo:
+                  isComboCategory
+                    ? dailyPromo
+                    : false,
+
                 ingredients:
                   normalizedIngredients,
 
@@ -908,6 +961,11 @@ export function AdminProductEdit() {
               active,
 
               featured,
+
+              dailyPromo:
+                isComboCategory
+                  ? dailyPromo
+                  : false,
 
               ingredients:
                 normalizedIngredients,
@@ -965,6 +1023,10 @@ export function AdminProductEdit() {
 
         setFeatured(
           updatedProduct.featured,
+        );
+
+        setDailyPromo(
+          updatedProduct.dailyPromo,
         );
 
         setIngredients([
@@ -1319,7 +1381,7 @@ export function AdminProductEdit() {
                   onChange={(
                     event,
                   ) =>
-                    setCategoryId(
+                    handleCategoryChange(
                       event.target.value,
                     )
                   }
@@ -1469,6 +1531,39 @@ export function AdminProductEdit() {
                   </span>
                 </div>
               </label>
+
+              {isComboCategory && (
+                <label className="admin-product-edit__toggle">
+                  <input
+                    type="checkbox"
+                    checked={
+                      dailyPromo
+                    }
+                    onChange={(
+                      event,
+                    ) =>
+                      setDailyPromo(
+                        event.target.checked,
+                      )
+                    }
+                    disabled={saving}
+                  />
+
+                  <div>
+                    <strong>
+                      Combo del día
+                    </strong>
+
+                    <span>
+                      Se muestra como la
+                      promo principal del
+                      Home. Al activarlo,
+                      reemplaza al combo
+                      del día anterior.
+                    </span>
+                  </div>
+                </label>
+              )}
             </div>
           </section>
 

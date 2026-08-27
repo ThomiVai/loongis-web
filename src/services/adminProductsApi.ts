@@ -1,3 +1,7 @@
+import {
+  clearProductsCache,
+} from "./productsApi";
+
 const API_URL =
   import.meta.env.VITE_API_URL ??
   "http://localhost:3000";
@@ -38,6 +42,7 @@ export type AdminProduct = {
     | null;
 
   featured: boolean;
+  dailyPromo: boolean;
   active: boolean;
 
   order: number;
@@ -67,6 +72,7 @@ export type CreateAdminProductData = {
   category: string;
 
   featured: boolean;
+  dailyPromo: boolean;
   active: boolean;
 
   order: number;
@@ -91,6 +97,7 @@ export type UpdateAdminProductData = {
   category?: string;
 
   featured?: boolean;
+  dailyPromo?: boolean;
   active?: boolean;
 
   order?: number;
@@ -213,6 +220,8 @@ export async function createAdminProduct(
     );
   }
 
+  clearProductsCache();
+
   return data.data;
 }
 
@@ -258,6 +267,8 @@ export async function updateAdminProduct(
     );
   }
 
+  clearProductsCache();
+
   return data.data;
 }
 
@@ -283,6 +294,7 @@ export async function deleteAdminProduct(
     );
 
   if (response.ok) {
+    clearProductsCache();
     return;
   }
 

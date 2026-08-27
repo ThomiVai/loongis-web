@@ -293,15 +293,24 @@ export function AdminDashboard() {
             </p>
           </div>
 
-          <button
-            type="button"
-            className="admin-dashboard__logout"
-            onClick={
-              handleLogout
-            }
-          >
-            Cerrar sesión
-          </button>
+          <div className="admin-dashboard__header-actions">
+            <Link
+              to="/"
+              className="admin-dashboard__store-link"
+            >
+              ← Volver a la tienda
+            </Link>
+
+            <button
+              type="button"
+              className="admin-dashboard__logout"
+              onClick={
+                handleLogout
+              }
+            >
+              Cerrar sesión
+            </button>
+          </div>
         </header>
 
         {/* =================================

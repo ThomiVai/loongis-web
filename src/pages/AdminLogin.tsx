@@ -7,6 +7,7 @@ import type {
 } from "react";
 
 import {
+  Link,
   Navigate,
   useNavigate,
 } from "react-router-dom";
@@ -113,6 +114,11 @@ export function AdminLogin() {
   return (
     <main className="admin-login">
       <div className="admin-login__card">
+
+        {/* ========================================
+            ENCABEZADO
+        ======================================== */}
+
         <span className="admin-login__eyebrow">
           Loongis
         </span>
@@ -125,6 +131,10 @@ export function AdminLogin() {
           Iniciá sesión para
           administrar el catálogo.
         </p>
+
+        {/* ========================================
+            FORMULARIO
+        ======================================== */}
 
         <form
           className="admin-login__form"
@@ -203,6 +213,25 @@ export function AdminLogin() {
               : "Ingresar"}
           </button>
         </form>
+
+        {/* ========================================
+            VOLVER A LA TIENDA
+        ======================================== */}
+
+        <Link
+          className="admin-login__back"
+          to="/"
+        >
+          <span
+            aria-hidden="true"
+          >
+            ←
+          </span>
+
+          <span>
+            Volver a la tienda
+          </span>
+        </Link>
       </div>
     </main>
   );
