@@ -18,6 +18,14 @@ import { Link } from "react-router-dom";
 
 import { useCart } from "../hooks/useCart";
 
+import {
+  createOrder,
+} from "../services/ordersApi";
+
+import type {
+  CreatedOrderItem,
+} from "../services/ordersApi";
+
 import "../styles/Checkout.css";
 
 /* ========================================
@@ -62,6 +70,8 @@ type CheckoutForm = {
 };
 
 type CheckoutOption = {
+  id?: string;
+
   name?: string;
 
   label?: string;
@@ -204,39 +214,22 @@ function getItemCustomization(
 ======================================== */
 
 function createProductMessage(
-  item: CheckoutCartItem,
+  item: CreatedOrderItem,
 ): string {
-  const unitPrice =
-    getUnitPrice(item);
-
-  const subtotal =
-    unitPrice *
-    item.quantity;
-
-  const {
-    size,
-    extras,
-    removedIngredients,
-    notes,
-  } =
-    getItemCustomization(
-      item,
-    );
-
   const lines: string[] = [
     `*${item.quantity}x ${item.name}*`,
 
     `Subtotal: ${priceFormatter.format(
-      subtotal,
+      item.lineTotal,
     )}`,
   ];
 
-  /* ========================================
-     TAMAÑO
-  ======================================== */
-
   const sizeName =
-    getOptionName(size);
+    item.customization.size
+      ? getOptionName(
+          item.customization.size,
+        )
+      : "";
 
   if (sizeName) {
     lines.push(
@@ -244,15 +237,12 @@ function createProductMessage(
     );
   }
 
-  /* ========================================
-     EXTRAS
-  ======================================== */
-
   if (
-    extras.length > 0
+    item.customization.extras.length >
+    0
   ) {
     const extrasNames =
-      extras
+      item.customization.extras
         .map(
           getOptionName,
         )
@@ -266,28 +256,23 @@ function createProductMessage(
     }
   }
 
-  /* ========================================
-     INGREDIENTES QUITADOS
-  ======================================== */
-
   if (
-    removedIngredients.length >
-    0
+    item.customization
+      .removedIngredients
+      .length > 0
   ) {
     lines.push(
-      `Sin: ${removedIngredients.join(
+      `Sin: ${item.customization.removedIngredients.join(
         ", ",
       )}`,
     );
   }
 
-  /* ========================================
-     ACLARACIÓN
-  ======================================== */
-
-  if (notes) {
+  if (
+    item.customization.notes
+  ) {
     lines.push(
-      `Aclaración: ${notes}`,
+      `Aclaración: ${item.customization.notes}`,
     );
   }
 
@@ -325,6 +310,20 @@ export function Checkout() {
 
       notes: "",
     });
+
+  const [
+    submittingOrder,
+    setSubmittingOrder,
+  ] =
+    useState(false);
+
+  const [
+    orderError,
+    setOrderError,
+  ] =
+    useState<string | null>(
+      null,
+    );
 
   /* ========================================
      TOTAL PRODUCTOS
@@ -445,221 +444,354 @@ export function Checkout() {
      FINALIZAR
   ======================================== */
 
-  const handleSubmit = (
-    event:
-      FormEvent<HTMLFormElement>,
-  ) => {
-    event.preventDefault();
+  const handleSubmit =
+    async (
+      event:
+        FormEvent<HTMLFormElement>,
+    ) => {
+      event.preventDefault();
 
-    const customerName =
-      form.customerName.trim();
+      const customerName =
+        form.customerName.trim();
 
-    const phone =
-      form.phone.trim();
+      const phone =
+        form.phone.trim();
 
-    const address =
-      form.address.trim();
+      const address =
+        form.address.trim();
 
-    const notes =
-      form.notes.trim();
+      const notes =
+        form.notes.trim();
 
-    /* ========================================
-       VALIDACIONES
-    ======================================== */
+      /* ========================================
+         VALIDACIONES
+      ======================================== */
 
-    if (
-      !customerName ||
-      !phone
-    ) {
-      return;
-    }
+      if (
+        !customerName ||
+        !phone
+      ) {
+        return;
+      }
 
-    if (
-      form.deliveryMethod ===
-        "delivery" &&
-      !address
-    ) {
-      return;
-    }
+      if (
+        form.deliveryMethod ===
+          "delivery" &&
+        !address
+      ) {
+        return;
+      }
 
-    if (
-      checkoutItems.length ===
-      0
-    ) {
-      return;
-    }
+      if (
+        checkoutItems.length ===
+        0
+      ) {
+        return;
+      }
 
-    /* ========================================
-       ENTREGA
-    ======================================== */
+      setOrderError(null);
+      setSubmittingOrder(true);
 
-    const deliveryText =
-      form.deliveryMethod ===
-      "delivery"
-        ? "Envío a domicilio - Hurlingham"
-        : "Retiro por el local";
+      try {
+        /* ======================================
+           PREPARAR PEDIDO PARA LA API
+        ====================================== */
 
-    /* ========================================
-       PAGO
-    ======================================== */
+        const orderItems =
+          checkoutItems.map(
+            (item) => {
+              const legacyId =
+                Number(item.id);
 
-    const paymentText =
-      form.paymentMethod ===
-      "cash"
-        ? "Efectivo"
-        : "Transferencia";
+              if (
+                !Number.isInteger(
+                  legacyId,
+                ) ||
+                legacyId <= 0
+              ) {
+                throw new Error(
+                  `No pudimos identificar correctamente "${item.name}". Volvé al carrito e intentá nuevamente.`,
+                );
+              }
 
-    /* ========================================
-       PRODUCTOS
-    ======================================== */
+              const customization =
+                getItemCustomization(
+                  item,
+                );
 
-    const productsText =
-      checkoutItems
-        .map(
-          createProductMessage,
-        )
-        .join("\n\n");
+              const sizeId =
+                customization.size
+                  ?.id
+                  ?.trim();
 
-    /* ========================================
-       MENSAJE WHATSAPP
-    ======================================== */
+              if (
+                customization.size &&
+                !sizeId
+              ) {
+                throw new Error(
+                  `La personalización de "${item.name}" quedó desactualizada. Volvé a personalizar el producto.`,
+                );
+              }
 
-    /*
-      Mantenemos el mensaje sin emojis.
+              const extraIds =
+                customization.extras.map(
+                  (extra) =>
+                    extra.id?.trim() ??
+                    "",
+                );
 
-      Esto evita los caracteres de
-      reemplazo que aparecieron en las
-      pruebas anteriores.
-    */
+              if (
+                extraIds.some(
+                  (extraId) =>
+                    !extraId,
+                )
+              ) {
+                throw new Error(
+                  `Uno de los extras de "${item.name}" quedó desactualizado. Volvé a personalizar el producto.`,
+                );
+              }
 
-    const messageLines:
-      string[] =
-      [
-        "*NUEVO PEDIDO LOONGIS*",
+              return {
+                legacyId,
 
-        "------------------------------",
+                quantity:
+                  item.quantity,
 
-        "",
+                customization: {
+                  sizeId:
+                    sizeId ||
+                    undefined,
 
-        `*Cliente:* ${customerName}`,
+                  extraIds,
 
-        `*Teléfono:* ${phone}`,
+                  removedIngredients:
+                    customization
+                      .removedIngredients,
 
-        `*Entrega:* ${deliveryText}`,
-      ];
+                  notes:
+                    customization.notes,
+                },
+              };
+            },
+          );
 
-    /* ========================================
-       DIRECCIÓN
-    ======================================== */
+        /* ======================================
+           REGISTRAR EN MONGODB
+        ====================================== */
 
-    if (
-      form.deliveryMethod ===
-      "delivery"
-    ) {
-      messageLines.push(
-        `*Dirección:* ${address}`,
+        const createdOrder =
+          await createOrder({
+            customer: {
+              name:
+                customerName,
 
-        "*Zona:* Hurlingham",
-      );
-    }
+              phone,
 
-    /* ========================================
-       PAGO
-    ======================================== */
+              address:
+                form.deliveryMethod ===
+                  "delivery"
+                  ? address
+                  : "",
+            },
 
-    messageLines.push(
-      `*Pago:* ${paymentText}`,
+            deliveryMethod:
+              form.deliveryMethod,
 
-      "",
+            paymentMethod:
+              form.paymentMethod,
 
-      "------------------------------",
+            items:
+              orderItems,
 
-      "*PEDIDO*",
+            generalNotes:
+              notes,
+          });
 
-      "------------------------------",
+        /* ========================================
+           ENTREGA
+        ======================================== */
 
-      "",
+        const deliveryText =
+          createdOrder.deliveryMethod ===
+          "delivery"
+            ? "Envío a domicilio - Hurlingham"
+            : "Retiro por el local";
 
-      productsText,
+        /* ========================================
+           PAGO
+        ======================================== */
 
-      "",
+        const paymentText =
+          createdOrder.paymentMethod ===
+          "cash"
+            ? "Efectivo"
+            : "Transferencia";
 
-      "------------------------------",
+        /* ========================================
+           PRODUCTOS
+        ======================================== */
 
-      `*Unidades:* ${totalUnits}`,
+        const productsText =
+          createdOrder.items
+            .map(
+              createProductMessage,
+            )
+            .join("\n\n");
 
-      `*TOTAL PRODUCTOS: ${priceFormatter.format(
-        totalPrice,
-      )}*`,
-    );
+        /* ========================================
+           MENSAJE WHATSAPP
+        ======================================== */
 
-    /* ========================================
-       ENVÍO
-    ======================================== */
+        /*
+          En este punto el pedido ya quedó
+          guardado en MongoDB.
 
-    if (
-      form.deliveryMethod ===
-      "delivery"
-    ) {
-      messageLines.push(
-        "*Costo de envío:* A confirmar",
-      );
-    }
+          El mensaje se arma con el snapshot que
+          devolvió el backend, no con precios que
+          puedan haber quedado viejos en el carrito.
+        */
 
-    /* ========================================
-       ACLARACIONES GENERALES
-    ======================================== */
+        const messageLines:
+          string[] =
+          [
+            `*NUEVO PEDIDO LOONGIS #${createdOrder.orderNumber}*`,
 
-    if (notes) {
-      messageLines.push(
-        "",
+            "------------------------------",
 
-        "*Aclaraciones generales:*",
+            "",
 
-        notes,
-      );
-    }
+            `*Cliente:* ${createdOrder.customer.name}`,
 
-    /* ========================================
-       FIRMA
-    ======================================== */
+            `*Teléfono:* ${createdOrder.customer.phone}`,
 
-    messageLines.push(
-      "",
+            `*Entrega:* ${deliveryText}`,
+          ];
 
-      "------------------------------",
+        /* ========================================
+           DIRECCIÓN
+        ======================================== */
 
-      "Pedido realizado desde Loongis",
-    );
+        if (
+          createdOrder.deliveryMethod ===
+          "delivery"
+        ) {
+          messageLines.push(
+            `*Dirección:* ${createdOrder.customer.address}`,
 
-    /* ========================================
-       TEXTO FINAL
-    ======================================== */
+            "*Zona:* Hurlingham",
+          );
+        }
 
-    const message =
-      messageLines.join("\n");
+        /* ========================================
+           PAGO
+        ======================================== */
 
-    /* ========================================
-       URL WHATSAPP
-    ======================================== */
+        messageLines.push(
+          `*Pago:* ${paymentText}`,
 
-    const encodedMessage =
-      encodeURIComponent(
-        message,
-      );
+          "",
 
-    const whatsappUrl =
-      `https://wa.me/${WHATSAPP_NUMBER}` +
-      `?text=${encodedMessage}`;
+          "------------------------------",
 
-    /* ========================================
-       ABRIR WHATSAPP
-    ======================================== */
+          "*PEDIDO*",
 
-    window.location.assign(
-      whatsappUrl,
-    );
-  };
+          "------------------------------",
+
+          "",
+
+          productsText,
+
+          "",
+
+          "------------------------------",
+
+          `*Unidades:* ${totalUnits}`,
+
+          `*TOTAL PRODUCTOS: ${priceFormatter.format(
+            createdOrder.productsTotal,
+          )}*`,
+        );
+
+        /* ========================================
+           ENVÍO
+        ======================================== */
+
+        if (
+          createdOrder.deliveryMethod ===
+          "delivery"
+        ) {
+          messageLines.push(
+            "*Costo de envío:* A confirmar",
+          );
+        }
+
+        /* ========================================
+           ACLARACIONES GENERALES
+        ======================================== */
+
+        if (
+          createdOrder.generalNotes
+        ) {
+          messageLines.push(
+            "",
+
+            "*Aclaraciones generales:*",
+
+            createdOrder.generalNotes,
+          );
+        }
+
+        /* ========================================
+           FIRMA
+        ======================================== */
+
+        messageLines.push(
+          "",
+
+          "------------------------------",
+
+          `Pedido #${createdOrder.orderNumber} registrado en Loongis`,
+        );
+
+        /* ========================================
+           TEXTO FINAL
+        ======================================== */
+
+        const message =
+          messageLines.join("\n");
+
+        /* ========================================
+           URL WHATSAPP
+        ======================================== */
+
+        const encodedMessage =
+          encodeURIComponent(
+            message,
+          );
+
+        const whatsappUrl =
+          `https://wa.me/${WHATSAPP_NUMBER}` +
+          `?text=${encodedMessage}`;
+
+        /* ========================================
+           ABRIR WHATSAPP
+        ======================================== */
+
+        window.location.assign(
+          whatsappUrl,
+        );
+      } catch (error) {
+        setOrderError(
+          error instanceof Error
+            ? error.message
+            : "No se pudo registrar el pedido. Intentá nuevamente.",
+        );
+      } finally {
+        setSubmittingOrder(
+          false,
+        );
+      }
+    };
 
   /* ========================================
      CARRITO VACÍO
@@ -1058,17 +1190,31 @@ export function Checkout() {
                 WHATSAPP
             ======================================== */}
 
+            {orderError && (
+              <p
+                className="checkout-form__notice"
+                role="alert"
+              >
+                {orderError}
+              </p>
+            )}
+
             <button
               className="checkout-submit"
               type="submit"
               aria-describedby="checkout-whatsapp-notice"
+              disabled={
+                submittingOrder
+              }
             >
               <FaWhatsapp
                 aria-hidden="true"
               />
 
               <span>
-                Finalizar por WhatsApp
+                {submittingOrder
+                  ? "Registrando pedido..."
+                  : "Finalizar por WhatsApp"}
               </span>
             </button>
 
@@ -1076,9 +1222,10 @@ export function Checkout() {
               className="checkout-form__notice"
               id="checkout-whatsapp-notice"
             >
-              Al continuar se abrirá
-              WhatsApp directamente con
-              tu pedido preparado.
+              Primero registramos el
+              pedido y luego se abrirá
+              WhatsApp con el mensaje
+              preparado.
             </p>
           </form>
 
