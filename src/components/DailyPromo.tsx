@@ -3,10 +3,21 @@ import {
   FaFire,
 } from "react-icons/fa6";
 
-import { Link } from "react-router-dom";
+import {
+  Link,
+} from "react-router-dom";
 
-import { AddToCartButton } from "./AddToCartButton";
-import { DailyPromoSkeleton } from "./HomeCatalogSkeletons";
+import {
+  AddToCartButton,
+} from "./AddToCartButton";
+
+import {
+  CatalogImage,
+} from "./CatalogImage";
+
+import {
+  DailyPromoSkeleton,
+} from "./HomeCatalogSkeletons";
 
 import type {
   Product,
@@ -97,13 +108,15 @@ export function DailyPromo({
         ================================= */}
 
         <div className="promo-banner__visual">
+
           <span
             className="promo-banner__decoration"
             aria-hidden="true"
           />
 
           <div className="promo-banner__image-wrapper">
-            <img
+
+            <CatalogImage
               className="promo-banner__combo-image"
               src={
                 promoCombo.image
@@ -111,10 +124,14 @@ export function DailyPromo({
               alt={
                 promoCombo.imageAlt
               }
+              variant="full"
+              sizes="(max-width: 780px) 90vw, 45vw"
+              loading="lazy"
             />
           </div>
 
           <div className="promo-banner__discount">
+
             <strong>
               Promo
             </strong>
@@ -132,6 +149,7 @@ export function DailyPromo({
         <div className="promo-banner__content">
 
           <div className="promo-banner__eyebrow">
+
             <FaFire
               aria-hidden="true"
             />
@@ -159,6 +177,7 @@ export function DailyPromo({
           </p>
 
           <ul className="promo-banner__includes">
+
             <li>
               Hamburguesa
               Loongis Clasic
@@ -175,6 +194,7 @@ export function DailyPromo({
           </ul>
 
           <div className="promo-banner__price">
+
             <span>
               Precio del combo
             </span>

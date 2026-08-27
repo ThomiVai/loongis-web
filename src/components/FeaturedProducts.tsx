@@ -7,6 +7,10 @@ import {
 } from "./AddToCartButton";
 
 import {
+  CatalogImage,
+} from "./CatalogImage";
+
+import {
   FeaturedProductsSkeleton,
 } from "./HomeCatalogSkeletons";
 
@@ -101,6 +105,7 @@ export function FeaturedProducts({
         ================================= */}
 
         <header className="featured-products__header">
+
           <span
             className="featured-products__line"
             aria-hidden="true"
@@ -124,6 +129,7 @@ export function FeaturedProducts({
         ================================= */}
 
         <div className="featured-products__grid">
+
           {featuredProducts.map(
             (product) => (
               <article
@@ -138,7 +144,8 @@ export function FeaturedProducts({
                   aria-label={`Ver detalle de ${product.name}`}
                 >
                   <div className="featured-product__visual">
-                    <img
+
+                    <CatalogImage
                       className="featured-product__image"
                       src={
                         product.image
@@ -146,6 +153,9 @@ export function FeaturedProducts({
                       alt={
                         product.imageAlt
                       }
+                      variant="card"
+                      sizes="(max-width: 780px) 90vw, (max-width: 850px) 44vw, 30vw"
+                      loading="lazy"
                     />
                   </div>
                 </Link>
@@ -153,6 +163,7 @@ export function FeaturedProducts({
                 <div className="featured-product__content">
 
                   <h3 className="featured-product__name">
+
                     <Link
                       to={`/producto/${product.id}`}
                     >

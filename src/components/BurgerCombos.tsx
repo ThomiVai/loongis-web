@@ -21,6 +21,10 @@ import {
   BurgerCombosSkeleton,
 } from "./HomeCatalogSkeletons";
 
+import {
+  CatalogImage,
+} from "./CatalogImage";
+
 import type {
   Product,
 } from "../types/Product";
@@ -256,6 +260,7 @@ export function BurgerCombos({
         ================================= */}
 
         <header className="burger-combos__header">
+
           <div className="burger-combos__heading">
 
             <span className="burger-combos__eyebrow">
@@ -314,6 +319,7 @@ export function BurgerCombos({
           )}
 
           <div className="burger-combos__viewport">
+
             <div
               className="burger-combos__grid"
               id="burger-combos-grid"
@@ -338,7 +344,7 @@ export function BurgerCombos({
                           Combo
                         </span>
 
-                        <img
+                        <CatalogImage
                           className="burger-combo-card__image"
                           src={
                             combo.image
@@ -346,6 +352,9 @@ export function BurgerCombos({
                           alt={
                             combo.imageAlt
                           }
+                          variant="card"
+                          sizes="(max-width: 780px) 90vw, 42vw"
+                          loading="lazy"
                         />
                       </div>
                     </Link>
@@ -353,7 +362,9 @@ export function BurgerCombos({
                     <div className="burger-combo-card__content">
 
                       <div>
+
                         <h3 className="burger-combo-card__name">
+
                           <Link
                             to={`/producto/${combo.id}`}
                           >

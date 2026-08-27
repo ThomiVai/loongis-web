@@ -3,10 +3,21 @@ import {
   useSearchParams,
 } from "react-router-dom";
 
-import { AddToCartButton } from "../components/AddToCartButton";
-import { MenuSkeleton } from "../components/MenuSkeleton";
+import {
+  AddToCartButton,
+} from "../components/AddToCartButton";
 
-import { useProducts } from "../hooks/useProducts";
+import {
+  CatalogImage,
+} from "../components/CatalogImage";
+
+import {
+  MenuSkeleton,
+} from "../components/MenuSkeleton";
+
+import {
+  useProducts,
+} from "../hooks/useProducts";
 
 import type {
   ProductCategory,
@@ -39,10 +50,12 @@ const menuFilters: {
     id: "todos",
     label: "Todos",
   },
+
   {
     id: "hamburguesas",
     label: "Hamburguesas",
   },
+
   {
     id: "combos",
     label: "Combos",
@@ -115,12 +128,14 @@ export function Menu() {
     products,
     loading,
     error,
-  } = useProducts();
+  } =
+    useProducts();
 
   const [
     searchParams,
     setSearchParams,
-  ] = useSearchParams();
+  ] =
+    useSearchParams();
 
   const categoryParameter =
     searchParams.get(
@@ -179,6 +194,7 @@ export function Menu() {
       ================================= */}
 
       <section className="menu-hero">
+
         <div className="menu-page__container">
 
           <Link
@@ -248,7 +264,9 @@ export function Menu() {
           ============================= */}
 
           <header className="menu-products__header">
+
             <div>
+
               <span className="menu-products__eyebrow">
                 Todo el sabor
               </span>
@@ -268,7 +286,8 @@ export function Menu() {
                   aria-live="polite"
                 >
                   {productsCount}{" "}
-                  {productsCount === 1
+                  {productsCount ===
+                  1
                     ? "producto"
                     : "productos"}
                 </p>
@@ -356,6 +375,7 @@ export function Menu() {
           visibleProducts.length >
             0 ? (
             <div className="menu-products__grid">
+
               {visibleProducts.map(
                 (product) => (
                   <article
@@ -366,7 +386,9 @@ export function Menu() {
                       "menu-product-card",
                       `menu-product-card--${product.id}`,
                       `menu-product-card--${product.category ?? "sin-categoria"}`,
-                    ].join(" ")}
+                    ].join(
+                      " ",
+                    )}
                   >
                     <Link
                       to={`/producto/${product.id}`}
@@ -374,7 +396,8 @@ export function Menu() {
                       aria-label={`Ver detalle de ${product.name}`}
                     >
                       <div className="menu-product-card__image-wrapper">
-                        <img
+
+                        <CatalogImage
                           src={
                             product.image
                           }
@@ -382,6 +405,8 @@ export function Menu() {
                             product.imageAlt
                           }
                           className="menu-product-card__image"
+                          variant="card"
+                          sizes="(max-width: 800px) 90vw, 44vw"
                           loading="lazy"
                         />
                       </div>
@@ -396,6 +421,7 @@ export function Menu() {
                       </span>
 
                       <h3 className="menu-product-card__name">
+
                         <Link
                           to={`/producto/${product.id}`}
                         >
