@@ -452,6 +452,22 @@
   text-align: center;
 }
 
+.admin-order-detail__inventory-result {
+  display: block;
+
+  margin-top: 6px;
+
+  color:
+    rgba(
+      23,
+      23,
+      23,
+      0.66
+    );
+
+  font-size: 13px;
+}
+
 .admin-order-detail__error,
 .admin-order-detail__load-error {
   padding: 18px;

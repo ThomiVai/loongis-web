@@ -41,6 +41,13 @@ export type AdminIngredient = {
   updatedAt?: string;
 };
 
+export type AdminInventorySettings = {
+  enabled: boolean;
+  readyToEnable: boolean;
+  activeIngredients: number;
+  configuredRecipes: number;
+};
+
 export type AdminInventoryMovement = {
   _id: string;
 
@@ -152,6 +159,12 @@ type InventoryMovementsResponse = {
   message?: string;
 };
 
+type InventorySettingsResponse = {
+  success: boolean;
+  data: AdminInventorySettings;
+  message?: string;
+};
+
 /* ========================================
    HELPERS
 ======================================== */
@@ -185,6 +198,79 @@ function getAdminHeaders(
     Authorization:
       `Bearer ${token}`,
   };
+}
+
+/* ========================================
+   CONFIGURACIÓN
+======================================== */
+
+export async function getAdminInventorySettings(
+  token: string,
+): Promise<AdminInventorySettings> {
+  const response =
+    await fetch(
+      `${API_URL}/api/inventory/settings`,
+      {
+        headers:
+          getAdminHeaders(
+            token,
+          ),
+      },
+    );
+
+  if (!response.ok) {
+    throw new Error(
+      await getErrorMessage(
+        response,
+        "No se pudo cargar la configuración de inventario.",
+      ),
+    );
+  }
+
+  const data =
+    (await response.json()) as
+      InventorySettingsResponse;
+
+  return data.data;
+}
+
+export async function updateAdminInventorySettings(
+  token: string,
+  enabled: boolean,
+): Promise<AdminInventorySettings> {
+  const response =
+    await fetch(
+      `${API_URL}/api/inventory/settings`,
+      {
+        method:
+          "PATCH",
+
+        headers:
+          getAdminHeaders(
+            token,
+          ),
+
+        body:
+          JSON.stringify({
+            enabled,
+          }),
+      },
+    );
+
+  if (!response.ok) {
+    throw new Error(
+      await getErrorMessage(
+        response,
+        "No se pudo actualizar la configuración de inventario.",
+      ),
+    );
+  }
+
+  const data =
+    (await response.json()) as
+      InventorySettingsResponse;
+
+  return data.data;
 }
 
 /* ========================================

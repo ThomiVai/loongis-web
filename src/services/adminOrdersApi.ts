@@ -64,6 +64,10 @@ export type AdminOrder = {
     number | null;
   total: number;
   status: AdminOrderStatus;
+  inventoryTrackingStatus?:
+    | "not_enabled"
+    | "deducted";
+  inventoryDeductedAt?: string;
   generalNotes: string;
   createdAt?: string;
   updatedAt?: string;

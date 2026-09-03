@@ -114,6 +114,139 @@
 }
 
 /* ========================================
+   ACTIVACIÓN DE INVENTARIO
+======================================== */
+
+.admin-recipes__tracking {
+  display: flex;
+
+  align-items: center;
+  justify-content:
+    space-between;
+
+  gap: 22px;
+
+  margin-bottom: 22px;
+
+  padding: 20px;
+
+  border:
+    2px solid
+    var(--color-black);
+
+  border-radius: 17px;
+}
+
+.admin-recipes__tracking--setup {
+  background-color:
+    rgba(
+      244,
+      201,
+      40,
+      0.17
+    );
+}
+
+.admin-recipes__tracking--enabled {
+  background-color:
+    rgba(
+      23,
+      106,
+      49,
+      0.1
+    );
+}
+
+.admin-recipes__tracking h3 {
+  margin:
+    5px 0 4px;
+
+  font-family:
+    "Fredoka",
+    sans-serif;
+
+  font-size: 20px;
+}
+
+.admin-recipes__tracking p {
+  max-width: 720px;
+
+  margin: 0;
+
+  line-height: 1.5;
+}
+
+.admin-recipes__tracking small {
+  display: block;
+
+  margin-top: 8px;
+
+  color:
+    rgba(
+      23,
+      23,
+      23,
+      0.65
+    );
+
+  font-weight: 700;
+}
+
+.admin-recipes__tracking-status {
+  color:
+    var(--color-primary);
+
+  font-family:
+    "Fredoka",
+    sans-serif;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  text-transform:
+    uppercase;
+}
+
+.admin-recipes__tracking button {
+  flex-shrink: 0;
+
+  min-height: 44px;
+
+  padding:
+    10px 15px;
+
+  border:
+    2px solid
+    var(--color-black);
+
+  border-radius: 11px;
+
+  background-color:
+    var(--color-yellow);
+
+  color:
+    var(--color-black);
+
+  font-family:
+    "Fredoka",
+    sans-serif;
+
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.admin-recipes__tracking--enabled button {
+  background-color:
+    var(--color-white);
+}
+
+.admin-recipes__tracking button:disabled {
+  opacity: 0.52;
+  cursor: not-allowed;
+}
+
+/* ========================================
    MENSAJES
 ======================================== */
 
@@ -708,6 +841,7 @@
   }
 
   .admin-recipes__header,
+  .admin-recipes__tracking,
   .admin-recipes__recipe-section > header,
   .admin-recipes__option-heading {
     flex-direction:
@@ -717,6 +851,14 @@
   .admin-recipes__counter {
     align-self:
       flex-start;
+  }
+
+  .admin-recipes__tracking {
+    align-items: stretch;
+  }
+
+  .admin-recipes__tracking button {
+    width: 100%;
   }
 
   .admin-recipes__recipe-section header button,

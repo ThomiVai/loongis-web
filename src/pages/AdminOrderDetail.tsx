@@ -300,7 +300,7 @@ export function AdminOrderDetail() {
       const confirmationMessage =
         nextStatus ===
         "confirmed"
-          ? `¿Seguro que querés confirmar el pedido #${order.orderNumber}? Al confirmarlo se descontará el stock según las recetas configuradas.`
+          ? `¿Seguro que querés confirmar el pedido #${order.orderNumber}? Si el control de stock está activo, se descontarán los insumos según las recetas configuradas.`
           : `¿Seguro que querés cancelar el pedido #${order.orderNumber}?`;
 
       const confirmed =
@@ -845,6 +845,17 @@ export function AdminOrderDetail() {
                 ).toLowerCase()}
               </strong>
               .
+
+              {order.status ===
+                "confirmed" &&
+                order.inventoryTrackingStatus && (
+                <span className="admin-order-detail__inventory-result">
+                  {order.inventoryTrackingStatus ===
+                  "deducted"
+                    ? "Stock descontado correctamente."
+                    : "Confirmado sin descuento: el control de stock estaba en preparación."}
+                </span>
+              )}
             </footer>
           )}
         </article>

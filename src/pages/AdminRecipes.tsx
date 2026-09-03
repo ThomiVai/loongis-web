@@ -20,10 +20,13 @@ import type {
 
 import {
   getAdminIngredients,
+  getAdminInventorySettings,
+  updateAdminInventorySettings,
 } from "../services/adminInventoryApi";
 
 import type {
   AdminIngredient,
+  AdminInventorySettings,
 } from "../services/adminInventoryApi";
 
 import {
@@ -306,6 +309,14 @@ export function AdminRecipes() {
     >([]);
 
   const [
+    inventorySettings,
+    setInventorySettings,
+  ] =
+    useState<AdminInventorySettings | null>(
+      null,
+    );
+
+  const [
     selectedProductId,
     setSelectedProductId,
   ] =
@@ -345,6 +356,20 @@ export function AdminRecipes() {
   ] =
     useState(false);
 
+  const [
+    updatingTracking,
+    setUpdatingTracking,
+  ] =
+    useState(false);
+
+  const [
+    trackingMessage,
+    setTrackingMessage,
+  ] =
+    useState<string | null>(
+      null,
+    );
+
   /* ========================================
      CARGA
   ======================================== */
@@ -366,6 +391,7 @@ export function AdminRecipes() {
           productsData,
           ingredientsData,
           recipesData,
+          inventorySettingsData,
         ] =
           await Promise.all([
             getAdminProducts(),
@@ -375,6 +401,10 @@ export function AdminRecipes() {
             ),
 
             getAdminRecipes(
+              currentToken,
+            ),
+
+            getAdminInventorySettings(
               currentToken,
             ),
           ]);
@@ -393,6 +423,10 @@ export function AdminRecipes() {
 
         setRecipes(
           recipesData,
+        );
+
+        setInventorySettings(
+          inventorySettingsData,
         );
 
         const firstProduct =
@@ -501,6 +535,11 @@ export function AdminRecipes() {
       [recipes],
     );
 
+  const canEnableTracking =
+    activeIngredients.length >
+      0 &&
+    configuredCount > 0;
+
   /* ========================================
      SESIÓN
   ======================================== */
@@ -518,6 +557,101 @@ export function AdminRecipes() {
   };
 
   /* ========================================
+     CONTROL DE INVENTARIO
+  ======================================== */
+
+  const handleTrackingToggle =
+    async () => {
+      if (
+        !token ||
+        !inventorySettings
+      ) {
+        return;
+      }
+
+      const nextEnabled =
+        !inventorySettings.enabled;
+
+      const confirmationMessage =
+        nextEnabled
+          ? "Activá el descuento automático únicamente cuando el dueño haya cargado y revisado el stock y las recetas reales. ¿Querés activarlo ahora?"
+          : "Mientras esté pausado, los pedidos podrán confirmarse pero no descontarán insumos. ¿Querés pausarlo?";
+
+      if (
+        !window.confirm(
+          confirmationMessage,
+        )
+      ) {
+        return;
+      }
+
+      setUpdatingTracking(
+        true,
+      );
+
+      setError(
+        null,
+      );
+
+      setSuccess(
+        false,
+      );
+
+      setTrackingMessage(
+        null,
+      );
+
+      try {
+        const updated =
+          await updateAdminInventorySettings(
+            token,
+            nextEnabled,
+          );
+
+        setInventorySettings(
+          updated,
+        );
+
+        setTrackingMessage(
+          updated.enabled
+            ? "Descuento automático activado."
+            : "Descuento automático pausado.",
+        );
+      } catch (updateError) {
+        const message =
+          updateError instanceof Error
+            ? updateError.message
+            : "No se pudo actualizar el control de inventario.";
+
+        if (
+          isAuthError(
+            message,
+          )
+        ) {
+          removeAdminToken();
+
+          navigate(
+            "/admin/login",
+            {
+              replace:
+                true,
+            },
+          );
+
+          return;
+        }
+
+        setError(
+          message,
+        );
+      } finally {
+        setUpdatingTracking(
+          false,
+        );
+      }
+    };
+
+  /* ========================================
      CAMBIAR PRODUCTO
   ======================================== */
 
@@ -531,6 +665,10 @@ export function AdminRecipes() {
 
     setSuccess(
       false,
+    );
+
+    setTrackingMessage(
+      null,
     );
 
     setError(
@@ -952,6 +1090,10 @@ export function AdminRecipes() {
         false,
       );
 
+      setTrackingMessage(
+        null,
+      );
+
       try {
         const saved =
           await saveAdminRecipe(
@@ -1345,6 +1487,59 @@ export function AdminRecipes() {
             </div>
           </header>
 
+          {inventorySettings && (
+            <section
+              className={[
+                "admin-recipes__tracking",
+                inventorySettings.enabled
+                  ? "admin-recipes__tracking--enabled"
+                  : "admin-recipes__tracking--setup",
+              ].join(" ")}
+            >
+              <div>
+                <span className="admin-recipes__tracking-status">
+                  {inventorySettings.enabled
+                    ? "Activo"
+                    : "En preparación"}
+                </span>
+
+                <h3>
+                  Descuento automático de stock
+                </h3>
+
+                <p>
+                  {inventorySettings.enabled
+                    ? "Al confirmar un pedido se descuentan los insumos según las recetas guardadas."
+                    : "El dueño puede cargar y revisar los datos sin afectar los pedidos. Hasta activarlo, confirmar un pedido no modifica el stock."}
+                </p>
+
+                <small>
+                  {activeIngredients.length} insumos activos · {configuredCount} recetas configuradas
+                </small>
+              </div>
+
+              <button
+                type="button"
+                onClick={() =>
+                  void handleTrackingToggle()
+                }
+                disabled={
+                  updatingTracking ||
+                  (
+                    !inventorySettings.enabled &&
+                    !canEnableTracking
+                  )
+                }
+              >
+                {updatingTracking
+                  ? "Actualizando..."
+                  : inventorySettings.enabled
+                    ? "Pausar descuento"
+                    : "Activar descuento"}
+              </button>
+            </section>
+          )}
+
           {error && (
             <div
               className="admin-recipes__error"
@@ -1360,6 +1555,15 @@ export function AdminRecipes() {
               role="status"
             >
               Receta guardada correctamente.
+            </div>
+          )}
+
+          {trackingMessage && (
+            <div
+              className="admin-recipes__success"
+              role="status"
+            >
+              {trackingMessage}
             </div>
           )}
 
