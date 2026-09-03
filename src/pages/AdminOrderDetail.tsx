@@ -297,15 +297,15 @@ export function AdminOrderDetail() {
         return;
       }
 
-      const actionLabel =
+      const confirmationMessage =
         nextStatus ===
         "confirmed"
-          ? "confirmar"
-          : "cancelar";
+          ? `¿Seguro que querés confirmar el pedido #${order.orderNumber}? Al confirmarlo se descontará el stock según las recetas configuradas.`
+          : `¿Seguro que querés cancelar el pedido #${order.orderNumber}?`;
 
       const confirmed =
         window.confirm(
-          `¿Seguro que querés ${actionLabel} el pedido #${order.orderNumber}?`,
+          confirmationMessage,
         );
 
       if (!confirmed) {
