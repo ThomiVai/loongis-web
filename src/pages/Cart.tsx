@@ -30,6 +30,10 @@ import {
   useNotification,
 } from "../hooks/useNotification";
 
+import {
+  useStoreStatus,
+} from "../hooks/useStoreStatus";
+
 import "../styles/Cart.css";
 import "../styles/CartCustomization.css";
 
@@ -143,6 +147,29 @@ function getCustomizationDetails(
      ACLARACIÓN
   ======================================== */
 
+  for (
+    const choice of
+    item.customization.choices ?? []
+  ) {
+    const removed =
+      choice.removedIngredients.length > 0
+        ? ` — Sin ${choice.removedIngredients.join(", ")}`
+        : "";
+
+    details.push({
+      label: choice.groupLabel,
+      value: `${choice.option.label}${removed}`,
+      type:
+        choice.removedIngredients.length > 0
+          ? "removed"
+          : "normal",
+    });
+  }
+
+  /* ========================================
+     ACLARACIÓN
+  ======================================== */
+
   if (
     item.customization
       .notes?.trim()
@@ -216,6 +243,12 @@ export function Cart() {
     showNotification,
   } =
     useNotification();
+
+  const {
+    isOpen,
+    statusLabel,
+    detailLabel,
+  } = useStoreStatus();
 
   const [
     isClearModalOpen,
@@ -745,12 +778,31 @@ export function Cart() {
                   al finalizar el pedido.
                 </p>
 
-                <Link
-                  className="cart-summary__checkout"
-                  to="/finalizar-pedido"
-                >
-                  Finalizar pedido
-                </Link>
+                {isOpen ? (
+                  <Link
+                    className="cart-summary__checkout"
+                    to="/finalizar-pedido"
+                  >
+                    Finalizar pedido
+                  </Link>
+                ) : (
+                  <div
+                    className="cart-summary__closed"
+                    role="status"
+                  >
+                    <strong>
+                      {statusLabel}
+                    </strong>
+
+                    <span>
+                      {detailLabel}
+                    </span>
+
+                    <span className="cart-summary__checkout cart-summary__checkout--disabled">
+                      Pedidos no disponibles
+                    </span>
+                  </div>
+                )}
 
                 <Link
                   className="cart-summary__continue"

@@ -24,6 +24,11 @@
   color: #8a4516;
 }
 
+.store-status--paused {
+  background-color: #fff4cc;
+  color: #6e4e00;
+}
+
 /* ========================================
    CONTENEDOR
 ======================================== */
@@ -81,6 +86,11 @@
     29,
     0.13
   );
+}
+
+.store-status--paused .store-status__icon {
+  background-color:
+    rgba(183, 132, 0, 0.14);
 }
 
 .store-status__icon svg {
@@ -146,6 +156,15 @@
 
   box-shadow:
     0 0 0 4px rgba(196, 102, 29, 0.12);
+}
+
+.store-status--paused
+  .store-status__indicator {
+  background-color: #b78400;
+
+  box-shadow:
+    0 0 0 4px
+    rgba(183, 132, 0, 0.13);
 }
 
 /* ========================================

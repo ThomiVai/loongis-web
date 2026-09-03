@@ -28,16 +28,14 @@ function MeatIcon() {
   );
 }
 
-function BreadIcon() {
+function FriesIcon() {
   return (
     <svg viewBox="0 0 64 64" aria-hidden="true">
-      <path d="M14 28c0-10 8-17 18-17s18 7 18 17v18H14V28Z" />
-
-      <path d="M22 22c2 3 2 6 0 9" />
-      <path d="M32 18c2 4 2 8 0 12" />
-      <path d="M42 22c2 3 2 6 0 9" />
-
-      <path d="M14 39h36" />
+      <path d="M15 25h34l-4 29H19l-4-29Z" />
+      <path d="M21 25 19 10h7l2 15" />
+      <path d="M30 25V7h7v18" />
+      <path d="m40 25 3-15 7 2-4 15" />
+      <path d="M20 35h25" />
     </svg>
   );
 }
@@ -61,26 +59,13 @@ function DeliveryIcon() {
   );
 }
 
-function HappyIcon() {
+function ClockIcon() {
   return (
     <svg viewBox="0 0 64 64" aria-hidden="true">
       <circle cx="32" cy="32" r="22" />
-
-      <circle
-        className="business-benefit__icon-dot"
-        cx="24"
-        cy="27"
-        r="1.8"
-      />
-
-      <circle
-        className="business-benefit__icon-dot"
-        cx="40"
-        cy="27"
-        r="1.8"
-      />
-
-      <path d="M22 38c3 5 7 7 10 7s7-2 10-7" />
+      <path d="M32 18v15l10 6" />
+      <path d="M25 6h14" />
+      <path d="M32 6v4" />
     </svg>
   );
 }
@@ -88,27 +73,27 @@ function HappyIcon() {
 const benefits: Benefit[] = [
   {
     id: 1,
-    title: "Carne 100%",
-    description: "de verdad",
+    title: "Smash dobles",
+    description: "con opción simple",
     icon: <MeatIcon />,
   },
   {
     id: 2,
-    title: "Pan artesanal",
-    description: "todos los días",
-    icon: <BreadIcon />,
+    title: "Papas incluidas",
+    description: "con cada burger",
+    icon: <FriesIcon />,
   },
   {
     id: 3,
-    title: "Envíos rápidos",
-    description: "a todo el barrio",
-    icon: <DeliveryIcon />,
+    title: "Hechas al momento",
+    description: "para cada pedido",
+    icon: <ClockIcon />,
   },
   {
     id: 4,
-    title: "Miles de clientes",
-    description: "felices",
-    icon: <HappyIcon />,
+    title: "Solo delivery",
+    description: "en Hurlingham",
+    icon: <DeliveryIcon />,
   },
 ];
 

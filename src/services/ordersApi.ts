@@ -13,6 +13,12 @@ export type CreateOrderCustomization = {
 
   removedIngredients: string[];
 
+  choices: Array<{
+    groupId: string;
+    optionId: string;
+    removedIngredients: string[];
+  }>;
+
   notes: string;
 };
 
@@ -87,6 +93,17 @@ export type CreatedOrderItem = {
 
     removedIngredients:
       string[];
+
+    choices: Array<{
+      groupId: string;
+      groupLabel: string;
+      optionId: string;
+      optionLabel: string;
+      kind: "burger" | "beverage";
+      productLegacyId?: number;
+      sizeId?: "simple" | "doble";
+      removedIngredients: string[];
+    }>;
 
     notes: string;
   };

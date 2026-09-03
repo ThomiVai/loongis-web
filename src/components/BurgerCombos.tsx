@@ -1,11 +1,14 @@
 import {
+  type TouchEvent,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 
 import {
-  FaArrowLeftLong,
+  FaChevronLeft,
+  FaChevronRight,
   FaArrowRightLong,
 } from "react-icons/fa6";
 
@@ -45,24 +48,116 @@ const priceFormatter =
     },
   );
 
-/* ========================================
-   ITEMS POR PÁGINA
-======================================== */
+type ComboCardPresentation = {
+  badge: string;
+  burgerImage: string;
+  burgerCount: number;
+  visualAlt: string;
+};
 
-function getInitialItemsPerPage():
-  number {
-  if (
-    typeof window ===
-    "undefined"
-  ) {
-    return 2;
+const comboCardPresentations:
+  Record<
+    number,
+    ComboCardPresentation
+  > = {
+  101: {
+    badge: "1 doble",
+    burgerImage:
+      "/images/burgers/loongis-clasic.png",
+    burgerCount: 1,
+    visualAlt:
+      "Hamburguesa doble Loongis con una porción de papas",
+  },
+
+  102: {
+    badge: "3 simples",
+    burgerImage:
+      "/images/burgers/simple-queso.png",
+    burgerCount: 3,
+    visualAlt:
+      "Tres hamburguesas simples Loongis con una porción de papas",
+  },
+
+  110: {
+    badge: "Doble queso",
+    burgerImage:
+      "/images/burgers/simple-queso.png",
+    burgerCount: 1,
+    visualAlt:
+      "Hamburguesa doble con queso y una porción de papas",
+  },
+};
+
+function ComboCardArtwork({
+  combo,
+}: {
+  combo: Product;
+}) {
+  const presentation =
+    comboCardPresentations[
+      combo.id
+    ];
+
+  if (!presentation) {
+    return (
+      <CatalogImage
+        className="burger-combo-card__image"
+        src={combo.image}
+        alt={combo.imageAlt}
+        variant="card"
+        sizes="(max-width: 560px) 100vw, (max-width: 780px) 84vw, (max-width: 1100px) 68vw, 31vw"
+        loading="lazy"
+      />
+    );
   }
 
-  return window.matchMedia(
-    "(max-width: 780px)",
-  ).matches
-    ? 1
-    : 2;
+  return (
+    <div
+      className={`burger-combo-card__artwork burger-combo-card__artwork--${combo.id}`}
+      role="img"
+      aria-label={
+        presentation.visualAlt
+      }
+    >
+      <CatalogImage
+        className="burger-combo-card__fries"
+        src="/images/fries/papas-comunes.png"
+        alt=""
+        variant="card"
+        sizes="150px"
+        loading="lazy"
+        aria-hidden="true"
+      />
+
+      <div
+        className="burger-combo-card__burgers"
+        aria-hidden="true"
+      >
+        {Array.from({
+          length:
+            presentation.burgerCount,
+        }).map((_, index) => (
+          <CatalogImage
+            className="burger-combo-card__burger"
+            src={
+              presentation.burgerImage
+            }
+            alt=""
+            variant="card"
+            sizes={
+              presentation.burgerCount >
+              1
+                ? "155px"
+                : "270px"
+            }
+            loading="lazy"
+            aria-hidden="true"
+            key={index}
+          />
+        ))}
+      </div>
+    </div>
+  );
 }
 
 /* ========================================
@@ -84,6 +179,20 @@ export function BurgerCombos({
   loading,
   error,
 }: BurgerCombosProps) {
+  const viewportRef =
+    useRef<HTMLDivElement>(null);
+
+  const touchStartXRef =
+    useRef<number | null>(null);
+
+  const touchStartIndexRef =
+    useRef(0);
+
+  const [
+    currentComboIndex,
+    setCurrentComboIndex,
+  ] = useState(0);
+
   /* ========================================
      COMBOS
   ======================================== */
@@ -95,61 +204,171 @@ export function BurgerCombos({
           (product) =>
             product.category ===
               "combos" &&
+            product.dailyPromo !==
+              true &&
             product.available !==
               false,
         ),
       [products],
     );
 
-  /* ========================================
-     RESPONSIVE
-  ======================================== */
+  const updateCurrentCombo = () => {
+    const viewport =
+      viewportRef.current;
 
-  const [
-    itemsPerPage,
-    setItemsPerPage,
-  ] =
-    useState<number>(
-      getInitialItemsPerPage,
+    if (!viewport) {
+      return;
+    }
+
+    const cards =
+      Array.from(
+        viewport.querySelectorAll<HTMLElement>(
+          ".burger-combo-card",
+        ),
+      );
+
+    if (cards.length === 0) {
+      return;
+    }
+
+    let nearestIndex = 0;
+    let nearestDistance =
+      Number.POSITIVE_INFINITY;
+
+    cards.forEach(
+      (card, index) => {
+        const distance = Math.abs(
+          card.offsetLeft -
+            viewport.scrollLeft,
+        );
+
+        if (
+          distance <
+          nearestDistance
+        ) {
+          nearestIndex = index;
+          nearestDistance =
+            distance;
+        }
+      },
     );
 
-  const [
-    currentPage,
-    setCurrentPage,
-  ] =
-    useState(0);
+    setCurrentComboIndex(
+      nearestIndex,
+    );
+  };
+
+  const showCombo = (
+    targetIndex: number,
+  ) => {
+    const viewport =
+      viewportRef.current;
+
+    if (!viewport) {
+      return;
+    }
+
+    const cards =
+      viewport.querySelectorAll<HTMLElement>(
+        ".burger-combo-card",
+      );
+
+    if (cards.length === 0) {
+      return;
+    }
+
+    const safeTargetIndex =
+      ((targetIndex % cards.length) +
+        cards.length) %
+      cards.length;
+
+    const targetCard =
+      cards[safeTargetIndex];
+
+    if (!targetCard) {
+      return;
+    }
+
+    setCurrentComboIndex(
+      safeTargetIndex,
+    );
+
+    viewport.scrollTo({
+      left: targetCard.offsetLeft,
+      behavior: "smooth",
+    });
+  };
+
+  const handleTouchStart = (
+    event: TouchEvent<HTMLDivElement>,
+  ) => {
+    touchStartXRef.current =
+      event.touches[0]?.clientX ??
+      null;
+
+    touchStartIndexRef.current =
+      currentComboIndex;
+  };
+
+  const handleTouchEnd = (
+    event: TouchEvent<HTMLDivElement>,
+  ) => {
+    const touchStartX =
+      touchStartXRef.current;
+
+    const touchEndX =
+      event.changedTouches[0]
+        ?.clientX;
+
+    touchStartXRef.current =
+      null;
+
+    if (
+      touchStartX === null ||
+      touchEndX === undefined
+    ) {
+      return;
+    }
+
+    const movement =
+      touchEndX - touchStartX;
+
+    if (Math.abs(movement) < 42) {
+      return;
+    }
+
+    showCombo(
+      touchStartIndexRef.current +
+        (movement < 0 ? 1 : -1),
+    );
+  };
 
   useEffect(() => {
-    const mediaQuery =
-      window.matchMedia(
-        "(max-width: 780px)",
+    const animationFrame =
+      window.requestAnimationFrame(
+        updateCurrentCombo,
       );
 
-    const handleScreenChange = (
-      event:
-        MediaQueryListEvent,
-    ) => {
-      setItemsPerPage(
-        event.matches
-          ? 1
-          : 2,
-      );
-
-      setCurrentPage(0);
+    const handleResize = () => {
+      updateCurrentCombo();
     };
 
-    mediaQuery.addEventListener(
-      "change",
-      handleScreenChange,
+    window.addEventListener(
+      "resize",
+      handleResize,
     );
 
     return () => {
-      mediaQuery.removeEventListener(
-        "change",
-        handleScreenChange,
+      window.cancelAnimationFrame(
+        animationFrame,
+      );
+
+      window.removeEventListener(
+        "resize",
+        handleResize,
       );
     };
-  }, []);
+  }, [burgerCombos.length]);
 
   /* ========================================
      CARGANDO
@@ -172,76 +391,6 @@ export function BurgerCombos({
   ) {
     return null;
   }
-
-  /* ========================================
-     PAGINACIÓN
-  ======================================== */
-
-  const totalPages =
-    Math.max(
-      1,
-      Math.ceil(
-        burgerCombos.length /
-          itemsPerPage,
-      ),
-    );
-
-  const safeCurrentPage =
-    Math.min(
-      currentPage,
-      totalPages - 1,
-    );
-
-  const startIndex =
-    safeCurrentPage *
-    itemsPerPage;
-
-  const visibleCombos =
-    burgerCombos.slice(
-      startIndex,
-      startIndex +
-        itemsPerPage,
-    );
-
-  /* ========================================
-     CONTROLES
-  ======================================== */
-
-  const handlePrevious =
-    () => {
-      setCurrentPage(
-        (
-          currentPageValue,
-        ) =>
-          currentPageValue ===
-          0
-            ? totalPages - 1
-            : currentPageValue -
-              1,
-      );
-    };
-
-  const handleNext =
-    () => {
-      setCurrentPage(
-        (
-          currentPageValue,
-        ) =>
-          currentPageValue ===
-          totalPages - 1
-            ? 0
-            : currentPageValue +
-              1,
-      );
-    };
-
-  const handlePageChange = (
-    pageIndex: number,
-  ) => {
-    setCurrentPage(
-      pageIndex,
-    );
-  };
 
   /* ========================================
      SECCIÓN
@@ -275,10 +424,9 @@ export function BurgerCombos({
             </h2>
 
             <p className="burger-combos__description">
-              Elegí tu hamburguesa
-              favorita acompañada con
-              papas crocantes y una
-              bebida individual.
+              Elegí el combo que mejor
+              va con vos. Todos vienen
+              con sus papas crocantes.
             </p>
           </div>
 
@@ -297,35 +445,27 @@ export function BurgerCombos({
         </header>
 
         {/* =================================
-            CARRUSEL
+            GRILLA / DESLIZADOR RESPONSIVE
         ================================= */}
 
         <div className="burger-combos__carousel">
-
-          {totalPages > 1 && (
-            <button
-              className="burger-combos__control burger-combos__control--previous"
-              type="button"
-              aria-label="Ver combos anteriores"
-              aria-controls="burger-combos-grid"
-              onClick={
-                handlePrevious
-              }
-            >
-              <FaArrowLeftLong
-                aria-hidden="true"
-              />
-            </button>
-          )}
-
-          <div className="burger-combos__viewport">
+          <div
+            className="burger-combos__viewport"
+            ref={viewportRef}
+            onScroll={updateCurrentCombo}
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
+            onTouchCancel={() => {
+              touchStartXRef.current =
+                null;
+            }}
+          >
 
             <div
               className="burger-combos__grid"
               id="burger-combos-grid"
-              key={`${safeCurrentPage}-${itemsPerPage}`}
             >
-              {visibleCombos.map(
+              {burgerCombos.map(
                 (combo) => (
                   <article
                     className={`burger-combo-card burger-combo-card--${combo.id}`}
@@ -341,20 +481,16 @@ export function BurgerCombos({
                       <div className="burger-combo-card__visual">
 
                         <span className="burger-combo-card__badge">
-                          Combo
+                          {
+                            comboCardPresentations[
+                              combo.id
+                            ]?.badge ??
+                              "Combo"
+                          }
                         </span>
 
-                        <CatalogImage
-                          className="burger-combo-card__image"
-                          src={
-                            combo.image
-                          }
-                          alt={
-                            combo.imageAlt
-                          }
-                          variant="card"
-                          sizes="(max-width: 780px) 90vw, 42vw"
-                          loading="lazy"
+                        <ComboCardArtwork
+                          combo={combo}
                         />
                       </div>
                     </Link>
@@ -389,13 +525,23 @@ export function BurgerCombos({
                           )}
                         </strong>
 
-                        <AddToCartButton
-                          product={
-                            combo
-                          }
-                          className="burger-combo-card__add"
-                          label="Agregar"
-                        />
+                        {combo.choiceGroups &&
+                        combo.choiceGroups.length > 0 ? (
+                          <Link
+                            to={`/producto/${combo.id}`}
+                            className="burger-combo-card__add"
+                          >
+                            Elegir combo
+                          </Link>
+                        ) : (
+                          <AddToCartButton
+                            product={
+                              combo
+                            }
+                            className="burger-combo-card__add"
+                            label="Agregar combo"
+                          />
+                        )}
                       </div>
                     </div>
                   </article>
@@ -404,70 +550,46 @@ export function BurgerCombos({
             </div>
           </div>
 
-          {totalPages > 1 && (
-            <button
-              className="burger-combos__control burger-combos__control--next"
-              type="button"
-              aria-label="Ver combos siguientes"
-              aria-controls="burger-combos-grid"
-              onClick={
-                handleNext
-              }
+          {burgerCombos.length > 1 && (
+            <div
+              className="burger-combos__navigation"
+              role="group"
+              aria-label="Navegación de combos"
             >
-              <FaArrowRightLong
-                aria-hidden="true"
-              />
-            </button>
+              <button
+                className="burger-combos__navigation-button burger-combos__navigation-button--previous"
+                type="button"
+                onClick={() =>
+                  showCombo(
+                    currentComboIndex - 1,
+                  )
+                }
+                aria-label="Ver combo anterior"
+                aria-controls="burger-combos-grid"
+              >
+                <FaChevronLeft
+                  aria-hidden="true"
+                />
+              </button>
+
+              <button
+                className="burger-combos__navigation-button burger-combos__navigation-button--next"
+                type="button"
+                onClick={() =>
+                  showCombo(
+                    currentComboIndex + 1,
+                  )
+                }
+                aria-label="Ver siguiente combo"
+                aria-controls="burger-combos-grid"
+              >
+                <FaChevronRight
+                  aria-hidden="true"
+                />
+              </button>
+            </div>
           )}
         </div>
-
-        {/* =================================
-            DOTS
-        ================================= */}
-
-        {totalPages > 1 && (
-          <div
-            className="burger-combos__pagination"
-            aria-label="Páginas del carrusel de combos"
-          >
-            {Array.from({
-              length:
-                totalPages,
-            }).map(
-              (
-                _,
-                index,
-              ) => (
-                <button
-                  className={`burger-combos__dot ${
-                    safeCurrentPage ===
-                    index
-                      ? "burger-combos__dot--active"
-                      : ""
-                  }`}
-                  type="button"
-                  key={
-                    index
-                  }
-                  aria-label={`Ir a la página ${
-                    index + 1
-                  }`}
-                  aria-current={
-                    safeCurrentPage ===
-                    index
-                      ? "true"
-                      : undefined
-                  }
-                  onClick={() =>
-                    handlePageChange(
-                      index,
-                    )
-                  }
-                />
-              ),
-            )}
-          </div>
-        )}
       </div>
     </section>
   );

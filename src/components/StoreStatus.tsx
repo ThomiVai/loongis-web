@@ -1,5 +1,6 @@
 import {
   FaClock,
+  FaPause,
   FaStore,
 } from "react-icons/fa6";
 
@@ -12,15 +13,12 @@ export function StoreStatus() {
     isOpen,
     statusLabel,
     detailLabel,
+    state,
   } = useStoreStatus();
 
   return (
     <aside
-      className={`store-status ${
-        isOpen
-          ? "store-status--open"
-          : "store-status--closed"
-      }`}
+      className={`store-status store-status--${state}`}
       aria-label="Estado del local"
     >
       <div className="store-status__container">
@@ -28,6 +26,9 @@ export function StoreStatus() {
           <div className="store-status__icon">
             {isOpen ? (
               <FaStore aria-hidden="true" />
+            ) : state ===
+              "paused" ? (
+              <FaPause aria-hidden="true" />
             ) : (
               <FaClock aria-hidden="true" />
             )}

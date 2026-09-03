@@ -14,6 +14,10 @@ import type {
 } from "../components/ProtectedAdminRoute";
 
 import {
+  AdminStoreControl,
+} from "../components/AdminStoreControl";
+
+import {
   deleteAdminProduct,
   getAdminProducts,
 } from "../services/adminProductsApi";
@@ -338,7 +342,16 @@ export function AdminDashboard() {
           >
             Inventario
           </Link>
+
+          <Link
+            to="/admin/recetas"
+            className="admin-dashboard__nav-link"
+          >
+            Recetas
+          </Link>
         </nav>
+
+        <AdminStoreControl />
 
         {/* =================================
             PRODUCTOS
@@ -439,6 +452,10 @@ export function AdminDashboard() {
                       deletingProductId ===
                       product._id;
 
+                    const isSystemProduct =
+                      product.legacyId ===
+                      109;
+
                     return (
                       <article
                         key={
@@ -522,6 +539,12 @@ export function AdminDashboard() {
                               </span>
                             )}
 
+                            {product.dailyPromo && (
+                              <span className="admin-product__featured">
+                                Combo del día
+                              </span>
+                            )}
+
                             {product.legacyId !==
                               undefined && (
                               <span className="admin-product__id">
@@ -555,10 +578,13 @@ export function AdminDashboard() {
                                 )
                               }
                               disabled={
-                                isDeleting
+                                isDeleting ||
+                                isSystemProduct
                               }
                             >
-                              {isDeleting
+                              {isSystemProduct
+                                ? "Producto fijo"
+                                : isDeleting
                                 ? "Eliminando..."
                                 : "Eliminar"}
                             </button>

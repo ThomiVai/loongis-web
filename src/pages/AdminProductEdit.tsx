@@ -23,6 +23,7 @@ import {
 import type {
   AdminProduct,
   AdminProductOption,
+  DailyComboBurgerId,
 } from "../services/adminProductsApi";
 
 import {
@@ -49,6 +50,40 @@ function createOptionId(): string {
     .toString(36)
     .slice(2, 8)}`;
 }
+
+const dailyComboPresentations:
+  Record<
+    DailyComboBurgerId,
+    {
+      image: string;
+      imageAlt: string;
+    }
+  > = {
+  "solo-queso": {
+    image:
+      "/images/burgers/combo-simplequeso.png",
+    imageAlt:
+      "Combo del Día con hamburguesa Solo Queso, papas y bebida",
+  },
+  clasic: {
+    image:
+      "/images/burgers/combo-promo.png",
+    imageAlt:
+      "Combo del Día con Loongis Clasic, papas y bebida",
+  },
+  bacon: {
+    image:
+      "/images/burgers/combo-bacon.png",
+    imageAlt:
+      "Combo del Día con Loongis Bacon, papas y bebida",
+  },
+  crispy: {
+    image:
+      "/images/burgers/combo-crispy.png",
+    imageAlt:
+      "Combo del Día con Loongis Crispy, papas y bebida",
+  },
+};
 
 /* ========================================
    COMPONENTE
@@ -166,6 +201,14 @@ export function AdminProductEdit() {
     setDailyPromo,
   ] =
     useState(false);
+
+  const [
+    dailyComboBurgerId,
+    setDailyComboBurgerId,
+  ] =
+    useState<DailyComboBurgerId>(
+      "clasic",
+    );
 
   /* ========================================
      PERSONALIZACIÓN
@@ -298,6 +341,9 @@ export function AdminProductEdit() {
           setActive(true);
           setFeatured(false);
           setDailyPromo(false);
+          setDailyComboBurgerId(
+            "clasic",
+          );
 
           setIngredients([]);
           setSizes([]);
@@ -393,6 +439,11 @@ export function AdminProductEdit() {
           productData.dailyPromo,
         );
 
+        setDailyComboBurgerId(
+          productData.dailyComboBurgerId ??
+            "clasic",
+        );
+
         setIngredients([
           ...productData.ingredients,
         ]);
@@ -447,16 +498,9 @@ export function AdminProductEdit() {
      CATEGORÍA SELECCIONADA
   ======================================== */
 
-  const selectedCategory =
-    categories.find(
-      (category) =>
-        category._id ===
-        categoryId,
-    );
-
-  const isComboCategory =
-    selectedCategory?.slug ===
-    "combos";
+  const isDailyCombo =
+    !isCreating &&
+    Number(legacyId) === 109;
 
   const handleCategoryChange = (
     newCategoryId: string,
@@ -903,9 +947,7 @@ export function AdminProductEdit() {
                 featured,
 
                 dailyPromo:
-                  isComboCategory
-                    ? dailyPromo
-                    : false,
+                  false,
 
                 ingredients:
                   normalizedIngredients,
@@ -963,9 +1005,12 @@ export function AdminProductEdit() {
               featured,
 
               dailyPromo:
-                isComboCategory
-                  ? dailyPromo
-                  : false,
+                isDailyCombo,
+
+              dailyComboBurgerId:
+                isDailyCombo
+                  ? dailyComboBurgerId
+                  : undefined,
 
               ingredients:
                 normalizedIngredients,
@@ -1027,6 +1072,11 @@ export function AdminProductEdit() {
 
         setDailyPromo(
           updatedProduct.dailyPromo,
+        );
+
+        setDailyComboBurgerId(
+          updatedProduct.dailyComboBurgerId ??
+            "clasic",
         );
 
         setIngredients([
@@ -1532,21 +1582,15 @@ export function AdminProductEdit() {
                 </div>
               </label>
 
-              {isComboCategory && (
+              {isDailyCombo && (
                 <label className="admin-product-edit__toggle">
                   <input
                     type="checkbox"
                     checked={
                       dailyPromo
                     }
-                    onChange={(
-                      event,
-                    ) =>
-                      setDailyPromo(
-                        event.target.checked,
-                      )
-                    }
-                    disabled={saving}
+                    readOnly
+                    disabled
                   />
 
                   <div>
@@ -1555,11 +1599,9 @@ export function AdminProductEdit() {
                     </strong>
 
                     <span>
-                      Se muestra como la
-                      promo principal del
-                      Home. Al activarlo,
-                      reemplaza al combo
-                      del día anterior.
+                      Es la promo principal
+                      del Home y permanece
+                      activa automáticamente.
                     </span>
                   </div>
                 </label>
@@ -1567,9 +1609,74 @@ export function AdminProductEdit() {
             </div>
           </section>
 
-          {/* =================================
-              INGREDIENTES
-          ================================= */}
+          {isDailyCombo && (
+            <section className="admin-product-edit__section admin-product-edit__daily-combo">
+              <div className="admin-product-edit__section-header">
+                <div>
+                  <h2>
+                    Configuración del Combo del Día
+                  </h2>
+
+                  <p>
+                    Elegí qué hamburguesa doble se ofrecerá. El cliente podrá quitar ingredientes y seleccionar su bebida.
+                  </p>
+                </div>
+              </div>
+
+              <label className="admin-product-edit__field">
+                <span>
+                  Hamburguesa disponible hoy
+                </span>
+
+                <select
+                  value={dailyComboBurgerId}
+                  onChange={(event) => {
+                    const burgerId =
+                      event.target.value as DailyComboBurgerId;
+
+                    const presentation =
+                      dailyComboPresentations[
+                        burgerId
+                      ];
+
+                    setDailyComboBurgerId(
+                      burgerId,
+                    );
+                    setImage(
+                      presentation.image,
+                    );
+                    setImageAlt(
+                      presentation.imageAlt,
+                    );
+                  }}
+                  disabled={saving}
+                >
+                  <option value="solo-queso">
+                    Solo Queso
+                  </option>
+                  <option value="clasic">
+                    Loongis Clasic
+                  </option>
+                  <option value="bacon">
+                    Loongis Bacon
+                  </option>
+                  <option value="crispy">
+                    Loongis Crispy
+                  </option>
+                </select>
+
+                <small>
+                  Incluye una porción de papas y bebida a elección: Coca-Cola, Pepsi, Sprite o agua.
+                </small>
+              </label>
+            </section>
+          )}
+
+          {!isDailyCombo && (
+            <>
+              {/* =============================
+                  INGREDIENTES
+              ============================= */}
 
           <section className="admin-product-edit__section">
             <div className="admin-product-edit__section-header">
@@ -1841,6 +1948,9 @@ export function AdminProductEdit() {
               )}
             </div>
           </section>
+
+            </>
+          )}
 
           {/* =================================
               MENSAJES

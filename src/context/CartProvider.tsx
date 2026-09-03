@@ -28,7 +28,7 @@ type CartProviderProps = {
 ======================================== */
 
 const CART_STORAGE_KEY =
-  "loongis-cart";
+  "loongis-cart-v3";
 
 /* ========================================
    NORMALIZAR PERSONALIZACIÓN
@@ -68,6 +68,15 @@ function normalizeCustomization(
     notes:
       customization?.notes?.trim() ??
       "",
+
+    choices: [
+      ...(customization?.choices ?? []),
+    ].map((choice) => ({
+      ...choice,
+      removedIngredients: [
+        ...choice.removedIngredients,
+      ].sort(),
+    })),
   };
 }
 
@@ -106,6 +115,15 @@ function createCartItemId(
       notes:
         normalizedCustomization
           .notes ?? "",
+
+      choices:
+        normalizedCustomization
+          .choices?.map((choice) => ({
+            groupId: choice.groupId,
+            optionId: choice.option.id,
+            removedIngredients:
+              choice.removedIngredients,
+          })) ?? [],
     };
 
   return `${productId}-${JSON.stringify(

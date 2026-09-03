@@ -109,85 +109,58 @@
 
 .site-footer__socials {
   display: flex;
-
   align-items: center;
-
   gap: 10px;
 }
 
-.site-footer__social-button {
+.site-footer__social-link {
   display: inline-flex;
-
   align-items: center;
-
   justify-content: center;
 
   width: 44px;
   height: 44px;
 
-  padding: 0;
-
   border:
     1px solid
-    rgba(
-      255,
-      255,
-      255,
-      0.65
-    );
-
+    rgba(255, 255, 255, 0.65);
   border-radius: 50%;
 
   background-color:
-    rgba(
-      255,
-      255,
-      255,
-      0.08
-    );
-
-  color:
-    var(--color-white);
-
-  cursor: pointer;
+    rgba(255, 255, 255, 0.08);
+  color: var(--color-white);
 
   transition:
     transform 160ms ease,
     color 160ms ease,
     border-color 160ms ease,
-    background-color 160ms ease;
+    background-color 160ms ease,
+    opacity 160ms ease;
 }
 
-.site-footer__social-button:hover {
-  transform:
-    translateY(-3px);
+a.site-footer__social-link:hover {
+  transform: translateY(-3px);
 
-  border-color:
-    var(--color-yellow);
-
-  background-color:
-    var(--color-yellow);
-
-  color:
-    var(--color-primary-dark);
+  border-color: var(--color-yellow);
+  background-color: var(--color-yellow);
+  color: var(--color-primary-dark);
 }
 
-.site-footer__social-button:focus-visible {
+.site-footer__social-link:focus-visible {
   outline:
     3px solid
-    rgba(
-      244,
-      201,
-      40,
-      0.75
-    );
-
+    rgba(244, 201, 40, 0.75);
   outline-offset: 3px;
 }
 
-.site-footer__social-button svg {
+.site-footer__social-link svg {
   width: 21px;
   height: 21px;
+}
+
+.site-footer__social-link--pending {
+  opacity: 0.58;
+  cursor: default;
 }
 
 /* ========================================

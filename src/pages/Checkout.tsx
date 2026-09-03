@@ -9,7 +9,6 @@ import {
   FaBuildingColumns,
   FaLocationDot,
   FaMoneyBillWave,
-  FaStore,
   FaTruck,
   FaWhatsapp,
 } from "react-icons/fa6";
@@ -19,12 +18,20 @@ import { Link } from "react-router-dom";
 import { useCart } from "../hooks/useCart";
 
 import {
+  useStoreStatus,
+} from "../hooks/useStoreStatus";
+
+import {
   createOrder,
 } from "../services/ordersApi";
 
 import type {
   CreatedOrderItem,
 } from "../services/ordersApi";
+
+import type {
+  ProductChoiceSelection,
+} from "../types/Product";
 
 import "../styles/Checkout.css";
 
@@ -33,10 +40,8 @@ import "../styles/Checkout.css";
 ======================================== */
 
 /*
-  Número de prueba.
-
-  Reemplazar por el WhatsApp definitivo
-  de Loongis antes de publicar.
+  Confirmar este número con el cliente
+  antes de publicar el sitio.
 */
 const WHATSAPP_NUMBER =
   "5491138065902";
@@ -46,8 +51,7 @@ const WHATSAPP_NUMBER =
 ======================================== */
 
 type DeliveryMethod =
-  | "delivery"
-  | "pickup";
+  "delivery";
 
 type PaymentMethod =
   | "cash"
@@ -89,6 +93,8 @@ type CheckoutCustomization = {
   extras?: CheckoutOption[];
 
   removedIngredients?: string[];
+
+  choices?: ProductChoiceSelection[];
 
   notes?: string;
 };
@@ -194,6 +200,10 @@ function getItemCustomization(
     item.removedIngredients ??
     [];
 
+  const choices =
+    customization?.choices ??
+    [];
+
   const notes =
     customization
       ?.notes
@@ -205,6 +215,7 @@ function getItemCustomization(
     size,
     extras,
     removedIngredients,
+    choices,
     notes,
   };
 }
@@ -268,6 +279,24 @@ function createProductMessage(
     );
   }
 
+  for (const choice of (
+    item.customization.choices ?? []
+  )) {
+    lines.push(
+      `${choice.groupLabel}: ${choice.optionLabel}`,
+    );
+
+    if (
+      choice.removedIngredients.length > 0
+    ) {
+      lines.push(
+        `Sin en ${choice.groupLabel}: ${choice.removedIngredients.join(
+          ", ",
+        )}`,
+      );
+    }
+  }
+
   if (
     item.customization.notes
   ) {
@@ -290,6 +319,12 @@ export function Checkout() {
 
   const checkoutItems =
     cart as CheckoutCartItem[];
+
+  const {
+    isOpen,
+    statusLabel,
+    detailLabel,
+  } = useStoreStatus();
 
   const [
     form,
@@ -390,37 +425,6 @@ export function Checkout() {
   };
 
   /* ========================================
-     ENTREGA
-  ======================================== */
-
-  const selectDeliveryMethod = (
-    method:
-      DeliveryMethod,
-  ) => {
-    setForm(
-      (
-        currentForm,
-      ) => ({
-        ...currentForm,
-
-        deliveryMethod:
-          method,
-
-        /*
-          Al seleccionar retiro
-          eliminamos la dirección porque
-          deja de ser necesaria.
-        */
-        address:
-          method ===
-          "pickup"
-            ? ""
-            : currentForm.address,
-      }),
-    );
-  };
-
-  /* ========================================
      PAGO
   ======================================== */
 
@@ -462,6 +466,14 @@ export function Checkout() {
 
       const notes =
         form.notes.trim();
+
+      if (!isOpen) {
+        setOrderError(
+          `${statusLabel}. ${detailLabel}`,
+        );
+
+        return;
+      }
 
       /* ========================================
          VALIDACIONES
@@ -568,6 +580,20 @@ export function Checkout() {
                     customization
                       .removedIngredients,
 
+                  choices:
+                    customization.choices.map(
+                      (choice) => ({
+                        groupId:
+                          choice.groupId,
+
+                        optionId:
+                          choice.option.id,
+
+                        removedIngredients:
+                          choice.removedIngredients,
+                      }),
+                    ),
+
                   notes:
                     customization.notes,
                 },
@@ -587,11 +613,7 @@ export function Checkout() {
 
               phone,
 
-              address:
-                form.deliveryMethod ===
-                  "delivery"
-                  ? address
-                  : "",
+              address,
             },
 
             deliveryMethod:
@@ -612,10 +634,7 @@ export function Checkout() {
         ======================================== */
 
         const deliveryText =
-          createdOrder.deliveryMethod ===
-          "delivery"
-            ? "Envío a domicilio - Hurlingham"
-            : "Retiro por el local";
+          "Envío a domicilio - Hurlingham";
 
         /* ========================================
            PAGO
@@ -966,29 +985,8 @@ export function Checkout() {
                 Forma de entrega
               </h2>
 
-              <div
-                className="checkout-options"
-                role="group"
-                aria-labelledby="checkout-delivery-title"
-              >
-                <button
-                  className={`checkout-option ${
-                    form.deliveryMethod ===
-                    "delivery"
-                      ? "checkout-option--active"
-                      : ""
-                  }`}
-                  type="button"
-                  aria-pressed={
-                    form.deliveryMethod ===
-                    "delivery"
-                  }
-                  onClick={() =>
-                    selectDeliveryMethod(
-                      "delivery",
-                    )
-                  }
-                >
+              <div className="checkout-options">
+                <div className="checkout-option checkout-option--active">
                   <FaTruck
                     aria-hidden="true"
                   />
@@ -1002,45 +1000,10 @@ export function Checkout() {
                       Solo Hurlingham
                     </small>
                   </span>
-                </button>
-
-                <button
-                  className={`checkout-option ${
-                    form.deliveryMethod ===
-                    "pickup"
-                      ? "checkout-option--active"
-                      : ""
-                  }`}
-                  type="button"
-                  aria-pressed={
-                    form.deliveryMethod ===
-                    "pickup"
-                  }
-                  onClick={() =>
-                    selectDeliveryMethod(
-                      "pickup",
-                    )
-                  }
-                >
-                  <FaStore
-                    aria-hidden="true"
-                  />
-
-                  <span>
-                    <strong>
-                      Retiro
-                    </strong>
-
-                    <small>
-                      Retirá por el local
-                    </small>
-                  </span>
-                </button>
+                </div>
               </div>
 
-              {form.deliveryMethod ===
-                "delivery" && (
-                <label className="checkout-field checkout-field--full">
+              <label className="checkout-field checkout-field--full">
                   <span>
                     Dirección de entrega
                   </span>
@@ -1065,8 +1028,7 @@ export function Checkout() {
                       }
                     />
                   </div>
-                </label>
-              )}
+              </label>
             </section>
 
             {/* ========================================
@@ -1199,12 +1161,28 @@ export function Checkout() {
               </p>
             )}
 
+            {!isOpen && (
+              <div
+                className="checkout-store-status"
+                role="status"
+              >
+                <strong>
+                  {statusLabel}
+                </strong>
+
+                <span>
+                  {detailLabel}
+                </span>
+              </div>
+            )}
+
             <button
               className="checkout-submit"
               type="submit"
               aria-describedby="checkout-whatsapp-notice"
               disabled={
-                submittingOrder
+                submittingOrder ||
+                !isOpen
               }
             >
               <FaWhatsapp
@@ -1212,7 +1190,9 @@ export function Checkout() {
               />
 
               <span>
-                {submittingOrder
+                {!isOpen
+                  ? "Pedidos no disponibles"
+                  : submittingOrder
                   ? "Registrando pedido..."
                   : "Finalizar por WhatsApp"}
               </span>
@@ -1347,6 +1327,24 @@ export function Checkout() {
                           </p>
                         )}
 
+                        {customization.choices.map(
+                          (choice) => (
+                            <div key={choice.groupId}>
+                              <p>
+                                {choice.groupLabel}: {choice.option.label}
+                              </p>
+
+                              {choice.removedIngredients.length > 0 && (
+                                <p>
+                                  Sin en {choice.groupLabel}: {choice.removedIngredients.join(
+                                    ", ",
+                                  )}
+                                </p>
+                              )}
+                            </div>
+                          ),
+                        )}
+
                         {customization.notes && (
                           <p>
                             Aclaración:{" "}
@@ -1386,10 +1384,7 @@ export function Checkout() {
               </span>
 
               <strong>
-                {form.deliveryMethod ===
-                "delivery"
-                  ? "A confirmar"
-                  : "Retiro"}
+                A confirmar
               </strong>
             </div>
 

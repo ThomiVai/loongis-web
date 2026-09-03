@@ -11,7 +11,12 @@ import {
   type BusinessDaySchedule,
 } from "../data/businessHours";
 
-type StoreStatus = {
+import {
+  getStoreStatus,
+  type StoreStatusData,
+} from "../services/storeStatusApi";
+
+type LocalStoreStatus = {
   isOpen: boolean;
   statusLabel: string;
   detailLabel: string;
@@ -133,8 +138,8 @@ function isScheduleOpen(
     o continúa después de medianoche.
 
     Ejemplo:
-    19:00 → 00:00
-    19:00 → 00:30
+    20:00 → 00:00
+    20:00 → 00:30
   */
   return (
     currentMinutes >=
@@ -221,7 +226,7 @@ function getNextOpeningLabel(
 
 function calculateStoreStatus(
   currentDate: Date,
-): StoreStatus {
+): LocalStoreStatus {
   const currentDay =
     getBusinessDay(
       currentDate,
@@ -276,6 +281,14 @@ export function useStoreStatus() {
     () => new Date(),
   );
 
+  const [
+    remoteStatus,
+    setRemoteStatus,
+  ] =
+    useState<StoreStatusData | null>(
+      null,
+    );
+
   useEffect(() => {
     const intervalId =
       window.setInterval(
@@ -294,11 +307,78 @@ export function useStoreStatus() {
     };
   }, []);
 
-  return useMemo(
-    () =>
-      calculateStoreStatus(
-        currentDate,
-      ),
-    [currentDate],
-  );
+  useEffect(() => {
+    let mounted = true;
+
+    async function loadStoreStatus() {
+      try {
+        const status =
+          await getStoreStatus();
+
+        if (mounted) {
+          setRemoteStatus(
+            status,
+          );
+        }
+      } catch {
+        /*
+          Si la API no responde, el
+          horario local sigue mostrando
+          información útil. El backend
+          conserva la validación final.
+        */
+      }
+    }
+
+    void loadStoreStatus();
+
+    const intervalId =
+      window.setInterval(
+        () => {
+          void loadStoreStatus();
+        },
+        60_000,
+      );
+
+    return () => {
+      mounted = false;
+
+      window.clearInterval(
+        intervalId,
+      );
+    };
+  }, []);
+
+  const localStatus =
+    useMemo(
+      () =>
+        calculateStoreStatus(
+          currentDate,
+        ),
+      [currentDate],
+    );
+
+  const status:
+    StoreStatusData =
+    remoteStatus ?? {
+      orderMode: "automatic",
+      scheduleOpen:
+        localStatus.isOpen,
+      canOrder:
+        localStatus.isOpen,
+      state:
+        localStatus.isOpen
+          ? "open"
+          : "closed",
+      statusLabel:
+        localStatus.statusLabel,
+      detailLabel:
+        localStatus.detailLabel,
+      updatedAt: null,
+    };
+
+  return {
+    ...status,
+    isOpen: status.canOrder,
+  };
 }

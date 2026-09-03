@@ -1,0 +1,257 @@
+.combo-configurator__group {
+  padding: 16px;
+  border: 1px solid rgba(7, 95, 234, 0.1);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.46);
+}
+
+.combo-configurator__group
+  .product-customization__title {
+  padding: 0 5px;
+}
+
+.combo-configurator__options {
+  display: grid;
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.combo-configurator__option {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  min-height: 76px;
+  padding: 9px 34px 9px 10px;
+  border: 1px solid rgba(7, 95, 234, 0.13);
+  border-radius: 15px;
+  background: #ffffff;
+  color: var(--color-black);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  box-shadow: 0 7px 16px rgba(7, 60, 166, 0.045);
+  transition:
+    transform 160ms ease,
+    border-color 160ms ease,
+    background-color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.combo-configurator__option:hover {
+  transform: translateY(-2px);
+  border-color: rgba(7, 95, 234, 0.34);
+  box-shadow: 0 10px 20px rgba(7, 60, 166, 0.09);
+}
+
+.combo-configurator__option--selected {
+  border-color: var(--color-primary);
+  background:
+    linear-gradient(
+      145deg,
+      rgba(225, 235, 255, 0.92),
+      rgba(255, 255, 255, 0.98)
+    );
+  box-shadow:
+    0 0 0 3px rgba(7, 95, 234, 0.07),
+    0 10px 22px rgba(7, 60, 166, 0.1);
+}
+
+.combo-configurator__option-image {
+  flex-shrink: 0;
+  width: 66px;
+  height: 58px;
+  object-fit: contain;
+  filter:
+    drop-shadow(
+      0 6px 5px rgba(23, 23, 23, 0.13)
+    );
+}
+
+.combo-configurator__option-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.combo-configurator__option-copy strong {
+  overflow: hidden;
+  font-family: "Fredoka", sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1.15;
+  text-overflow: ellipsis;
+}
+
+.combo-configurator__option-copy small {
+  color: rgba(23, 23, 23, 0.48);
+  font-size: 0.66rem;
+  font-weight: 700;
+}
+
+.combo-configurator__option--selected
+  .combo-configurator__option-copy small {
+  color: var(--color-primary);
+}
+
+.combo-configurator__check {
+  position: absolute;
+  top: 9px;
+  right: 9px;
+  display: grid;
+  place-items: center;
+  width: 21px;
+  height: 21px;
+  border: 1px solid rgba(7, 95, 234, 0.2);
+  border-radius: 50%;
+  background: #ffffff;
+  color: transparent;
+  font-size: 0.65rem;
+  transition:
+    background-color 150ms ease,
+    color 150ms ease,
+    transform 150ms ease;
+}
+
+.combo-configurator__check--visible {
+  border-color: var(--color-primary);
+  background: var(--color-primary);
+  color: #ffffff;
+  transform: scale(1.04);
+}
+
+.combo-configurator__beverage-mark {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  border-radius: 13px;
+  background: var(--color-primary);
+  color: #ffffff;
+  font-family: "Fredoka", sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  box-shadow:
+    inset 0 -3px 0 rgba(0, 0, 0, 0.12);
+}
+
+.combo-configurator__option--coca-cola
+  .combo-configurator__beverage-mark {
+  background: #d9272e;
+}
+
+.combo-configurator__option--pepsi
+  .combo-configurator__beverage-mark {
+  background: #1559b5;
+}
+
+.combo-configurator__option--sprite
+  .combo-configurator__beverage-mark {
+  background: #18884c;
+}
+
+.combo-configurator__option--agua
+  .combo-configurator__beverage-mark {
+  background: #43a6d8;
+}
+
+.combo-configurator__fixed-choice {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 92px;
+  margin-bottom: 16px;
+  padding: 10px 45px 10px 12px;
+  border: 1px solid rgba(244, 201, 40, 0.7);
+  border-radius: 16px;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 249, 211, 0.96),
+      rgba(255, 255, 255, 0.98)
+    );
+  box-shadow:
+    0 10px 22px rgba(244, 201, 40, 0.1);
+}
+
+.combo-configurator__fixed-image {
+  flex-shrink: 0;
+  width: 82px;
+  height: 72px;
+  object-fit: contain;
+  filter:
+    drop-shadow(
+      0 7px 6px rgba(23, 23, 23, 0.14)
+    );
+}
+
+.combo-configurator__fixed-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.combo-configurator__fixed-copy small {
+  color: rgba(23, 23, 23, 0.5);
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.combo-configurator__fixed-copy strong {
+  font-family: "Fredoka", sans-serif;
+  font-size: 1rem;
+}
+
+.combo-configurator__fixed-choice
+  > .combo-configurator__check {
+  top: 12px;
+  right: 12px;
+}
+
+@media (max-width: 560px) {
+  .combo-configurator__group {
+    padding: 13px;
+  }
+
+  .combo-configurator__options {
+    gap: 8px;
+  }
+
+  .combo-configurator__option {
+    min-height: 68px;
+    padding: 7px 27px 7px 8px;
+  }
+
+  .combo-configurator__option-image {
+    width: 50px;
+    height: 48px;
+  }
+
+  .combo-configurator__option-copy strong {
+    font-size: 0.74rem;
+  }
+
+  .combo-configurator__option-copy small {
+    display: none;
+  }
+
+  .combo-configurator__beverage-mark {
+    width: 36px;
+    height: 36px;
+  }
+
+  .combo-configurator__check {
+    top: 7px;
+    right: 7px;
+    width: 18px;
+    height: 18px;
+  }
+}

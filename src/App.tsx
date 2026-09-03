@@ -6,6 +6,7 @@ import {
 
 import { AdminNoIndex } from "./components/AdminNoIndex";
 import { Footer } from "./components/Footer";
+import { MobileCartShortcut } from "./components/MobileCartShortcut";
 import { Navbar } from "./components/Navbar";
 import { NotificationContainer } from "./components/NotificationContainer";
 import { PageTitle } from "./components/PageTitle";
@@ -19,6 +20,7 @@ import { AdminOrders } from "./pages/AdminOrders";
 import { AdminInventory } from "./pages/AdminInventory";
 import { AdminLogin } from "./pages/AdminLogin";
 import { AdminProductEdit } from "./pages/AdminProductEdit";
+import { AdminRecipes } from "./pages/AdminRecipes";
 import { Cart } from "./pages/Cart";
 import { Checkout } from "./pages/Checkout";
 import { Home } from "./pages/Home";
@@ -151,6 +153,13 @@ function App() {
           />
 
           <Route
+            path="/admin/recetas"
+            element={
+              <AdminRecipes />
+            }
+          />
+
+          <Route
             path="/admin/productos/:productId/editar"
             element={
               <AdminProductEdit />
@@ -170,6 +179,10 @@ function App() {
         />
 
       </Routes>
+
+      {!isAdminRoute && (
+        <MobileCartShortcut />
+      )}
 
       {/* =================================
           FOOTER TIENDA

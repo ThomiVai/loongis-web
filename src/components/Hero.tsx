@@ -1,8 +1,8 @@
 import {
   FaArrowRight,
+  FaCalendarDays,
   FaClock,
   FaLocationDot,
-  FaStar,
 } from "react-icons/fa6";
 
 import {
@@ -111,11 +111,11 @@ export function Hero() {
 
               <div>
                 <strong>
-                  Envíos en
+                  Delivery
                 </strong>
 
                 <span>
-                  tu zona
+                  en Hurlingham
                 </span>
               </div>
             </article>
@@ -123,18 +123,18 @@ export function Hero() {
             <article className="hero__benefit">
 
               <span className="hero__benefit-icon">
-                <FaStar
+                <FaCalendarDays
                   aria-hidden="true"
                 />
               </span>
 
               <div>
                 <strong>
-                  4.9 ★
+                  Jueves a domingo
                 </strong>
 
                 <span>
-                  Clientes felices
+                  20:00 a 00:00
                 </span>
               </div>
             </article>

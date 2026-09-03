@@ -29,7 +29,7 @@ const DEFAULT_TITLE =
   "Loongis | Hamburguesas smash en Hurlingham";
 
 const DEFAULT_DESCRIPTION =
-  "Hamburguesas smash en Hurlingham. Conocé el menú de Loongis, personalizá tu favorita y armá tu pedido para delivery o retiro.";
+  "Hamburguesas smash con papas en Hurlingham. Conocé el menú de Loongis, personalizá tu favorita y pedila con delivery.";
 
 const DEFAULT_SOCIAL_IMAGE =
   `${SITE_URL}/images/burgers/combo-promo.png`;
@@ -296,7 +296,7 @@ function getStaticSeoInformation(
         `Finalizar pedido | ${SITE_NAME}`,
 
       description:
-        "Completá los datos de entrega o retiro y prepará tu pedido de Loongis para enviarlo por WhatsApp.",
+        "Completá los datos de entrega y prepará tu pedido de Loongis para enviarlo por WhatsApp.",
 
       canonicalPath:
         "/finalizar-pedido",
@@ -607,7 +607,7 @@ export function PageTitle() {
               `${product.name} | Loongis Hurlingham`,
 
             description:
-              `${product.description} Personalizala y pedila online en Loongis para delivery o retiro en Hurlingham.`,
+              `${product.description} Personalizala y pedila online en Loongis con delivery en Hurlingham.`,
 
             canonicalPath:
               `/producto/${product.id}`,

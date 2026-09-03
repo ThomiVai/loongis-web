@@ -82,6 +82,27 @@ const optimizedImages:
     cardWidth: 360,
     cardHeight: 598,
   },
+
+  "papas-comunes.png": {
+    fullWidth: 1536,
+    fullHeight: 1024,
+    cardWidth: 360,
+    cardHeight: 240,
+  },
+
+  "papas-cheddar-bacon.png": {
+    fullWidth: 1536,
+    fullHeight: 1024,
+    cardWidth: 360,
+    cardHeight: 240,
+  },
+
+  "papas-luck.png": {
+    fullWidth: 1638,
+    fullHeight: 2048,
+    cardWidth: 360,
+    cardHeight: 450,
+  },
 };
 
 /* ========================================

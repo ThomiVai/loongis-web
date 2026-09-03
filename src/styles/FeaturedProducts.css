@@ -284,6 +284,7 @@
   display: grid;
   grid-template-rows:
     auto
+    auto
     minmax(66px, auto)
     auto;
 
@@ -314,10 +315,31 @@
   color: var(--color-primary);
 }
 
+.featured-product__included {
+  display: inline-flex;
+  align-items: center;
+
+  width: fit-content;
+  margin-top: 9px;
+  padding: 5px 10px;
+
+  border-radius: 999px;
+
+  background-color: rgba(244, 201, 40, 0.2);
+  color: #5f4a00;
+
+  font-family: "Nunito", sans-serif;
+  font-size: 0.72rem;
+  font-weight: 800;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.035em;
+}
+
 .featured-product__description {
   align-self: start;
 
-  margin: 10px 0 15px;
+  margin: 8px 0 15px;
 
   color: rgba(23, 23, 23, 0.69);
 

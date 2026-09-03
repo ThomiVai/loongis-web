@@ -102,6 +102,16 @@ export function DailyPromo({
     return null;
   }
 
+  const dailyBurgerLabel =
+    promoCombo.choiceGroups
+      ?.find(
+        (group) =>
+          group.id ===
+          "hamburguesa-del-dia",
+      )
+      ?.options[0]
+      ?.label;
+
   /* ========================================
      PROMO
   ======================================== */
@@ -178,7 +188,9 @@ export function DailyPromo({
           </h2>
 
           <h3 className="promo-banner__product-name">
-            {promoCombo.name}
+            {dailyBurgerLabel
+              ? `Hoy: ${dailyBurgerLabel}`
+              : promoCombo.name}
           </h3>
 
           <p className="promo-banner__description">
@@ -202,13 +214,23 @@ export function DailyPromo({
 
           <div className="promo-banner__actions">
 
-            <AddToCartButton
-              product={
-                promoCombo
-              }
-              className="promo-banner__add-button"
-              label="Agregar combo"
-            />
+            {promoCombo.choiceGroups &&
+            promoCombo.choiceGroups.length > 0 ? (
+              <Link
+                className="promo-banner__add-button"
+                to={`/producto/${promoCombo.id}`}
+              >
+                Elegir opciones
+              </Link>
+            ) : (
+              <AddToCartButton
+                product={
+                  promoCombo
+                }
+                className="promo-banner__add-button"
+                label="Agregar combo"
+              />
+            )}
 
             <Link
               className="promo-banner__detail-button"

@@ -30,7 +30,7 @@
   .navbar__container {
     gap: 7px;
 
-    min-height: 58px;
+    min-height: 64px;
     padding: 5px 8px 5px 10px;
 
     border-radius: 18px;
@@ -39,8 +39,8 @@
   }
 
   .navbar__logo {
-    width: 104px;
-    height: 37px;
+    width: 122px;
+    height: 42px;
   }
 
   .navbar__logo-image {
@@ -589,13 +589,13 @@
   }
 
   .featured-products__grid {
-    gap: 22px;
+    gap: 16px;
   }
 
   .featured-product {
     --product-image-scale: 1.38;
 
-    padding-bottom: 24px;
+    padding-bottom: 16px;
   }
 
   .featured-product--3 {
@@ -608,7 +608,7 @@
   }
 
   .featured-product__visual {
-    height: 195px;
+    height: 154px;
   }
 
   .featured-product__content {
@@ -801,20 +801,6 @@
 
     font-size: 0.82rem;
     line-height: 1.4;
-  }
-
-  .site-footer__socials {
-    gap: 8px;
-  }
-
-  .site-footer__social-button {
-    width: 38px;
-    height: 38px;
-  }
-
-  .site-footer__social-button svg {
-    width: 18px;
-    height: 18px;
   }
 
   .site-footer__column {

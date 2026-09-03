@@ -4,6 +4,10 @@ import {
 } from "react-router-dom";
 
 import {
+  FaFire,
+} from "react-icons/fa6";
+
+import {
   AddToCartButton,
 } from "../components/AddToCartButton";
 
@@ -32,11 +36,13 @@ import "../styles/Menu.css";
 type MenuFilter =
   | "todos"
   | "hamburguesas"
-  | "combos";
+  | "combos"
+  | "papas";
 
 type ProductMenuCategory =
   | "hamburguesas"
-  | "combos";
+  | "combos"
+  | "papas";
 
 /* ========================================
    FILTROS
@@ -60,6 +66,11 @@ const menuFilters: {
     id: "combos",
     label: "Combos",
   },
+
+  {
+    id: "papas",
+    label: "Papas",
+  },
 ];
 
 /* ========================================
@@ -72,7 +83,8 @@ function isMenuFilter(
   return (
     value === "todos" ||
     value === "hamburguesas" ||
-    value === "combos"
+    value === "combos" ||
+    value === "papas"
   );
 }
 
@@ -85,8 +97,39 @@ function isMenuCategory(
     category ===
       "hamburguesas" ||
     category ===
-      "combos"
+      "combos" ||
+    category ===
+      "papas"
   );
+}
+
+function getMenuCategoryOrder(
+  category:
+    | ProductCategory
+    | undefined,
+): number {
+  if (
+    category ===
+    "hamburguesas"
+  ) {
+    return 0;
+  }
+
+  if (
+    category ===
+    "combos"
+  ) {
+    return 1;
+  }
+
+  if (
+    category ===
+    "papas"
+  ) {
+    return 2;
+  }
+
+  return 3;
 }
 
 function getCategoryLabel(
@@ -106,6 +149,13 @@ function getCategoryLabel(
     "combos"
   ) {
     return "Combos";
+  }
+
+  if (
+    category ===
+    "papas"
+  ) {
+    return "Papas";
   }
 
   return "Producto";
@@ -151,12 +201,54 @@ export function Menu() {
       : "todos";
 
   const menuProducts =
-    products.filter(
-      (product) =>
-        isMenuCategory(
-          product.category,
-        ),
-    );
+    [...products]
+      .filter(
+        (product) =>
+          isMenuCategory(
+            product.category,
+          ),
+      )
+      .sort(
+        (
+          firstProduct,
+          secondProduct,
+        ) => {
+          const categoryDifference =
+            getMenuCategoryOrder(
+              firstProduct.category,
+            ) -
+            getMenuCategoryOrder(
+              secondProduct.category,
+            );
+
+          if (
+            categoryDifference !==
+            0
+          ) {
+            return categoryDifference;
+          }
+
+          if (
+            firstProduct.category !==
+              "combos" ||
+            secondProduct.category !==
+              "combos"
+          ) {
+            return 0;
+          }
+
+          return (
+            Number(
+              secondProduct.dailyPromo ===
+                true,
+            ) -
+            Number(
+              firstProduct.dailyPromo ===
+                true,
+            )
+          );
+        },
+      );
 
   const visibleProducts =
     activeFilter === "todos"
@@ -221,10 +313,10 @@ export function Menu() {
               </h1>
 
               <p className="menu-hero__description">
-                Hamburguesas smash y
-                combos para disfrutar
-                Loongis como más te
-                gusta.
+                Hamburguesas smash,
+                combos y papas para
+                disfrutar Loongis como
+                más te gusta.
               </p>
 
               <span className="menu-hero__brand-tag">
@@ -386,6 +478,9 @@ export function Menu() {
                       "menu-product-card",
                       `menu-product-card--${product.id}`,
                       `menu-product-card--${product.category ?? "sin-categoria"}`,
+                      product.dailyPromo
+                        ? "menu-product-card--daily"
+                        : "",
                     ].join(
                       " ",
                     )}
@@ -396,6 +491,13 @@ export function Menu() {
                       aria-label={`Ver detalle de ${product.name}`}
                     >
                       <div className="menu-product-card__image-wrapper">
+
+                        {product.dailyPromo && (
+                          <span className="menu-product-card__daily-badge">
+                            <FaFire aria-hidden="true" />
+                            Combo del día
+                          </span>
+                        )}
 
                         <CatalogImage
                           src={
@@ -414,11 +516,20 @@ export function Menu() {
 
                     <div className="menu-product-card__content">
 
-                      <span className="menu-product-card__category">
-                        {getCategoryLabel(
-                          product.category,
+                      <div className="menu-product-card__meta">
+                        <span className="menu-product-card__category">
+                          {getCategoryLabel(
+                            product.category,
+                          )}
+                        </span>
+
+                        {product.category ===
+                          "hamburguesas" && (
+                          <span className="menu-product-card__included">
+                            Incluye papas
+                          </span>
                         )}
-                      </span>
+                      </div>
 
                       <h3 className="menu-product-card__name">
 
@@ -454,12 +565,22 @@ export function Menu() {
                             Ver detalle
                           </Link>
 
-                          <AddToCartButton
-                            product={
-                              product
-                            }
-                            className="menu-product-card__button"
-                          />
+                          {product.choiceGroups &&
+                          product.choiceGroups.length > 0 ? (
+                            <Link
+                              to={`/producto/${product.id}`}
+                              className="menu-product-card__button"
+                            >
+                              Elegir
+                            </Link>
+                          ) : (
+                            <AddToCartButton
+                              product={
+                                product
+                              }
+                              className="menu-product-card__button"
+                            />
+                          )}
                         </div>
                       </footer>
                     </div>

@@ -88,7 +88,7 @@ const storeInfoItems:
           Jueves a domingo
 
           <strong>
-            19:00 a 00:00 hs
+            20:00 a 00:00 hs
           </strong>
         </>
       ),
@@ -99,39 +99,38 @@ const storeInfoItems:
     {
       id: 2,
 
-      title: "Encontranos",
+      title: "Modalidad",
 
       description: (
         <>
-          Hurlingham,
-          Buenos Aires
+          Pedidos únicamente
+          con entrega
 
           <strong>
-            Retiro por el local
-          </strong>
-        </>
-      ),
-
-      icon: <LocationIcon />,
-    },
-
-    {
-      id: 3,
-
-      title: "Envíos",
-
-      description: (
-        <>
-          Envíos dentro de
-          Hurlingham
-
-          <strong>
-            Solo Hurlingham
+            Solo delivery
           </strong>
         </>
       ),
 
       icon: <DeliveryIcon />,
+    },
+
+    {
+      id: 3,
+
+      title: "Zona de entrega",
+
+      description: (
+        <>
+          Envíos dentro de
+
+          <strong>
+            Hurlingham
+          </strong>
+        </>
+      ),
+
+      icon: <LocationIcon />,
     },
   ];
 
@@ -156,7 +155,7 @@ export function StoreInfo() {
 
           <p className="store-info__subtitle">
             Consultá nuestros horarios,
-            ubicación y modalidad de
+            zona y modalidad de
             entrega.
           </p>
         </div>

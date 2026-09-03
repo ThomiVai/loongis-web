@@ -345,6 +345,8 @@
   --menu-image-scale: 1;
   --menu-image-y: 0px;
 
+  position: relative;
+
   display: flex;
 
   flex-direction: column;
@@ -393,6 +395,45 @@
     border-color 200ms ease,
     box-shadow 200ms ease,
     transform 200ms ease;
+}
+
+.menu-product-card--daily {
+  border-color:
+    rgba(244, 201, 40, 0.72);
+
+  box-shadow:
+    0 18px 40px
+    rgba(244, 201, 40, 0.14),
+    0 9px 24px
+    rgba(7, 60, 166, 0.08);
+}
+
+.menu-product-card--daily::before {
+  position: absolute;
+  z-index: 5;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background:
+    linear-gradient(
+      90deg,
+      var(--color-yellow),
+      #ffd943,
+      var(--color-primary)
+    );
+  content: "";
+}
+
+.menu-product-card--daily:hover {
+  border-color:
+    rgba(244, 201, 40, 0.95);
+
+  box-shadow:
+    0 23px 48px
+    rgba(244, 201, 40, 0.19),
+    0 10px 26px
+    rgba(7, 60, 166, 0.12);
 }
 
 .menu-product-card:hover {
@@ -709,13 +750,20 @@
    CATEGORÍA
 ======================================== */
 
+.menu-product-card__meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 7px;
+
+  margin-bottom: 11px;
+}
+
 .menu-product-card__category {
   display: inline-flex;
   align-items: center;
 
   width: fit-content;
-
-  margin-bottom: 11px;
 
   padding:
     6px
@@ -736,6 +784,25 @@
 
   text-transform: uppercase;
   letter-spacing: 0.055em;
+}
+
+.menu-product-card__included {
+  display: inline-flex;
+  align-items: center;
+
+  padding: 6px 11px;
+
+  border-radius: 999px;
+
+  background-color: rgba(244, 201, 40, 0.2);
+  color: #5f4a00;
+
+  font-family: "Fredoka", sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.045em;
 }
 
 
@@ -1687,4 +1754,42 @@
   .menu-product-card__button {
     transition: none;
   }
+}
+
+.menu-product-card--daily
+  .menu-product-card__image-wrapper {
+  background:
+    radial-gradient(
+      circle at 50% 50%,
+      rgba(244, 201, 40, 0.25),
+      rgba(244, 201, 40, 0.075) 50%,
+      rgba(7, 95, 234, 0.025) 73%
+    );
+}
+
+.menu-product-card__daily-badge {
+  position: absolute;
+  z-index: 4;
+  top: 16px;
+  left: 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 11px;
+  border: 1px solid
+    rgba(255, 255, 255, 0.5);
+  border-radius: 999px;
+  background: var(--color-primary);
+  color: var(--color-white);
+  font-family: "Fredoka", sans-serif;
+  font-size: 0.74rem;
+  font-weight: 700;
+  box-shadow:
+    0 8px 18px
+    rgba(7, 60, 166, 0.18);
+}
+
+.menu-product-card__daily-badge
+  svg {
+  color: var(--color-yellow);
 }

@@ -1,0 +1,740 @@
+/* ========================================
+   PANEL RECETAS
+======================================== */
+
+.admin-recipes {
+  padding: 34px;
+
+  border:
+    2px solid
+    var(--color-black);
+
+  border-radius:
+    24px;
+
+  background-color:
+    var(--color-white);
+
+  box-shadow:
+    6px 6px 0
+    var(--color-black);
+}
+
+/* ========================================
+   HEADER
+======================================== */
+
+.admin-recipes__header {
+  display: flex;
+
+  align-items: flex-start;
+  justify-content:
+    space-between;
+
+  gap: 24px;
+
+  margin-bottom: 28px;
+}
+
+.admin-recipes__eyebrow {
+  display: inline-block;
+
+  margin-bottom: 5px;
+
+  color:
+    var(--color-primary);
+
+  font-family:
+    "Fredoka",
+    sans-serif;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  text-transform:
+    uppercase;
+}
+
+.admin-recipes__header h2 {
+  margin: 0;
+
+  font-family:
+    "Fredoka",
+    sans-serif;
+
+  font-size:
+    clamp(
+      28px,
+      4vw,
+      38px
+    );
+}
+
+.admin-recipes__header p {
+  margin:
+    8px 0 0;
+
+  color:
+    rgba(
+      23,
+      23,
+      23,
+      0.66
+    );
+}
+
+.admin-recipes__counter {
+  display: flex;
+
+  align-items: baseline;
+
+  gap: 5px;
+
+  flex-shrink: 0;
+
+  padding:
+    10px 14px;
+
+  border-radius:
+    999px;
+
+  background-color:
+    var(--color-cream);
+
+  font-family:
+    "Fredoka",
+    sans-serif;
+}
+
+.admin-recipes__counter strong {
+  color:
+    var(--color-primary);
+
+  font-size: 20px;
+}
+
+/* ========================================
+   MENSAJES
+======================================== */
+
+.admin-recipes__loading,
+.admin-recipes__warning,
+.admin-recipes__error,
+.admin-recipes__success {
+  padding: 20px;
+
+  border-radius:
+    15px;
+
+  text-align:
+    center;
+
+  font-weight:
+    700;
+}
+
+.admin-recipes__loading {
+  background-color:
+    var(--color-cream);
+}
+
+.admin-recipes__warning {
+  background-color:
+    rgba(
+      244,
+      201,
+      40,
+      0.22
+    );
+}
+
+.admin-recipes__error {
+  margin-bottom:
+    20px;
+
+  background-color:
+    rgba(
+      166,
+      22,
+      22,
+      0.08
+    );
+
+  color:
+    #8f1414;
+}
+
+.admin-recipes__success {
+  margin-bottom:
+    20px;
+
+  background-color:
+    rgba(
+      23,
+      106,
+      49,
+      0.1
+    );
+
+  color:
+    #176a31;
+}
+
+/* ========================================
+   SELECTOR
+======================================== */
+
+.admin-recipes__selector {
+  display: grid;
+
+  grid-template-columns:
+    minmax(
+      240px,
+      1fr
+    )
+    minmax(
+      220px,
+      0.8fr
+    );
+
+  gap: 16px;
+
+  margin-bottom: 20px;
+
+  padding: 20px;
+
+  border-radius:
+    17px;
+
+  background-color:
+    var(--color-cream);
+}
+
+.admin-recipes__selector label {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 7px;
+}
+
+.admin-recipes__selector label > span {
+  font-family:
+    "Fredoka",
+    sans-serif;
+
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.admin-recipes__selector select {
+  min-height: 46px;
+
+  padding:
+    10px 12px;
+
+  border:
+    2px solid
+    rgba(
+      23,
+      23,
+      23,
+      0.14
+    );
+
+  border-radius:
+    11px;
+
+  background:
+    var(--color-white);
+
+  color:
+    var(--color-black);
+
+  font:
+    inherit;
+}
+
+.admin-recipes__selected-product {
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content:
+    center;
+
+  gap: 4px;
+}
+
+.admin-recipes__selected-product strong {
+  font-family:
+    "Fredoka",
+    sans-serif;
+
+  font-size: 20px;
+}
+
+.admin-recipes__selected-product span {
+  color:
+    rgba(
+      23,
+      23,
+      23,
+      0.62
+    );
+
+  font-size:
+    13px;
+}
+
+/* ========================================
+   ACTIVA
+======================================== */
+
+.admin-recipes__active {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  margin-bottom: 18px;
+
+  font-family:
+    "Fredoka",
+    sans-serif;
+
+  font-weight: 700;
+}
+
+.admin-recipes__active input {
+  width: 20px;
+  height: 20px;
+}
+
+/* ========================================
+   SECCIONES
+======================================== */
+
+.admin-recipes__recipe-section {
+  margin-bottom: 18px;
+
+  padding: 22px;
+
+  border:
+    2px solid
+    rgba(
+      23,
+      23,
+      23,
+      0.09
+    );
+
+  border-radius:
+    18px;
+
+  background-color:
+    var(--color-cream);
+}
+
+.admin-recipes__recipe-section > header {
+  display: flex;
+
+  align-items: flex-start;
+  justify-content:
+    space-between;
+
+  gap: 20px;
+
+  margin-bottom: 16px;
+}
+
+.admin-recipes__recipe-section h3 {
+  margin: 0;
+
+  font-family:
+    "Fredoka",
+    sans-serif;
+
+  font-size: 21px;
+}
+
+.admin-recipes__recipe-section header p {
+  margin:
+    5px 0 0;
+
+  color:
+    rgba(
+      23,
+      23,
+      23,
+      0.63
+    );
+
+  font-size:
+    13px;
+
+  line-height:
+    1.45;
+}
+
+.admin-recipes__recipe-section header button,
+.admin-recipes__option-heading button {
+  min-height: 40px;
+
+  padding:
+    8px 13px;
+
+  border:
+    2px solid
+    var(--color-black);
+
+  border-radius:
+    10px;
+
+  background-color:
+    var(--color-yellow);
+
+  color:
+    var(--color-black);
+
+  font-family:
+    "Fredoka",
+    sans-serif;
+
+  font-weight:
+    700;
+
+  cursor:
+    pointer;
+
+  flex-shrink:
+    0;
+}
+
+/* ========================================
+   FILAS
+======================================== */
+
+.admin-recipes__rows {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 10px;
+}
+
+.admin-recipes__base-row {
+  display: grid;
+
+  grid-template-columns:
+    1.3fr
+    0.6fr
+    1fr
+    auto;
+
+  align-items: end;
+
+  gap: 10px;
+}
+
+.admin-recipes__modifier-row {
+  display: grid;
+
+  grid-template-columns:
+    1.3fr
+    0.7fr
+    auto;
+
+  align-items: end;
+
+  gap: 10px;
+}
+
+.admin-recipes__base-row label,
+.admin-recipes__modifier-row label {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 6px;
+}
+
+.admin-recipes__base-row label > span,
+.admin-recipes__modifier-row label > span {
+  font-family:
+    "Fredoka",
+    sans-serif;
+
+  font-size:
+    12px;
+  font-weight:
+    700;
+}
+
+.admin-recipes__base-row select,
+.admin-recipes__base-row input,
+.admin-recipes__modifier-row select,
+.admin-recipes__modifier-row input {
+  width: 100%;
+
+  min-height: 42px;
+
+  padding:
+    8px 10px;
+
+  border:
+    2px solid
+    rgba(
+      23,
+      23,
+      23,
+      0.14
+    );
+
+  border-radius:
+    10px;
+
+  background-color:
+    var(--color-white);
+
+  color:
+    var(--color-black);
+
+  font:
+    inherit;
+}
+
+.admin-recipes__remove-row {
+  min-height: 42px;
+
+  padding:
+    8px 12px;
+
+  border:
+    2px solid
+    #9e1c1c;
+
+  border-radius:
+    10px;
+
+  background-color:
+    var(--color-white);
+
+  color:
+    #9e1c1c;
+
+  font-family:
+    "Fredoka",
+    sans-serif;
+
+  font-weight:
+    700;
+
+  cursor:
+    pointer;
+}
+
+/* ========================================
+   OPCIONES
+======================================== */
+
+.admin-recipes__option-list {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 12px;
+}
+
+.admin-recipes__option {
+  padding: 15px;
+
+  border-radius:
+    14px;
+
+  background-color:
+    var(--color-white);
+}
+
+.admin-recipes__option-heading {
+  display: flex;
+
+  align-items: center;
+  justify-content:
+    space-between;
+
+  gap: 14px;
+
+  margin-bottom: 10px;
+}
+
+.admin-recipes__option-heading > div {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 2px;
+}
+
+.admin-recipes__option-heading strong {
+  font-family:
+    "Fredoka",
+    sans-serif;
+}
+
+.admin-recipes__option-heading span,
+.admin-recipes__option-empty,
+.admin-recipes__empty-small {
+  color:
+    rgba(
+      23,
+      23,
+      23,
+      0.61
+    );
+
+  font-size:
+    12px;
+}
+
+.admin-recipes__option-empty {
+  margin: 0;
+}
+
+.admin-recipes__empty-small {
+  padding: 12px;
+
+  border-radius:
+    10px;
+
+  background-color:
+    rgba(
+      255,
+      255,
+      255,
+      0.62
+    );
+
+  text-align:
+    center;
+}
+
+/* ========================================
+   GUARDAR
+======================================== */
+
+.admin-recipes__save {
+  display: flex;
+
+  justify-content:
+    flex-end;
+
+  margin-top: 20px;
+}
+
+.admin-recipes__save button {
+  min-height: 48px;
+
+  padding:
+    11px 20px;
+
+  border:
+    2px solid
+    var(--color-black);
+
+  border-radius:
+    13px;
+
+  background-color:
+    var(--color-primary);
+
+  color:
+    var(--color-white);
+
+  font-family:
+    "Fredoka",
+    sans-serif;
+
+  font-size:
+    15px;
+  font-weight:
+    700;
+
+  box-shadow:
+    3px 3px 0
+    var(--color-black);
+
+  cursor:
+    pointer;
+}
+
+.admin-recipes__save button:disabled {
+  opacity:
+    0.55;
+
+  cursor:
+    wait;
+}
+
+/* ========================================
+   RESPONSIVE
+======================================== */
+
+@media (
+  max-width: 800px
+) {
+  .admin-recipes__selector {
+    grid-template-columns:
+      1fr;
+  }
+
+  .admin-recipes__base-row {
+    grid-template-columns:
+      1fr 1fr;
+  }
+
+  .admin-recipes__base-row
+  .admin-recipes__remove-row {
+    width: 100%;
+  }
+}
+
+@media (
+  max-width: 600px
+) {
+  .admin-recipes {
+    padding: 22px;
+  }
+
+  .admin-recipes__header,
+  .admin-recipes__recipe-section > header,
+  .admin-recipes__option-heading {
+    flex-direction:
+      column;
+  }
+
+  .admin-recipes__counter {
+    align-self:
+      flex-start;
+  }
+
+  .admin-recipes__recipe-section header button,
+  .admin-recipes__option-heading button {
+    width: 100%;
+  }
+
+  .admin-recipes__base-row,
+  .admin-recipes__modifier-row {
+    grid-template-columns:
+      1fr;
+  }
+
+  .admin-recipes__remove-row {
+    width: 100%;
+  }
+
+  .admin-recipes__save button {
+    width: 100%;
+  }
+}

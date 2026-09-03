@@ -24,7 +24,7 @@ const API_URL =
 */
 
 const PRODUCTS_CACHE_KEY =
-  "loongis_products_cache_v1";
+  "loongis_products_cache_v5";
 
 const MAX_CACHE_AGE =
   1000 * 60 * 60 * 2;
@@ -46,6 +46,19 @@ type ApiProductOption = {
   name: string;
   label?: string;
   priceModifier: number;
+};
+
+type ApiProductChoiceGroup = {
+  id: string;
+  label: string;
+  options: Array<{
+    id: string;
+    label: string;
+    kind: "burger" | "beverage";
+    productLegacyId?: number;
+    sizeId?: "simple" | "doble";
+    ingredients: string[];
+  }>;
 };
 
 type ApiProduct = {
@@ -74,6 +87,12 @@ type ApiProduct = {
   sizes: ApiProductOption[];
   extras: ApiProductOption[];
   ingredients: string[];
+  choiceGroups?: ApiProductChoiceGroup[];
+  dailyComboBurgerId?:
+    | "solo-queso"
+    | "clasic"
+    | "bacon"
+    | "crispy";
 };
 
 type ApiProductsResponse = {
@@ -256,6 +275,12 @@ function mapProduct(
       product.extras.map(
         mapOption,
       ),
+
+    choiceGroups:
+      product.choiceGroups ?? [],
+
+    dailyComboBurgerId:
+      product.dailyComboBurgerId,
   };
 }
 

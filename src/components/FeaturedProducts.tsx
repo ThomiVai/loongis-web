@@ -173,6 +173,10 @@ export function FeaturedProducts({
                     </Link>
                   </h3>
 
+                  <span className="featured-product__included">
+                    Incluye papas
+                  </span>
+
                   <p className="featured-product__description">
                     {
                       product.description
@@ -187,13 +191,23 @@ export function FeaturedProducts({
                       )}
                     </strong>
 
-                    <AddToCartButton
-                      product={
-                        product
-                      }
-                      className="featured-product__add"
-                      label="Agregar"
-                    />
+                    {product.choiceGroups &&
+                    product.choiceGroups.length > 0 ? (
+                      <Link
+                        to={`/producto/${product.id}`}
+                        className="featured-product__add"
+                      >
+                        Elegir
+                      </Link>
+                    ) : (
+                      <AddToCartButton
+                        product={
+                          product
+                        }
+                        className="featured-product__add"
+                        label="Agregar"
+                      />
+                    )}
                   </div>
                 </div>
               </article>

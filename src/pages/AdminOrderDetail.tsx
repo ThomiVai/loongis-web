@@ -498,6 +498,13 @@ export function AdminOrderDetail() {
           >
             Inventario
           </Link>
+
+          <Link
+            to="/admin/recetas"
+            className="admin-dashboard__nav-link"
+          >
+            Recetas
+          </Link>
         </nav>
 
         <Link
@@ -695,6 +702,28 @@ export function AdminOrderDetail() {
                             </strong>{" "}
                             {item.customization.removedIngredients.join(", ")}
                           </p>
+                        )}
+
+                        {(item.customization.choices ?? []).map(
+                          (choice) => (
+                            <div key={choice.groupId}>
+                              <p>
+                                <strong>
+                                  {choice.groupLabel}:
+                                </strong>{" "}
+                                {choice.optionLabel}
+                              </p>
+
+                              {choice.removedIngredients.length > 0 && (
+                                <p>
+                                  <strong>
+                                    Sin en {choice.groupLabel}:
+                                  </strong>{" "}
+                                  {choice.removedIngredients.join(", ")}
+                                </p>
+                              )}
+                            </div>
+                          ),
                         )}
 
                         {item.customization.notes && (

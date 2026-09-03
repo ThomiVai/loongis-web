@@ -13,6 +13,16 @@ import "../styles/Footer.css";
 const currentYear =
   new Date().getFullYear();
 
+const INSTAGRAM_URL =
+  "https://www.instagram.com/loongis_?igsi=MW5yZW0xZTZ4M2Zzeg%3D%3D&utm_source=qr";
+
+/*
+  Cuando tengas el enlace oficial de
+  WhatsApp, pegalo entre las comillas.
+*/
+const WHATSAPP_URL: string =
+  "";
+
 export function Footer() {
   return (
     <footer
@@ -52,30 +62,46 @@ export function Footer() {
               className="site-footer__socials"
               aria-label="Redes sociales de Loongis"
             >
-              <button
-                className="site-footer__social-button"
-                type="button"
-                aria-label="Instagram de Loongis, próximamente"
-                title="Instagram próximamente"
-                disabled
+              <a
+                className="site-footer__social-link"
+                href={INSTAGRAM_URL}
+                target="_blank"
+                rel="noreferrer noopener"
+                aria-label="Abrir Instagram de Loongis"
+                title="Instagram de Loongis"
               >
                 <FaInstagram
                   aria-hidden="true"
                 />
-              </button>
+              </a>
 
-              <button
-                className="site-footer__social-button"
-                type="button"
-                aria-label="WhatsApp de Loongis, próximamente"
-                title="WhatsApp próximamente"
-                disabled
-              >
-                <FaWhatsapp
-                  aria-hidden="true"
-                />
-              </button>
+              {WHATSAPP_URL ? (
+                <a
+                  className="site-footer__social-link"
+                  href={WHATSAPP_URL}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  aria-label="Abrir WhatsApp de Loongis"
+                  title="WhatsApp de Loongis"
+                >
+                  <FaWhatsapp
+                    aria-hidden="true"
+                  />
+                </a>
+              ) : (
+                <span
+                  className="site-footer__social-link site-footer__social-link--pending"
+                  aria-label="WhatsApp de Loongis, enlace pendiente"
+                  title="Enlace de WhatsApp pendiente"
+                  role="img"
+                >
+                  <FaWhatsapp
+                    aria-hidden="true"
+                  />
+                </span>
+              )}
             </div>
+
           </div>
 
           {/* ========================================
@@ -121,11 +147,11 @@ export function Footer() {
             </h2>
 
             <span>
-              Envíos solo en Hurlingham
+              Solo delivery
             </span>
 
             <span>
-              Retiro por el local
+              Envíos en Hurlingham
             </span>
 
             <span>
@@ -151,18 +177,13 @@ export function Footer() {
             </p>
 
             <strong>
-              19:00 a 00:00
+              20:00 a 00:00
             </strong>
 
             <p className="site-footer__location">
               Hurlingham,
               Buenos Aires
             </p>
-
-            <span>
-              Envíos únicamente en
-              Hurlingham
-            </span>
           </div>
 
           {/* ========================================

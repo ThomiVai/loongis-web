@@ -25,6 +25,12 @@ export type AdminProductOption = {
   priceModifier: number;
 };
 
+export type DailyComboBurgerId =
+  | "solo-queso"
+  | "clasic"
+  | "bacon"
+  | "crispy";
+
 export type AdminProduct = {
   _id: string;
   legacyId?: number;
@@ -50,6 +56,8 @@ export type AdminProduct = {
   sizes: AdminProductOption[];
   extras: AdminProductOption[];
   ingredients: string[];
+  dailyComboBurgerId?:
+    DailyComboBurgerId;
 
   createdAt?: string;
   updatedAt?: string;
@@ -105,6 +113,8 @@ export type UpdateAdminProductData = {
   sizes?: AdminProductOption[];
   extras?: AdminProductOption[];
   ingredients?: string[];
+  dailyComboBurgerId?:
+    DailyComboBurgerId;
 };
 
 /* ========================================

@@ -115,7 +115,7 @@ const categories: Category[] = [
   {
   id: 2,
   name: "Combos",
-  description: "Burger, papas y bebida",
+  description: "Combos con papas",
   icon: <ComboIcon />,
   destination: "#combos-loongis",
   type: "anchor",

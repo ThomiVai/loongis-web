@@ -18,6 +18,7 @@ import {
 } from "react-router-dom";
 
 import { AddToCartButton } from "../components/AddToCartButton";
+import { ComboConfigurator } from "../components/ComboConfigurator";
 
 import type {
   CartItem,
@@ -616,6 +617,17 @@ function ProductDetailContent({
                   product.description
                 }
               </p>
+
+              {productCategory ===
+                "hamburguesas" && (
+                <p className="product-detail__included">
+                  <span aria-hidden="true">
+                    ✓
+                  </span>
+
+                  Incluye una porción de papas
+                </p>
+              )}
 
               {/* =============================
                   MODO EDICIÓN
@@ -1336,6 +1348,23 @@ export function ProductDetail() {
   /* ========================================
      DETALLE
   ======================================== */
+
+  if (
+    product.choiceGroups &&
+    product.choiceGroups.length > 0
+  ) {
+    return (
+      <ComboConfigurator
+        key={
+          editCartItem
+            ? `${product.id}-${editCartItem.cartItemId}`
+            : `${product.id}-combo-new`
+        }
+        product={product}
+        editCartItem={editCartItem}
+      />
+    );
+  }
 
   return (
     <ProductDetailContent

@@ -965,6 +965,13 @@ export function AdminInventory() {
           >
             Inventario
           </Link>
+
+          <Link
+            to="/admin/recetas"
+            className="admin-dashboard__nav-link"
+          >
+            Recetas
+          </Link>
         </nav>
 
         {error && (

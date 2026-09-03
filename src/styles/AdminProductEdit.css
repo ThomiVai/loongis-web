@@ -242,6 +242,7 @@
 
 .admin-product-edit__field input,
 .admin-product-edit__field textarea,
+.admin-product-edit__field select,
 .admin-product-edit__ingredient
   input,
 .admin-product-edit__option
@@ -291,6 +292,8 @@
   input:focus,
 .admin-product-edit__field
   textarea:focus,
+.admin-product-edit__field
+  select:focus,
 .admin-product-edit__ingredient
   input:focus,
 .admin-product-edit__option
@@ -305,6 +308,37 @@
       95,
       234,
       0.1
+    );
+}
+
+.admin-product-edit__field
+  small {
+  color:
+    rgba(
+      23,
+      23,
+      23,
+      0.62
+    );
+
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.admin-product-edit__daily-combo {
+  border-color:
+    var(--color-primary);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--color-white),
+      rgba(
+        244,
+        201,
+        40,
+        0.18
+      )
     );
 }
 
