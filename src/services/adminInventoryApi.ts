@@ -19,7 +19,8 @@ export type AdminInventoryMovementType =
   | "restock"
   | "waste"
   | "adjustment"
-  | "sale";
+  | "sale"
+  | "reversal";
 
 export type AdminIngredient = {
   _id: string;
@@ -31,8 +32,15 @@ export type AdminIngredient = {
 
   stock: number;
   minimumStock: number;
+  targetStock: number;
 
   unitCost: number;
+
+  purchaseUnitLabel?: string;
+  purchaseUnitFactor: number;
+  category?: string;
+  storageLocation?: string;
+  trackExpiration: boolean;
 
   active: boolean;
   order: number;
@@ -46,6 +54,8 @@ export type AdminInventorySettings = {
   readyToEnable: boolean;
   activeIngredients: number;
   configuredRecipes: number;
+  activeProducts: number;
+  issues: string[];
 };
 
 export type AdminInventoryMovement = {
@@ -69,6 +79,18 @@ export type AdminInventoryMovement = {
   unitCost: number;
   estimatedCost: number;
 
+  orderNumber?: number;
+  performedByEmail?: string;
+
+  purchase?:
+    | string
+    | {
+        _id: string;
+        invoiceNumber?: string;
+        supplierName?: string;
+        purchasedAt: string;
+      };
+
   note?: string;
 
   createdAt?: string;
@@ -81,8 +103,15 @@ export type CreateAdminIngredientData = {
 
   stock: number;
   minimumStock: number;
+  targetStock: number;
 
   unitCost: number;
+
+  purchaseUnitLabel?: string;
+  purchaseUnitFactor: number;
+  category?: string;
+  storageLocation?: string;
+  trackExpiration: boolean;
 
   active: boolean;
   order: number;
@@ -94,8 +123,15 @@ export type UpdateAdminIngredientData = {
   unit?: AdminIngredientUnit;
 
   minimumStock?: number;
+  targetStock?: number;
 
   unitCost?: number;
+
+  purchaseUnitLabel?: string;
+  purchaseUnitFactor?: number;
+  category?: string;
+  storageLocation?: string;
+  trackExpiration?: boolean;
 
   active?: boolean;
   order?: number;
@@ -110,6 +146,8 @@ export type CreateInventoryMovementData =
       quantity: number;
 
       note?: string;
+      batchNumber?: string;
+      expirationDate?: string;
     }
   | {
       type:
@@ -439,6 +477,14 @@ export async function createAdminInventoryMovement(
 export async function getAdminInventoryMovements(
   token: string,
   limit = 30,
+  filters?: {
+    ingredientId?: string;
+    type?:
+      AdminInventoryMovementType;
+    performedBy?: string;
+    from?: string;
+    to?: string;
+  },
 ): Promise<
   AdminInventoryMovement[]
 > {
@@ -447,6 +493,41 @@ export async function getAdminInventoryMovements(
       limit:
         String(limit),
     });
+
+  if (filters?.ingredientId) {
+    params.set(
+      "ingredientId",
+      filters.ingredientId,
+    );
+  }
+
+  if (filters?.type) {
+    params.set(
+      "type",
+      filters.type,
+    );
+  }
+
+  if (filters?.performedBy) {
+    params.set(
+      "performedBy",
+      filters.performedBy,
+    );
+  }
+
+  if (filters?.from) {
+    params.set(
+      "from",
+      filters.from,
+    );
+  }
+
+  if (filters?.to) {
+    params.set(
+      "to",
+      filters.to,
+    );
+  }
 
   const response =
     await fetch(

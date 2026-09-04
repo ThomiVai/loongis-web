@@ -88,6 +88,12 @@ type OptionModifierForm = {
     ModifierRow[];
 };
 
+type ChoiceModifierForm = {
+  groupId: string;
+  optionId: string;
+  items: ModifierRow[];
+};
+
 type RecipeForm = {
   active:
     boolean;
@@ -100,6 +106,9 @@ type RecipeForm = {
 
   extraModifiers:
     OptionModifierForm[];
+
+  choiceModifiers:
+    ChoiceModifierForm[];
 };
 
 /* ========================================
@@ -119,6 +128,9 @@ function emptyForm():
       [],
 
     extraModifiers:
+      [],
+
+    choiceModifiers:
       [],
   };
 }
@@ -200,6 +212,32 @@ function recipeToForm(
                     item.ingredient,
                   ),
 
+                quantity:
+                  String(
+                    item.quantity,
+                  ),
+              }),
+            ),
+        }),
+      ),
+
+    choiceModifiers:
+      (
+        recipe.choiceModifiers ??
+        []
+      ).map(
+        (modifier) => ({
+          groupId:
+            modifier.groupId,
+          optionId:
+            modifier.optionId,
+          items:
+            modifier.items.map(
+              (item) => ({
+                ingredient:
+                  getRecipeIngredientId(
+                    item.ingredient,
+                  ),
                 quantity:
                   String(
                     item.quantity,
@@ -536,9 +574,8 @@ export function AdminRecipes() {
     );
 
   const canEnableTracking =
-    activeIngredients.length >
-      0 &&
-    configuredCount > 0;
+    inventorySettings
+      ?.readyToEnable ?? false;
 
   /* ========================================
      SESIÓN
@@ -940,6 +977,126 @@ export function AdminRecipes() {
     );
   };
 
+  const addChoiceRow = (
+    groupId: string,
+    optionId: string,
+  ) => {
+    setForm((current) => {
+      const existing =
+        current.choiceModifiers.find(
+          (modifier) =>
+            modifier.groupId ===
+              groupId &&
+            modifier.optionId ===
+              optionId,
+        );
+
+      if (existing) {
+        return {
+          ...current,
+          choiceModifiers:
+            current.choiceModifiers.map(
+              (modifier) =>
+                modifier === existing
+                  ? {
+                      ...modifier,
+                      items: [
+                        ...modifier.items,
+                        {
+                          ingredient: "",
+                          quantity: "1",
+                        },
+                      ],
+                    }
+                  : modifier,
+            ),
+        };
+      }
+
+      return {
+        ...current,
+        choiceModifiers: [
+          ...current.choiceModifiers,
+          {
+            groupId,
+            optionId,
+            items: [
+              {
+                ingredient: "",
+                quantity: "1",
+              },
+            ],
+          },
+        ],
+      };
+    });
+  };
+
+  const updateChoiceRow = (
+    groupId: string,
+    optionId: string,
+    index: number,
+    patch: Partial<ModifierRow>,
+  ) => {
+    setForm((current) => ({
+      ...current,
+      choiceModifiers:
+        current.choiceModifiers.map(
+          (modifier) =>
+            modifier.groupId ===
+                groupId &&
+            modifier.optionId ===
+                optionId
+              ? {
+                  ...modifier,
+                  items:
+                    modifier.items.map(
+                      (item, itemIndex) =>
+                        itemIndex === index
+                          ? {
+                              ...item,
+                              ...patch,
+                            }
+                          : item,
+                    ),
+                }
+              : modifier,
+        ),
+    }));
+  };
+
+  const removeChoiceRow = (
+    groupId: string,
+    optionId: string,
+    index: number,
+  ) => {
+    setForm((current) => ({
+      ...current,
+      choiceModifiers:
+        current.choiceModifiers
+          .map((modifier) =>
+            modifier.groupId ===
+                groupId &&
+            modifier.optionId ===
+                optionId
+              ? {
+                  ...modifier,
+                  items:
+                    modifier.items.filter(
+                      (_item, itemIndex) =>
+                        itemIndex !== index,
+                    ),
+                }
+              : modifier,
+          )
+          .filter(
+            (modifier) =>
+              modifier.items.length >
+              0,
+          ),
+    }));
+  };
+
   /* ========================================
      GUARDAR
   ======================================== */
@@ -1052,6 +1209,44 @@ export function AdminRecipes() {
           form.extraModifiers,
         );
 
+      const choiceModifiers =
+        form.choiceModifiers
+          .map((modifier) => ({
+            groupId:
+              modifier.groupId,
+            optionId:
+              modifier.optionId,
+            items:
+              modifier.items.map(
+                (item) => ({
+                  ingredient:
+                    item.ingredient,
+                  quantity:
+                    Number(
+                      item.quantity,
+                    ),
+                }),
+              ),
+          }))
+          .filter(
+            (modifier) =>
+              modifier.items.length >
+              0,
+          );
+
+      const invalidChoice =
+        choiceModifiers.some(
+          (modifier) =>
+            modifier.items.some(
+              (item) =>
+                !item.ingredient ||
+                !Number.isFinite(
+                  item.quantity,
+                ) ||
+                item.quantity <= 0,
+            ),
+        );
+
       const invalidExtra =
         extraModifiers.some(
           (modifier) =>
@@ -1069,7 +1264,8 @@ export function AdminRecipes() {
       if (
         invalidBase ||
         invalidSize ||
-        invalidExtra
+        invalidExtra ||
+        invalidChoice
       ) {
         setError(
           "Revisá los insumos y cantidades de la receta.",
@@ -1108,6 +1304,8 @@ export function AdminRecipes() {
               sizeModifiers,
 
               extraModifiers,
+
+              choiceModifiers,
             },
           );
 
@@ -1375,6 +1573,191 @@ export function AdminRecipes() {
     </section>
   );
 
+  const renderChoiceSection = () => {
+    const groups =
+      selectedProduct
+        ?.choiceGroups ?? [];
+
+    const manualGroups =
+      groups
+        .map((group) => ({
+          ...group,
+          options:
+            group.options.filter(
+              (option) =>
+                !option.productLegacyId,
+            ),
+        }))
+        .filter(
+          (group) =>
+            group.options.length >
+            0,
+        );
+
+    if (manualGroups.length === 0) {
+      return null;
+    }
+
+    return (
+      <section className="admin-recipes__recipe-section">
+        <header>
+          <div>
+            <h3>
+              Elecciones del combo
+            </h3>
+
+            <p>
+              Vinculá cada bebida u otra elección con el insumo que realmente descuenta.
+            </p>
+          </div>
+        </header>
+
+        <div className="admin-recipes__option-list">
+          {manualGroups.flatMap(
+            (group) =>
+              group.options.map(
+                (option) => {
+                  const modifier =
+                    form.choiceModifiers.find(
+                      (candidate) =>
+                        candidate.groupId ===
+                          group.id &&
+                        candidate.optionId ===
+                          option.id,
+                    );
+
+                  const rows =
+                    modifier?.items ?? [];
+
+                  return (
+                    <article
+                      key={`${group.id}-${option.id}`}
+                      className="admin-recipes__option"
+                    >
+                      <div className="admin-recipes__option-heading">
+                        <div>
+                          <strong>
+                            {group.label}: {option.label}
+                          </strong>
+
+                          <span>
+                            ID: {option.id}
+                          </span>
+                        </div>
+
+                        <button
+                          type="button"
+                          onClick={() =>
+                            addChoiceRow(
+                              group.id,
+                              option.id,
+                            )
+                          }
+                        >
+                          + Vincular insumo
+                        </button>
+                      </div>
+
+                      {rows.length === 0 ? (
+                        <p className="admin-recipes__option-empty">
+                          Falta configurar esta opción antes de activar el inventario.
+                        </p>
+                      ) : (
+                        <div className="admin-recipes__rows">
+                          {rows.map(
+                            (row, index) => (
+                              <div
+                                className="admin-recipes__modifier-row"
+                                key={`${group.id}-${option.id}-${index}`}
+                              >
+                                <label>
+                                  <span>
+                                    Insumo
+                                  </span>
+
+                                  <select
+                                    value={row.ingredient}
+                                    onChange={(event) =>
+                                      updateChoiceRow(
+                                        group.id,
+                                        option.id,
+                                        index,
+                                        {
+                                          ingredient: event.target.value,
+                                        },
+                                      )
+                                    }
+                                    required
+                                  >
+                                    <option value="">
+                                      Elegir...
+                                    </option>
+
+                                    {activeIngredients.map(
+                                      (ingredient) => (
+                                        <option
+                                          key={ingredient._id}
+                                          value={ingredient._id}
+                                        >
+                                          {ingredient.name}
+                                        </option>
+                                      ),
+                                    )}
+                                  </select>
+                                </label>
+
+                                <label>
+                                  <span>
+                                    Cantidad
+                                  </span>
+
+                                  <input
+                                    type="number"
+                                    min="0.000001"
+                                    step="0.01"
+                                    value={row.quantity}
+                                    onChange={(event) =>
+                                      updateChoiceRow(
+                                        group.id,
+                                        option.id,
+                                        index,
+                                        {
+                                          quantity: event.target.value,
+                                        },
+                                      )
+                                    }
+                                    required
+                                  />
+                                </label>
+
+                                <button
+                                  type="button"
+                                  className="admin-recipes__remove-row"
+                                  onClick={() =>
+                                    removeChoiceRow(
+                                      group.id,
+                                      option.id,
+                                      index,
+                                    )
+                                  }
+                                >
+                                  Quitar
+                                </button>
+                              </div>
+                            ),
+                          )}
+                        </div>
+                      )}
+                    </article>
+                  );
+                },
+              ),
+          )}
+        </div>
+      </section>
+    );
+  };
+
   /* ========================================
      VISTA
   ======================================== */
@@ -1452,6 +1835,20 @@ export function AdminRecipes() {
           >
             Recetas
           </Link>
+
+          <Link
+            to="/admin/stock"
+            className="admin-dashboard__nav-link"
+          >
+            Centro de stock
+          </Link>
+
+          <Link
+            to="/admin/usuarios"
+            className="admin-dashboard__nav-link"
+          >
+            Accesos
+          </Link>
         </nav>
 
         <section className="admin-recipes">
@@ -1516,6 +1913,19 @@ export function AdminRecipes() {
                 <small>
                   {activeIngredients.length} insumos activos · {configuredCount} recetas configuradas
                 </small>
+
+                {!inventorySettings.enabled &&
+                  inventorySettings.issues.length > 0 && (
+                  <ul className="admin-recipes__tracking-issues">
+                    {inventorySettings.issues
+                      .slice(0, 8)
+                      .map((issue) => (
+                        <li key={issue}>
+                          {issue}
+                        </li>
+                      ))}
+                  </ul>
+                )}
               </div>
 
               <button
@@ -1876,6 +2286,8 @@ export function AdminRecipes() {
                     selectedProduct.sizes,
                     "sizeModifiers",
                   )}
+
+                  {renderChoiceSection()}
 
                   {renderModifierSection(
                     "Extras",

@@ -430,12 +430,30 @@ export function AdminOrders() {
             Inventario
           </Link>
 
+          {admin.role === "owner" && (
           <Link
             to="/admin/recetas"
             className="admin-dashboard__nav-link"
           >
             Recetas
           </Link>
+          )}
+
+          <Link
+            to="/admin/stock"
+            className="admin-dashboard__nav-link"
+          >
+            Centro de stock
+          </Link>
+
+          {admin.role === "owner" && (
+            <Link
+              to="/admin/usuarios"
+              className="admin-dashboard__nav-link"
+            >
+              Accesos
+            </Link>
+          )}
         </nav>
 
         <section className="admin-orders">

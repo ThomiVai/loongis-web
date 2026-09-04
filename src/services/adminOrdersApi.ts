@@ -66,8 +66,13 @@ export type AdminOrder = {
   status: AdminOrderStatus;
   inventoryTrackingStatus?:
     | "not_enabled"
-    | "deducted";
+    | "deducted"
+    | "reversed"
+    | "kept_as_waste";
   inventoryDeductedAt?: string;
+  inventoryReversedAt?: string;
+  cancelledAt?: string;
+  cancellationReason?: string;
   generalNotes: string;
   createdAt?: string;
   updatedAt?: string;
@@ -211,6 +216,10 @@ export async function updateAdminOrderStatus(
   status:
     | "confirmed"
     | "cancelled",
+  options?: {
+    restoreInventory?: boolean;
+    reason?: string;
+  },
 ): Promise<AdminOrder> {
   const response =
     await fetch(
@@ -225,6 +234,7 @@ export async function updateAdminOrderStatus(
         body:
           JSON.stringify({
             status,
+            ...options,
           }),
       },
     );

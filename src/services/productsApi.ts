@@ -4,6 +4,10 @@ import type {
   ProductOption,
 } from "../types/Product";
 
+import {
+  getProductAvailability,
+} from "./inventoryAvailabilityApi";
+
 /* ========================================
    CONFIGURACIÓN
 ======================================== */
@@ -532,11 +536,37 @@ async function fetchProducts():
       mapProduct,
     );
 
+  const availability =
+    await getProductAvailability();
+
+  const availabilityByLegacyId =
+    new Map(
+      availability
+        .filter(
+          (item) =>
+            item.legacyId !==
+            undefined,
+        )
+        .map((item) => [
+          item.legacyId as number,
+          item.available,
+        ]),
+    );
+
+  const productsWithAvailability =
+    products.map((product) => ({
+      ...product,
+      available:
+        availabilityByLegacyId.get(
+          product.id,
+        ) ?? product.available,
+    }));
+
   saveProductsCache(
-    products,
+    productsWithAvailability,
   );
 
-  return products;
+  return productsWithAvailability;
 }
 
 /* ========================================
@@ -609,9 +639,24 @@ async function fetchProductById(
     );
   }
 
-  return mapProduct(
-    result.data,
-  );
+  const product =
+    mapProduct(
+      result.data,
+    );
+
+  const availability =
+    await getProductAvailability();
+
+  return {
+    ...product,
+    available:
+      availability.find(
+        (item) =>
+          item.legacyId ===
+          product.id,
+      )?.available ??
+      product.available,
+  };
 }
 
 /* ========================================

@@ -499,6 +499,12 @@ export function Menu() {
                           </span>
                         )}
 
+                        {product.available === false && (
+                          <span className="menu-product-card__stock-badge">
+                            Agotado
+                          </span>
+                        )}
+
                         <CatalogImage
                           src={
                             product.image
@@ -565,7 +571,15 @@ export function Menu() {
                             Ver detalle
                           </Link>
 
-                          {product.choiceGroups &&
+                          {product.available === false ? (
+                            <button
+                              type="button"
+                              className="menu-product-card__button"
+                              disabled
+                            >
+                              Agotado
+                            </button>
+                          ) : product.choiceGroups &&
                           product.choiceGroups.length > 0 ? (
                             <Link
                               to={`/producto/${product.id}`}

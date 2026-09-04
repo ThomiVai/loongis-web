@@ -312,6 +312,22 @@ export function AdminOrderDetail() {
         return;
       }
 
+      const restoreInventory =
+        nextStatus === "cancelled" &&
+        order.status === "confirmed" &&
+        order.inventoryTrackingStatus === "deducted"
+          ? window.confirm(
+              "¿Los insumos NO llegaron a utilizarse?\n\nAceptar: reintegrar el stock.\nCancelar: mantener el consumo porque la comida ya se preparó.",
+            )
+          : false;
+
+      const reason =
+        nextStatus === "cancelled"
+          ? window.prompt(
+              "Motivo de la cancelación (opcional):",
+            ) ?? undefined
+          : undefined;
+
       setChangingStatus(
         nextStatus,
       );
@@ -323,6 +339,12 @@ export function AdminOrderDetail() {
             order._id,
             token,
             nextStatus,
+            {
+              restoreInventory,
+              reason:
+                reason?.trim() ||
+                undefined,
+            },
           );
 
         setOrder(
@@ -499,12 +521,30 @@ export function AdminOrderDetail() {
             Inventario
           </Link>
 
+          {admin.role === "owner" && (
           <Link
             to="/admin/recetas"
             className="admin-dashboard__nav-link"
           >
             Recetas
           </Link>
+          )}
+
+          <Link
+            to="/admin/stock"
+            className="admin-dashboard__nav-link"
+          >
+            Centro de stock
+          </Link>
+
+          {admin.role === "owner" && (
+            <Link
+              to="/admin/usuarios"
+              className="admin-dashboard__nav-link"
+            >
+              Accesos
+            </Link>
+          )}
         </nav>
 
         <Link
@@ -795,9 +835,19 @@ export function AdminOrderDetail() {
             </div>
           </section>
 
-          {order.status ===
-            "pending" ? (
+          {order.status !==
+            "cancelled" ? (
             <footer className="admin-order-detail__actions">
+              {order.status === "confirmed" &&
+                order.inventoryTrackingStatus && (
+                <span className="admin-order-detail__inventory-result">
+                  {order.inventoryTrackingStatus === "deducted"
+                    ? "Stock descontado correctamente."
+                    : "Confirmado sin descuento: el control de stock estaba en preparación."}
+                </span>
+              )}
+
+              {order.status === "pending" && (
               <button
                 type="button"
                 className="admin-order-detail__confirm"
@@ -816,6 +866,7 @@ export function AdminOrderDetail() {
                   ? "Confirmando..."
                   : "Confirmar pedido"}
               </button>
+              )}
 
               <button
                 type="button"
@@ -833,7 +884,9 @@ export function AdminOrderDetail() {
                 {changingStatus ===
                 "cancelled"
                   ? "Cancelando..."
-                  : "Cancelar pedido"}
+                  : order.status === "confirmed"
+                    ? "Cancelar pedido confirmado"
+                    : "Cancelar pedido"}
               </button>
             </footer>
           ) : (
@@ -846,14 +899,20 @@ export function AdminOrderDetail() {
               </strong>
               .
 
-              {order.status ===
-                "confirmed" &&
+              {order.status === "cancelled" &&
                 order.inventoryTrackingStatus && (
                 <span className="admin-order-detail__inventory-result">
-                  {order.inventoryTrackingStatus ===
-                  "deducted"
-                    ? "Stock descontado correctamente."
-                    : "Confirmado sin descuento: el control de stock estaba en preparación."}
+                  {order.inventoryTrackingStatus === "reversed"
+                    ? "El stock fue reintegrado."
+                    : order.inventoryTrackingStatus === "kept_as_waste"
+                      ? "El consumo se mantuvo porque los insumos ya se utilizaron."
+                      : "El pedido no había descontado stock."}
+                </span>
+              )}
+
+              {order.cancellationReason && (
+                <span className="admin-order-detail__inventory-result">
+                  Motivo: {order.cancellationReason}
                 </span>
               )}
             </footer>

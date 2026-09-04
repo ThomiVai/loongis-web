@@ -9,7 +9,9 @@ const API_URL =
 export type Admin = {
   id: string;
   email: string;
-  role: "admin";
+  role:
+    | "owner"
+    | "manager";
 };
 
 type LoginResponse = {
@@ -95,4 +97,50 @@ export async function getCurrentAdmin(
   }
 
   return data.data;
+}
+
+export function isOwner(
+  admin: Admin,
+): boolean {
+  return admin.role ===
+    "owner";
+}
+
+export async function changeAdminPassword(
+  token: string,
+  currentPassword: string,
+  newPassword: string,
+): Promise<string> {
+  const response =
+    await fetch(
+      `${API_URL}/api/auth/password`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type":
+            "application/json",
+          Authorization:
+            `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          currentPassword,
+          newPassword,
+        }),
+      },
+    );
+
+  const data =
+    (await response.json()) as {
+      message?: string;
+    };
+
+  if (!response.ok) {
+    throw new Error(
+      data.message ??
+        "No se pudo cambiar la contraseña.",
+    );
+  }
+
+  return data.message ??
+    "Contraseña actualizada.";
 }

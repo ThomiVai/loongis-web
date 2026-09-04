@@ -29,6 +29,7 @@ export type AdminRecipeProductRef =
       | "ingredients"
       | "sizes"
       | "extras"
+      | "choiceGroups"
       | "active"
     >
   | string;
@@ -60,6 +61,13 @@ export type AdminRecipeOptionModifier = {
     AdminRecipeModifierItem[];
 };
 
+export type AdminRecipeChoiceModifier = {
+  groupId: string;
+  optionId: string;
+  items:
+    AdminRecipeModifierItem[];
+};
+
 export type AdminProductRecipe = {
   _id:
     string;
@@ -75,6 +83,9 @@ export type AdminProductRecipe = {
 
   extraModifiers:
     AdminRecipeOptionModifier[];
+
+  choiceModifiers:
+    AdminRecipeChoiceModifier[];
 
   active:
     boolean;
@@ -113,6 +124,13 @@ export type SaveRecipeOptionModifier = {
     SaveRecipeModifierItem[];
 };
 
+export type SaveRecipeChoiceModifier = {
+  groupId: string;
+  optionId: string;
+  items:
+    SaveRecipeModifierItem[];
+};
+
 export type SaveAdminProductRecipeData = {
   baseItems:
     SaveRecipeBaseItem[];
@@ -122,6 +140,9 @@ export type SaveAdminProductRecipeData = {
 
   extraModifiers:
     SaveRecipeOptionModifier[];
+
+  choiceModifiers:
+    SaveRecipeChoiceModifier[];
 
   active:
     boolean;

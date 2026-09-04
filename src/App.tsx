@@ -21,6 +21,8 @@ import { AdminInventory } from "./pages/AdminInventory";
 import { AdminLogin } from "./pages/AdminLogin";
 import { AdminProductEdit } from "./pages/AdminProductEdit";
 import { AdminRecipes } from "./pages/AdminRecipes";
+import { AdminStockCenter } from "./pages/AdminStockCenter";
+import { AdminUsers } from "./pages/AdminUsers";
 import { Cart } from "./pages/Cart";
 import { Checkout } from "./pages/Checkout";
 import { Home } from "./pages/Home";
@@ -156,6 +158,20 @@ function App() {
             path="/admin/recetas"
             element={
               <AdminRecipes />
+            }
+          />
+
+          <Route
+            path="/admin/stock"
+            element={
+              <AdminStockCenter />
+            }
+          />
+
+          <Route
+            path="/admin/usuarios"
+            element={
+              <AdminUsers />
             }
           />
 

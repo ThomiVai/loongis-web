@@ -90,6 +90,44 @@
     var(--color-black);
 }
 
+.admin-inventory__history-filters {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) auto auto;
+  gap: 10px;
+  margin: 18px 0;
+}
+
+.admin-inventory__history-filters select,
+.admin-inventory__history-filters input,
+.admin-inventory__history-filters button {
+  min-height: 42px;
+  padding: 9px 11px;
+  border: 2px solid var(--color-black);
+  border-radius: 11px;
+  background: var(--color-white);
+  color: var(--color-black);
+  font: inherit;
+}
+
+.admin-inventory__history-filters button {
+  background: var(--color-yellow);
+  font-family: "Fredoka", sans-serif;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+@media (max-width: 900px) {
+  .admin-inventory__history-filters {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .admin-inventory__history-filters {
+    grid-template-columns: 1fr;
+  }
+}
+
 .admin-inventory__section-header,
 .admin-inventory__history > header {
   display: flex;

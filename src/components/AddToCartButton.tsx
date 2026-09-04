@@ -53,6 +53,17 @@ export function AddToCartButton({
   }, []);
 
   const handleAddProduct = () => {
+    if (
+      product.available ===
+      false
+    ) {
+      showNotification(
+        `${product.name} está momentáneamente sin stock.`,
+        "error",
+      );
+      return;
+    }
+
     addProduct(product, customization);
 
     setProductAdded(true);
@@ -88,6 +99,10 @@ export function AddToCartButton({
           : `Agregar ${product.name} al pedido`
       }
       onClick={handleAddProduct}
+      disabled={
+        product.available ===
+        false
+      }
     >
       {productAdded ? (
         <FaCheck
@@ -102,7 +117,11 @@ export function AddToCartButton({
       )}
 
       <span>
-        {productAdded ? "Agregado" : label}
+        {product.available === false
+          ? "Agotado"
+          : productAdded
+            ? "Agregado"
+            : label}
       </span>
     </button>
   );

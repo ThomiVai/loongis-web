@@ -1789,6 +1789,27 @@
     rgba(7, 60, 166, 0.18);
 }
 
+.menu-product-card__stock-badge {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 2;
+  padding: 7px 12px;
+  border: 2px solid var(--color-black);
+  border-radius: 999px;
+  background: #ffe4e4;
+  color: #8b1010;
+  font-family: "Fredoka", sans-serif;
+  font-weight: 800;
+  box-shadow: 2px 2px 0 var(--color-black);
+}
+
+.menu-product-card__button:disabled,
+.add-to-cart-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.62;
+}
+
 .menu-product-card__daily-badge
   svg {
   color: var(--color-yellow);

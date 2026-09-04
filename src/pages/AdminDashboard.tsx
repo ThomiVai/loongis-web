@@ -344,11 +344,31 @@ export function AdminDashboard() {
           </Link>
 
           <Link
+            to="/admin/stock"
+            className="admin-dashboard__nav-link"
+          >
+            Centro de stock
+          </Link>
+
+          {admin.role ===
+            "owner" && (
+          <Link
             to="/admin/recetas"
             className="admin-dashboard__nav-link"
           >
             Recetas
           </Link>
+          )}
+
+          {admin.role ===
+            "owner" && (
+            <Link
+              to="/admin/usuarios"
+              className="admin-dashboard__nav-link"
+            >
+              Accesos
+            </Link>
+          )}
         </nav>
 
         <AdminStoreControl />
@@ -395,12 +415,15 @@ export function AdminDashboard() {
                   </span>
                 )}
 
+              {admin.role ===
+                "owner" && (
               <Link
                 to="/admin/productos/nuevo/editar"
                 className="admin-products__new"
               >
                 + Nuevo producto
               </Link>
+              )}
             </div>
           </header>
 
@@ -560,6 +583,8 @@ export function AdminDashboard() {
                               ACCIONES
                           =================== */}
 
+                          {admin.role ===
+                            "owner" && (
                           <div className="admin-product__actions">
 
                             <Link
@@ -590,6 +615,7 @@ export function AdminDashboard() {
                             </button>
 
                           </div>
+                          )}
                         </div>
                       </article>
                     );

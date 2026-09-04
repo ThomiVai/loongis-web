@@ -25,6 +25,26 @@ export type AdminProductOption = {
   priceModifier: number;
 };
 
+export type AdminProductChoiceOption = {
+  id: string;
+  label: string;
+  kind:
+    | "burger"
+    | "beverage";
+  productLegacyId?: number;
+  sizeId?:
+    | "simple"
+    | "doble";
+  ingredients: string[];
+};
+
+export type AdminProductChoiceGroup = {
+  id: string;
+  label: string;
+  options:
+    AdminProductChoiceOption[];
+};
+
 export type DailyComboBurgerId =
   | "solo-queso"
   | "clasic"
@@ -56,6 +76,8 @@ export type AdminProduct = {
   sizes: AdminProductOption[];
   extras: AdminProductOption[];
   ingredients: string[];
+  choiceGroups:
+    AdminProductChoiceGroup[];
   dailyComboBurgerId?:
     DailyComboBurgerId;
 

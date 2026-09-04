@@ -30,6 +30,7 @@ import type {
   AdminIngredient,
   AdminIngredientUnit,
   AdminInventoryMovement,
+  AdminInventoryMovementType,
 } from "../services/adminInventoryApi";
 
 import {
@@ -105,6 +106,8 @@ function getMovementLabel(
       return "Ajuste";
     case "sale":
       return "Venta";
+    case "reversal":
+      return "Reintegro";
   }
 }
 
@@ -175,14 +178,26 @@ type NewIngredientForm = {
   unit: AdminIngredientUnit;
   stock: string;
   minimumStock: string;
+  targetStock: string;
   unitCost: string;
+  purchaseUnitLabel: string;
+  purchaseUnitFactor: string;
+  category: string;
+  storageLocation: string;
+  trackExpiration: boolean;
 };
 
 type EditIngredientForm = {
   name: string;
   unit: AdminIngredientUnit;
   minimumStock: string;
+  targetStock: string;
   unitCost: string;
+  purchaseUnitLabel: string;
+  purchaseUnitFactor: string;
+  category: string;
+  storageLocation: string;
+  trackExpiration: boolean;
   active: boolean;
 };
 
@@ -195,6 +210,8 @@ type MovementForm = {
   mode: MovementMode;
   value: string;
   note: string;
+  batchNumber: string;
+  expirationDate: string;
 };
 
 /* ========================================
@@ -228,6 +245,15 @@ export function AdminInventory() {
     useState<
       AdminInventoryMovement[]
     >([]);
+
+  const [historyType, setHistoryType] =
+    useState<AdminInventoryMovementType | "">("");
+  const [historyIngredient, setHistoryIngredient] =
+    useState("");
+  const [historyFrom, setHistoryFrom] =
+    useState("");
+  const [historyTo, setHistoryTo] =
+    useState("");
 
   const [
     loading,
@@ -264,7 +290,13 @@ export function AdminInventory() {
       unit: "unit",
       stock: "0",
       minimumStock: "0",
+      targetStock: "0",
       unitCost: "0",
+      purchaseUnitLabel: "",
+      purchaseUnitFactor: "1",
+      category: "",
+      storageLocation: "",
+      trackExpiration: false,
     });
 
   const [
@@ -283,7 +315,13 @@ export function AdminInventory() {
       name: "",
       unit: "unit",
       minimumStock: "0",
+      targetStock: "0",
       unitCost: "0",
+      purchaseUnitLabel: "",
+      purchaseUnitFactor: "1",
+      category: "",
+      storageLocation: "",
+      trackExpiration: false,
       active: true,
     });
 
@@ -309,6 +347,8 @@ export function AdminInventory() {
       mode: "restock",
       value: "",
       note: "",
+      batchNumber: "",
+      expirationDate: "",
     });
 
   const [
@@ -513,6 +553,99 @@ export function AdminInventory() {
       }
     };
 
+  const applyHistoryFilters =
+    async () => {
+      if (!token) return;
+
+      setRefreshing(true);
+      setError(null);
+      try {
+        setMovements(
+          await getAdminInventoryMovements(
+            token,
+            500,
+            {
+              ingredientId:
+                historyIngredient ||
+                undefined,
+              type:
+                historyType ||
+                undefined,
+              from:
+                historyFrom ||
+                undefined,
+              to:
+                historyTo ||
+                undefined,
+            },
+          ),
+        );
+      } catch (filterError) {
+        setError(
+          filterError instanceof Error
+            ? filterError.message
+            : "No se pudo filtrar el historial.",
+        );
+      } finally {
+        setRefreshing(false);
+      }
+    };
+
+  const exportHistory = () => {
+    const escape = (
+      value: string | number | undefined,
+    ) =>
+      `"${String(value ?? "").replace(/"/g, '""')}"`;
+
+    const rows = [
+      [
+        "Fecha",
+        "Insumo",
+        "Movimiento",
+        "Cambio",
+        "Stock anterior",
+        "Stock nuevo",
+        "Administrador",
+        "Nota",
+      ],
+      ...movements.map((movement) => [
+        movement.createdAt ?? "",
+        getIngredientName(movement),
+        getMovementLabel(movement.type),
+        movement.change,
+        movement.previousStock,
+        movement.newStock,
+        movement.performedByEmail ?? "",
+        movement.note ?? "",
+      ]),
+    ];
+
+    const csv =
+      rows
+        .map((row) =>
+          row.map(escape).join(";"),
+        )
+        .join("\n");
+
+    const url =
+      URL.createObjectURL(
+        new Blob(
+          [`\uFEFF${csv}`],
+          {
+            type: "text/csv;charset=utf-8",
+          },
+        ),
+      );
+
+    const anchor =
+      document.createElement("a");
+    anchor.href = url;
+    anchor.download =
+      `loongis-movimientos-${new Date().toISOString().slice(0, 10)}.csv`;
+    anchor.click();
+    URL.revokeObjectURL(url);
+  };
+
   /* ========================================
      CREAR INSUMO
   ======================================== */
@@ -543,6 +676,17 @@ export function AdminInventory() {
           newIngredient.unitCost,
         );
 
+      const targetStock =
+        Number(
+          newIngredient.targetStock,
+        );
+
+      const purchaseUnitFactor =
+        Number(
+          newIngredient
+            .purchaseUnitFactor,
+        );
+
       if (
         !newIngredient.name.trim() ||
         !Number.isFinite(stock) ||
@@ -555,6 +699,14 @@ export function AdminInventory() {
           unitCost,
         ) ||
         unitCost < 0
+        || !Number.isFinite(
+          targetStock,
+        )
+        || targetStock < 0
+        || !Number.isFinite(
+          purchaseUnitFactor,
+        )
+        || purchaseUnitFactor <= 0
       ) {
         setError(
           "Revisá los datos del nuevo insumo.",
@@ -581,7 +733,32 @@ export function AdminInventory() {
 
               minimumStock,
 
+              targetStock,
+
               unitCost,
+
+              purchaseUnitLabel:
+                newIngredient
+                  .purchaseUnitLabel
+                  .trim() ||
+                undefined,
+
+              purchaseUnitFactor,
+
+              category:
+                newIngredient.category
+                  .trim() ||
+                undefined,
+
+              storageLocation:
+                newIngredient
+                  .storageLocation
+                  .trim() ||
+                undefined,
+
+              trackExpiration:
+                newIngredient
+                  .trackExpiration,
 
               active: true,
 
@@ -618,7 +795,13 @@ export function AdminInventory() {
           unit: "unit",
           stock: "0",
           minimumStock: "0",
+          targetStock: "0",
           unitCost: "0",
+          purchaseUnitLabel: "",
+          purchaseUnitFactor: "1",
+          category: "",
+          storageLocation: "",
+          trackExpiration: false,
         });
       } catch (createError) {
         setError(
@@ -655,10 +838,38 @@ export function AdminInventory() {
           ingredient.minimumStock,
         ),
 
+      targetStock:
+        String(
+          ingredient.targetStock ??
+            ingredient.minimumStock,
+        ),
+
       unitCost:
         String(
           ingredient.unitCost,
         ),
+
+      purchaseUnitLabel:
+        ingredient.purchaseUnitLabel ??
+        "",
+
+      purchaseUnitFactor:
+        String(
+          ingredient.purchaseUnitFactor ??
+            1,
+        ),
+
+      category:
+        ingredient.category ??
+        "",
+
+      storageLocation:
+        ingredient.storageLocation ??
+        "",
+
+      trackExpiration:
+        ingredient.trackExpiration ??
+        false,
 
       active:
         ingredient.active,
@@ -689,6 +900,17 @@ export function AdminInventory() {
           editForm.unitCost,
         );
 
+      const targetStock =
+        Number(
+          editForm.targetStock,
+        );
+
+      const purchaseUnitFactor =
+        Number(
+          editForm
+            .purchaseUnitFactor,
+        );
+
       if (
         !editForm.name.trim() ||
         !Number.isFinite(
@@ -699,6 +921,14 @@ export function AdminInventory() {
           unitCost,
         ) ||
         unitCost < 0
+        || !Number.isFinite(
+          targetStock,
+        )
+        || targetStock < 0
+        || !Number.isFinite(
+          purchaseUnitFactor,
+        )
+        || purchaseUnitFactor <= 0
       ) {
         setError(
           "Revisá los datos del insumo.",
@@ -724,7 +954,32 @@ export function AdminInventory() {
 
               minimumStock,
 
+              targetStock,
+
               unitCost,
+
+              purchaseUnitLabel:
+                editForm
+                  .purchaseUnitLabel
+                  .trim() ||
+                undefined,
+
+              purchaseUnitFactor,
+
+              category:
+                editForm.category
+                  .trim() ||
+                undefined,
+
+              storageLocation:
+                editForm
+                  .storageLocation
+                  .trim() ||
+                undefined,
+
+              trackExpiration:
+                editForm
+                  .trackExpiration,
 
               active:
                 editForm.active,
@@ -782,6 +1037,8 @@ export function AdminInventory() {
             )
           : "",
       note: "",
+      batchNumber: "",
+      expirationDate: "",
     });
   };
 
@@ -851,6 +1108,13 @@ export function AdminInventory() {
                     value,
                   note:
                     movementForm.note.trim() ||
+                    undefined,
+                  batchNumber:
+                    movementForm.batchNumber
+                      .trim() ||
+                    undefined,
+                  expirationDate:
+                    movementForm.expirationDate ||
                     undefined,
                 },
           );
@@ -966,12 +1230,30 @@ export function AdminInventory() {
             Inventario
           </Link>
 
+          {admin.role === "owner" && (
           <Link
             to="/admin/recetas"
             className="admin-dashboard__nav-link"
           >
             Recetas
           </Link>
+          )}
+
+          <Link
+            to="/admin/stock"
+            className="admin-dashboard__nav-link"
+          >
+            Centro de stock
+          </Link>
+
+          {admin.role === "owner" && (
+            <Link
+              to="/admin/usuarios"
+              className="admin-dashboard__nav-link"
+            >
+              Accesos
+            </Link>
+          )}
         </nav>
 
         {error && (
@@ -1026,19 +1308,21 @@ export function AdminInventory() {
                 </strong>
               </article>
 
-              <article>
-                <span>
-                  Valor estimado
-                </span>
+              {admin.role === "owner" && (
+                <article>
+                  <span>
+                    Valor estimado
+                  </span>
 
-                <strong>
-                  {
-                    currencyFormatter.format(
-                      inventoryValue,
-                    )
-                  }
-                </strong>
-              </article>
+                  <strong>
+                    {
+                      currencyFormatter.format(
+                        inventoryValue,
+                      )
+                    }
+                  </strong>
+                </article>
+              )}
             </section>
 
             <section className="admin-inventory__panel">
@@ -1073,6 +1357,8 @@ export function AdminInventory() {
                 </button>
               </header>
 
+              {admin.role ===
+                "owner" && (
               <form
                 className="admin-inventory__create"
                 onSubmit={
@@ -1242,6 +1528,128 @@ export function AdminInventory() {
                       required
                     />
                   </label>
+
+                  <label>
+                    <span>
+                      Stock objetivo
+                    </span>
+
+                    <input
+                      type="number"
+                      min="0"
+                      step="0.01"
+                      value={
+                        newIngredient.targetStock
+                      }
+                      onChange={(event) =>
+                        setNewIngredient((current) => ({
+                          ...current,
+                          targetStock: event.target.value,
+                        }))
+                      }
+                      required
+                    />
+                  </label>
+
+                  <label>
+                    <span>
+                      Presentación de compra
+                    </span>
+
+                    <input
+                      type="text"
+                      value={
+                        newIngredient.purchaseUnitLabel
+                      }
+                      onChange={(event) =>
+                        setNewIngredient((current) => ({
+                          ...current,
+                          purchaseUnitLabel: event.target.value,
+                        }))
+                      }
+                      placeholder="Ej. bolsa, caja"
+                    />
+                  </label>
+
+                  <label>
+                    <span>
+                      Unidades base por presentación
+                    </span>
+
+                    <input
+                      type="number"
+                      min="0.000001"
+                      step="0.01"
+                      value={
+                        newIngredient.purchaseUnitFactor
+                      }
+                      onChange={(event) =>
+                        setNewIngredient((current) => ({
+                          ...current,
+                          purchaseUnitFactor: event.target.value,
+                        }))
+                      }
+                      required
+                    />
+                  </label>
+
+                  <label>
+                    <span>
+                      Categoría
+                    </span>
+
+                    <input
+                      type="text"
+                      value={
+                        newIngredient.category
+                      }
+                      onChange={(event) =>
+                        setNewIngredient((current) => ({
+                          ...current,
+                          category: event.target.value,
+                        }))
+                      }
+                      placeholder="Opcional"
+                    />
+                  </label>
+
+                  <label>
+                    <span>
+                      Ubicación
+                    </span>
+
+                    <input
+                      type="text"
+                      value={
+                        newIngredient.storageLocation
+                      }
+                      onChange={(event) =>
+                        setNewIngredient((current) => ({
+                          ...current,
+                          storageLocation: event.target.value,
+                        }))
+                      }
+                      placeholder="Ej. freezer 1"
+                    />
+                  </label>
+
+                  <label className="admin-inventory-modal__checkbox">
+                    <input
+                      type="checkbox"
+                      checked={
+                        newIngredient.trackExpiration
+                      }
+                      onChange={(event) =>
+                        setNewIngredient((current) => ({
+                          ...current,
+                          trackExpiration: event.target.checked,
+                        }))
+                      }
+                    />
+                    <span>
+                      Controlar vencimientos
+                    </span>
+                  </label>
                 </div>
 
                 <button
@@ -1256,6 +1664,7 @@ export function AdminInventory() {
                     : "+ Crear insumo"}
                 </button>
               </form>
+              )}
 
               <div className="admin-inventory__list">
                 {ingredients.length ===
@@ -1328,10 +1737,14 @@ export function AdminInventory() {
                                 {getUnitLabel(
                                   ingredient.unit,
                                 )}
-                                {" · "}
-                                Costo:{" "}
-                                {currencyFormatter.format(
-                                  ingredient.unitCost,
+                                {admin.role === "owner" && (
+                                  <>
+                                    {" · "}
+                                    Costo:{" "}
+                                    {currencyFormatter.format(
+                                      ingredient.unitCost,
+                                    )}
+                                  </>
                                 )}
                               </p>
                             </div>
@@ -1402,6 +1815,8 @@ export function AdminInventory() {
                               − Merma
                             </button>
 
+                            {admin.role ===
+                              "owner" && (
                             <button
                               type="button"
                               onClick={() =>
@@ -1413,7 +1828,10 @@ export function AdminInventory() {
                             >
                               Ajustar
                             </button>
+                            )}
 
+                            {admin.role ===
+                              "owner" && (
                             <button
                               type="button"
                               onClick={() =>
@@ -1424,6 +1842,7 @@ export function AdminInventory() {
                             >
                               Editar
                             </button>
+                            )}
                           </div>
                         </article>
                       );
@@ -1445,6 +1864,44 @@ export function AdminInventory() {
                   </h2>
                 </div>
               </header>
+
+              <div className="admin-inventory__history-filters">
+                <select
+                  value={historyIngredient}
+                  onChange={(event) => setHistoryIngredient(event.target.value)}
+                  aria-label="Filtrar por insumo"
+                >
+                  <option value="">Todos los insumos</option>
+                  {ingredients.map((ingredient) => (
+                    <option key={ingredient._id} value={ingredient._id}>
+                      {ingredient.name}
+                    </option>
+                  ))}
+                </select>
+
+                <select
+                  value={historyType}
+                  onChange={(event) => setHistoryType(event.target.value as AdminInventoryMovementType | "")}
+                  aria-label="Filtrar por movimiento"
+                >
+                  <option value="">Todos los movimientos</option>
+                  <option value="initial">Stock inicial</option>
+                  <option value="restock">Reposición</option>
+                  <option value="waste">Merma</option>
+                  <option value="adjustment">Ajuste</option>
+                  <option value="sale">Venta</option>
+                  <option value="reversal">Reintegro</option>
+                </select>
+
+                <input type="date" value={historyFrom} onChange={(event) => setHistoryFrom(event.target.value)} aria-label="Fecha desde" />
+                <input type="date" value={historyTo} onChange={(event) => setHistoryTo(event.target.value)} aria-label="Fecha hasta" />
+                <button type="button" onClick={() => void applyHistoryFilters()} disabled={refreshing}>
+                  Aplicar filtros
+                </button>
+                <button type="button" onClick={exportHistory} disabled={movements.length === 0}>
+                  Exportar CSV
+                </button>
+              </div>
 
               {movements.length ===
               0 ? (
@@ -1491,6 +1948,12 @@ export function AdminInventory() {
                               {
                                 movement.note
                               }
+                            </small>
+                          )}
+
+                          {movement.performedByEmail && (
+                            <small>
+                              Registrado por {movement.performedByEmail}
                             </small>
                           )}
                         </div>
@@ -1690,6 +2153,114 @@ export function AdminInventory() {
                   />
                 </label>
 
+                <label>
+                  <span>
+                    Stock objetivo
+                  </span>
+
+                  <input
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    value={editForm.targetStock}
+                    onChange={(event) =>
+                      setEditForm((current) => ({
+                        ...current,
+                        targetStock: event.target.value,
+                      }))
+                    }
+                    required
+                  />
+                </label>
+
+                <label>
+                  <span>
+                    Presentación de compra
+                  </span>
+
+                  <input
+                    type="text"
+                    value={editForm.purchaseUnitLabel}
+                    onChange={(event) =>
+                      setEditForm((current) => ({
+                        ...current,
+                        purchaseUnitLabel: event.target.value,
+                      }))
+                    }
+                    placeholder="Ej. bolsa, caja"
+                  />
+                </label>
+
+                <label>
+                  <span>
+                    Unidades base por presentación
+                  </span>
+
+                  <input
+                    type="number"
+                    min="0.000001"
+                    step="0.01"
+                    value={editForm.purchaseUnitFactor}
+                    onChange={(event) =>
+                      setEditForm((current) => ({
+                        ...current,
+                        purchaseUnitFactor: event.target.value,
+                      }))
+                    }
+                    required
+                  />
+                </label>
+
+                <label>
+                  <span>
+                    Categoría
+                  </span>
+
+                  <input
+                    type="text"
+                    value={editForm.category}
+                    onChange={(event) =>
+                      setEditForm((current) => ({
+                        ...current,
+                        category: event.target.value,
+                      }))
+                    }
+                  />
+                </label>
+
+                <label>
+                  <span>
+                    Ubicación
+                  </span>
+
+                  <input
+                    type="text"
+                    value={editForm.storageLocation}
+                    onChange={(event) =>
+                      setEditForm((current) => ({
+                        ...current,
+                        storageLocation: event.target.value,
+                      }))
+                    }
+                  />
+                </label>
+
+                <label className="admin-inventory-modal__checkbox">
+                  <input
+                    type="checkbox"
+                    checked={editForm.trackExpiration}
+                    onChange={(event) =>
+                      setEditForm((current) => ({
+                        ...current,
+                        trackExpiration: event.target.checked,
+                      }))
+                    }
+                  />
+                  <span>
+                    Controlar vencimientos
+                  </span>
+                </label>
+
                 <label className="admin-inventory-modal__checkbox">
                   <input
                     type="checkbox"
@@ -1853,6 +2424,64 @@ export function AdminInventory() {
                     placeholder="Opcional"
                   />
                 </label>
+
+                {movementForm.mode ===
+                  "restock" && (
+                  <>
+                    <label>
+                      <span>
+                        Lote
+                      </span>
+
+                      <input
+                        type="text"
+                        value={
+                          movementForm.batchNumber
+                        }
+                        onChange={(
+                          event,
+                        ) =>
+                          setMovementForm(
+                            (
+                              current,
+                            ) => ({
+                              ...current,
+                              batchNumber:
+                                event.target.value,
+                            }),
+                          )
+                        }
+                        placeholder="Opcional"
+                      />
+                    </label>
+
+                    <label>
+                      <span>
+                        Vencimiento
+                      </span>
+
+                      <input
+                        type="date"
+                        value={
+                          movementForm.expirationDate
+                        }
+                        onChange={(
+                          event,
+                        ) =>
+                          setMovementForm(
+                            (
+                              current,
+                            ) => ({
+                              ...current,
+                              expirationDate:
+                                event.target.value,
+                            }),
+                          )
+                        }
+                      />
+                    </label>
+                  </>
+                )}
 
                 <div className="admin-inventory-modal__actions">
                   <button
