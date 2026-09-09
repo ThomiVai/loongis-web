@@ -555,3 +555,9 @@ export async function getAdminInventoryMovements(
 
   return data.data;
 }
+
+export async function saveIngredientBatch(token: string, rows: unknown[], mode: "import" | "batch"): Promise<{count:number}> {
+  const response = await fetch(`${API_URL}/api/inventory/ingredients/${mode}`, {method: mode === "import" ? "POST" : "PATCH", headers:getAdminHeaders(token), body:JSON.stringify({rows})});
+  if(!response.ok) throw new Error(await getErrorMessage(response,"No se pudo guardar la operación."));
+  return (await response.json()).data;
+}

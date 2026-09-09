@@ -1,3 +1,4 @@
+import { IngredientBatchTools } from "../components/IngredientBatchTools";
 import {
   useEffect,
   useMemo,
@@ -1356,6 +1357,8 @@ export function AdminInventory() {
                     : "Actualizar"}
                 </button>
               </header>
+
+              {admin.role === "owner" && token && <IngredientBatchTools token={token} ingredients={ingredients} onSaved={handleRefresh} />}
 
               {admin.role ===
                 "owner" && (

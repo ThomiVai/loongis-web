@@ -1,3 +1,4 @@
+import { readOrderReceipt, saveOrderReceipt, clearOrderReceipt, type OrderReceipt } from "../utils/orderAttempt";
 import {
   useState,
   type ChangeEvent,
@@ -326,6 +327,7 @@ export function Checkout() {
     detailLabel,
   } = useStoreStatus();
 
+  const [receipt,setReceipt] = useState<OrderReceipt|null>(readOrderReceipt);
   const [
     form,
     setForm,
@@ -796,9 +798,9 @@ export function Checkout() {
            ABRIR WHATSAPP
         ======================================== */
 
-        window.location.assign(
-          whatsappUrl,
-        );
+        const registered = {orderNumber:createdOrder.orderNumber,whatsappUrl,expires:Date.now()+8*60*60*1000};
+        saveOrderReceipt(registered);setReceipt(registered);
+        window.location.assign(whatsappUrl);
       } catch (error) {
         setOrderError(
           error instanceof Error
@@ -816,6 +818,9 @@ export function Checkout() {
      CARRITO VACÍO
   ======================================== */
 
+  if (receipt) {
+    return <main className="checkout-page"><div className="checkout-page__container"><section className="checkout-empty" aria-labelledby="receipt-title"><h1 id="receipt-title">Pedido #{receipt.orderNumber} registrado</h1><p>Falta la confirmación del local. Si todavía no lo hiciste, enviá el mensaje preparado por WhatsApp para coordinar el envío y el total.</p><a className="checkout-empty__button" href={receipt.whatsappUrl}>Volver a WhatsApp con este pedido</a><p>Este enlace retoma el pedido existente. No registra otro.</p><Link to="/menu">Volver al menú</Link><p><button type="button" onClick={()=>{if(window.confirm("¿Empezar otro pedido? El anterior seguirá registrado; esto no lo cancela. Revisá el carrito antes de enviarlo.")){clearOrderReceipt();setReceipt(null);}}}>Empezar otro pedido</button></p></section></div></main>;
+  }
   if (
     checkoutItems.length ===
     0
@@ -1202,10 +1207,7 @@ export function Checkout() {
               className="checkout-form__notice"
               id="checkout-whatsapp-notice"
             >
-              Primero registramos el
-              pedido y luego se abrirá
-              WhatsApp con el mensaje
-              preparado.
+              Registramos tu pedido y abrimos WhatsApp. Enviá el mensaje preparado y esperá la confirmación del local. El costo de envío y el total final se coordinan por ese medio.
             </p>
           </form>
 

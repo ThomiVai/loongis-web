@@ -1,0 +1,11 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { importHeaders, parseIngredientImport, parseDelimited } from '../src/utils/ingredientImport.ts';
+import { getOrderRequestKey, clearOrderAttempt } from '../src/utils/orderAttempt.ts';
+const head=importHeaders.join(';');
+const valid='Pan brioche;unidad;48;10;72;500,50;Caja;24;Pan;Depósito;si';
+test('CSV de Excel con BOM y coma decimal',()=>{const r=parseIngredientImport('\uFEFF'+head+'\r\n'+valid,[]);assert.deepEqual(r.errors,[]);assert.equal(r.rows[0].unitCost,500.5);assert.equal(r.rows[0].stock,48);});
+test('pegar celdas tabuladas, comillas y saltos dentro de una celda',()=>{assert.deepEqual(parseDelimited('a\tb\n"Caja\n24"\t"a""b"'),[['a','b'],['Caja\n24','a"b']]);});
+test('duplicados entre archivo y existentes, unidad inválida y stock vacío',()=>{assert.equal(parseIngredientImport(head+'\n'+valid+'\n'+valid,[]).errors.length,1);assert.equal(parseIngredientImport(head+'\n'+valid,[{name:'Pán Brioche'}]).errors.length,1);assert.ok(parseIngredientImport(head+'\n'+valid.replace(';unidad;',';caja;'),[]).errors.length);assert.ok(parseIngredientImport(head+'\n'+valid.replace(';48;',';;'),[]).errors.length);});
+test('no acepta miles ambiguos ni archivo incompleto',()=>{assert.ok(parseIngredientImport(head+'\n'+valid.replace('500,50','1.500,50'),[]).errors.length);assert.throws(()=>parseDelimited('a;b\n"sin cerrar'));assert.throws(()=>parseIngredientImport(head,[]));});
+test('reintentos conservan clave y un pedido distinto recibe otra',async()=>{clearOrderAttempt();const a=await getOrderRequestKey({items:[1]});assert.equal(await getOrderRequestKey({items:[1]}),a);assert.notEqual(await getOrderRequestKey({items:[2]}),a);clearOrderAttempt();assert.notEqual(await getOrderRequestKey({items:[1]}),a);});

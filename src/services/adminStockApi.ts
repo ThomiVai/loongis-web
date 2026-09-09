@@ -32,6 +32,7 @@ export type AdminPurchaseLine = {
 
 export type AdminPurchase = {
   _id: string;
+  supplier?: string;
   supplierName?: string;
   invoiceNumber?: string;
   purchasedAt: string;
@@ -297,3 +298,8 @@ export function getAdminInventoryReport(
     token,
   );
 }
+
+export type PurchaseTemplate = { _id:string; name:string; supplierId?:string; lines:Array<{ingredientId:string;presentationQuantity:number;presentationLabel:string;conversionFactor:number}> };
+export const getPurchaseTemplates = (token:string):Promise<PurchaseTemplate[]> => request('/api/inventory/purchase-templates',token);
+export const savePurchaseTemplate = (token:string, data:Omit<PurchaseTemplate,'_id'>):Promise<PurchaseTemplate> => request('/api/inventory/purchase-templates',token,{method:'POST',body:JSON.stringify(data)});
+export const deletePurchaseTemplate = (token:string,id:string):Promise<null> => request(`/api/inventory/purchase-templates/${id}`,token,{method:'DELETE'});

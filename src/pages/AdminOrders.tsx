@@ -270,10 +270,13 @@ export function AdminOrders() {
       }
     }
 
-    void loadOrders();
-
+    let running = false;
+    const refresh = async () => { if (running) return; running = true; try { await loadOrders(); } finally { running = false; } };
+    void refresh();
+    const interval = window.setInterval(() => void refresh(), 20000);
     return () => {
       cancelled = true;
+      window.clearInterval(interval);
     };
   }, [
     filter,
