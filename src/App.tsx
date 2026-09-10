@@ -1,3 +1,4 @@
+import { AdminSales } from "./pages/AdminSales";
 import {
   Route,
   Routes,
@@ -133,6 +134,7 @@ function App() {
             }
           />
 
+          <Route path="/admin/ventas" element={<AdminSales />} />
           <Route
             path="/admin/pedidos"
             element={

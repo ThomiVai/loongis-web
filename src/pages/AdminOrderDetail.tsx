@@ -1,3 +1,4 @@
+import { OrderStatusDialog } from "../components/OrderStatusDialog";
 import {
   useEffect,
   useState,
@@ -136,6 +137,8 @@ function isAuthError(
 ======================================== */
 
 export function AdminOrderDetail() {
+  const [statusDialog, setStatusDialog] = useState<"confirmed" | "cancelled" | null>(null);
+  const [statusMessage, setStatusMessage] = useState("");
   const navigate =
     useNavigate();
 
@@ -289,6 +292,8 @@ export function AdminOrderDetail() {
       nextStatus:
         | "confirmed"
         | "cancelled",
+      restoreInventory = false,
+      reason = "",
     ) => {
       if (
         !order ||
@@ -296,37 +301,6 @@ export function AdminOrderDetail() {
       ) {
         return;
       }
-
-      const confirmationMessage =
-        nextStatus ===
-        "confirmed"
-          ? `¿Seguro que querés confirmar el pedido #${order.orderNumber}? Si el control de stock está activo, se descontarán los insumos según las recetas configuradas.`
-          : `¿Seguro que querés cancelar el pedido #${order.orderNumber}?`;
-
-      const confirmed =
-        window.confirm(
-          confirmationMessage,
-        );
-
-      if (!confirmed) {
-        return;
-      }
-
-      const restoreInventory =
-        nextStatus === "cancelled" &&
-        order.status === "confirmed" &&
-        order.inventoryTrackingStatus === "deducted"
-          ? window.confirm(
-              "¿Los insumos NO llegaron a utilizarse?\n\nAceptar: reintegrar el stock.\nCancelar: mantener el consumo porque la comida ya se preparó.",
-            )
-          : false;
-
-      const reason =
-        nextStatus === "cancelled"
-          ? window.prompt(
-              "Motivo de la cancelación (opcional):",
-            ) ?? undefined
-          : undefined;
 
       setChangingStatus(
         nextStatus,
@@ -350,6 +324,8 @@ export function AdminOrderDetail() {
         setOrder(
           updatedOrder,
         );
+        setStatusDialog(null);
+        setStatusMessage(nextStatus === "cancelled" ? "Pedido cancelado correctamente." : "Pedido confirmado correctamente.");
       } catch (updateError) {
         const message =
           updateError instanceof Error
@@ -554,6 +530,8 @@ export function AdminOrderDetail() {
           ← Volver a pedidos
         </Link>
 
+        {statusMessage && <p role="status">{statusMessage}</p>}
+        {statusDialog && <OrderStatusDialog order={order} status={statusDialog} busy={changingStatus !== null} error={error} onClose={() => { setStatusDialog(null); setError(null); }} onConfirm={(restore, reason) => void handleStatusChange(statusDialog, restore, reason)} />}
         <article className="admin-order-detail">
           <header className="admin-order-detail__header">
             <div>
@@ -852,9 +830,7 @@ export function AdminOrderDetail() {
                 type="button"
                 className="admin-order-detail__confirm"
                 onClick={() =>
-                  void handleStatusChange(
-                    "confirmed",
-                  )
+                  setStatusDialog("confirmed")
                 }
                 disabled={
                   changingStatus !==
@@ -872,9 +848,7 @@ export function AdminOrderDetail() {
                 type="button"
                 className="admin-order-detail__cancel"
                 onClick={() =>
-                  void handleStatusChange(
-                    "cancelled",
-                  )
+                  setStatusDialog("cancelled")
                 }
                 disabled={
                   changingStatus !==
