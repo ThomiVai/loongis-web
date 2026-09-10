@@ -39,7 +39,7 @@ test('recorrido de combo a comprobante conserva personalización y evita otro pe
  await page.route('**/api/products',route=>route.fulfill({json:{success:true,data:[product]}}));
  await page.route('**/api/products/102',route=>route.fulfill({json:{success:true,data:product}}));
  await page.route('**/api/store/status',route=>route.fulfill({json:{success:true,data:{canOrder:true,scheduleOpen:true,state:'open',statusLabel:'Abierto',detailLabel:'Prueba',orderMode:'open'}}}));
- await page.route('https://wa.me/**',route=>route.fulfill({status:200,contentType:'text/html',body:'<p>WhatsApp simulado. No se envió ningún mensaje.</p>'}));
+ await page.route('https://wa.me/**',route=>route.fulfill({status:200,contentType:'text/html; charset=utf-8',body:'<p>WhatsApp simulado. No se envió ningún mensaje.</p>'}));
  await page.route('**/api/orders',async route=>{
   if(route.request().method()!=='POST'){await route.fulfill({json:{success:true,data:[]}});return;}
   writes++;payload=route.request().postDataJSON();
