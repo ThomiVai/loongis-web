@@ -1,3 +1,4 @@
+import { getOrderRequestKey } from "../utils/orderAttempt";
 const API_URL =
   import.meta.env.VITE_API_URL ??
   "http://localhost:3000";
@@ -161,6 +162,7 @@ type CreateOrderResponse = {
 export async function createOrder(
   orderData: CreateOrderData,
 ): Promise<CreatedOrder> {
+  const requestKey = await getOrderRequestKey(orderData);
   const response =
     await fetch(
       `${API_URL}/api/orders`,
@@ -174,7 +176,7 @@ export async function createOrder(
 
         body:
           JSON.stringify(
-            orderData,
+            {...orderData, requestKey},
           ),
       },
     );

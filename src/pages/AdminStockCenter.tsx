@@ -1,3 +1,4 @@
+import { getPurchaseTemplates, savePurchaseTemplate, deletePurchaseTemplate, type PurchaseTemplate } from "../services/adminStockApi";
 import {
   useEffect,
   useMemo,
@@ -110,7 +111,7 @@ function emptyPurchaseRow(
         ingredient
           ?.purchaseUnitFactor ?? 1,
       ),
-    totalCost: "0",
+    totalCost: "",
     batchNumber: "",
     expirationDate: "",
   };
@@ -140,6 +141,10 @@ export function AdminStockCenter() {
 
   const token =
     getAdminToken();
+
+  const [templates,setTemplates] = useState<PurchaseTemplate[]>([]);
+  const [templateName,setTemplateName] = useState("");
+  const [selectedTemplate,setSelectedTemplate] = useState("");
 
   const [ingredients, setIngredients] =
     useState<AdminIngredient[]>([]);
@@ -215,12 +220,14 @@ export function AdminStockCenter() {
           purchaseData,
           countData,
           alertData,
+          templateData,
         ] = await Promise.all([
           getAdminIngredients(token),
           getAdminSuppliers(token),
           getAdminPurchases(token),
           getAdminInventoryCounts(token),
           getAdminInventoryAlerts(token),
+          getPurchaseTemplates(token),
         ]);
 
         setIngredients(
@@ -234,13 +241,14 @@ export function AdminStockCenter() {
         );
         setCounts(countData);
         setAlerts(alertData);
+        setTemplates(templateData);
         setCountValues(
           Object.fromEntries(
             ingredientData
               .filter((item) => item.active)
               .map((item) => [
                 item._id,
-                String(item.stock),
+                "",
               ]),
           ),
         );
@@ -373,6 +381,35 @@ export function AdminStockCenter() {
     );
   };
 
+  const preparePurchaseDraft = (source: PurchaseTemplate | AdminPurchase) => {
+    if (saving) return;
+    if (purchaseRows.some(row => row.ingredientId) && !window.confirm("¿Reemplazar el borrador actual de compra?")) return;
+    const sourceLines = source.lines.map(line => {
+      const ingredientId = "ingredientId" in line ? line.ingredientId : line.ingredient;
+      if (!ingredients.some(item => item._id === ingredientId && item.active)) throw new Error("La compra contiene un insumo inactivo o eliminado. Revisala antes de repetirla.");
+      return { ingredientId, presentationQuantity:String(line.presentationQuantity), presentationLabel:line.presentationLabel, conversionFactor:String(line.conversionFactor), totalCost:"", batchNumber:"", expirationDate:"" };
+    });
+    const supplierId = "supplierId" in source ? source.supplierId : "supplier" in source ? source.supplier : undefined;
+    setPurchaseSupplier(suppliers.some(item => item._id === supplierId && item.active) ? supplierId! : "");
+    setPurchaseRows(sourceLines); setInvoiceNumber(""); setPurchaseDate(dateInput()); setPurchaseNotes(""); setError(null);
+    setSuccess("Borrador preparado. Completá los costos actuales, lote y vencimiento. El stock todavía no cambió.");
+    document.getElementById("purchase-form")?.scrollIntoView({behavior:"smooth",block:"start"});
+  };
+  const applyDraft = (source: PurchaseTemplate | AdminPurchase) => { try { preparePurchaseDraft(source); } catch(e) {setError((e as Error).message);} };
+  const saveHabitual = async () => {
+    if (!token || saving) return;
+    setSaving(true);setError(null);
+    try {
+      const item = await savePurchaseTemplate(token,{name:templateName.trim(), supplierId:purchaseSupplier||undefined, lines:purchaseRows.map(row=>({ingredientId:row.ingredientId,presentationQuantity:Number(row.presentationQuantity),presentationLabel:row.presentationLabel,conversionFactor:Number(row.conversionFactor)}))});
+      setTemplates(current=>[...current,item]);setTemplateName("");setSuccess("Compra habitual guardada. No se registró una compra ni se modificó el stock.");
+    } catch(e){setError((e as Error).message);}finally{setSaving(false);}
+  };
+  const removeHabitual = async () => {
+    if(!token||!selectedTemplate||saving||!window.confirm("¿Eliminar esta compra habitual? Las compras registradas se conservan."))return;
+    setSaving(true);setError(null);
+    try {await deletePurchaseTemplate(token,selectedTemplate);setTemplates(current=>current.filter(item=>item._id!==selectedTemplate));setSelectedTemplate("");}catch(e){setError((e as Error).message);}finally{setSaving(false);}
+  };
+
   const savePurchase =
     async (
       event: FormEvent,
@@ -408,7 +445,7 @@ export function AdminStockCenter() {
             undefined,
         }));
 
-      if (
+      if (purchaseRows.some(row => !row.totalCost.trim()) ||
         lines.some(
           (line) =>
             !line.ingredientId ||
@@ -505,6 +542,7 @@ export function AdminStockCenter() {
       if (
         items.some(
           (item) =>
+            !countValues[item.ingredientId]?.trim() ||
             !Number.isFinite(
               item.countedStock,
             ) ||
@@ -783,7 +821,13 @@ export function AdminStockCenter() {
             </p>
           </header>
 
-          <form className="admin-stock__form" onSubmit={savePurchase}>
+          <div className="admin-stock__form-grid">
+            <label><span>Compra habitual</span><select aria-label="Compra habitual" disabled={saving} value={selectedTemplate} onChange={e=>setSelectedTemplate(e.target.value)}><option value="">Elegir...</option>{templates.map(item=><option key={item._id} value={item._id}>{item.name}</option>)}</select></label>
+            <button type="button" className="admin-stock__secondary" disabled={saving||!selectedTemplate} onClick={()=>{const item=templates.find(t=>t._id===selectedTemplate);if(item)applyDraft(item);}}>Usar como borrador</button>
+            {admin.role==='owner'&&<button type="button" className="admin-stock__secondary" disabled={saving||!selectedTemplate} onClick={()=>void removeHabitual()}>Eliminar habitual</button>}
+          </div>
+          <form id="purchase-form" className="admin-stock__form" onSubmit={savePurchase}>
+            <fieldset disabled={saving} className="admin-stock__fieldset">
             <div className="admin-stock__form-grid">
               <label>
                 <span>Proveedor</span>
@@ -834,6 +878,7 @@ export function AdminStockCenter() {
                       <span>Equivale a</span>
                       <input type="number" min="0.000001" step="0.01" value={row.conversionFactor} onChange={(event) => updatePurchaseRow(index, { conversionFactor: event.target.value })} required />
                       <small>{selected ? `${unitLabel(selected.unit)} por presentación` : "unidades base"}</small>
+                      {selected && <small>Ingresan: {number.format(Number(row.presentationQuantity) * Number(row.conversionFactor))} {unitLabel(selected.unit)}</small>}
                     </label>
                     <label>
                       <span>Costo total</span>
@@ -864,9 +909,12 @@ export function AdminStockCenter() {
               <textarea rows={3} value={purchaseNotes} onChange={(event) => setPurchaseNotes(event.target.value)} />
             </label>
 
+            <div className="admin-stock__form-grid"><label><span>Nombre para guardar como habitual</span><input value={templateName} maxLength={80} onChange={e=>setTemplateName(e.target.value)} placeholder="Ej.: Reposición semanal de panes" /></label><button className="admin-stock__secondary" type="button" disabled={saving||templateName.trim().length<2} onClick={()=>void saveHabitual()}>Guardar como habitual</button></div>
+            <p>La habitual guarda proveedor, insumos y presentaciones. Cada entrega requiere revisar cantidades, costos y vencimientos.</p>
             <button className="admin-stock__primary" type="submit" disabled={saving}>
               {saving ? "Guardando..." : "Registrar compra y reponer"}
             </button>
+            </fieldset>
           </form>
         </section>
 
@@ -901,10 +949,9 @@ export function AdminStockCenter() {
                     {purchase.supplierName ?? "Sin proveedor"} · {new Date(purchase.purchasedAt).toLocaleDateString("es-AR")}
                   </span>
                   {admin.role === "owner" && (
-                    <strong>
-                      {currency.format(purchase.totalCost)}
-                    </strong>
+                    <strong>{currency.format(purchase.totalCost)}</strong>
                   )}
+                  <button className="admin-stock__secondary" disabled={saving} type="button" onClick={()=>applyDraft(purchase)}>Repetir como borrador</button>
                 </div>
               ))}
             </div>
@@ -917,7 +964,7 @@ export function AdminStockCenter() {
               Conteo físico / cierre
             </h2>
             <p>
-              Ingresá lo que realmente hay. Las diferencias quedarán registradas como ajustes.
+              Contá cada insumo y completá los campos vacíos. Las diferencias quedarán registradas como ajustes.
             </p>
           </header>
           <form className="admin-stock__form" onSubmit={saveCount}>

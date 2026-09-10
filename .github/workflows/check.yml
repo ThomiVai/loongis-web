@@ -1,0 +1,38 @@
+name: Web checks
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - run: npm run lint
+      - run: npm test
+      - run: npx playwright install --with-deps chromium webkit
+      - run: npm run test:mobile
+      - name: Review screenshots and failure context
+        if: always()
+        run: |
+          python3 - <<'PYREVIEW'
+          from pathlib import Path
+          import base64, json
+          for file in Path('test-results').glob('*mobile-390/error-context.md'):
+              print(file.read_text()[:12000])
+          for file in Path('test-results').glob('*mobile-390/*.png'):
+              if file.name != 'test-failed-1.png':
+                  print('REVIEW_IMAGE ' + json.dumps({'name': file.name, 'data': base64.b64encode(file.read_bytes()).decode()}))
+          PYREVIEW
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mobile-review
+          path: test-results/
+          retention-days: 7

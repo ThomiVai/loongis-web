@@ -1958,3 +1958,11 @@
     transition: none;
   }
 }
+
+.checkout-empty p { line-height: 1.6; margin: 16px 0; }
+.checkout-empty button { min-height: 44px; padding: 10px 14px; font: inherit; border: 2px solid var(--color-primary); border-radius: 12px; color: var(--color-primary); background: white; cursor: pointer; }
+@media (max-width: 680px) {
+  .checkout-empty { min-width: 0; overflow-wrap: anywhere; }
+  .checkout-empty button, .checkout-empty__button { width: 100%; max-width: 100%; white-space: normal; font-size: 16px; text-align: center; }
+  .checkout-empty > a { display: flex; align-items: center; justify-content: center; min-height: 44px; }
+}

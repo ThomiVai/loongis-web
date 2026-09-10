@@ -1,0 +1,30 @@
+.ingredient-batch { margin: 24px 0; padding: 22px; border: 1px solid #c9d7ee; border-radius: 16px; background: #f6f9ff; color: #202c3b; min-width: 0; }
+.ingredient-batch h3 { margin: 0 0 10px; }
+.ingredient-batch p { line-height: 1.5; margin: 12px 0; }
+.ingredient-batch button { padding: 10px 15px; margin: 6px 8px 6px 0; border: 1px solid #075fea; border-radius: 8px; background: white; color: #073ca6; cursor: pointer; font: inherit; }
+.ingredient-batch button:disabled { opacity: .5; cursor: default; }
+.ingredient-batch label { display: grid; gap: 8px; margin: 12px 0; }
+.ingredient-batch textarea, .ingredient-batch input { padding: 10px; border: 1px solid #bcc9db; border-radius: 6px; font: inherit; width: 100%; box-sizing: border-box; }
+.ingredient-batch__scroll { overflow-x: auto; max-height: 480px; margin: 15px 0; }
+.ingredient-batch table { border-collapse: collapse; width: 100%; background: white; }
+.ingredient-batch th,.ingredient-batch td { padding: 10px; border: 1px solid #d4ddeb; text-align: left; min-width: 120px; }
+.ingredient-batch th { background: #e6eeff; }
+.ingredient-batch [role=alert] { color: #8a2020; max-height: 240px; overflow: auto; }
+@media(max-width:600px) { .ingredient-batch {padding:14px;} }
+
+.ingredient-batch button { min-height: 44px; max-width: 100%; white-space: normal; overflow-wrap: anywhere; }
+.ingredient-batch input, .ingredient-batch textarea { min-width: 0; font-size: 16px; }
+.ingredient-batch input { min-height: 44px; }
+.ingredient-batch button:focus-visible, .ingredient-batch input:focus-visible, .ingredient-batch textarea:focus-visible { outline: 3px solid #075fea; outline-offset: 3px; }
+@media (max-width: 680px) {
+  .ingredient-batch { padding: 12px; overflow-wrap: anywhere; }
+  .ingredient-batch button { width: 100%; margin: 6px 0; font-size: 16px; }
+  .ingredient-batch__scroll { max-height: none; overflow: visible; }
+  .ingredient-batch table, .ingredient-batch tbody { display: block; width: 100%; }
+  .ingredient-batch thead { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .ingredient-batch tbody tr { display: block; margin: 16px 0; border: 1px solid #bcc9db; border-radius: 12px; overflow: hidden; }
+  .ingredient-batch tbody th, .ingredient-batch tbody td { display: block; min-width: 0; padding: 10px 12px; border: 0; width: 100%; box-sizing: border-box; }
+  .ingredient-batch tbody th { font-size: 17px; }
+  .ingredient-batch tbody td { border-top: 1px solid #e2e8f1; }
+  .ingredient-batch tbody td::before { content: attr(data-label); display: block; margin-bottom: 6px; color: #073ca6; font-size: 14px; font-weight: 700; }
+}
