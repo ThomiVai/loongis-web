@@ -2,6 +2,7 @@ import { test, expect, type Page } from '@playwright/test';
 const ingredient={_id:'000000000000000000000001',name:'Pan brioche',slug:'pan-brioche',unit:'unit',stock:48,minimumStock:12,targetStock:72,unitCost:500,purchaseUnitLabel:'Caja',purchaseUnitFactor:24,category:'Panificados',storageLocation:'Estante de cocina',trackExpiration:false,active:true,order:0,updatedAt:'2026-09-01T12:00:00.000Z'};
 const habitual={_id:'habitual-1',name:'Compra semanal de panes',lines:[{ingredientId:ingredient._id,presentationQuantity:2,presentationLabel:'Caja',conversionFactor:24}]};
 async function setup(page:Page){
+ page.on('pageerror',error=>console.log('Error de pantalla:',error.message));
  await page.addInitScript(()=>sessionStorage.setItem('loongis_admin_token','fixture-only-no-real-session'));
  await page.route('**/api/**',async route=>{
   const path=new URL(route.request().url()).pathname;
@@ -39,7 +40,7 @@ test('importar permite revisar todos los datos en fichas móviles',async({page},
  await page.locator('.ingredient-batch').screenshot({path:info.outputPath('importacion-insumos.png')});
 });
 test('compra habitual se prepara sin reutilizar importes o fechas de otra entrega',async({page},info)=>{
- await page.goto('/admin/stock');await page.getByLabel('Compra habitual',{exact:true}).selectOption('habitual-1');await page.getByRole('button',{name:'Usar como borrador',exact:true}).click();
+ await page.goto('/admin/stock');await expect(page.getByRole('heading',{name:'Centro de stock',exact:true})).toBeVisible();await page.getByLabel('Compra habitual',{exact:true}).selectOption('habitual-1');await page.getByRole('button',{name:'Usar como borrador',exact:true}).click();
  const form=page.locator('#purchase-form');await expect(form.getByLabel('Cantidad comprada',{exact:true})).toHaveValue('2');await expect(form.getByLabel('Costo total',{exact:true})).toHaveValue('');await expect(form.getByLabel('Vencimiento',{exact:true})).toHaveValue('');
  await expect(form.getByText('Ingresan: 48 un.',{exact:true})).toBeVisible();await noPageOverflow(page);
  await form.screenshot({path:info.outputPath('compra-habitual.png')});

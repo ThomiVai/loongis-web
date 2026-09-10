@@ -822,7 +822,7 @@ export function AdminStockCenter() {
           </header>
 
           <div className="admin-stock__form-grid">
-            <label><span>Compra habitual</span><select disabled={saving} value={selectedTemplate} onChange={e=>setSelectedTemplate(e.target.value)}><option value="">Elegir...</option>{templates.map(item=><option key={item._id} value={item._id}>{item.name}</option>)}</select></label>
+            <label><span>Compra habitual</span><select aria-label="Compra habitual" disabled={saving} value={selectedTemplate} onChange={e=>setSelectedTemplate(e.target.value)}><option value="">Elegir...</option>{templates.map(item=><option key={item._id} value={item._id}>{item.name}</option>)}</select></label>
             <button type="button" className="admin-stock__secondary" disabled={saving||!selectedTemplate} onClick={()=>{const item=templates.find(t=>t._id===selectedTemplate);if(item)applyDraft(item);}}>Usar como borrador</button>
             {admin.role==='owner'&&<button type="button" className="admin-stock__secondary" disabled={saving||!selectedTemplate} onClick={()=>void removeHabitual()}>Eliminar habitual</button>}
           </div>
