@@ -39,7 +39,7 @@ test('recorrido de combo a comprobante conserva personalización y evita otro pe
  await page.route('**/api/products',route=>route.fulfill({json:{success:true,data:[product]}}));
  await page.route('**/api/products/102',route=>route.fulfill({json:{success:true,data:product}}));
  await page.route('**/api/store/status',route=>route.fulfill({json:{success:true,data:{canOrder:true,scheduleOpen:true,state:'open',statusLabel:'Abierto',detailLabel:'Prueba',orderMode:'open'}}}));
- await page.route('https://wa.me/**',route=>route.fulfill({status:200,contentType:'text/html; charset=utf-8',body:'<p>WhatsApp simulado. No se envió ningún mensaje.</p>'}));
+ await page.route('https://wa.me/**',route=>route.fulfill({status:200,contentType:'text/html; charset=utf-8',body:'<!doctype html><meta charset="utf-8"><p>WhatsApp simulado - sin mensajes enviados</p>'}));
  await page.route('**/api/orders',async route=>{
   if(route.request().method()!=='POST'){await route.fulfill({json:{success:true,data:[]}});return;}
   writes++;payload=route.request().postDataJSON();
@@ -49,7 +49,7 @@ test('recorrido de combo a comprobante conserva personalización y evita otro pe
  await page.getByRole('group',{name:'Hamburguesa 1',exact:true}).getByRole('checkbox',{name:'Sin Tomate',exact:true}).check();await page.getByRole('button',{name:'Agregar al pedido · $ 21.000',exact:true}).click();
  await expect(page.getByText('Solo Queso — Sin Tomate',{exact:true})).toBeVisible();await page.getByRole('link',{name:'Finalizar pedido',exact:true}).click();
  await page.getByLabel('Nombre completo',{exact:true}).fill('Cliente Prueba');await page.getByLabel('Teléfono',{exact:true}).fill('1100000000');await page.getByLabel('Dirección de entrega dentro de Hurlingham').fill('Dirección de prueba 123');
- await page.getByRole('button',{name:'Finalizar por WhatsApp',exact:true}).click();await expect(page.getByText('WhatsApp simulado. No se envió ningún mensaje.')).toBeVisible();
+ await page.getByRole('button',{name:'Finalizar por WhatsApp',exact:true}).click();await expect(page.getByText('WhatsApp simulado - sin mensajes enviados')).toBeVisible();
  expect(writes).toBe(1);expect(payload?.requestKey).toMatch(/^[a-f0-9-]{36}$/);expect(payload?.items[0].customization.choices[0].removedIngredients).toEqual(['Tomate']);expect(payload?.items[0].customization.choices[1].removedIngredients).toEqual([]);
  await page.goto('/finalizar-pedido');await expect(page.getByRole('heading',{name:'Pedido #456 registrado'})).toBeVisible();await page.locator('.checkout-empty').screenshot({path:info.outputPath('recorrido-pedido.png')});expect(writes).toBe(1);
 });
