@@ -37,6 +37,7 @@ test('recorrido de combo a comprobante conserva personalización y evita otro pe
  const product={_id:'combo-test',legacyId:102,name:'Combo de 3 Simples',slug:'combo-prueba',description:'Tres simples con papas',price:21000,image:'/test.jpg',imageAlt:'Combo de prueba',category:{_id:'c',name:'Combos',slug:'combos',active:true,order:1},active:true,order:1,featured:false,sizes:[],extras:[],ingredients:[],choiceGroups:[1,2,3].map(n=>({id:`hamburguesa-${n}`,label:`Hamburguesa ${n}`,options}))};
  let writes=0;let payload: { items: { customization: { choices: { removedIngredients:string[] }[] } }[]; requestKey: string }|undefined;
  await page.route('**/api/products',route=>route.fulfill({json:{success:true,data:[product]}}));
+ await page.route('**/api/products/102',route=>route.fulfill({json:{success:true,data:product}}));
  await page.route('**/api/store/status',route=>route.fulfill({json:{success:true,data:{canOrder:true,scheduleOpen:true,state:'open',statusLabel:'Abierto',detailLabel:'Prueba',orderMode:'open'}}}));
  await page.route('https://wa.me/**',route=>route.fulfill({status:200,contentType:'text/html',body:'<p>WhatsApp simulado. No se envió ningún mensaje.</p>'}));
  await page.route('**/api/orders',async route=>{
