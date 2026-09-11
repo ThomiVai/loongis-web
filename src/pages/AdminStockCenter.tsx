@@ -683,6 +683,9 @@ export function AdminStockCenter() {
           <Link to="/admin/pedidos" className="admin-dashboard__nav-link">
             Pedidos
           </Link>
+          <Link to="/admin/ventas" className="admin-dashboard__nav-link">
+            Ventas
+          </Link>
           <Link to="/admin/inventario" className="admin-dashboard__nav-link">
             Inventario
           </Link>

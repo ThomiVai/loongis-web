@@ -217,6 +217,7 @@ export function AdminUsers() {
         <nav className="admin-dashboard__nav">
           <Link to="/admin" className="admin-dashboard__nav-link">Productos</Link>
           <Link to="/admin/pedidos" className="admin-dashboard__nav-link">Pedidos</Link>
+          <Link to="/admin/ventas" className="admin-dashboard__nav-link">Ventas</Link>
           <Link to="/admin/inventario" className="admin-dashboard__nav-link">Inventario</Link>
           <Link to="/admin/stock" className="admin-dashboard__nav-link">Centro de stock</Link>
           <Link to="/admin/recetas" className="admin-dashboard__nav-link">Recetas</Link>
