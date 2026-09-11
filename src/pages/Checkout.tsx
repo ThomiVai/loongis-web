@@ -16,6 +16,10 @@ import {
 
 import { Link } from "react-router-dom";
 
+import {
+  LOONGIS_WHATSAPP_NUMBER,
+} from "../config/contact";
+
 import { useCart } from "../hooks/useCart";
 
 import {
@@ -35,17 +39,6 @@ import type {
 } from "../types/Product";
 
 import "../styles/Checkout.css";
-
-/* ========================================
-   WHATSAPP
-======================================== */
-
-/*
-  Confirmar este número con el cliente
-  antes de publicar el sitio.
-*/
-const WHATSAPP_NUMBER =
-  "5491138065902";
 
 /* ========================================
    TIPOS
@@ -791,7 +784,7 @@ export function Checkout() {
           );
 
         const whatsappUrl =
-          `https://wa.me/${WHATSAPP_NUMBER}` +
+          `https://wa.me/${LOONGIS_WHATSAPP_NUMBER}` +
           `?text=${encodedMessage}`;
 
         /* ========================================

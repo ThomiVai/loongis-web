@@ -16,7 +16,9 @@ import {
 
 import {
   createAdminProduct,
+  deleteAdminProductImage,
   getAdminProductById,
+  uploadAdminProductImage,
   updateAdminProduct,
 } from "../services/adminProductsApi";
 
@@ -38,6 +40,10 @@ import {
   getAdminToken,
   removeAdminToken,
 } from "../utils/adminSession";
+import {
+  productImageUrl,
+  uploadedProductImageId,
+} from "../utils/productImage";
 
 import "../styles/AdminProductEdit.css";
 
@@ -155,6 +161,22 @@ export function AdminProductEdit() {
     setImageAlt,
   ] =
     useState("");
+
+  const [
+    imageFile,
+    setImageFile,
+  ] =
+    useState<File | null>(
+      null,
+    );
+
+  const [
+    imagePreview,
+    setImagePreview,
+  ] =
+    useState<string | null>(
+      null,
+    );
 
   const [
     order,
@@ -334,6 +356,8 @@ export function AdminProductEdit() {
           setPrice("");
           setImage("");
           setImageAlt("");
+          setImageFile(null);
+          setImagePreview(null);
           setOrder("0");
 
           setCategoryId("");
@@ -413,6 +437,8 @@ export function AdminProductEdit() {
         setImageAlt(
           productData.imageAlt,
         );
+        setImageFile(null);
+        setImagePreview(null);
 
         setOrder(
           String(
@@ -752,6 +778,56 @@ export function AdminProductEdit() {
   };
 
   /* ========================================
+     IMAGEN
+  ======================================== */
+
+  const handleImageFileChange = (
+    file: File | undefined,
+  ) => {
+    if (!file) {
+      return;
+    }
+
+    if (
+      ![
+        "image/jpeg",
+        "image/png",
+        "image/webp",
+      ].includes(file.type) ||
+      file.size >
+        5 * 1024 * 1024
+    ) {
+      setError(
+        "Elegí una imagen JPG, PNG o WebP de hasta 5 MB.",
+      );
+      return;
+    }
+
+    const reader =
+      new FileReader();
+
+    reader.addEventListener(
+      "load",
+      () => {
+        if (
+          typeof reader.result ===
+          "string"
+        ) {
+          setImagePreview(
+            reader.result,
+          );
+        }
+      },
+      { once: true },
+    );
+
+    reader.readAsDataURL(file);
+    setImageFile(file);
+    setError(null);
+    setSuccess(false);
+  };
+
+  /* ========================================
      GUARDAR
   ======================================== */
 
@@ -807,7 +883,8 @@ export function AdminProductEdit() {
       }
 
       if (
-        !image.trim() ||
+        (!image.trim() &&
+          !imageFile) ||
         !imageAlt.trim()
       ) {
         setError(
@@ -908,7 +985,26 @@ export function AdminProductEdit() {
       setError(null);
       setSuccess(false);
 
+      let uploadedImage:
+        {
+          id: string;
+          url: string;
+        } | null = null;
+
       try {
+        let imageToSave =
+          image.trim();
+
+        if (imageFile) {
+          uploadedImage =
+            await uploadAdminProductImage(
+              imageFile,
+              token,
+            );
+          imageToSave =
+            uploadedImage.url;
+        }
+
         /* =================================
            CREAR
         ================================= */
@@ -931,7 +1027,7 @@ export function AdminProductEdit() {
                   numericPrice,
 
                 image:
-                  image.trim(),
+                  imageToSave,
 
                 imageAlt:
                   imageAlt.trim(),
@@ -989,7 +1085,7 @@ export function AdminProductEdit() {
                 numericPrice,
 
               image:
-                image.trim(),
+                imageToSave,
 
               imageAlt:
                 imageAlt.trim(),
@@ -1048,6 +1144,8 @@ export function AdminProductEdit() {
         setImageAlt(
           updatedProduct.imageAlt,
         );
+        setImageFile(null);
+        setImagePreview(null);
 
         setOrder(
           String(
@@ -1100,7 +1198,34 @@ export function AdminProductEdit() {
         );
 
         setSuccess(true);
+
+        const previousImageId =
+          uploadedImage
+            ? uploadedProductImageId(
+                image,
+              )
+            : null;
+
+        if (previousImageId) {
+          void deleteAdminProductImage(
+            previousImageId,
+            token,
+          ).catch(() => {
+            // La imagen nueva ya quedó guardada.
+            // Una limpieza fallida no revierte el producto.
+          });
+        }
       } catch (submitError) {
+        if (uploadedImage) {
+          void deleteAdminProductImage(
+            uploadedImage.id,
+            token,
+          ).catch(() => {
+            // La limpieza se intenta sin ocultar
+            // el error principal del guardado.
+          });
+        }
+
         const message =
           submitError instanceof Error
             ? submitError.message
@@ -1261,10 +1386,15 @@ export function AdminProductEdit() {
             </p>
           </div>
 
-          {image && (
+          {(imagePreview || image) && (
             <div className="admin-product-edit__preview">
               <img
-                src={image}
+                src={
+                  imagePreview ??
+                  productImageUrl(
+                    image,
+                  )
+                }
                 alt={
                   imageAlt ||
                   "Vista previa del producto"
@@ -1477,23 +1607,32 @@ export function AdminProductEdit() {
             <div className="admin-product-edit__fields">
               <label className="admin-product-edit__field">
                 <span>
-                  Ruta de imagen
+                  Archivo de imagen
                 </span>
 
                 <input
-                  type="text"
-                  value={image}
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp"
                   onChange={(
                     event,
                   ) =>
-                    setImage(
-                      event.target.value,
+                    handleImageFileChange(
+                      event.target.files?.[0],
                     )
                   }
                   disabled={saving}
-                  placeholder="/images/burgers/producto.png"
-                  required
+                  required={
+                    isCreating &&
+                    !image
+                  }
                 />
+
+                <small>
+                  JPG, PNG o WebP de hasta 5 MB.
+                  {isCreating
+                    ? " La imagen es obligatoria."
+                    : " Si no elegís otra, se conserva la actual."}
+                </small>
               </label>
 
               <label className="admin-product-edit__field">
@@ -1642,6 +1781,8 @@ export function AdminProductEdit() {
                     setDailyComboBurgerId(
                       burgerId,
                     );
+                    setImageFile(null);
+                    setImagePreview(null);
                     setImage(
                       presentation.image,
                     );

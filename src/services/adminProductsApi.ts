@@ -160,6 +160,15 @@ type DeleteProductResponse = {
   message?: string;
 };
 
+type ProductImageResponse = {
+  success: boolean;
+  data: {
+    id: string;
+    url: string;
+  };
+  message?: string;
+};
+
 /* ========================================
    OBTENER PRODUCTOS
 ======================================== */
@@ -350,4 +359,74 @@ export async function deleteAdminProduct(
   throw new Error(
     message,
   );
+}
+
+/* ========================================
+   IMÁGENES DE PRODUCTOS
+======================================== */
+
+export async function uploadAdminProductImage(
+  file: File,
+  token: string,
+): Promise<{
+  id: string;
+  url: string;
+}> {
+  const response =
+    await fetch(
+      `${API_URL}/api/products/images`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type":
+            file.type,
+          "X-File-Name":
+            encodeURIComponent(
+              file.name,
+            ),
+          Authorization:
+            `Bearer ${token}`,
+        },
+        body: file,
+      },
+    );
+
+  const data =
+    (await response.json()) as
+      ProductImageResponse;
+
+  if (!response.ok) {
+    throw new Error(
+      data.message ??
+        "No se pudo cargar la imagen.",
+    );
+  }
+
+  return data.data;
+}
+
+export async function deleteAdminProductImage(
+  imageId: string,
+  token: string,
+): Promise<void> {
+  const response =
+    await fetch(
+      `${API_URL}/api/products/images/${imageId}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization:
+            `Bearer ${token}`,
+        },
+      },
+    );
+
+  if (
+    !response.ok &&
+    response.status !== 404
+  ) {
+    throw new Error(
+      "No se pudo limpiar la imagen reemplazada.",
+    );
+  }
 }

@@ -272,6 +272,80 @@ export function getAdminInventoryCounts(
   );
 }
 
+export function resetAdminInventoryStock(
+  token: string,
+  confirmation: string,
+): Promise<AdminInventoryCount> {
+  return request(
+    "/api/inventory/reset-stock",
+    token,
+    {
+      method: "POST",
+      body:
+        JSON.stringify({
+          confirmation,
+        }),
+    },
+  );
+}
+
+export type AdminExportDataset =
+  | "orders"
+  | "sales"
+  | "purchases"
+  | "movements";
+
+export async function getAdminExport(
+  token: string,
+  dataset: AdminExportDataset,
+): Promise<{
+  blob: Blob;
+  filename: string;
+}> {
+  const response =
+    await fetch(
+      `${API_URL}/api/exports/${dataset}.csv`,
+      {
+        headers: {
+          Authorization:
+            `Bearer ${token}`,
+        },
+      },
+    );
+
+  if (!response.ok) {
+    let message =
+      "No se pudo preparar la exportación.";
+
+    try {
+      const data =
+        (await response.json()) as
+          ApiResponse<never>;
+      message =
+        data.message ?? message;
+    } catch {
+      // Conservamos el mensaje genérico.
+    }
+
+    throw new Error(message);
+  }
+
+  const disposition =
+    response.headers.get(
+      "content-disposition",
+    );
+  const filename =
+    disposition?.match(
+      /filename="([^"]+)"/,
+    )?.[1] ??
+    `loongis-${dataset}.csv`;
+
+  return {
+    blob: await response.blob(),
+    filename,
+  };
+}
+
 export function getAdminInventoryAlerts(
   token: string,
   days = 7,

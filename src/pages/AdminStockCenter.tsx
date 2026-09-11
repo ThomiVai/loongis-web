@@ -34,8 +34,10 @@ import {
   getAdminInventoryAlerts,
   getAdminInventoryCounts,
   getAdminInventoryReport,
+  getAdminExport,
   getAdminPurchases,
   getAdminSuppliers,
+  resetAdminInventoryStock,
 } from "../services/adminStockApi";
 
 import type {
@@ -44,6 +46,7 @@ import type {
   AdminInventoryReport,
   AdminPurchase,
   AdminSupplier,
+  AdminExportDataset,
 } from "../services/adminStockApi";
 
 import {
@@ -166,6 +169,12 @@ export function AdminStockCenter() {
     useState<string | null>(null);
   const [success, setSuccess] =
     useState<string | null>(null);
+  const [resetOpen, setResetOpen] =
+    useState(false);
+  const [resetConfirmation, setResetConfirmation] =
+    useState("");
+  const [exporting, setExporting] =
+    useState<AdminExportDataset | null>(null);
 
   const [supplierName, setSupplierName] =
     useState("");
@@ -633,6 +642,93 @@ export function AdminStockCenter() {
       }
     };
 
+  const downloadExport =
+    async (
+      dataset: AdminExportDataset,
+    ) => {
+      if (
+        !token ||
+        admin.role !== "owner"
+      ) {
+        return;
+      }
+
+      setExporting(dataset);
+      setError(null);
+      setSuccess(null);
+
+      try {
+        const result =
+          await getAdminExport(
+            token,
+            dataset,
+          );
+        const url =
+          URL.createObjectURL(
+            result.blob,
+          );
+        const anchor =
+          document.createElement("a");
+        anchor.href = url;
+        anchor.download =
+          result.filename;
+        anchor.click();
+        URL.revokeObjectURL(url);
+        setSuccess(
+          "Exportación descargada.",
+        );
+      } catch (exportError) {
+        setError(
+          exportError instanceof Error
+            ? exportError.message
+            : "No se pudo descargar la exportación.",
+        );
+      } finally {
+        setExporting(null);
+      }
+    };
+
+  const resetStock =
+    async (
+      event: FormEvent,
+    ) => {
+      event.preventDefault();
+
+      if (
+        !token ||
+        admin.role !== "owner" ||
+        resetConfirmation !==
+          "REINICIAR"
+      ) {
+        return;
+      }
+
+      setSaving(true);
+      setError(null);
+      setSuccess(null);
+
+      try {
+        await resetAdminInventoryStock(
+          token,
+          resetConfirmation,
+        );
+        setResetOpen(false);
+        setResetConfirmation("");
+        setSuccess(
+          "Stock puesto en cero. El reinicio quedó registrado como conteo físico.",
+        );
+        await load();
+      } catch (resetError) {
+        setError(
+          resetError instanceof Error
+            ? resetError.message
+            : "No se pudo reiniciar el stock.",
+        );
+      } finally {
+        setSaving(false);
+      }
+    };
+
   if (loading) {
     return (
       <main className="admin-dashboard">
@@ -995,6 +1091,111 @@ export function AdminStockCenter() {
             </button>
           </form>
         </section>
+
+        {admin.role === "owner" && (
+          <section className="admin-stock__panel admin-stock__tools">
+            <header>
+              <h2>
+                Respaldo y herramientas
+              </h2>
+              <p>
+                Descargá la información operativa o prepará el inventario para comenzar nuevamente.
+              </p>
+            </header>
+
+            <div className="admin-stock__exports" aria-label="Exportaciones CSV">
+              {([
+                ["orders", "Pedidos"],
+                ["sales", "Ventas"],
+                ["purchases", "Compras"],
+                ["movements", "Movimientos"],
+              ] as const).map(([dataset, label]) => (
+                <button
+                  key={dataset}
+                  type="button"
+                  className="admin-stock__secondary"
+                  disabled={exporting !== null || saving}
+                  onClick={() => void downloadExport(dataset)}
+                >
+                  {exporting === dataset
+                    ? "Preparando…"
+                    : `Exportar ${label}`}
+                </button>
+              ))}
+            </div>
+
+            <div className="admin-stock__danger-zone">
+              <div>
+                <h3>
+                  Poner stock en cero
+                </h3>
+                <p>
+                  Conserva insumos, recetas, productos, pedidos, compras e historial. Si el control automático está activo, los productos pueden quedar sin disponibilidad hasta cargar nuevas existencias.
+                </p>
+              </div>
+
+              {!resetOpen ? (
+                <button
+                  type="button"
+                  className="admin-stock__danger-button"
+                  disabled={saving}
+                  onClick={() => {
+                    setResetOpen(true);
+                    setResetConfirmation("");
+                  }}
+                >
+                  Iniciar puesta en cero
+                </button>
+              ) : (
+                <form
+                  className="admin-stock__reset-form"
+                  onSubmit={resetStock}
+                >
+                  <label>
+                    <span>
+                      Escribí REINICIAR para confirmar
+                    </span>
+                    <input
+                      value={resetConfirmation}
+                      onChange={(event) =>
+                        setResetConfirmation(
+                          event.target.value,
+                        )
+                      }
+                      autoComplete="off"
+                      disabled={saving}
+                    />
+                  </label>
+                  <div>
+                    <button
+                      type="button"
+                      className="admin-stock__secondary"
+                      disabled={saving}
+                      onClick={() => {
+                        setResetOpen(false);
+                        setResetConfirmation("");
+                      }}
+                    >
+                      Cancelar
+                    </button>
+                    <button
+                      type="submit"
+                      className="admin-stock__danger-button"
+                      disabled={
+                        saving ||
+                        resetConfirmation !== "REINICIAR"
+                      }
+                    >
+                      {saving
+                        ? "Reiniciando…"
+                        : "Confirmar puesta en cero"}
+                    </button>
+                  </div>
+                </form>
+              )}
+            </div>
+          </section>
+        )}
 
         {admin.role === "owner" && report && (
           <section className="admin-stock__panel">
