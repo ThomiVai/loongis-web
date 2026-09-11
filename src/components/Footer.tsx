@@ -8,20 +8,15 @@ import {
   Link,
 } from "react-router-dom";
 
+import {
+  LOONGIS_INSTAGRAM_URL,
+  LOONGIS_WHATSAPP_URL,
+} from "../config/contact";
+
 import "../styles/Footer.css";
 
 const currentYear =
   new Date().getFullYear();
-
-const INSTAGRAM_URL =
-  "https://www.instagram.com/loongis_?igsi=MW5yZW0xZTZ4M2Zzeg%3D%3D&utm_source=qr";
-
-/*
-  Cuando tengas el enlace oficial de
-  WhatsApp, pegalo entre las comillas.
-*/
-const WHATSAPP_URL: string =
-  "";
 
 export function Footer() {
   return (
@@ -64,7 +59,7 @@ export function Footer() {
             >
               <a
                 className="site-footer__social-link"
-                href={INSTAGRAM_URL}
+                href={LOONGIS_INSTAGRAM_URL}
                 target="_blank"
                 rel="noreferrer noopener"
                 aria-label="Abrir Instagram de Loongis"
@@ -75,31 +70,18 @@ export function Footer() {
                 />
               </a>
 
-              {WHATSAPP_URL ? (
-                <a
-                  className="site-footer__social-link"
-                  href={WHATSAPP_URL}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  aria-label="Abrir WhatsApp de Loongis"
-                  title="WhatsApp de Loongis"
-                >
-                  <FaWhatsapp
-                    aria-hidden="true"
-                  />
-                </a>
-              ) : (
-                <span
-                  className="site-footer__social-link site-footer__social-link--pending"
-                  aria-label="WhatsApp de Loongis, enlace pendiente"
-                  title="Enlace de WhatsApp pendiente"
-                  role="img"
-                >
-                  <FaWhatsapp
-                    aria-hidden="true"
-                  />
-                </span>
-              )}
+              <a
+                className="site-footer__social-link"
+                href={LOONGIS_WHATSAPP_URL}
+                target="_blank"
+                rel="noreferrer noopener"
+                aria-label="Abrir WhatsApp de Loongis"
+                title="WhatsApp de Loongis"
+              >
+                <FaWhatsapp
+                  aria-hidden="true"
+                />
+              </a>
             </div>
 
           </div>

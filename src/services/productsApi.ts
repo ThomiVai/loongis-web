@@ -7,6 +7,9 @@ import type {
 import {
   getProductAvailability,
 } from "./inventoryAvailabilityApi";
+import {
+  productImageUrl,
+} from "../utils/productImage";
 
 /* ========================================
    CONFIGURACIÓN
@@ -248,7 +251,9 @@ function mapProduct(
       product.price,
 
     image:
-      product.image,
+      productImageUrl(
+        product.image,
+      ),
 
     imageAlt:
       product.imageAlt,
