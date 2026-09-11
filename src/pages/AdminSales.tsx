@@ -1,6 +1,13 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import {
+  Link,
+  useOutletContext,
+} from 'react-router-dom';
+import type {
+  ProtectedAdminOutletContext,
+} from '../components/ProtectedAdminRoute';
 import { getAdminToken } from '../utils/adminSession';
+import '../styles/AdminDashboard.css';
 import '../styles/AdminSales.css';
 type Report = { from: string; to: string; sales: number; orders: number; averageTicket: number; days: { date: string; sales: number; orders: number }[] };
 const money = new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS', maximumFractionDigits: 0 });
@@ -10,6 +17,8 @@ function preset(days: number) {
   return { from, to };
 }
 export function AdminSales() {
+  const { admin } =
+    useOutletContext<ProtectedAdminOutletContext>();
   const [range, setRange] = useState(() => preset(30));
   const [query, setQuery] = useState(range);
   const [report, setReport] = useState<Report | null>(null);
@@ -27,7 +36,28 @@ export function AdminSales() {
   function load(next: typeof range) { setRange(next); setReport(null); setError(''); setLoading(true); setQuery({ ...next }); }
   const max = Math.max(1, ...report?.days.map(day => day.sales) ?? []);
   return <main className="sales-page">
-    <Link to="/admin/pedidos">← Volver a pedidos</Link>
+    <nav
+      className="admin-dashboard__nav"
+      aria-label="Secciones del panel administrador"
+    >
+      <Link to="/admin" className="admin-dashboard__nav-link">Productos</Link>
+      <Link to="/admin/pedidos" className="admin-dashboard__nav-link">Pedidos</Link>
+      <Link
+        to="/admin/ventas"
+        className="admin-dashboard__nav-link admin-dashboard__nav-link--active"
+        aria-current="page"
+      >
+        Ventas
+      </Link>
+      <Link to="/admin/inventario" className="admin-dashboard__nav-link">Inventario</Link>
+      <Link to="/admin/stock" className="admin-dashboard__nav-link">Centro de stock</Link>
+      {admin.role === 'owner' && (
+        <Link to="/admin/recetas" className="admin-dashboard__nav-link">Recetas</Link>
+      )}
+      {admin.role === 'owner' && (
+        <Link to="/admin/usuarios" className="admin-dashboard__nav-link">Accesos</Link>
+      )}
+    </nav>
     <h1>Ventas</h1><p>Seguí la evolución de los pedidos confirmados.</p>
     <div className="sales-presets">{[7,30,90].map(days => <button key={days} type="button" onClick={() => load(preset(days))}>Últimos {days} días</button>)}</div>
     <form className="sales-filters" onSubmit={event => { event.preventDefault(); load(range); }}>
