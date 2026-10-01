@@ -98,10 +98,10 @@ function ComboCardArtwork({
       combo.id
     ];
 
-  if (!presentation) {
+  if (!presentation || combo.id === 101 || combo.id === 110) {
     return (
       <CatalogImage
-        className="burger-combo-card__image"
+        className={`burger-combo-card__image${combo.id === 101 || combo.id === 110 ? " burger-combo-card__image--poster" : ""}`}
         src={combo.image}
         alt={combo.imageAlt}
         variant="card"
@@ -480,14 +480,14 @@ export function BurgerCombos({
                     >
                       <div className="burger-combo-card__visual">
 
-                        <span className="burger-combo-card__badge">
+                        {combo.id !== 101 && combo.id !== 110 && <span className="burger-combo-card__badge">
                           {
                             comboCardPresentations[
                               combo.id
                             ]?.badge ??
                               "Combo"
                           }
-                        </span>
+                        </span>}
 
                         <ComboCardArtwork
                           combo={combo}

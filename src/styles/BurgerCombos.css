@@ -970,3 +970,13 @@
     transition: none;
   }
 }
+
+/* Preserve the full original posters, including their titles and burgers. */
+.burger-combo-card__image--poster {
+  position: relative;
+  z-index: 2;
+  padding: 0;
+  background-color: #064578;
+  object-fit: contain;
+  filter: none;
+}
