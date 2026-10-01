@@ -971,84 +971,53 @@
   }
 }
 
-/* Preserve the full original posters, including their titles and burgers. */
-.burger-combo-card__image--poster {
+/* Original photo cutouts on white cards. */
+.burger-combos__grid .burger-combo-card {
+  grid-template-rows: 300px 1fr;
+  background: #fff;
+}
+.burger-combos__grid .burger-combo-card__image-link {
+  height: 300px;
+}
+.burger-combo-card__visual {
+  background: #fff;
+}
+.burger-combo-card__photo {
   position: relative;
   z-index: 2;
+  display: grid;
+  grid-template-rows: 72px minmax(0, 1fr);
+  align-items: center;
+  height: 100%;
+  padding: 12px 14px 8px;
+  background: #fff;
+}
+.burger-combo-card__photo-title {
+  display: block;
+  color: var(--color-primary-dark);
+  text-align: center;
+  font-family: "Fredoka", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .05em;
+}
+.burger-combo-card__photo-title strong {
+  display: block;
+  font-size: 36px;
+  line-height: 1.05;
+  letter-spacing: -.02em;
+}
+.burger-combo-card__photo .burger-combo-card__image {
+  min-height: 0;
   padding: 0;
-  background-color: #064578;
-  object-fit: contain;
   filter: none;
+  object-fit: contain;
 }
-
-/* Portrait artwork needs a taller frame than the burger cutouts. */
-.burger-combos__grid .burger-combo-card {
-  grid-template-rows: auto 1fr;
-}
-
-.burger-combos__grid .burger-combo-card__image-link {
-  height: auto;
-  aspect-ratio: 3 / 4;
-}
-
-.burger-combo-card--101 .burger-combo-card__visual,
-.burger-combo-card--110 .burger-combo-card__visual {
-  isolation: isolate;
-  background: #064578;
-}
-
-.burger-combo-card--101 .burger-combo-card__visual::before,
-.burger-combo-card--110 .burger-combo-card__visual::before {
-  position: absolute;
-  inset: -24px;
-  z-index: -1;
-  content: "";
-  background: var(--combo-poster) center / cover no-repeat;
-  filter: blur(24px) brightness(0.65);
-}
-
-.burger-combo-card--101 {
-  --combo-poster: url('/images/burgers/combo-gula.jpeg');
-}
-
-.burger-combo-card--110 {
-  --combo-poster: url('/images/burgers/combo-tranka.jpeg');
-}
-
-.burger-combo-card--101 .burger-combo-card__visual::after,
-.burger-combo-card--110 .burger-combo-card__visual::after {
-  display: none;
-}
-
-.burger-combo-card__image--poster {
-  background: transparent;
-  filter: drop-shadow(0 8px 18px rgba(0, 20, 50, 0.25));
-}
-
 .burger-combo-card__artwork--102 .burger-combo-card__burgers {
-  top: 27%;
+  top: 40px;
 }
-
-.burger-combo-card__artwork--102 .burger-combo-card__fries {
-  bottom: 17%;
-  right: 8%;
-  width: 44%;
-}
-
-.burger-combo-card__content {
-  min-height: 220px;
-  gap: 14px;
-}
-
-@media (max-width: 1100px) {
-  .burger-combos__grid .burger-combo-card {
-    flex-basis: min(420px, 78vw);
-  }
-}
-
 @media (max-width: 560px) {
   .burger-combos__navigation {
-    height: auto;
-    aspect-ratio: 3 / 4;
+    height: 300px;
   }
 }

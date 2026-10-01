@@ -1747,8 +1747,8 @@
 }
 
 /* Original combo posters must remain fully visible at every viewport size. */
-:root .product-detail__image-background .product-detail__image[src$="combo-gula.jpeg"],
-:root .product-detail__image-background .product-detail__image[src$="combo-tranka.jpeg"] {
+:root .product-detail__image-background .product-detail__image[src$="combo-gula-cutout.webp"],
+:root .product-detail__image-background .product-detail__image[src$="combo-tranka-cutout.webp"] {
   transform: none;
   object-fit: contain;
 }

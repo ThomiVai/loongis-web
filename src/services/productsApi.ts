@@ -31,7 +31,7 @@ const API_URL =
 */
 
 const PRODUCTS_CACHE_KEY =
-  "loongis_products_cache_v6";
+  "loongis_products_cache_v7";
 
 const MAX_CACHE_AGE =
   1000 * 60 * 60 * 2;
@@ -228,11 +228,11 @@ function mapOption(
 // Original combo posters shipped with the frontend, shared by all catalog views.
 const comboPhotos: Record<number, { image: string; alt: string }> = {
   101: {
-    image: "/images/burgers/combo-gula.jpeg",
+    image: "/images/burgers/combo-gula-cutout.webp",
     alt: "Combo Gula: dos hamburguesas a elección con papas",
   },
   110: {
-    image: "/images/burgers/combo-tranka.jpeg",
+    image: "/images/burgers/combo-tranka-cutout.webp",
     alt: "Combo Tranka: dos hamburguesas doble queso con papas",
   },
 };

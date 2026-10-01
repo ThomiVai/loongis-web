@@ -98,14 +98,30 @@ function ComboCardArtwork({
       combo.id
     ];
 
-  if (!presentation || combo.id === 101 || combo.id === 110) {
+  if (combo.id === 101 || combo.id === 110) {
+    return (
+      <div className="burger-combo-card__photo">
+        <span className="burger-combo-card__photo-title">
+          COMBO <strong>{combo.id === 101 ? "GULA" : "TRANKA"}</strong>
+        </span>
+        <CatalogImage
+          className="burger-combo-card__image"
+          src={combo.image}
+          alt={combo.imageAlt}
+          variant="card"
+          loading="lazy"
+        />
+      </div>
+    );
+  }
+
+  if (!presentation) {
     return (
       <CatalogImage
-        className={`burger-combo-card__image${combo.id === 101 || combo.id === 110 ? " burger-combo-card__image--poster" : ""}`}
+        className="burger-combo-card__image"
         src={combo.image}
         alt={combo.imageAlt}
         variant="card"
-        sizes="(max-width: 560px) 100vw, (max-width: 780px) 84vw, (max-width: 1100px) 68vw, 31vw"
         loading="lazy"
       />
     );
