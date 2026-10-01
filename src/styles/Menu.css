@@ -1814,10 +1814,3 @@
   svg {
   color: var(--color-yellow);
 }
-
-/* Original combo posters must remain fully visible at every viewport size. */
-:root .menu-product-card--combos .menu-product-card__image[src$="combo-gula-cutout.webp"],
-:root .menu-product-card--combos .menu-product-card__image[src$="combo-tranka-cutout.webp"] {
-  transform: none;
-  object-fit: contain;
-}
