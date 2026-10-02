@@ -1,8 +1,8 @@
 .mobile-cart-shortcut {
   position: fixed;
-  right: auto;
+  right: max(22px, env(safe-area-inset-right));
   bottom: max(22px, env(safe-area-inset-bottom));
-  left: max(22px, env(safe-area-inset-left));
+  left: auto;
   width: 310px;
   max-width: calc(100vw - 44px);
   z-index: 1100;
@@ -102,10 +102,17 @@
 
 @media (max-width: 560px) {
   .mobile-cart-shortcut {
-    left: 12px;
+    left: auto;
     right: 12px;
     bottom: max(12px, env(safe-area-inset-bottom));
-    width: auto;
-    max-width: none;
+    width: 310px;
+    max-width: calc(100vw - 24px);
+  }
+}
+
+/* Reserve space above the order shortcut for the mascot and its bubble. */
+@media (min-width: 901px) {
+  body:has(.mobile-cart-shortcut) .floating-loongis {
+    bottom: calc(max(22px, env(safe-area-inset-bottom)) + 96px);
   }
 }
