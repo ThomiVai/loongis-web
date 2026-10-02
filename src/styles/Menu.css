@@ -1814,3 +1814,16 @@
   svg {
   color: var(--color-yellow);
 }
+
+/* Fit the complete supplied combo photographs without cropping. */
+.menu-product-card--101,
+.menu-product-card--110 {
+  --menu-image-scale: 1;
+  --menu-image-y: 0px;
+}
+
+.menu-product-card--101 .menu-product-card__image-wrapper,
+.menu-product-card--110 .menu-product-card__image-wrapper {
+  padding: 12px;
+  background: #fff;
+}

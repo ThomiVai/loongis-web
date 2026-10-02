@@ -970,3 +970,24 @@
     transition: none;
   }
 }
+
+/* Original combo cards with supplied PNG photographs. */
+.burger-combo-card {
+  background-color: #fff;
+}
+
+.burger-combo-card--101 .burger-combo-card__visual,
+.burger-combo-card--110 .burger-combo-card__visual {
+  background: #fff;
+}
+
+.burger-combo-card--101 .burger-combo-card__visual::after,
+.burger-combo-card--110 .burger-combo-card__visual::after {
+  content: none;
+}
+
+.burger-combo-card--101 .burger-combo-card__image,
+.burger-combo-card--110 .burger-combo-card__image {
+  padding: 48px 16px 12px;
+  filter: none;
+}
