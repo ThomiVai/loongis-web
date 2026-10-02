@@ -1748,7 +1748,8 @@
 
 /* Preserve the complete supplied combo photograph at every breakpoint. */
 .product-detail__image[src$="combo-gula-original.png"],
-.product-detail__image[src$="combo-tranka-original.png"] {
+.product-detail__image[src$="combo-tranka-original.png"],
+.product-detail__image[src$="papas-luck-original.png"] {
   padding: 12px;
   transform: none;
   filter: none;

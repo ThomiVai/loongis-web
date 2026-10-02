@@ -31,7 +31,7 @@ const API_URL =
 */
 
 const PRODUCTS_CACHE_KEY =
-  "loongis_products_cache_v10";
+  "loongis_products_cache_v11";
 
 const MAX_CACHE_AGE =
   1000 * 60 * 60 * 2;
@@ -225,7 +225,7 @@ function mapOption(
    PRODUCTO API → PRODUCTO FRONT
 ======================================== */
 
-const comboPhotos: Record<number, { name: string; description: string; image: string; alt: string }> = {
+const catalogPresentations: Record<number, { name?: string; description?: string; image: string; alt: string }> = {
   101: {
     name: "Combo Gula",
     description: "Dos hamburguesas dobles a elección: Clasic, Bacon o Crispy. Incluye una porción de papas.",
@@ -237,6 +237,10 @@ const comboPhotos: Record<number, { name: string; description: string; image: st
     description: "Dos hamburguesas dobles con queso. Incluye una porción de papas.",
     image: "/images/burgers/combo-tranka-original.png",
     alt: "Combo Tranka: dos hamburguesas doble queso con papas",
+  },
+  303: {
+    image: "/images/fries/papas-luck-original.png",
+    alt: "Papas Luck con salsa especial Loongis",
   },
 };
 
@@ -257,21 +261,21 @@ function mapProduct(
       product.legacyId,
 
     name:
-      comboPhotos[product.legacyId]?.name ?? product.name,
+      catalogPresentations[product.legacyId]?.name ?? product.name,
 
     description:
-      comboPhotos[product.legacyId]?.description ?? product.description,
+      catalogPresentations[product.legacyId]?.description ?? product.description,
 
     price:
       product.price,
 
     image:
-      comboPhotos[product.legacyId]?.image ?? productImageUrl(
+      catalogPresentations[product.legacyId]?.image ?? productImageUrl(
         product.image,
       ),
 
     imageAlt:
-      comboPhotos[product.legacyId]?.alt ?? product.imageAlt,
+      catalogPresentations[product.legacyId]?.alt ?? product.imageAlt,
 
     category:
       getProductCategory(
