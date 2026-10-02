@@ -31,7 +31,7 @@ const API_URL =
 */
 
 const PRODUCTS_CACHE_KEY =
-  "loongis_products_cache_v9";
+  "loongis_products_cache_v10";
 
 const MAX_CACHE_AGE =
   1000 * 60 * 60 * 2;
@@ -225,12 +225,16 @@ function mapOption(
    PRODUCTO API → PRODUCTO FRONT
 ======================================== */
 
-const comboPhotos: Record<number, { image: string; alt: string }> = {
+const comboPhotos: Record<number, { name: string; description: string; image: string; alt: string }> = {
   101: {
+    name: "Combo Gula",
+    description: "Dos hamburguesas dobles a elección: Clasic, Bacon o Crispy. Incluye una porción de papas.",
     image: "/images/burgers/combo-gula-original.png",
-    alt: "Combo Gula: dos hamburguesas con papas",
+    alt: "Combo Gula: dos hamburguesas dobles a elección con papas",
   },
   110: {
+    name: "Combo Tranka",
+    description: "Dos hamburguesas dobles con queso. Incluye una porción de papas.",
     image: "/images/burgers/combo-tranka-original.png",
     alt: "Combo Tranka: dos hamburguesas doble queso con papas",
   },
@@ -253,10 +257,10 @@ function mapProduct(
       product.legacyId,
 
     name:
-      product.name,
+      comboPhotos[product.legacyId]?.name ?? product.name,
 
     description:
-      product.description,
+      comboPhotos[product.legacyId]?.description ?? product.description,
 
     price:
       product.price,

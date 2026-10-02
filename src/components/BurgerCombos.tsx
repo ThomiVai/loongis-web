@@ -61,7 +61,7 @@ const comboCardPresentations:
     ComboCardPresentation
   > = {
   101: {
-    badge: "1 doble",
+    badge: "2 dobles",
     burgerImage:
       "/images/burgers/loongis-clasic.png",
     burgerCount: 1,
@@ -79,7 +79,7 @@ const comboCardPresentations:
   },
 
   110: {
-    badge: "Doble queso",
+    badge: "2 dobles con queso",
     burgerImage:
       "/images/burgers/simple-queso.png",
     burgerCount: 1,
