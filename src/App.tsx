@@ -1,4 +1,7 @@
 import { AdminSales } from "./pages/AdminSales";
+import { useCallback, useState } from "react";
+import { WelcomeIntro } from "./components/WelcomeIntro";
+import { shouldShowWelcome } from "./services/welcomeIntro";
 import {
   Route,
   Routes,
@@ -40,8 +43,13 @@ function App() {
       "/admin",
     );
 
+  const [showIntro, setShowIntro] = useState(() => shouldShowWelcome(location.pathname));
+  const finishIntro = useCallback(() => setShowIntro(false), []);
+
   return (
     <>
+      {showIntro && <WelcomeIntro onComplete={finishIntro} />}
+      <div inert={showIntro} style={showIntro ? { visibility: "hidden" } : undefined}>
       <PageTitle />
 
       <ScrollToTop />
@@ -209,6 +217,7 @@ function App() {
       {!isAdminRoute && (
         <Footer />
       )}
+      </div>
     </>
   );
 }
