@@ -1,3 +1,4 @@
+import { withCatalogImage } from "../utils/catalogImage";
 import type {
   Product,
   ProductCategory,
@@ -31,7 +32,7 @@ const API_URL =
 */
 
 const PRODUCTS_CACHE_KEY =
-  "loongis_products_cache_v11";
+  "loongis_products_cache_v12";
 
 const MAX_CACHE_AGE =
   1000 * 60 * 60 * 2;
@@ -247,6 +248,7 @@ const catalogPresentations: Record<number, { name?: string; description?: string
 function mapProduct(
   product: ApiProduct,
 ): Product {
+  product = withCatalogImage(product);
   if (
     typeof product.legacyId !==
     "number"
@@ -270,12 +272,12 @@ function mapProduct(
       product.price,
 
     image:
-      catalogPresentations[product.legacyId]?.image ?? productImageUrl(
+      productImageUrl(
         product.image,
       ),
 
     imageAlt:
-      catalogPresentations[product.legacyId]?.alt ?? product.imageAlt,
+      product.imageAlt,
 
     category:
       getProductCategory(

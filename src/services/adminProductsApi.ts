@@ -1,3 +1,4 @@
+import { withCatalogImage } from "../utils/catalogImage";
 import {
   clearProductsCache,
 } from "./productsApi";
@@ -191,7 +192,7 @@ export async function getAdminProducts():
     );
   }
 
-  return data.data;
+  return data.data.map(withCatalogImage);
 }
 
 /* ========================================
@@ -217,7 +218,7 @@ export async function getAdminProductById(
     );
   }
 
-  return data.data;
+  return withCatalogImage(data.data);
 }
 
 /* ========================================
@@ -263,7 +264,7 @@ export async function createAdminProduct(
 
   clearProductsCache();
 
-  return data.data;
+  return withCatalogImage(data.data);
 }
 
 /* ========================================
@@ -310,7 +311,7 @@ export async function updateAdminProduct(
 
   clearProductsCache();
 
-  return data.data;
+  return withCatalogImage(data.data);
 }
 
 /* ========================================
