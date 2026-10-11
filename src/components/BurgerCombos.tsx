@@ -98,7 +98,7 @@ function ComboCardArtwork({
       combo.id
     ];
 
-  if (!presentation || combo.id === 101 || combo.id === 110) {
+  if (!presentation || combo.id === 101 || combo.id === 102 || combo.id === 110) {
     return (
       <CatalogImage
         className="burger-combo-card__image"

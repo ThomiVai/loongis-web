@@ -1,5 +1,6 @@
 // Defaults replace only the original catalog photos; owner uploads take priority.
 const defaults: Record<number, { previous: string; image: string; alt: string }> = {
+  102: { previous: "/images/burgers/combo-bacon.png", image: "/images/burgers/combo-tres-simples.svg", alt: "Tres hamburguesas simples Loongis con una porción de papas" },
   101: { previous: "/images/burgers/combo-promo.png", image: "/images/burgers/combo-gula-original.png", alt: "Combo Gula: dos hamburguesas dobles a elección con papas" },
   110: { previous: "/images/burgers/combo-simplequeso.png", image: "/images/burgers/combo-tranka-original.png", alt: "Combo Tranka: dos hamburguesas dobles con queso y papas" },
   302: { previous: "/images/fries/papas-cheddar-bacon.png", image: "/images/fries/papas-cheddar-bacon-original.png", alt: "Papas con cheddar y bacon de Loongis" },
