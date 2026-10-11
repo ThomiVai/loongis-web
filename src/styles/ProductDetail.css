@@ -1747,7 +1747,7 @@
 }
 
 /* Preserve the complete supplied combo photograph at every breakpoint. */
-.product-detail__image[src$="combo-tres-simples.svg"],
+.product-detail__image[src$="combo-tres-simples-v2.webp"],
 .product-detail__image[src$="combo-gula-original.png"],
 .product-detail__image[src$="combo-tranka-original.png"],
 .product-detail__image[src$="papas-luck-original.png"] {

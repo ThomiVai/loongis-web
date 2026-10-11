@@ -32,7 +32,7 @@ const API_URL =
 */
 
 const PRODUCTS_CACHE_KEY =
-  "loongis_products_cache_v13";
+  "loongis_products_cache_v14";
 
 const MAX_CACHE_AGE =
   1000 * 60 * 60 * 2;
