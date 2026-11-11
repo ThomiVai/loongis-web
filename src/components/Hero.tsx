@@ -17,7 +17,8 @@ export function Hero() {
       className="hero"
       id="inicio"
     >
-      <div className="container hero__container">
+      <div className="hero__stage">
+        <div className="hero__container">
 
         {/* ========================================
             CONTENIDO
@@ -27,13 +28,9 @@ export function Hero() {
 
           <h1 className="hero__title">
 
-            <span className="hero__title-small">
-              Hamburguesas que
-            </span>
+            <span className="hero__title-small">Hamburguesas</span>
 
-            <span className="hero__title-primary">
-              te hacen
-            </span>
+            <span className="hero__title-primary hero__title-dark">que te hacen</span>
 
             <span className="hero__title-primary hero__title-underlined">
               babear
@@ -76,69 +73,6 @@ export function Hero() {
             </Link>
           </div>
 
-          {/* ========================================
-              BENEFICIOS
-          ======================================== */}
-
-          <div className="hero__benefits">
-
-            <article className="hero__benefit">
-
-              <span className="hero__benefit-icon">
-                <FaClock
-                  aria-hidden="true"
-                />
-              </span>
-
-              <div>
-                <strong>
-                  Preparadas
-                </strong>
-
-                <span>
-                  al momento
-                </span>
-              </div>
-            </article>
-
-            <article className="hero__benefit">
-
-              <span className="hero__benefit-icon">
-                <FaLocationDot
-                  aria-hidden="true"
-                />
-              </span>
-
-              <div>
-                <strong>
-                  Delivery
-                </strong>
-
-                <span>
-                  en Hurlingham
-                </span>
-              </div>
-            </article>
-
-            <article className="hero__benefit">
-
-              <span className="hero__benefit-icon">
-                <FaCalendarDays
-                  aria-hidden="true"
-                />
-              </span>
-
-              <div>
-                <strong>
-                  Jueves a domingo
-                </strong>
-
-                <span>
-                  20:00 a 00:00
-                </span>
-              </div>
-            </article>
-          </div>
         </div>
 
         {/* ========================================
@@ -147,28 +81,47 @@ export function Hero() {
 
         <div className="hero__visual">
 
+          <div className="hero__halo hero__halo--yellow" aria-hidden="true" />
+          <div className="hero__halo hero__halo--blue" aria-hidden="true" />
+          <span className="hero__sparkle hero__sparkle--one" aria-hidden="true">✦</span>
+          <span className="hero__sparkle hero__sparkle--two" aria-hidden="true">✦</span>
+
           <div className="hero__image-frame">
 
             <img
               className="hero__main-image"
-              src="/images/hero/hero-loongis.webp"
-              srcSet="
-                /images/hero/hero-loongis-1000.webp 1000w,
-                /images/hero/hero-loongis.webp 1254w
-              "
+              src="/images/burgers/combo-crispy.webp"
               sizes="
                 (max-width: 550px) 500px,
                 (max-width: 900px) 690px,
                 (max-width: 1150px) 660px,
                 710px
               "
-              width="1254"
-              height="1254"
+              width="720"
+              height="1280"
               loading="eager"
               fetchPriority="high"
-              alt="Mascota de Loongis junto a una hamburguesa Loongis Clasic"
+              alt="Hamburguesa doble Loongis Crispy"
             />
           </div>
+        </div>
+      </div>
+
+        <div className="hero__benefits" aria-label="Beneficios de Loongis">
+          <article className="hero__benefit">
+            <span className="hero__benefit-icon"><FaClock aria-hidden="true" /></span>
+            <div><strong>Preparadas</strong><span>al momento</span></div>
+          </article>
+
+          <article className="hero__benefit">
+            <span className="hero__benefit-icon"><FaLocationDot aria-hidden="true" /></span>
+            <div><strong>Delivery</strong><span>en Hurlingham</span></div>
+          </article>
+
+          <article className="hero__benefit">
+            <span className="hero__benefit-icon"><FaCalendarDays aria-hidden="true" /></span>
+            <div><strong>Jueves a domingo</strong><span>20:00 a 00:00</span></div>
+          </article>
         </div>
       </div>
     </section>
