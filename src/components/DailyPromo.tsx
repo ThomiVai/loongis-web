@@ -4,6 +4,11 @@ import {
 } from "react-icons/fa6";
 
 import {
+  useEffect,
+  useRef,
+} from "react";
+
+import {
   Link,
 } from "react-router-dom";
 
@@ -58,6 +63,31 @@ export function DailyPromo({
   loading,
   error,
 }: DailyPromoProps) {
+  const cardRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const card = cardRef.current;
+
+    if (!card || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) {
+          return;
+        }
+
+        card.classList.remove("promo-banner__card--reveal");
+        window.requestAnimationFrame(() => card.classList.add("promo-banner__card--reveal"));
+      },
+      { threshold: 0.28 },
+    );
+
+    observer.observe(card);
+
+    return () => observer.disconnect();
+  }, []);
   /* ========================================
      CARGANDO
   ======================================== */
@@ -122,7 +152,10 @@ export function DailyPromo({
       id="combos"
       aria-labelledby="promo-banner-title"
     >
-      <div className="promo-banner__container">
+      <article
+        className="promo-banner__container promo-banner__card"
+        ref={cardRef}
+      >
 
         {/* =================================
             VISUAL
@@ -151,16 +184,6 @@ export function DailyPromo({
             />
           </div>
 
-          <div className="promo-banner__discount">
-
-            <strong>
-              Promo
-            </strong>
-
-            <span>
-              del día
-            </span>
-          </div>
         </div>
 
         {/* =================================
@@ -250,7 +273,7 @@ export function DailyPromo({
             Sujeto a disponibilidad.
           </p>
         </div>
-      </div>
+      </article>
     </section>
   );
 }
