@@ -61,11 +61,11 @@ export function Hero() {
                 <span className="product-sparkle product-sparkle-two">✦</span>
                 <div className="product-shot">
                   <img
-                    src="/images/hero/crispy-loongis.png"
-                    width="1233"
-                    height="2048"
+                    src="/images/hero/loongis-burger-reference.webp"
+                    width="977"
+                    height="889"
                     fetchPriority="high"
-                    alt=""
+                    alt="Hamburguesa Loongis doble con bacon y cebolla crispy"
                   />
                 </div>
               </div>

@@ -68,7 +68,7 @@ export function DailyPromo({
   useEffect(() => {
     const card = cardRef.current;
 
-    if (!card) {
+    if (!card || loading) {
       return;
     }
 
@@ -84,8 +84,8 @@ export function DailyPromo({
     const handlePointerMove = (event: PointerEvent) => {
       if (!canTilt || reduceMotion) return;
       const bounds = card.getBoundingClientRect();
-      const x = (event.clientX - bounds.left) / bounds.width;
-      const y = (event.clientY - bounds.top) / bounds.height;
+      const x = Math.min(Math.max((event.clientX - bounds.left) / bounds.width, 0), 1);
+      const y = Math.min(Math.max((event.clientY - bounds.top) / bounds.height, 0), 1);
       card.classList.add("is-tilting");
       card.style.setProperty("--tilt-x", `${(0.5 - y) * 5}deg`);
       card.style.setProperty("--tilt-y", `${(x - 0.5) * 5}deg`);
@@ -94,6 +94,7 @@ export function DailyPromo({
     };
     card.addEventListener("pointermove", handlePointerMove);
     card.addEventListener("pointerleave", resetTilt);
+    card.addEventListener("pointercancel", resetTilt);
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -113,8 +114,9 @@ export function DailyPromo({
       observer.disconnect();
       card.removeEventListener("pointermove", handlePointerMove);
       card.removeEventListener("pointerleave", resetTilt);
+      card.removeEventListener("pointercancel", resetTilt);
     };
-  }, []);
+  }, [loading]);
   /* ========================================
      CARGANDO
   ======================================== */
@@ -159,6 +161,7 @@ export function DailyPromo({
     return (
       <section className="promo-banner" id="combos" aria-labelledby="promo-banner-title">
         <article ref={cardRef} className="promo-banner__container promo-banner__card promo-banner__card--static">
+          <span className="promo-banner__tilt-glare" aria-hidden="true" />
           <div className="promo-banner__visual">
             <span className="promo-banner__decoration" aria-hidden="true" />
             <div className="promo-banner__image-wrapper">
@@ -203,6 +206,7 @@ export function DailyPromo({
         className="promo-banner__container promo-banner__card"
         ref={cardRef}
       >
+        <span className="promo-banner__tilt-glare" aria-hidden="true" />
 
         {/* =================================
             VISUAL
