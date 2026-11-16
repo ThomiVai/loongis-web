@@ -1198,27 +1198,7 @@
   }
 }
 
-/* Mismo signo azul con borde blanco del Combo Gula. */
-.burger-combo-card--102 .burger-combo-card__visual::before {
-  position: absolute;
-  top: 63%;
-  left: 50%;
-  z-index: 4;
 
-  color: var(--color-primary);
-  content: "+";
-  font-family: "Fredoka", sans-serif;
-  font-size: 37px;
-  font-weight: 700;
-  line-height: 1;
-  -webkit-text-fill-color: var(--color-primary);
-  -webkit-text-stroke: 3px #fff;
-  paint-order: stroke fill;
-  filter: drop-shadow(0 2px 0 rgba(0, 25, 72, 0.38));
-
-  pointer-events: none;
-  transform: translate(-50%, -50%) rotate(4deg);
-}
 
 @media (prefers-reduced-motion: reduce) {
   .burger-combos__heading,
