@@ -1096,6 +1096,25 @@
   min-height: 48px;
 }
 
+/* Jerarquía tipográfica: display para títulos/precio, lectura cómoda para detalles. */
+.burger-combo-card__name {
+  font-size: 1.4rem;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.12;
+}
+
+.burger-combo-card__description {
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.52;
+}
+
+.burger-combo-card__add {
+  font-size: 13px;
+  font-weight: 600;
+}
+
 @media (max-width: 560px) {
   .burger-combo-card {
     min-height: 430px;
@@ -1110,6 +1129,10 @@
   .burger-combo-card__content {
     min-height: 225px;
     padding: 20px 19px 18px;
+  }
+
+  .burger-combo-card__name {
+    font-size: 1.34rem;
   }
 
   .burger-combo-card:hover,
