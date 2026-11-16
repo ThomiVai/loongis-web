@@ -9,8 +9,6 @@
 .promo-banner__container {
   --tilt-x: 0deg;
   --tilt-y: 0deg;
-  --glare-x: 50%;
-  --glare-y: 50%;
   position: relative;
   display: grid;
   grid-template-columns: minmax(390px, .96fr) minmax(0, 1.04fr);
@@ -24,8 +22,8 @@
   border-radius: 28px;
   padding: 38px 48px;
   background: linear-gradient(135deg, rgba(255, 255, 255, .96), rgba(255, 252, 244, .72));
-  box-shadow: 0 18px 48px rgba(31, 45, 65, .07), 0 0 0 4px rgba(7, 95, 234, .055), inset 0 0 0 1px rgba(255, 255, 255, .92);
-  transform: perspective(1200px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+  box-shadow: 0 18px 48px rgba(31, 45, 65, .07), inset 0 0 0 1px rgba(255, 255, 255, .92);
+  transform: perspective(900px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
   transform-style: preserve-3d;
   transition: transform 180ms ease-out, box-shadow 180ms ease-out;
 }
@@ -35,28 +33,9 @@
   z-index: 1;
 }
 
-.promo-banner__container > .promo-banner__tilt-glare {
-  position: absolute;
-  z-index: 2;
-}
-
 .promo-banner__container.is-tilting {
   transition: none;
-  box-shadow: 0 26px 58px rgba(31, 45, 65, .15), 0 0 0 4px rgba(7, 95, 234, .07);
-}
-
-/* Brillo localizado por cursor: reemplaza el aro giratorio que no era parte del efecto 3D. */
-.promo-banner__tilt-glare {
-  inset: 1px;
-  border-radius: inherit;
-  background: radial-gradient(circle at var(--glare-x) var(--glare-y), rgba(255, 255, 255, .42), transparent 35%);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 180ms ease;
-}
-
-.promo-banner__container.is-tilting .promo-banner__tilt-glare {
-  opacity: 1;
+  box-shadow: 0 24px 48px rgba(31, 45, 65, .12), inset 0 0 0 1px rgba(255, 255, 255, .92);
 }
 
 .promo-banner__visual,
@@ -68,7 +47,7 @@
 
 .promo-banner__container.is-tilting .promo-banner__visual,
 .promo-banner__container.is-tilting .promo-banner__content {
-  transform: translateZ(26px);
+  transform: translateZ(32px);
 }
 
 .promo-banner__visual {
@@ -126,8 +105,16 @@
 }
 
 .promo-banner__container.is-tilting .promo-banner__combo-image {
-  transform: translateZ(54px);
+  transform: translateZ(62px);
 }
+
+.promo-banner__container.is-tilting .promo-banner__eyebrow { transform: translateZ(42px); }
+.promo-banner__container.is-tilting .promo-banner__title { transform: translateZ(60px); }
+.promo-banner__container.is-tilting .promo-banner__product-name { transform: translateZ(48px); }
+.promo-banner__container.is-tilting .promo-banner__description { transform: translateZ(42px); }
+.promo-banner__container.is-tilting .promo-banner__price { transform: translateZ(48px); }
+.promo-banner__container.is-tilting .promo-banner__actions { transform: translateZ(58px); }
+.promo-banner__container.is-tilting .promo-banner__notice { transform: translateZ(40px); }
 
 .promo-banner__visual:hover .promo-banner__combo-image {
   filter: drop-shadow(0 25px 23px rgba(86, 54, 0, .17));
@@ -359,7 +346,7 @@
 
 @media (max-width: 700px) {
   .promo-banner { padding: 62px 14px 72px; }
-  .promo-banner__container { grid-template-columns: 1fr; gap: 0; min-height: 0; border-radius: 23px; padding: 18px; box-shadow: 0 14px 34px rgba(31, 45, 65, .07), 0 0 0 3px rgba(7, 95, 234, .055), inset 0 0 0 1px rgba(255, 255, 255, .92); }
+  .promo-banner__container { grid-template-columns: 1fr; gap: 0; min-height: 0; border-radius: 23px; padding: 18px; box-shadow: 0 14px 34px rgba(31, 45, 65, .07), inset 0 0 0 1px rgba(255, 255, 255, .92); }
   .promo-banner__visual, .promo-banner__image-wrapper { min-height: 278px; }
   .promo-banner__decoration { top: auto; left: auto; width: 265px; height: 265px; }
   .promo-banner__visual::after { bottom: 20px; width: 200px; height: 18px; }
