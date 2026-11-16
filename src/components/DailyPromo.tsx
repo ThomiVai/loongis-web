@@ -129,7 +129,27 @@ export function DailyPromo({
     error ||
     !promoCombo
   ) {
-    return null;
+    return (
+      <section className="promo-banner" id="combos" aria-labelledby="promo-banner-title">
+        <article className="promo-banner__container promo-banner__card promo-banner__card--static">
+          <div className="promo-banner__visual">
+            <span className="promo-banner__decoration" aria-hidden="true" />
+            <div className="promo-banner__image-wrapper">
+              <img className="promo-banner__combo-image" src="/images/burgers/combo-bacon.webp" alt="Combo Loongis Bacon con papas y bebida" />
+            </div>
+          </div>
+          <div className="promo-banner__content">
+            <div className="promo-banner__eyebrow"><FaFire aria-hidden="true" /><span>Promo especial</span></div>
+            <h2 className="promo-banner__title" id="promo-banner-title">Combo del día</h2>
+            <h3 className="promo-banner__product-name">Hoy: Loongis Bacon</h3>
+            <p className="promo-banner__description">Hamburguesa doble del día, una porción de papas y bebida a elección.</p>
+            <div className="promo-banner__price"><span>Precio del combo</span><strong>$16.000</strong></div>
+            <div className="promo-banner__actions"><Link className="promo-banner__add-button" to="/producto/109">Elegir opciones</Link><Link className="promo-banner__detail-button" to="/producto/109">Ver detalle <FaArrowRightLong aria-hidden="true" /></Link></div>
+            <p className="promo-banner__notice">Sujeto a disponibilidad.</p>
+          </div>
+        </article>
+      </section>
+    );
   }
 
   const dailyBurgerLabel =
