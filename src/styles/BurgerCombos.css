@@ -1057,9 +1057,48 @@
   padding-top: 13px;
 }
 
+/* Refuerzo de marca para que las cards se sientan menos genéricas. */
+.burger-combo-card {
+  min-height: 432px;
+  border-color: rgba(7, 95, 234, 0.18);
+
+  box-shadow:
+    0
+    14px
+    30px
+    rgba(0, 25, 72, 0.16);
+}
+
+.burger-combo-card:hover,
+.burger-combo-card:focus-within {
+  border-color: rgba(246, 204, 47, 0.88);
+
+  box-shadow:
+    0
+    20px
+    38px
+    rgba(0, 25, 72, 0.2),
+    0
+    0
+    0
+    3px
+    rgba(246, 204, 47, 0.16);
+
+  transform: translateY(-4px);
+}
+
+.burger-combo-card__content {
+  gap: 10px;
+  min-height: 212px;
+}
+
+.burger-combo-card__description {
+  min-height: 48px;
+}
+
 @media (max-width: 560px) {
   .burger-combo-card {
-    min-height: 440px;
+    min-height: 430px;
 
     box-shadow:
       0
@@ -1069,8 +1108,13 @@
   }
 
   .burger-combo-card__content {
-    min-height: 235px;
+    min-height: 225px;
     padding: 20px 19px 18px;
+  }
+
+  .burger-combo-card:hover,
+  .burger-combo-card:focus-within {
+    transform: none;
   }
 
   .burger-combo-card__visual::after {
