@@ -61,9 +61,9 @@ export function Hero() {
                 <span className="product-sparkle product-sparkle-two">✦</span>
                 <div className="product-shot">
                   <img
-                    src="/images/hero/crispy-loongis.webp"
-                    width="420"
-                    height="698"
+                    src="/images/hero/crispy-loongis.png"
+                    width="1233"
+                    height="2048"
                     fetchPriority="high"
                     alt=""
                   />
