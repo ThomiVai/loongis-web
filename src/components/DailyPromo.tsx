@@ -96,16 +96,24 @@ export function DailyPromo({
     card.addEventListener("pointerleave", resetTilt);
     card.addEventListener("pointercancel", resetTilt);
 
+    if (reduceMotion) {
+      card.classList.add("promo-banner__card--visible");
+    }
+
+    if (!("IntersectionObserver" in window)) {
+      card.classList.add("promo-banner__card--visible");
+      return () => {
+        card.removeEventListener("pointermove", handlePointerMove);
+        card.removeEventListener("pointerleave", resetTilt);
+        card.removeEventListener("pointercancel", resetTilt);
+      };
+    }
+
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (!entry.isIntersecting) {
-          return;
-        }
-
-        card.classList.remove("promo-banner__card--reveal");
-        window.requestAnimationFrame(() => card.classList.add("promo-banner__card--reveal"));
+        card.classList.toggle("promo-banner__card--visible", entry.isIntersecting);
       },
-      { threshold: 0.28 },
+      { threshold: 0.25 },
     );
 
     observer.observe(card);
