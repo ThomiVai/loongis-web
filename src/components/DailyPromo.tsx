@@ -68,9 +68,32 @@ export function DailyPromo({
   useEffect(() => {
     const card = cardRef.current;
 
-    if (!card || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    if (!card) {
       return;
     }
+
+    const canTilt = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const resetTilt = () => {
+      card.classList.remove("is-tilting");
+      card.style.setProperty("--tilt-x", "0deg");
+      card.style.setProperty("--tilt-y", "0deg");
+      card.style.setProperty("--glare-x", "50%");
+      card.style.setProperty("--glare-y", "50%");
+    };
+    const handlePointerMove = (event: PointerEvent) => {
+      if (!canTilt || reduceMotion) return;
+      const bounds = card.getBoundingClientRect();
+      const x = (event.clientX - bounds.left) / bounds.width;
+      const y = (event.clientY - bounds.top) / bounds.height;
+      card.classList.add("is-tilting");
+      card.style.setProperty("--tilt-x", `${(0.5 - y) * 5}deg`);
+      card.style.setProperty("--tilt-y", `${(x - 0.5) * 5}deg`);
+      card.style.setProperty("--glare-x", `${x * 100}%`);
+      card.style.setProperty("--glare-y", `${y * 100}%`);
+    };
+    card.addEventListener("pointermove", handlePointerMove);
+    card.addEventListener("pointerleave", resetTilt);
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -86,7 +109,11 @@ export function DailyPromo({
 
     observer.observe(card);
 
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      card.removeEventListener("pointermove", handlePointerMove);
+      card.removeEventListener("pointerleave", resetTilt);
+    };
   }, []);
   /* ========================================
      CARGANDO
@@ -131,7 +158,7 @@ export function DailyPromo({
   ) {
     return (
       <section className="promo-banner" id="combos" aria-labelledby="promo-banner-title">
-        <article className="promo-banner__container promo-banner__card promo-banner__card--static">
+        <article ref={cardRef} className="promo-banner__container promo-banner__card promo-banner__card--static">
           <div className="promo-banner__visual">
             <span className="promo-banner__decoration" aria-hidden="true" />
             <div className="promo-banner__image-wrapper">
