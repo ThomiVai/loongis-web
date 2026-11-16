@@ -254,7 +254,7 @@
     1fr;
 
   min-width: 0;
-  min-height: 470px;
+  min-height: 450px;
 
   overflow: hidden;
 
@@ -979,22 +979,109 @@
 .burger-combo-card--102 .burger-combo-card__visual,
 .burger-combo-card--101 .burger-combo-card__visual,
 .burger-combo-card--110 .burger-combo-card__visual {
-  background: #fff;
+  background:
+    radial-gradient(
+      circle at 50% 56%,
+      rgba(246, 204, 47, 0.2) 0%,
+      rgba(255, 248, 226, 0.94) 55%,
+      #fffaf0 100%
+    );
 }
 
 .burger-combo-card--102 .burger-combo-card__visual::after,
 .burger-combo-card--101 .burger-combo-card__visual::after,
 .burger-combo-card--110 .burger-combo-card__visual::after {
-  content: none;
+  bottom: 17px;
+
+  width: 48%;
+  height: 13px;
+
+  background-color: rgba(25, 36, 57, 0.17);
+
+  content: "";
+
+  filter: blur(12px);
 }
 
 .burger-combo-card--102 .burger-combo-card__image,
 .burger-combo-card--101 .burger-combo-card__image,
 .burger-combo-card--110 .burger-combo-card__image {
+  position: relative;
+  z-index: 1;
+
   padding: 48px 16px 12px;
-  filter: none;
+
+  filter:
+    drop-shadow(
+      0
+      10px
+      9px
+      rgba(23, 23, 23, 0.13)
+    );
+
+  transition:
+    transform 220ms ease,
+    filter 220ms ease;
 }
 
 .burger-combo-card--102 .burger-combo-card__image {
   padding: 24px 0 0;
+}
+
+.burger-combo-card--102:hover .burger-combo-card__image,
+.burger-combo-card--101:hover .burger-combo-card__image,
+.burger-combo-card--110:hover .burger-combo-card__image {
+  filter:
+    drop-shadow(
+      0
+      13px
+      11px
+      rgba(23, 23, 23, 0.17)
+    );
+
+  transform: translateY(-4px) scale(1.015);
+}
+
+.burger-combo-card__content {
+  gap: 14px;
+  min-height: 230px;
+  padding: 20px 22px 18px;
+}
+
+.burger-combo-card__description {
+  min-height: 54px;
+  margin-top: 8px;
+}
+
+.burger-combo-card__footer {
+  padding-top: 13px;
+}
+
+@media (max-width: 560px) {
+  .burger-combo-card {
+    min-height: 440px;
+
+    box-shadow:
+      0
+      10px
+      22px
+      rgba(0, 25, 72, 0.12);
+  }
+
+  .burger-combo-card__content {
+    min-height: 235px;
+    padding: 20px 19px 18px;
+  }
+
+  .burger-combo-card__visual::after {
+    bottom: 15px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .burger-combo-card--102 .burger-combo-card__image,
+  .burger-combo-card--101 .burger-combo-card__image,
+  .burger-combo-card--110 .burger-combo-card__image {
+    transition: none;
+  }
 }
