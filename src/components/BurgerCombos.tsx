@@ -179,6 +179,9 @@ export function BurgerCombos({
   loading,
   error,
 }: BurgerCombosProps) {
+  const sectionRef =
+    useRef<HTMLElement>(null);
+
   const viewportRef =
     useRef<HTMLDivElement>(null);
 
@@ -211,6 +214,45 @@ export function BurgerCombos({
         ),
       [products],
     );
+
+  useEffect(() => {
+    const section = sectionRef.current;
+
+    if (
+      !section ||
+      loading ||
+      error ||
+      burgerCombos.length === 0
+    ) {
+      return;
+    }
+
+    const revealClass = "burger-combos--visible";
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    if (
+      reduceMotion ||
+      !("IntersectionObserver" in window)
+    ) {
+      section.classList.add(revealClass);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        section.classList.toggle(
+          revealClass,
+          entry.isIntersecting,
+        );
+      },
+      { threshold: 0.12 },
+    );
+
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, [burgerCombos.length, error, loading]);
 
   const updateCurrentCombo = () => {
     const viewport =
@@ -400,6 +442,7 @@ export function BurgerCombos({
     <section
       className="burger-combos"
       id="combos-loongis"
+      ref={sectionRef}
       aria-labelledby="burger-combos-title"
     >
       <div className="burger-combos__container">
