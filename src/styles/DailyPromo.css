@@ -189,10 +189,10 @@
   margin: 0 0 12px;
   color: var(--color-black);
   font-family: "Fredoka", sans-serif;
-  font-size: clamp(1.35rem, 1.9vw, 1.75rem);
-  font-weight: 700;
-  letter-spacing: -.025em;
-  line-height: 1.1;
+  font-size: 1.4rem;
+  font-weight: 600;
+  letter-spacing: -.015em;
+  line-height: 1.12;
   transform: translateZ(34px);
 }
 
@@ -368,7 +368,7 @@
   .promo-banner__combo-image { width: min(86%, 245px); max-height: 215px; }
   .promo-banner__content { padding: 18px 2px 4px; }
   .promo-banner__title { font-size: clamp(1.85rem, 10.5vw, 2.45rem); }
-  .promo-banner__product-name { font-size: 1rem; }
+  .promo-banner__product-name { font-size: 1.34rem; }
   .promo-banner__description { font-size: .74rem; }
   .promo-banner__price { gap: 6px; margin: 14px 0; padding: 12px 0; }
   .promo-banner__price span { font-size: .63rem; }

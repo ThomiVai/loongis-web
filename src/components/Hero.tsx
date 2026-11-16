@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 import "../styles/Hero.css";
 
-export function Hero() {
+export function Hero({ introActive = false }: { introActive?: boolean }) {
   const heroRef = useRef<HTMLElement>(null);
   const [animationKey, setAnimationKey] = useState(0);
 
@@ -33,7 +33,10 @@ export function Hero() {
     <section className="hero" id="inicio" ref={heroRef}>
       <div className="hero__reference-container">
         <article className="hero-poster">
-          <div className="hero-stage-product" key={animationKey}>
+          <div
+            className={`hero-stage-product${introActive ? " hero-stage-product--intro-paused" : ""}`}
+            key={animationKey}
+          >
             <h1 className="hero-accessible-title">
               Loongis: hamburguesas que te hacen babear
             </h1>

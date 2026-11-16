@@ -88,7 +88,7 @@ function App() {
 
         <Route
           path="/"
-          element={<Home />}
+          element={<Home introActive={showIntro} />}
         />
 
         <Route

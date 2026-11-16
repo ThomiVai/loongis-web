@@ -21,7 +21,7 @@ import {
   scrollToHash,
 } from "../utils/scrollToHash";
 
-export function Home() {
+export function Home({ introActive = false }: { introActive?: boolean }) {
   const {
     products,
     loading,
@@ -75,7 +75,7 @@ export function Home() {
 
   return (
     <main id="inicio">
-      <Hero />
+      <Hero introActive={introActive} />
 
       <Categories />
 
