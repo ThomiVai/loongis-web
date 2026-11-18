@@ -29,6 +29,10 @@ import {
   CatalogImage,
 } from "./CatalogImage";
 
+import {
+  getDailyComboImage,
+} from "../utils/dailyComboImage";
+
 import type {
   Product,
   ProductChoiceSelection,
@@ -83,10 +87,20 @@ function createInitialChoices(
             ),
         );
 
+    const defaultOption =
+      product.dailyPromo &&
+      group.options.some((option) => option.kind === "beverage")
+        ? group.options.find(
+            (option) =>
+              option.kind === "beverage" &&
+              option.label.toLowerCase().includes("coca"),
+          ) ?? group.options[0]
+        : group.options[0];
+
     return storedChoice ?? {
       groupId: group.id,
       groupLabel: group.label,
-      option: group.options[0],
+      option: defaultOption,
       removedIngredients: [],
     };
   });
@@ -184,6 +198,14 @@ export function ComboConfigurator({
     notes: notes.trim(),
   };
 
+  const selectedBurger =
+    choices.find((choice) => choice.option.kind === "burger")?.option;
+  const selectedBeverage =
+    choices.find((choice) => choice.option.kind === "beverage")?.option;
+  const selectedDailyComboImage = product.dailyPromo
+    ? getDailyComboImage(selectedBurger, selectedBeverage)
+    : undefined;
+
   const handleSave = () => {
     if (editCartItem) {
       updateCartItem(
@@ -222,8 +244,10 @@ export function ComboConfigurator({
               <div className="product-detail__image-background">
                 <img
                   className="product-detail__image"
-                  src={product.image}
-                  alt={product.imageAlt}
+                  src={selectedDailyComboImage ?? product.image}
+                  alt={selectedDailyComboImage
+                    ? `Combo del día con ${selectedBurger?.label ?? "hamburguesa"}, papas y ${selectedBeverage?.label ?? "bebida"}`
+                    : product.imageAlt}
                 />
               </div>
             </div>
