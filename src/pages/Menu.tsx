@@ -183,7 +183,7 @@ function formatPrice(
 ======================================== */
 
 export function Menu() {
-  const dailyComboCardRef =
+  const menuProductsRef =
     useRef<HTMLElement | null>(null);
 
   const {
@@ -291,15 +291,20 @@ export function Menu() {
     visibleProducts.length;
 
   useEffect(() => {
-    const card =
-      dailyComboCardRef.current;
+    const section =
+      menuProductsRef.current;
 
-    if (!card) {
+    if (
+      !section ||
+      loading
+    ) {
       return;
     }
 
+    const readyClass =
+      "menu-products--reveal-ready";
     const visibleClass =
-      "menu-product-card--daily-visible";
+      "menu-products--visible";
     const reduceMotion =
       window.matchMedia(
         "(prefers-reduced-motion: reduce)",
@@ -312,23 +317,35 @@ export function Menu() {
       return;
     }
 
+    section.classList.add(
+      readyClass,
+    );
+
     const observer =
       new IntersectionObserver(
         ([entry]) => {
-          card.classList.toggle(
+          if (!entry.isIntersecting) {
+            return;
+          }
+
+          section.classList.add(
             visibleClass,
-            entry.isIntersecting,
           );
+          observer.unobserve(section);
         },
-        { threshold: 0.16 },
+        { threshold: 0.08 },
       );
 
-    observer.observe(card);
+    observer.observe(section);
 
-    return () =>
+    return () => {
       observer.disconnect();
+      section.classList.remove(
+        readyClass,
+        visibleClass,
+      );
+    };
   }, [
-    activeFilter,
     error,
     loading,
     products.length,
@@ -402,6 +419,7 @@ export function Menu() {
       ================================= */}
 
       <section
+        ref={menuProductsRef}
         className="menu-products"
         aria-labelledby="menu-products-title"
       >
@@ -540,11 +558,6 @@ export function Menu() {
 
                   return (
                   <article
-                    ref={
-                      product.dailyPromo
-                        ? dailyComboCardRef
-                        : undefined
-                    }
                     key={
                       product.id
                     }
