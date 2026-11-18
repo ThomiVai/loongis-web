@@ -124,40 +124,23 @@
   transform: scale(1.04);
 }
 
-.combo-configurator__beverage-mark {
-  display: grid;
-  place-items: center;
+.combo-configurator__beverage-image {
+  display: block;
   flex-shrink: 0;
-  width: 42px;
-  height: 42px;
-  border-radius: 13px;
-  background: var(--color-primary);
-  color: #ffffff;
+  width: 44px;
+  height: 50px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 4px rgba(23, 23, 23, 0.14));
+}
+
+.combo-configurator__beverage-fallback {
+  flex-shrink: 0;
+  width: 44px;
+  color: var(--color-primary);
   font-family: "Fredoka", sans-serif;
-  font-size: 1rem;
+  font-size: 1.3rem;
   font-weight: 700;
-  box-shadow:
-    inset 0 -3px 0 rgba(0, 0, 0, 0.12);
-}
-
-.combo-configurator__option--coca-cola
-  .combo-configurator__beverage-mark {
-  background: #d9272e;
-}
-
-.combo-configurator__option--pepsi
-  .combo-configurator__beverage-mark {
-  background: #1559b5;
-}
-
-.combo-configurator__option--sprite
-  .combo-configurator__beverage-mark {
-  background: #18884c;
-}
-
-.combo-configurator__option--agua
-  .combo-configurator__beverage-mark {
-  background: #43a6d8;
+  text-align: center;
 }
 
 .combo-configurator__fixed-choice {
@@ -243,9 +226,13 @@
     display: none;
   }
 
-  .combo-configurator__beverage-mark {
-    width: 36px;
-    height: 36px;
+  .combo-configurator__beverage-image {
+    width: 38px;
+    height: 42px;
+  }
+
+  .combo-configurator__beverage-fallback {
+    width: 38px;
   }
 
   .combo-configurator__check {
