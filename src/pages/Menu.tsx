@@ -382,14 +382,14 @@ export function Menu() {
               </span>
 
               <h1 className="menu-hero__title">
-                Elegí tu favorita
+                <span>Elegí tu</span>
+                <span className="menu-hero__title-accent">
+                  favorita
+                </span>
               </h1>
 
               <p className="menu-hero__description">
-                Hamburguesas smash,
-                combos y papas para
-                disfrutar Loongis como
-                más te gusta.
+                Smash al momento, combos y papas para compartir.
               </p>
 
               <span className="menu-hero__brand-tag">
@@ -405,7 +405,7 @@ export function Menu() {
               <div className="menu-hero__visual-glow" />
 
               <img
-                src="/images/hero/menu-loongis.png"
+                src="/images/hero/hero-loongis.png"
                 alt=""
                 className="menu-hero__visual-image"
               />
