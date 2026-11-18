@@ -23,6 +23,10 @@ import {
   useProducts,
 } from "../hooks/useProducts";
 
+import {
+  getDailyComboImage,
+} from "../utils/dailyComboImage";
+
 import type {
   ProductCategory,
 } from "../types/Product";
@@ -469,7 +473,20 @@ export function Menu() {
             <div className="menu-products__grid">
 
               {visibleProducts.map(
-                (product) => (
+                (product) => {
+                  const comboBurger = product.choiceGroups
+                    ?.flatMap((group) => group.options)
+                    .find((option) => option.kind === "burger");
+                  const dailyComboImage = product.dailyPromo
+                    ? getDailyComboImage(comboBurger, {
+                        id: "coca-cola",
+                        label: "Coca-Cola",
+                        kind: "beverage",
+                        ingredients: [],
+                      })
+                    : undefined;
+
+                  return (
                   <article
                     key={
                       product.id
@@ -507,10 +524,12 @@ export function Menu() {
 
                         <CatalogImage
                           src={
-                            product.image
+                            dailyComboImage ?? product.image
                           }
                           alt={
-                            product.imageAlt
+                            dailyComboImage
+                              ? `Combo del día con ${comboBurger?.label ?? "hamburguesa"}, papas y Coca-Cola`
+                              : product.imageAlt
                           }
                           className="menu-product-card__image"
                           variant="card"
@@ -599,7 +618,8 @@ export function Menu() {
                       </footer>
                     </div>
                   </article>
-                ),
+                  );
+                },
               )}
             </div>
           ) : null}
