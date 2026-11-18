@@ -31,6 +31,10 @@ import {
   removeAdminToken,
 } from "../utils/adminSession";
 
+import {
+  getDailyComboImage,
+} from "../utils/dailyComboImage";
+
 import "../styles/AdminDashboard.css";
 
 /* ========================================
@@ -486,6 +490,31 @@ export function AdminDashboard() {
                       product.legacyId ===
                       109;
 
+                    const configuredBurgerId =
+                      product.dailyComboBurgerId ??
+                      product.choiceGroups
+                        .flatMap((group) => group.options)
+                        .find((option) => option.kind === "burger")
+                        ?.id ??
+                      "clasic";
+                    const displayedImage =
+                      product.dailyPromo
+                        ? getDailyComboImage(
+                            {
+                              id: configuredBurgerId,
+                              label: configuredBurgerId,
+                              kind: "burger",
+                              ingredients: [],
+                            },
+                            {
+                              id: "coca-cola",
+                              label: "Coca-Cola",
+                              kind: "beverage",
+                              ingredients: [],
+                            },
+                          ) ?? product.image
+                        : product.image;
+
                     return (
                       <article
                         key={
@@ -500,9 +529,7 @@ export function AdminDashboard() {
 
                         <div className="admin-product__image-wrapper">
                           <img
-                            src={
-                              product.image
-                            }
+                            src={displayedImage}
                             alt={
                               product.imageAlt
                             }

@@ -12,6 +12,13 @@ const burgerKeys = new Set<BurgerKey>([
   "crispy",
 ]);
 
+const burgerImageNames: Record<BurgerKey, string> = {
+  "solo-queso": "solo-queso",
+  clasic: "clasica",
+  bacon: "bacon",
+  crispy: "crispy",
+};
+
 const normalize = (value: string) =>
   value
     .normalize("NFD")
@@ -54,5 +61,5 @@ export function getDailyComboImage(
   const beverage = getBeverageKey(beverageOption);
 
   if (!burger || !beverage) return undefined;
-  return `/images/daily-combos/${burger}-${beverage}.webp`;
+  return `/images/daily-combos/${burgerImageNames[burger]}-${beverage}.webp`;
 }
