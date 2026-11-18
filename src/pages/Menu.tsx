@@ -1,4 +1,9 @@
 import {
+  useEffect,
+  useRef,
+} from "react";
+
+import {
   Link,
   useSearchParams,
 } from "react-router-dom";
@@ -178,6 +183,9 @@ function formatPrice(
 ======================================== */
 
 export function Menu() {
+  const dailyComboCardRef =
+    useRef<HTMLElement | null>(null);
+
   const {
     products,
     loading,
@@ -281,6 +289,50 @@ export function Menu() {
 
   const productsCount =
     visibleProducts.length;
+
+  useEffect(() => {
+    const card =
+      dailyComboCardRef.current;
+
+    if (!card) {
+      return;
+    }
+
+    const visibleClass =
+      "menu-product-card--daily-visible";
+    const reduceMotion =
+      window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
+
+    if (
+      reduceMotion ||
+      !("IntersectionObserver" in window)
+    ) {
+      return;
+    }
+
+    const observer =
+      new IntersectionObserver(
+        ([entry]) => {
+          card.classList.toggle(
+            visibleClass,
+            entry.isIntersecting,
+          );
+        },
+        { threshold: 0.16 },
+      );
+
+    observer.observe(card);
+
+    return () =>
+      observer.disconnect();
+  }, [
+    activeFilter,
+    error,
+    loading,
+    products.length,
+  ]);
 
   return (
     <main className="menu-page">
@@ -488,6 +540,11 @@ export function Menu() {
 
                   return (
                   <article
+                    ref={
+                      product.dailyPromo
+                        ? dailyComboCardRef
+                        : undefined
+                    }
                     key={
                       product.id
                     }
