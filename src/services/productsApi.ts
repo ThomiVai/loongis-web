@@ -178,15 +178,13 @@ function getProductCategory(
 ):
   | ProductCategory
   | undefined {
-  if (
-    typeof category ===
-    "string"
-  ) {
-    return undefined;
-  }
-
+  // La API puede enviar la categoría poblada o directamente su slug.
+  // Aceptar ambos formatos evita ocultar secciones del catálogo (por ejemplo,
+  // Combos Loongis) cuando los productos llegan con category como string.
   const slug =
-    category.slug;
+    typeof category === "string"
+      ? category
+      : category.slug;
 
   if (
     slug === "hamburguesas" ||
