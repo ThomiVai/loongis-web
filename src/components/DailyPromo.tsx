@@ -24,6 +24,10 @@ import {
   DailyPromoSkeleton,
 } from "./HomeCatalogSkeletons";
 
+import {
+  getDailyComboImage,
+} from "../utils/dailyComboImage";
+
 import type {
   Product,
 } from "../types/Product";
@@ -168,7 +172,7 @@ export function DailyPromo({
           <div className="promo-banner__visual">
             <span className="promo-banner__decoration" aria-hidden="true" />
             <div className="promo-banner__image-wrapper">
-              <img className="promo-banner__combo-image" src="/images/burgers/combo-bacon.webp" alt="Combo Loongis Bacon con papas y bebida" />
+            <img className="promo-banner__combo-image" src="/images/daily-combos/bacon-coca-cola.webp" alt="Combo Loongis Bacon con papas y Coca-Cola" />
             </div>
           </div>
           <div className="promo-banner__content">
@@ -185,15 +189,30 @@ export function DailyPromo({
     );
   }
 
-  const dailyBurgerLabel =
+  const dailyBurgerOption =
     promoCombo.choiceGroups
-      ?.find(
-        (group) =>
-          group.id ===
-          "hamburguesa-del-dia",
-      )
-      ?.options[0]
-      ?.label;
+      ?.flatMap((group) => group.options)
+      .find((option) => option.kind === "burger");
+
+  const dailyBurgerLabel = dailyBurgerOption?.label;
+
+  const defaultBeverageOption =
+    promoCombo.choiceGroups
+      ?.flatMap((group) => group.options)
+      .find((option) =>
+        option.kind === "beverage" &&
+        option.label.toLowerCase().includes("coca"),
+      );
+
+  const dailyComboImage = getDailyComboImage(
+    dailyBurgerOption,
+    defaultBeverageOption ?? {
+      id: "coca-cola",
+      label: "Coca-Cola",
+      kind: "beverage",
+      ingredients: [],
+    },
+  );
 
   /* ========================================
      PROMO
@@ -225,10 +244,12 @@ export function DailyPromo({
             <CatalogImage
               className="promo-banner__combo-image"
               src={
-                promoCombo.image
+                dailyComboImage ?? promoCombo.image
               }
               alt={
-                promoCombo.imageAlt
+                dailyComboImage
+                  ? `Combo del día con ${dailyBurgerLabel ?? "hamburguesa"}, papas y Coca-Cola`
+                  : promoCombo.imageAlt
               }
               variant="full"
               sizes="(max-width: 780px) 90vw, 45vw"
