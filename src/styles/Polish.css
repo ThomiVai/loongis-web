@@ -316,7 +316,35 @@ body,
 }
 
 .menu-hero__visual-glow {
-  display: none;
+  position: absolute;
+  z-index: 0;
+
+  width: min(82%, 365px);
+  aspect-ratio: 1;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(255, 232, 151, 0.82) 0 43%,
+      rgba(244, 201, 40, 0.34) 59%,
+      rgba(7, 95, 234, 0.09) 73%,
+      transparent 74%
+    );
+
+  filter: blur(1px);
+  pointer-events: none;
+}
+
+.menu-hero__title span {
+  display: block;
+}
+
+.menu-hero__title-accent {
+  width: fit-content;
+  color: var(--color-primary);
+  background: linear-gradient(transparent 82%, var(--color-yellow) 82% 91%, transparent 91%);
 }
 
 
@@ -326,6 +354,7 @@ body,
 
 .menu-hero__visual-image {
   position: relative;
+  z-index: 1;
 
   display: block;
 
