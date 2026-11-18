@@ -69,6 +69,56 @@ const burgerOptionImages:
     "/images/burgers/loongis-crispy.png",
 };
 
+const beverageOptionImages = {
+  "coca-cola": "/images/beverages/coca-cola.webp",
+  pepsi: "/images/beverages/pepsi.webp",
+  sprite: "/images/beverages/sprite.webp",
+  villavicencio: "/images/beverages/villavicencio.webp",
+} as const;
+
+function normalizeOptionName(value: string): string {
+  return value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase();
+}
+
+function getBeverageImage(optionId: string, label: string): string | undefined {
+  const optionName = normalizeOptionName(`${optionId} ${label}`);
+
+  if (optionName.includes("sprite")) return beverageOptionImages.sprite;
+  if (optionName.includes("pepsi")) return beverageOptionImages.pepsi;
+  if (optionName.includes("coca") || optionName.includes("cola")) {
+    return beverageOptionImages["coca-cola"];
+  }
+  if (optionName.includes("villavicencio") || optionName.includes("agua")) {
+    return beverageOptionImages.villavicencio;
+  }
+
+  return undefined;
+}
+
+function isCheeseIngredient(ingredient: string): boolean {
+  return /\b(queso|cheese)\b/.test(normalizeOptionName(ingredient));
+}
+
+function sanitizeDailyComboIngredients(product: Product): Product {
+  if (!product.dailyPromo || !product.choiceGroups) return product;
+
+  return {
+    ...product,
+    choiceGroups: product.choiceGroups.map((group) => ({
+      ...group,
+      options: group.options.map((option) => ({
+        ...option,
+        ingredients: option.ingredients.filter(
+          (ingredient) => !isCheeseIngredient(ingredient),
+        ),
+      })),
+    })),
+  };
+}
+
 function createInitialChoices(
   product: Product,
   editCartItem?: CartItem,
@@ -87,6 +137,10 @@ function createInitialChoices(
             ),
         );
 
+    const storedOption = storedChoice
+      ? group.options.find((option) => option.id === storedChoice.option.id)
+      : undefined;
+
     const defaultOption =
       product.dailyPromo &&
       group.options.some((option) => option.kind === "beverage")
@@ -97,7 +151,19 @@ function createInitialChoices(
           ) ?? group.options[0]
         : group.options[0];
 
-    return storedChoice ?? {
+    if (storedChoice) {
+      return {
+        ...storedChoice,
+        option: storedOption ?? storedChoice.option,
+        removedIngredients: product.dailyPromo
+          ? storedChoice.removedIngredients.filter(
+              (ingredient) => !isCheeseIngredient(ingredient),
+            )
+          : storedChoice.removedIngredients,
+      };
+    }
+
+    return {
       groupId: group.id,
       groupLabel: group.label,
       option: defaultOption,
@@ -107,9 +173,10 @@ function createInitialChoices(
 }
 
 export function ComboConfigurator({
-  product,
+  product: sourceProduct,
   editCartItem,
 }: ComboConfiguratorProps) {
+  const product = sanitizeDailyComboIngredients(sourceProduct);
   const navigate = useNavigate();
   const { addProduct, updateCartItem } =
     useCart();
@@ -164,6 +231,10 @@ export function ComboConfigurator({
     groupId: string,
     ingredient: string,
   ) => {
+    if (product.dailyPromo && isCheeseIngredient(ingredient)) {
+      return;
+    }
+
     setChoices((current) =>
       current.map((choice) => {
         if (choice.groupId !== groupId) {
@@ -348,6 +419,10 @@ export function ComboConfigurator({
                                     option.id
                                   ]
                                 : undefined;
+                            const beverageImage =
+                              option.kind === "beverage"
+                                ? getBeverageImage(option.id, option.label)
+                                : undefined;
 
                             return (
                               <button
@@ -376,8 +451,15 @@ export function ComboConfigurator({
                                     sizes="76px"
                                     loading="lazy"
                                   />
+                                ) : beverageImage ? (
+                                  <img
+                                    className="combo-configurator__beverage-image"
+                                    src={beverageImage}
+                                    alt=""
+                                    loading="lazy"
+                                  />
                                 ) : (
-                                  <span className="combo-configurator__beverage-mark">
+                                  <span className="combo-configurator__beverage-fallback" aria-hidden="true">
                                     {option.label.charAt(0)}
                                   </span>
                                 )}
