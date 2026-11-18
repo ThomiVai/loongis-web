@@ -67,27 +67,27 @@ const dailyComboPresentations:
   > = {
   "solo-queso": {
     image:
-      "/images/burgers/combo-simplequeso.png",
+      "/images/daily-combos/solo-queso-coca-cola.webp",
     imageAlt:
-      "Combo del Día con hamburguesa Solo Queso, papas y bebida",
+      "Combo del Día Solo Queso con papas y Coca-Cola",
   },
   clasic: {
     image:
-      "/images/burgers/combo-promo.png",
+      "/images/daily-combos/clasica-coca-cola.webp",
     imageAlt:
-      "Combo del Día con Loongis Clasic, papas y bebida",
+      "Combo del Día Loongis Clasic con papas y Coca-Cola",
   },
   bacon: {
     image:
-      "/images/burgers/combo-bacon.png",
+      "/images/daily-combos/bacon-coca-cola.webp",
     imageAlt:
-      "Combo del Día con Loongis Bacon, papas y bebida",
+      "Combo del Día Loongis Bacon con papas y Coca-Cola",
   },
   crispy: {
     image:
-      "/images/burgers/combo-crispy.png",
+      "/images/daily-combos/crispy-coca-cola.webp",
     imageAlt:
-      "Combo del Día con Loongis Crispy, papas y bebida",
+      "Combo del Día Loongis Crispy con papas y Coca-Cola",
   },
 };
 
@@ -430,12 +430,19 @@ export function AdminProductEdit() {
           ),
         );
 
+        const configuredDailyBurgerId =
+          productData.dailyComboBurgerId ?? "clasic";
+        const dailyComboPresentation =
+          Number(productData.legacyId) === 109
+            ? dailyComboPresentations[configuredDailyBurgerId]
+            : undefined;
+
         setImage(
-          productData.image,
+          dailyComboPresentation?.image ?? productData.image,
         );
 
         setImageAlt(
-          productData.imageAlt,
+          dailyComboPresentation?.imageAlt ?? productData.imageAlt,
         );
         setImageFile(null);
         setImagePreview(null);
@@ -466,8 +473,7 @@ export function AdminProductEdit() {
         );
 
         setDailyComboBurgerId(
-          productData.dailyComboBurgerId ??
-            "clasic",
+          configuredDailyBurgerId,
         );
 
         setIngredients([
@@ -1599,6 +1605,7 @@ export function AdminProductEdit() {
               IMAGEN
           ================================= */}
 
+          {!isDailyCombo && (
           <section className="admin-product-edit__section">
             <h2>
               Imagen
@@ -1657,6 +1664,7 @@ export function AdminProductEdit() {
               </label>
             </div>
           </section>
+          )}
 
           {/* =================================
               VISIBILIDAD
@@ -1757,7 +1765,7 @@ export function AdminProductEdit() {
                   </h2>
 
                   <p>
-                    Elegí qué hamburguesa doble se ofrecerá. El cliente podrá quitar ingredientes y seleccionar su bebida.
+                    Elegí la hamburguesa del combo. La vista previa usa Coca-Cola; en la tienda, la foto cambia automáticamente según la bebida que elija el cliente.
                   </p>
                 </div>
               </div>
@@ -1807,7 +1815,7 @@ export function AdminProductEdit() {
                 </select>
 
                 <small>
-                  Incluye una porción de papas y bebida a elección: Coca-Cola, Pepsi, Sprite o agua.
+                  Incluye papas y una bebida a elección: Coca-Cola, Pepsi, Sprite o Villavicencio. La foto de arriba se actualiza al cambiar la hamburguesa.
                 </small>
               </label>
             </section>
