@@ -15,13 +15,15 @@
 }
 
 .store-status--open {
-  background-color: #eaf8ef;
+  background-color: #def3e4;
   color: #17663a;
+  border-bottom-color: rgba(35, 151, 82, 0.24);
 }
 
 .store-status--closed {
-  background-color: #fff3e6;
+  background-color: #ffe5d2;
   color: #8a4516;
+  border-bottom-color: rgba(196, 102, 29, 0.27);
 }
 
 .store-status--paused {
