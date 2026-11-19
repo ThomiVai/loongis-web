@@ -351,9 +351,29 @@ body,
 }
 
 .menu-hero__title-accent {
+  position: relative;
+
   width: fit-content;
+
   color: var(--color-primary);
-  background: linear-gradient(transparent 82%, var(--color-yellow) 82% 91%, transparent 91%);
+  background: none;
+}
+
+.menu-hero__title-accent::after {
+  position: absolute;
+  bottom: 0.02em;
+  left: 0;
+
+  width: 90%;
+  height: 0.075em;
+
+  border-radius: 999px;
+
+  background: var(--color-yellow);
+
+  content: "";
+  transform: rotate(-1.5deg);
+  transform-origin: left center;
 }
 
 
@@ -432,6 +452,10 @@ body,
 
   .menu-hero__brand-tag {
     animation: product-copy-in 560ms cubic-bezier(.22, 1, .36, 1) 630ms both;
+  }
+
+  .menu-hero__title-accent::after {
+    animation: product-underline-in 620ms cubic-bezier(.22, 1, .36, 1) 760ms both;
   }
 
   .menu-hero__visual-glow {
