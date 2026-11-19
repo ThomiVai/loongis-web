@@ -345,6 +345,27 @@
 }
 
 @media (max-width: 700px) {
+  /* Evita que Safari móvil pierda la foto al componer capas 3D. */
+  .promo-banner__container,
+  .promo-banner__container.is-tilting {
+    transform: none;
+    transform-style: flat;
+  }
+
+  .promo-banner__visual,
+  .promo-banner__content,
+  .promo-banner__container.is-tilting .promo-banner__visual,
+  .promo-banner__container.is-tilting .promo-banner__content,
+  .promo-banner__combo-image,
+  .promo-banner__container.is-tilting .promo-banner__combo-image {
+    transform: none;
+    transform-style: flat;
+  }
+
+  .promo-banner__combo-image {
+    filter: none;
+  }
+
   .promo-banner { padding: 62px 14px 72px; }
   .promo-banner__container { grid-template-columns: 1fr; gap: 0; min-height: 0; border-radius: 23px; padding: 18px; box-shadow: 0 14px 34px rgba(31, 45, 65, .07), inset 0 0 0 1px rgba(255, 255, 255, .92); }
   .promo-banner__visual, .promo-banner__image-wrapper { min-height: 278px; }

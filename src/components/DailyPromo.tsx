@@ -17,10 +17,6 @@ import {
 } from "./AddToCartButton";
 
 import {
-  CatalogImage,
-} from "./CatalogImage";
-
-import {
   DailyPromoSkeleton,
 } from "./HomeCatalogSkeletons";
 
@@ -241,19 +237,16 @@ export function DailyPromo({
 
           <div className="promo-banner__image-wrapper">
 
-            <CatalogImage
+            <img
               className="promo-banner__combo-image"
-              src={
-                dailyComboImage ?? promoCombo.image
-              }
+              src={dailyComboImage ?? promoCombo.image}
               alt={
                 dailyComboImage
                   ? `Combo del día con ${dailyBurgerLabel ?? "hamburguesa"}, papas y Coca-Cola`
                   : promoCombo.imageAlt
               }
-              variant="full"
-              sizes="(max-width: 780px) 90vw, 45vw"
-              loading="lazy"
+              loading="eager"
+              fetchPriority="high"
             />
           </div>
 
