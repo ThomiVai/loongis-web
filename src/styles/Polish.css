@@ -218,9 +218,9 @@ body,
   max-width: 670px;
 
   font-size: clamp(
-    3.65rem,
-    5.45vw,
-    4.9rem
+    3.9rem,
+    5.85vw,
+    5.35rem
   );
 
   line-height: 0.96;
@@ -404,6 +404,78 @@ body,
 }
 
 
+@media (prefers-reduced-motion: no-preference) {
+  .menu-hero__eyebrow,
+  .menu-hero__title > span,
+  .menu-hero__description,
+  .menu-hero__brand-tag,
+  .menu-hero__visual-glow,
+  .menu-hero__art {
+    opacity: 0;
+  }
+
+  .menu-hero__eyebrow {
+    animation: product-copy-in 560ms cubic-bezier(.22, 1, .36, 1) both;
+  }
+
+  .menu-hero__title > span:first-child {
+    animation: product-copy-in 650ms cubic-bezier(.22, 1, .36, 1) 120ms both;
+  }
+
+  .menu-hero__title > span:last-child {
+    animation: product-copy-in 650ms cubic-bezier(.22, 1, .36, 1) 240ms both;
+  }
+
+  .menu-hero__description {
+    animation: product-copy-in 560ms cubic-bezier(.22, 1, .36, 1) 510ms both;
+  }
+
+  .menu-hero__brand-tag {
+    animation: product-copy-in 560ms cubic-bezier(.22, 1, .36, 1) 630ms both;
+  }
+
+  .menu-hero__visual-glow {
+    animation: product-circle-in 860ms cubic-bezier(.22, 1, .36, 1) 180ms both;
+  }
+
+  .menu-hero__art {
+    animation: menu-hero-art-rise 920ms cubic-bezier(.22, 1, .36, 1) 400ms both;
+  }
+}
+
+@keyframes menu-hero-art-rise {
+  from {
+    opacity: 0;
+    transform: translateY(110px) scale(.9);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+
+/* ========================================
+   ILUSTRACIÓN ANIMADA
+======================================== */
+
+.menu-hero__art {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  max-width: 500px;
+  height: 370px;
+
+  transform-origin: center;
+}
+
+
 /* ========================================
    PRODUCTOS
 ======================================== */
@@ -476,6 +548,11 @@ body,
     height: 315px;
 
     transform: none;
+  }
+
+  .menu-hero__art {
+    max-width: 430px;
+    height: 315px;
   }
 
   .menu-hero__visual-image {
@@ -552,9 +629,9 @@ body,
 
   .menu-hero__title {
     font-size: clamp(
-      2.7rem,
-      7vw,
-      3.5rem
+      2.85rem,
+      7.35vw,
+      3.75rem
     );
   }
 
@@ -567,6 +644,12 @@ body,
     height: 250px;
 
     transform: none;
+  }
+
+  .menu-hero__art {
+    width: 305px;
+    max-width: none;
+    height: 250px;
   }
 
   .menu-hero__visual-image {
@@ -712,9 +795,9 @@ body,
     max-width: 100%;
 
     font-size: clamp(
-      2.65rem,
-      12.5vw,
-      3.5rem
+      2.8rem,
+      13vw,
+      3.65rem
     );
 
     line-height: 0.97;
@@ -801,7 +884,7 @@ body,
   }
 
   .menu-hero__title {
-    font-size: 2.6rem;
+    font-size: 2.72rem;
   }
 
   .menu-hero__description {
@@ -824,5 +907,29 @@ body,
   .hero__main-image,
   .menu-hero__visual-image {
     transition: none;
+  }
+
+  .menu-hero__eyebrow,
+  .menu-hero__title > span,
+  .menu-hero__description,
+  .menu-hero__brand-tag,
+  .menu-hero__visual-glow,
+  .menu-hero__art {
+    animation: none;
+    opacity: 1;
+  }
+
+  .menu-hero__visual-glow {
+    transform: translate(-50%, -50%);
+  }
+
+  .menu-hero__art {
+    transform: none;
+  }
+
+  .menu-hero__title > span,
+  .menu-hero__description,
+  .menu-hero__brand-tag {
+    transform: none;
   }
 }

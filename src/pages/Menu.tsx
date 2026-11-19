@@ -404,11 +404,13 @@ export function Menu() {
             >
               <div className="menu-hero__visual-glow" />
 
-              <img
-                src="/images/hero/menu-loongis.png"
-                alt=""
-                className="menu-hero__visual-image"
-              />
+              <div className="menu-hero__art">
+                <img
+                  src="/images/hero/menu-loongis.png"
+                  alt=""
+                  className="menu-hero__visual-image"
+                />
+              </div>
             </div>
           </div>
         </div>
