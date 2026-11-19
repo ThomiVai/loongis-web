@@ -218,9 +218,9 @@ body,
   max-width: 670px;
 
   font-size: clamp(
-    3.3rem,
-    5vw,
-    4.45rem
+    3.65rem,
+    5.45vw,
+    4.9rem
   );
 
   line-height: 0.96;
@@ -294,9 +294,9 @@ body,
   justify-self: end;
 
   width: 100%;
-  max-width: 460px;
+  max-width: 510px;
 
-  height: 320px;
+  height: 370px;
 
   min-width: 0;
 
@@ -318,23 +318,38 @@ body,
 .menu-hero__visual-glow {
   position: absolute;
   z-index: 0;
+  top: 50%;
+  left: 50%;
 
-  width: min(82%, 365px);
+  width: min(90%, 440px);
   aspect-ratio: 1;
 
   border-radius: 50%;
-
-  background:
-    radial-gradient(
-      circle,
-      rgba(255, 232, 151, 0.82) 0 43%,
-      rgba(244, 201, 40, 0.34) 59%,
-      rgba(7, 95, 234, 0.09) 73%,
-      transparent 74%
-    );
-
-  filter: blur(1px);
+  transform: translate(-50%, -50%);
   pointer-events: none;
+}
+
+.menu-hero__visual-glow::before,
+.menu-hero__visual-glow::after {
+  position: absolute;
+  display: block;
+  border-radius: 50%;
+  content: "";
+}
+
+.menu-hero__visual-glow::before {
+  inset: 4%;
+  border: 2px solid rgba(7, 95, 234, 0.13);
+  background: rgba(255, 232, 143, 0.58);
+}
+
+.menu-hero__visual-glow::after {
+  right: -16%;
+  bottom: -24%;
+  width: 78%;
+  aspect-ratio: 1;
+  background: var(--color-primary);
+  opacity: 0.94;
 }
 
 .menu-hero__title span {
@@ -359,9 +374,9 @@ body,
   display: block;
 
   width: 100%;
-  max-width: 445px;
+  max-width: 500px;
 
-  height: 320px;
+  height: 370px;
 
   object-fit: contain;
   object-position: center;
@@ -466,18 +481,18 @@ body,
   }
 
   .menu-hero__visual {
-    max-width: 390px;
+    max-width: 430px;
 
-    height: 285px;
+    height: 315px;
 
     transform:
       translateX(-12px);
   }
 
   .menu-hero__visual-image {
-    max-width: 390px;
+    max-width: 430px;
 
-    height: 285px;
+    height: 315px;
 
     transform:
       translateY(3px)
@@ -543,7 +558,7 @@ body,
   .menu-hero__layout {
     grid-template-columns:
       minmax(0, 1fr)
-      260px;
+      290px;
 
     gap: 22px;
   }
@@ -561,17 +576,17 @@ body,
   }
 
   .menu-hero__visual {
-    width: 260px;
-    height: 230px;
+    width: 290px;
+    height: 250px;
 
     transform: none;
   }
 
   .menu-hero__visual-image {
-    width: 275px;
+    width: 305px;
     max-width: none;
 
-    height: 230px;
+    height: 250px;
 
     transform:
       translateY(2px)
@@ -712,9 +727,9 @@ body,
     max-width: 100%;
 
     font-size: clamp(
-      2.5rem,
-      12vw,
-      3.25rem
+      2.65rem,
+      12.5vw,
+      3.5rem
     );
 
     line-height: 0.97;
@@ -801,7 +816,7 @@ body,
   }
 
   .menu-hero__title {
-    font-size: 2.45rem;
+    font-size: 2.6rem;
   }
 
   .menu-hero__description {
