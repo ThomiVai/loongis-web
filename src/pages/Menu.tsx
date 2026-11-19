@@ -405,7 +405,7 @@ export function Menu() {
               <div className="menu-hero__visual-glow" />
 
               <img
-                src="/images/hero/hero-loongis.png"
+                src="/images/hero/menu-loongis.png"
                 alt=""
                 className="menu-hero__visual-image"
               />
