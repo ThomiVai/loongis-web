@@ -1187,7 +1187,7 @@
 
   .product-detail__back svg {
     width: 14px;
-    height: 12px;
+    height: 14px;
   }
 
 
@@ -1972,7 +1972,7 @@
 
   .product-detail__image-background--hamburguesas::before {
     width: 72%;
-    height: 14px;
+    height: 12px;
 
     filter: blur(0.6px);
   }
