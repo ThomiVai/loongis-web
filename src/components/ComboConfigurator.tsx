@@ -102,19 +102,23 @@ function isCheeseIngredient(ingredient: string): boolean {
   return /\b(queso|cheese)\b/.test(normalizeOptionName(ingredient));
 }
 
-function sanitizeDailyComboIngredients(product: Product): Product {
-  if (!product.dailyPromo || !product.choiceGroups) return product;
+function sanitizeBurgerChoiceIngredients(product: Product): Product {
+  if (!product.choiceGroups) return product;
 
   return {
     ...product,
     choiceGroups: product.choiceGroups.map((group) => ({
       ...group,
-      options: group.options.map((option) => ({
-        ...option,
-        ingredients: option.ingredients.filter(
-          (ingredient) => !isCheeseIngredient(ingredient),
-        ),
-      })),
+      options: group.options.map((option) =>
+        option.kind === "burger"
+          ? {
+              ...option,
+              ingredients: option.ingredients.filter(
+                (ingredient) => !isCheeseIngredient(ingredient),
+              ),
+            }
+          : option,
+      ),
     })),
   };
 }
@@ -155,11 +159,14 @@ function createInitialChoices(
       return {
         ...storedChoice,
         option: storedOption ?? storedChoice.option,
-        removedIngredients: product.dailyPromo
-          ? storedChoice.removedIngredients.filter(
-              (ingredient) => !isCheeseIngredient(ingredient),
-            )
-          : storedChoice.removedIngredients,
+        removedIngredients: storedChoice.removedIngredients.filter(
+          (ingredient) =>
+            (storedOption ?? storedChoice.option).ingredients.includes(ingredient) &&
+            !(
+              (storedOption ?? storedChoice.option).kind === "burger" &&
+              isCheeseIngredient(ingredient)
+            ),
+        ),
       };
     }
 
@@ -176,7 +183,7 @@ export function ComboConfigurator({
   product: sourceProduct,
   editCartItem,
 }: ComboConfiguratorProps) {
-  const product = sanitizeDailyComboIngredients(sourceProduct);
+  const product = sanitizeBurgerChoiceIngredients(sourceProduct);
   const navigate = useNavigate();
   const { addProduct, updateCartItem } =
     useCart();
@@ -231,7 +238,13 @@ export function ComboConfigurator({
     groupId: string,
     ingredient: string,
   ) => {
-    if (product.dailyPromo && isCheeseIngredient(ingredient)) {
+    const selectedChoice = choices.find(
+      (choice) => choice.groupId === groupId,
+    );
+    if (
+      selectedChoice?.option.kind === "burger" &&
+      isCheeseIngredient(ingredient)
+    ) {
       return;
     }
 
