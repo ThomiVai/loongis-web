@@ -121,8 +121,8 @@
   padding: 30px;
 
   border:
-    1px solid
-    rgba(7, 95, 234, 0.11);
+    2px solid
+    rgba(7, 95, 234, 0.34);
 
   border-radius: 32px;
 
@@ -141,6 +141,35 @@
       rgba(7, 60, 166, 0.075),
     0 4px 12px
       rgba(23, 23, 23, 0.03);
+}
+
+.product-detail__image-background::before {
+  content: "";
+
+  position: absolute;
+  z-index: 1;
+
+  left: 50%;
+  bottom: 114px;
+
+  width: min(64%, 290px);
+  height: 30px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      ellipse,
+      rgba(35, 27, 18, 0.25) 0%,
+      rgba(35, 27, 18, 0.13) 43%,
+      rgba(35, 27, 18, 0) 76%
+    );
+
+  filter: blur(4px);
+
+  transform: translateX(-50%);
+
+  pointer-events: none;
 }
 
 
@@ -165,11 +194,11 @@
 
   filter:
     drop-shadow(
-      0 23px 19px
-      rgba(23, 23, 23, 0.17)
+      0 13px 12px
+      rgba(23, 23, 23, 0.16)
     );
 
-  transform: scale(1.08);
+  transform: scale(1.16);
 
   transform-origin: center;
 
@@ -182,12 +211,12 @@
   .product-detail__image {
   transform:
     translateY(-4px)
-    scale(1.1);
+    scale(1.18);
 
   filter:
     drop-shadow(
-      0 26px 22px
-      rgba(23, 23, 23, 0.2)
+      0 15px 13px
+      rgba(23, 23, 23, 0.18)
     );
 }
 
@@ -1096,12 +1125,16 @@
     min-height: 410px;
   }
 
+  .product-detail__image-background::before {
+    bottom: 94px;
+  }
+
   .product-detail__image {
     max-width: 455px;
 
     height: 350px;
 
-    transform: scale(1.06);
+    transform: scale(1.12);
   }
 
   .product-detail__information {
@@ -1201,6 +1234,15 @@
         rgba(7, 60, 166, 0.055);
   }
 
+  .product-detail__image-background::before {
+    bottom: 35px;
+
+    width: 72%;
+    height: 22px;
+
+    filter: blur(3px);
+  }
+
 
   /* ========================================
      PRODUCTO MOBILE
@@ -1223,11 +1265,11 @@
     object-fit: contain;
 
     transform:
-      scale(1.22);
+      scale(1.28);
 
     filter:
       drop-shadow(
-        0 14px 13px
+        0 10px 9px
         rgba(23, 23, 23, 0.15)
       );
   }
@@ -1235,7 +1277,7 @@
   .product-detail__image-background:hover
     .product-detail__image {
     transform:
-      scale(1.22);
+      scale(1.28);
   }
 
 
@@ -1641,19 +1683,25 @@
     min-height: 205px;
   }
 
+  .product-detail__image-background::before {
+    bottom: 36px;
+
+    height: 19px;
+  }
+
   .product-detail__image {
     max-width: 315px;
 
     height: 200px;
 
     transform:
-      scale(1.2);
+      scale(1.25);
   }
 
   .product-detail__image-background:hover
     .product-detail__image {
     transform:
-      scale(1.2);
+      scale(1.25);
   }
 
   .product-detail__information {
