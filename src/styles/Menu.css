@@ -667,8 +667,8 @@
 }
 
 .menu-product-card--3 {
-  --menu-image-scale: 1.9;
-  --menu-image-y: 10px;
+  --menu-image-scale: 1.73;
+  --menu-image-y: 23px;
 }
 
 .menu-product-card--4 {
@@ -1462,8 +1462,8 @@
   }
 
   .menu-product-card--3 {
-    --menu-image-scale: 1.66;
-    --menu-image-y: 6px;
+    --menu-image-scale: 1.52;
+    --menu-image-y: 16px;
   }
 
   .menu-product-card--4 {
@@ -1718,7 +1718,8 @@
   }
 
   .menu-product-card--3 {
-    --menu-image-scale: 1.57;
+    --menu-image-scale: 1.45;
+    --menu-image-y: 14px;
   }
 
   .menu-product-card--4 {
