@@ -180,6 +180,22 @@ function getInitialExtraIds(
    INGREDIENTES QUITADOS INICIALES
 ======================================== */
 
+function isCheeseIngredient(ingredient: string): boolean {
+  return /queso|cheese/i.test(ingredient);
+}
+
+function getRemovableIngredients(product: Product): string[] {
+  const ingredients = product.ingredients ?? [];
+  const productCategory = product.category ?? "hamburguesas";
+  const isBurgerProduct =
+    productCategory === "hamburguesas" ||
+    productCategory === "combos";
+
+  return isBurgerProduct
+    ? ingredients.filter((ingredient) => !isCheeseIngredient(ingredient))
+    : ingredients;
+}
+
 function getInitialRemovedIngredients(
   product: Product,
   cartItem?: CartItem,
@@ -189,8 +205,7 @@ function getInitialRemovedIngredients(
   }
 
   const currentIngredients =
-    product.ingredients ??
-    [];
+    getRemovableIngredients(product);
 
   return (
     cartItem.customization
@@ -303,6 +318,14 @@ function ProductDetailContent({
     product.category ??
     "hamburguesas";
 
+  const removableIngredients =
+    getRemovableIngredients(product);
+
+  const validRemovedIngredients =
+    removedIngredients.filter((ingredient) =>
+      removableIngredients.includes(ingredient),
+    );
+
   const selectedSize =
     product.sizeOptions?.find(
       (option) =>
@@ -358,7 +381,8 @@ function ProductDetailContent({
     extras:
       selectedExtras,
 
-    removedIngredients,
+    removedIngredients:
+      validRemovedIngredients,
 
     notes:
       notes.trim(),
@@ -838,9 +862,7 @@ function ProductDetailContent({
                   QUITAR INGREDIENTES
               ============================= */}
 
-              {product.ingredients &&
-                product.ingredients
-                  .length > 0 && (
+              {removableIngredients.length > 0 && (
                   <fieldset className="product-customization">
 
                     <legend className="product-customization__title">
@@ -854,12 +876,12 @@ function ProductDetailContent({
                     </p>
 
                     <div className="product-ingredients">
-                      {product.ingredients.map(
+                      {removableIngredients.map(
                         (
                           ingredient,
                         ) => {
                           const isRemoved =
-                            removedIngredients.includes(
+                            validRemovedIngredients.includes(
                               ingredient,
                             );
 
