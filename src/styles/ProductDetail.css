@@ -143,29 +143,29 @@
       rgba(23, 23, 23, 0.03);
 }
 
-.product-detail__image-background::before {
+.product-detail__image-background--hamburguesas::before {
   content: "";
 
   position: absolute;
   z-index: 1;
 
   left: 50%;
-  bottom: 114px;
+  bottom: 124px;
 
-  width: min(64%, 290px);
-  height: 30px;
+  width: min(58%, 250px);
+  height: 20px;
 
   border-radius: 50%;
 
   background:
     radial-gradient(
       ellipse,
-      rgba(35, 27, 18, 0.25) 0%,
-      rgba(35, 27, 18, 0.13) 43%,
+      rgba(35, 27, 18, 0.32) 0%,
+      rgba(35, 27, 18, 0.15) 43%,
       rgba(35, 27, 18, 0) 76%
     );
 
-  filter: blur(4px);
+  filter: blur(2px);
 
   transform: translateX(-50%);
 
@@ -194,11 +194,11 @@
 
   filter:
     drop-shadow(
-      0 13px 12px
-      rgba(23, 23, 23, 0.16)
+      0 8px 8px
+      rgba(23, 23, 23, 0.12)
     );
 
-  transform: scale(1.16);
+  transform: none;
 
   transform-origin: center;
 
@@ -210,13 +210,13 @@
 .product-detail__image-background:hover
   .product-detail__image {
   transform:
-    translateY(-4px)
-    scale(1.18);
+    translateY(-2px)
+    scale(1.02);
 
   filter:
     drop-shadow(
-      0 15px 13px
-      rgba(23, 23, 23, 0.18)
+      0 10px 9px
+      rgba(23, 23, 23, 0.14)
     );
 }
 
@@ -1125,7 +1125,7 @@
     min-height: 410px;
   }
 
-  .product-detail__image-background::before {
+  .product-detail__image-background--hamburguesas::before {
     bottom: 94px;
   }
 
@@ -1134,7 +1134,7 @@
 
     height: 350px;
 
-    transform: scale(1.12);
+    transform: none;
   }
 
   .product-detail__information {
@@ -1234,13 +1234,13 @@
         rgba(7, 60, 166, 0.055);
   }
 
-  .product-detail__image-background::before {
+  .product-detail__image-background--hamburguesas::before {
     bottom: 35px;
 
     width: 72%;
-    height: 22px;
+    height: 20px;
 
-    filter: blur(3px);
+    filter: blur(2px);
   }
 
 
@@ -1265,19 +1265,19 @@
     object-fit: contain;
 
     transform:
-      scale(1.28);
+      none;
 
     filter:
       drop-shadow(
-        0 10px 9px
-        rgba(23, 23, 23, 0.15)
+        0 8px 8px
+        rgba(23, 23, 23, 0.12)
       );
   }
 
   .product-detail__image-background:hover
     .product-detail__image {
     transform:
-      scale(1.28);
+      none;
   }
 
 
@@ -1683,10 +1683,10 @@
     min-height: 205px;
   }
 
-  .product-detail__image-background::before {
+  .product-detail__image-background--hamburguesas::before {
     bottom: 36px;
 
-    height: 19px;
+    height: 18px;
   }
 
   .product-detail__image {
@@ -1695,13 +1695,13 @@
     height: 200px;
 
     transform:
-      scale(1.25);
+      none;
   }
 
   .product-detail__image-background:hover
     .product-detail__image {
     transform:
-      scale(1.25);
+      none;
   }
 
   .product-detail__information {
@@ -1802,4 +1802,127 @@
   padding: 12px;
   transform: none;
   filter: none;
+}
+
+/* Size and grounding follow the product category, not one global scale. */
+.product-detail__image-background--hamburguesas .product-detail__image {
+  transform: scale(1.24);
+
+  filter:
+    drop-shadow(
+      0 11px 9px
+      rgba(23, 23, 23, 0.16)
+    );
+}
+
+.product-detail__image-background--combos .product-detail__image {
+  transform: scale(0.86);
+
+  filter: none;
+}
+
+.product-detail__image-background--papas .product-detail__image {
+  transform: scale(0.8);
+
+  filter: none;
+}
+
+.product-detail__image-background--hamburguesas:hover .product-detail__image {
+  transform:
+    translateY(-3px)
+    scale(1.26);
+
+  filter:
+    drop-shadow(
+      0 13px 10px
+      rgba(23, 23, 23, 0.18)
+    );
+}
+
+.product-detail__image-background--combos:hover .product-detail__image {
+  transform: scale(0.86);
+}
+
+.product-detail__image-background--papas:hover .product-detail__image {
+  transform: scale(0.8);
+}
+
+@media (max-width: 900px) {
+  .product-detail__image-background--hamburguesas .product-detail__image {
+    transform: scale(1.22);
+  }
+
+  .product-detail__image-background--combos .product-detail__image {
+    transform: scale(0.84);
+  }
+
+  .product-detail__image-background--papas .product-detail__image {
+    transform: scale(0.78);
+  }
+
+  .product-detail__image-background--hamburguesas:hover .product-detail__image {
+    transform:
+      translateY(-3px)
+      scale(1.24);
+  }
+
+  .product-detail__image-background--combos:hover .product-detail__image {
+    transform: scale(0.84);
+  }
+
+  .product-detail__image-background--papas:hover .product-detail__image {
+    transform: scale(0.78);
+  }
+}
+
+@media (max-width: 600px) {
+  .product-detail__image-background--hamburguesas .product-detail__image {
+    transform: scale(1.3);
+  }
+
+  .product-detail__image-background--combos .product-detail__image {
+    transform: scale(0.78);
+  }
+
+  .product-detail__image-background--papas .product-detail__image {
+    transform: scale(0.76);
+  }
+
+  .product-detail__image-background--hamburguesas:hover .product-detail__image {
+    transform: scale(1.3);
+  }
+
+  .product-detail__image-background--combos:hover .product-detail__image {
+    transform: scale(0.78);
+  }
+
+  .product-detail__image-background--papas:hover .product-detail__image {
+    transform: scale(0.76);
+  }
+}
+
+@media (max-width: 380px) {
+  .product-detail__image-background--hamburguesas .product-detail__image {
+    transform: scale(1.26);
+  }
+
+  .product-detail__image-background--combos .product-detail__image {
+    transform: scale(0.74);
+  }
+
+  .product-detail__image-background--papas .product-detail__image {
+    transform: scale(0.72);
+  }
+
+  .product-detail__image-background--hamburguesas:hover .product-detail__image {
+    transform: scale(1.26);
+  }
+
+  .product-detail__image-background--combos:hover .product-detail__image {
+    transform: scale(0.74);
+  }
+
+  .product-detail__image-background--papas:hover .product-detail__image {
+    transform: scale(0.72);
+  }
 }
