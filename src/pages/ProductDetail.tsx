@@ -567,7 +567,11 @@ function ProductDetailContent({
             =============================== */}
 
             <div className="product-detail__visual">
-              <div className="product-detail__image-background">
+              <div
+                className={
+                  `product-detail__image-background product-detail__image-background--${productCategory}`
+                }
+              >
 
                 <span
                   className="product-detail__decoration product-detail__decoration--one"
