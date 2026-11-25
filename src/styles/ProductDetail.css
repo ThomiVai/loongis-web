@@ -1932,10 +1932,16 @@
 .product-detail__image-background--hamburguesas {
   --burger-anchor-shift: 80px;
   --burger-shadow-bottom: 172px;
+  --burger-image-offset: 0px;
 }
 
 .product-detail__image-background--hamburguesas .product-detail__image {
-  top: var(--burger-anchor-shift);
+  top: calc(
+    var(--burger-anchor-shift) +
+    var(--burger-image-offset, 0px)
+  );
+
+  scale: var(--burger-asset-scale, 1);
 }
 
 .product-detail__image-background--hamburguesas::before {
@@ -1983,5 +1989,63 @@
   .product-detail__image-background--hamburguesas {
     --burger-anchor-shift: 22px;
     --burger-shadow-bottom: 84px;
+  }
+}
+
+/* Normalize visible burger bounds: the source PNGs share a canvas,
+   but their transparent top/bottom margins differ. */
+.product-detail__image-background--hamburguesas[data-product-image="loongis-bacon"] {
+  --burger-image-offset: 23px;
+}
+
+.product-detail__image-background--hamburguesas[data-product-image="loongis-crispy"] {
+  --burger-asset-scale: 1.112;
+  --burger-image-offset: 3px;
+}
+
+.product-detail__image-background--hamburguesas[data-product-image="simple-queso"] {
+  --burger-asset-scale: 1.067;
+  --burger-image-offset: 17px;
+}
+
+@media (max-width: 900px) {
+  .product-detail__image-background--hamburguesas[data-product-image="loongis-bacon"] {
+    --burger-image-offset: 19px;
+  }
+
+  .product-detail__image-background--hamburguesas[data-product-image="loongis-crispy"] {
+    --burger-image-offset: 2.5px;
+  }
+
+  .product-detail__image-background--hamburguesas[data-product-image="simple-queso"] {
+    --burger-image-offset: 14px;
+  }
+}
+
+@media (max-width: 600px) {
+  .product-detail__image-background--hamburguesas[data-product-image="loongis-bacon"] {
+    --burger-image-offset: 12px;
+  }
+
+  .product-detail__image-background--hamburguesas[data-product-image="loongis-crispy"] {
+    --burger-image-offset: 1.5px;
+  }
+
+  .product-detail__image-background--hamburguesas[data-product-image="simple-queso"] {
+    --burger-image-offset: 9px;
+  }
+}
+
+@media (max-width: 380px) {
+  .product-detail__image-background--hamburguesas[data-product-image="loongis-bacon"] {
+    --burger-image-offset: 11px;
+  }
+
+  .product-detail__image-background--hamburguesas[data-product-image="loongis-crispy"] {
+    --burger-image-offset: 1.5px;
+  }
+
+  .product-detail__image-background--hamburguesas[data-product-image="simple-queso"] {
+    --burger-image-offset: 8px;
   }
 }

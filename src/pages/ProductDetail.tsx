@@ -75,6 +75,15 @@ const categoryNames: Record<
     "Postres",
 };
 
+function getProductImageKey(image: string): string {
+  const normalizedImagePath = image.split(/[?#]/, 1)[0];
+  const filename = normalizedImagePath.split("/").pop() ?? "";
+
+  return filename
+    .replace(/\.[^.]+$/, "")
+    .toLowerCase();
+}
+
 /* ========================================
    TAMAÑO POR DEFECTO
 ======================================== */
@@ -595,6 +604,7 @@ function ProductDetailContent({
                 className={
                   `product-detail__image-background product-detail__image-background--${productCategory}`
                 }
+                data-product-image={getProductImageKey(product.image)}
               >
 
                 <span
