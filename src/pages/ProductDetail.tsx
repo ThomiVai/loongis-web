@@ -181,7 +181,7 @@ function getInitialExtraIds(
 ======================================== */
 
 function isCheeseIngredient(ingredient: string): boolean {
-  return /\\b(queso|cheese)\\b/i.test(ingredient);
+  return /queso|cheese/i.test(ingredient);
 }
 
 function getRemovableIngredients(product: Product): string[] {
