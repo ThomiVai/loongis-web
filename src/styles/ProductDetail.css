@@ -1930,7 +1930,7 @@
 /* Keep burger photos visually grounded while preserving category sizing. */
 .product-detail__image-background--hamburguesas {
   --burger-anchor-shift: 80px;
-  --burger-shadow-bottom: 148px;
+  --burger-shadow-bottom: 156px;
 }
 
 .product-detail__image-background--hamburguesas .product-detail__image {
@@ -1960,14 +1960,14 @@
 @media (max-width: 900px) {
   .product-detail__image-background--hamburguesas {
     --burger-anchor-shift: 60px;
-    --burger-shadow-bottom: 118px;
+    --burger-shadow-bottom: 126px;
   }
 }
 
 @media (max-width: 600px) {
   .product-detail__image-background--hamburguesas {
     --burger-anchor-shift: clamp(24px, 5vw, 32px);
-    --burger-shadow-bottom: 59px;
+    --burger-shadow-bottom: 67px;
   }
 
   .product-detail__image-background--hamburguesas::before {
@@ -1981,6 +1981,6 @@
 @media (max-width: 380px) {
   .product-detail__image-background--hamburguesas {
     --burger-anchor-shift: 22px;
-    --burger-shadow-bottom: 60px;
+    --burger-shadow-bottom: 68px;
   }
 }
