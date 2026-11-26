@@ -214,6 +214,13 @@ export function AdminLogin() {
           </button>
         </form>
 
+        <Link
+          className="admin-login__forgot"
+          to="/admin/forgot-password"
+        >
+          ¿Olvidaste tu contraseña?
+        </Link>
+
         {/* ========================================
             VOLVER A LA TIENDA
         ======================================== */}
