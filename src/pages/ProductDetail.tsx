@@ -195,14 +195,18 @@ function isCheeseIngredient(ingredient: string): boolean {
 
 function getRemovableIngredients(product: Product): string[] {
   const ingredients = product.ingredients ?? [];
-  const productCategory = product.category ?? "hamburguesas";
-  const isBurgerProduct =
-    productCategory === "hamburguesas" ||
-    productCategory === "combos";
 
-  return isBurgerProduct
-    ? ingredients.filter((ingredient) => !isCheeseIngredient(ingredient))
-    : ingredients;
+  if (product.id === 2) {
+    return ingredients.filter(
+      (ingredient) => !isCheeseIngredient(ingredient),
+    );
+  }
+
+  if (product.id === 302) {
+    return ingredients.filter((ingredient) => /\\bbacon\\b/i.test(ingredient));
+  }
+
+  return [];
 }
 
 function getInitialRemovedIngredients(
