@@ -35,6 +35,7 @@ import {
 
 import type {
   Product,
+  ProductChoiceOption,
   ProductChoiceSelection,
   ProductCustomization,
 } from "../types/Product";
