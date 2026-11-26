@@ -203,7 +203,9 @@ function getRemovableIngredients(product: Product): string[] {
   }
 
   if (product.id === 302) {
-    return ingredients.filter((ingredient) => /\\bbacon\\b/i.test(ingredient));
+    return ingredients.filter(
+      (ingredient) => /\bbacon\b/i.test(ingredient),
+    );
   }
 
   return [];
