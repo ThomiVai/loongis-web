@@ -23,6 +23,8 @@ import { AdminOrderDetail } from "./pages/AdminOrderDetail";
 import { AdminOrders } from "./pages/AdminOrders";
 import { AdminInventory } from "./pages/AdminInventory";
 import { AdminLogin } from "./pages/AdminLogin";
+import { AdminForgotPassword } from "./pages/AdminForgotPassword";
+import { AdminResetPassword } from "./pages/AdminResetPassword";
 import { AdminProductEdit } from "./pages/AdminProductEdit";
 import { AdminRecipes } from "./pages/AdminRecipes";
 import { AdminStockCenter } from "./pages/AdminStockCenter";
@@ -124,6 +126,16 @@ function App() {
           element={
             <AdminLogin />
           }
+        />
+
+        <Route
+          path="/admin/forgot-password"
+          element={<AdminForgotPassword />}
+        />
+
+        <Route
+          path="/admin/reset-password"
+          element={<AdminResetPassword />}
         />
 
         {/* ===============================
