@@ -35,6 +35,7 @@ import {
 
 import type {
   Product,
+  ProductChoiceOption,
   ProductChoiceSelection,
   ProductCustomization,
 } from "../types/Product";
@@ -102,6 +103,18 @@ function isCheeseIngredient(ingredient: string): boolean {
   return /\b(queso|cheese)\b/.test(normalizeOptionName(ingredient));
 }
 
+function isClassicBurgerOption(option: ProductChoiceOption): boolean {
+  const optionName = normalizeOptionName(
+    `${option.id} ${option.label}`,
+  );
+
+  return (
+    option.productLegacyId === 2 ||
+    optionName.includes("clasic") ||
+    optionName.includes("classic")
+  );
+}
+
 function sanitizeBurgerChoiceIngredients(product: Product): Product {
   if (!product.choiceGroups) return product;
 
@@ -113,9 +126,11 @@ function sanitizeBurgerChoiceIngredients(product: Product): Product {
         option.kind === "burger"
           ? {
               ...option,
-              ingredients: option.ingredients.filter(
-                (ingredient) => !isCheeseIngredient(ingredient),
-              ),
+              ingredients: isClassicBurgerOption(option)
+                ? option.ingredients.filter(
+                    (ingredient) => !isCheeseIngredient(ingredient),
+                  )
+                : [],
             }
           : option,
       ),
