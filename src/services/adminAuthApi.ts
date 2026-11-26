@@ -144,3 +144,65 @@ export async function changeAdminPassword(
   return data.message ??
     "Contraseña actualizada.";
 }
+
+
+/* ========================================
+   RECUPERAR CONTRASEÑA
+======================================== */
+
+export async function requestAdminPasswordReset(
+  email: string,
+): Promise<string> {
+  const response = await fetch(
+    `${API_URL}/api/auth/forgot-password`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email }),
+    },
+  );
+
+  const data = (await response.json()) as {
+    message?: string;
+  };
+
+  if (!response.ok) {
+    throw new Error(
+      data.message ?? "No se pudo enviar la solicitud.",
+    );
+  }
+
+  return data.message ??
+    "Si el email corresponde a una cuenta activa, vas a recibir un enlace.";
+}
+
+export async function resetAdminPassword(
+  token: string,
+  newPassword: string,
+): Promise<string> {
+  const response = await fetch(
+    `${API_URL}/api/auth/reset-password`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ token, newPassword }),
+    },
+  );
+
+  const data = (await response.json()) as {
+    message?: string;
+  };
+
+  if (!response.ok) {
+    throw new Error(
+      data.message ?? "No se pudo actualizar la contraseña.",
+    );
+  }
+
+  return data.message ??
+    "La contraseña se actualizó correctamente.";
+}
