@@ -84,3 +84,25 @@
   .admin-kitchen__board { grid-template-columns: 1fr; }
   .admin-kitchen__lane--ready { grid-column: auto; }
 }
+
+/* Refinamiento visual de la consola de cocina */
+.admin-kitchen-page { background: #f6f7fa; }
+.admin-kitchen-page .admin-dashboard__header { margin-bottom: 26px; }
+.admin-kitchen-page .admin-dashboard__header h1 { letter-spacing: -.035em; }
+.admin-kitchen { border: 1px solid #e4e8ef; border-radius: 20px; background: #fff; box-shadow: 0 12px 34px rgba(19,36,63,.07); }
+.admin-kitchen__lane { border-color: #e5e9f0; border-radius: 16px; background: #f8f9fb; }
+.admin-kitchen__lane--new { border-color: #f0d8a8; background: #fffbf3; }
+.admin-kitchen__lane--preparing { border-color: #d6e4ff; background: #f7f9ff; }
+.admin-kitchen__lane--ready { border-color: #cfe7d8; background: #f6fbf7; }
+.admin-kitchen-card { border: 1px solid #e5e9f0; border-radius: 14px; background: #fff; box-shadow: 0 4px 14px rgba(19,36,63,.06); }
+.admin-kitchen-card__header h4 { letter-spacing: -.02em; }
+.admin-kitchen-item { border: 1px solid #edf0f5; background: #fafbfd; }
+.admin-kitchen-card__action { border: 1px solid #075fea; border-radius: 10px; background: #075fea; box-shadow: none; transition: filter .16s ease,transform .16s ease; }
+.admin-kitchen-card__action:hover:not(:disabled) { filter: brightness(.94); transform: translateY(-1px); }
+.admin-kitchen__lane--ready .admin-kitchen-card__action { border-color: #168653; background: #168653; }
+.admin-kitchen__refresh,.admin-kitchen__all-orders { border-width: 1px; border-radius: 10px; box-shadow: none; }
+.admin-kitchen__refresh:hover:not(:disabled),.admin-kitchen__all-orders:hover { transform: translateY(-1px); }
+.admin-kitchen__lane-empty,.admin-kitchen__all-clear { border-color: #dce2eb; background: #fff; }
+.admin-kitchen-page .admin-dashboard__store-link,.admin-kitchen-page .admin-dashboard__logout { border-width: 1px; border-radius: 10px; box-shadow: none; }
+.admin-kitchen-page .admin-dashboard__store-link { border-color: #075fea; }
+@media(prefers-reduced-motion:reduce) { .admin-kitchen-card__action,.admin-kitchen__refresh,.admin-kitchen__all-orders { transition: none; } }
