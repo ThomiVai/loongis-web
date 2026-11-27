@@ -150,9 +150,12 @@ function App() {
         >
           <Route
             path="/admin"
-            element={
-              <AdminDashboard />
-            }
+            element={<AdminKitchen />}
+          />
+
+          <Route
+            path="/admin/productos"
+            element={<AdminDashboard />}
           />
 
           <Route path="/admin/ventas" element={<AdminSales />} />
