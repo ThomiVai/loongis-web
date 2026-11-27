@@ -106,3 +106,32 @@
 .admin-kitchen-page .admin-dashboard__store-link,.admin-kitchen-page .admin-dashboard__logout { border-width: 1px; border-radius: 10px; box-shadow: none; }
 .admin-kitchen-page .admin-dashboard__store-link { border-color: #075fea; }
 @media(prefers-reduced-motion:reduce) { .admin-kitchen-card__action,.admin-kitchen__refresh,.admin-kitchen__all-orders { transition: none; } }
+
+
+/* Tablero compacto: filas por estado y fichas horizontales */
+.admin-kitchen__board { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+.admin-kitchen__lane { display: grid; grid-template-columns: 168px minmax(0, 1fr); align-items: start; gap: 16px; padding: 16px; }
+.admin-kitchen__lane-header { grid-column: 1; grid-row: 1; align-items: flex-start; flex-direction: column; gap: 10px; margin: 0; }
+.admin-kitchen__lane-header h3 { font-size: 20px; }
+.admin-kitchen__lane-count { min-width: 32px; width: 32px; height: 32px; font-size: 15px; }
+.admin-kitchen__cards, .admin-kitchen__lane-empty { grid-column: 2; grid-row: 1; }
+.admin-kitchen__cards { grid-template-columns: repeat(auto-fit, minmax(min(100%, 480px), 1fr)); gap: 12px; }
+.admin-kitchen-card { display: grid; grid-template-columns: minmax(0, 1fr) minmax(170px, 220px); grid-template-areas: "head head" "customer footer" "items action" "note action"; align-items: start; gap: 10px 18px; padding: 16px; }
+.admin-kitchen-card__header { grid-area: head; }
+.admin-kitchen-card__customer { grid-area: customer; margin: 0; }
+.admin-kitchen-card__items { grid-area: items; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); margin-top: 0; }
+.admin-kitchen-card__general-note { grid-area: note; margin-top: 0; }
+.admin-kitchen-card__footer { grid-area: footer; display: grid; justify-content: stretch; align-content: center; gap: 7px; margin: 0; padding-left: 14px; border-left: 1px solid #e5eaf2; }
+.admin-kitchen-card__footer a { width: fit-content; }
+.admin-kitchen-card__action { grid-area: action; align-self: stretch; min-height: 52px; }
+.admin-kitchen__lane--new .admin-kitchen-card { border-inline-start: 4px solid #e9a124; }
+.admin-kitchen__lane--preparing .admin-kitchen-card { border-inline-start: 4px solid #075fea; }
+.admin-kitchen__lane--ready .admin-kitchen-card { border-inline-start: 4px solid #168653; }
+@media (max-width: 720px) {
+  .admin-kitchen__lane { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+  .admin-kitchen__lane-header { grid-column: 1; grid-row: auto; align-items: center; flex-direction: row; justify-content: space-between; }
+  .admin-kitchen__cards, .admin-kitchen__lane-empty { grid-column: 1; grid-row: auto; }
+  .admin-kitchen__cards { grid-template-columns: minmax(0, 1fr); }
+  .admin-kitchen-card { grid-template-columns: minmax(0, 1fr); grid-template-areas: "head" "customer" "items" "note" "footer" "action"; gap: 10px; }
+  .admin-kitchen-card__footer { display: flex; justify-content: space-between; padding: 10px 0 0; border-top: 1px solid #e5eaf2; border-left: 0; }
+}
