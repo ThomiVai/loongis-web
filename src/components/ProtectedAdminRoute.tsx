@@ -1,4 +1,5 @@
 import { AdminOrderAlerts } from "./AdminOrderAlerts";
+import { AdminNavigation } from "./AdminNavigation";
 import {
   useEffect,
   useState,
@@ -190,6 +191,10 @@ export function ProtectedAdminRoute() {
   ======================================== */
 
   return (
-    <><AdminOrderAlerts token={token} /><Outlet context={{admin}} /></>
+    <>
+      <AdminOrderAlerts token={token} />
+      <AdminNavigation admin={admin} />
+      <Outlet context={{ admin }} />
+    </>
   );
 }
