@@ -135,3 +135,21 @@
   .admin-kitchen-card { grid-template-columns: minmax(0, 1fr); grid-template-areas: "head" "customer" "items" "note" "footer" "action"; gap: 10px; }
   .admin-kitchen-card__footer { display: flex; justify-content: space-between; padding: 10px 0 0; border-top: 1px solid #e5eaf2; border-left: 0; }
 }
+
+
+/* Ajuste de lectura y producto por pedido */
+.admin-kitchen-card { grid-template-areas: "head head" "customer footer" "items action" "note action"; }
+.admin-kitchen-card__action { align-self: end; min-height: 50px; }
+.admin-kitchen-card__footer { align-content: start; }
+.admin-kitchen-item { min-width: 0; }
+.admin-kitchen-item--with-image { display: grid; grid-template-columns: 84px minmax(0, 1fr); align-items: start; gap: 11px; }
+.admin-kitchen-item__image { display: block; width: 84px; height: 84px; object-fit: contain; border: 1px solid #e8ebf1; border-radius: 10px; background: #fff; }
+.admin-kitchen-item__content { min-width: 0; }
+.admin-kitchen-item__content h5 { overflow-wrap: anywhere; }
+.admin-kitchen-item__content .admin-kitchen-item__choice { margin-top: 4px; }
+.admin-kitchen-item__content .admin-kitchen-item__modifier, .admin-kitchen-item__content .admin-kitchen-item__note { overflow-wrap: anywhere; }
+@media (max-width: 720px) {
+  .admin-kitchen-card__action { align-self: auto; }
+  .admin-kitchen-item--with-image { grid-template-columns: 68px minmax(0, 1fr); gap: 10px; }
+  .admin-kitchen-item__image { width: 68px; height: 68px; }
+}
