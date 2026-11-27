@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useOutletContext } from "react-router-dom";
+import type { ProtectedAdminOutletContext } from "../components/ProtectedAdminRoute";
 import { getAdminOrders, updateAdminKitchenStatus } from "../services/adminOrdersApi";
 import type { AdminKitchenStatus, AdminOrder } from "../services/adminOrdersApi";
 import { getAdminToken, removeAdminToken } from "../utils/adminSession";
@@ -56,6 +57,7 @@ function getPaymentLabel(order: AdminOrder): string {
 
 export function AdminKitchen() {
   const navigate = useNavigate();
+  const { admin } = useOutletContext<ProtectedAdminOutletContext>();
   const token = getAdminToken();
   const inFlight = useRef(false);
   const [orders, setOrders] = useState<AdminOrder[]>([]);
@@ -64,6 +66,11 @@ export function AdminKitchen() {
   const [updatingId, setUpdatingId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
+
+  const handleLogout = () => {
+    removeAdminToken();
+    navigate("/admin/login", { replace: true });
+  };
 
   const loadOrders = useCallback(async (silent = false) => {
     if (!token) {
@@ -150,7 +157,7 @@ export function AdminKitchen() {
           <div>
             <span className="admin-dashboard__eyebrow">Operación Loongis</span>
             <h1>Cocina</h1>
-            <p>Pedidos claros y ordenados para preparar sin perder detalles.</p>
+            <p>Pedidos claros y ordenados para preparar sin perder detalles. Sesión: <strong>{admin.email}</strong></p>
           </div>
           <div className="admin-dashboard__header-actions admin-kitchen__header-actions">
             <span className="admin-kitchen__updated" aria-live="polite">
@@ -159,14 +166,10 @@ export function AdminKitchen() {
             <button type="button" className="admin-kitchen__refresh" onClick={() => void loadOrders()} disabled={refreshing}>
               {refreshing ? "Actualizando…" : "Actualizar"}
             </button>
-            <Link to="/admin/pedidos" className="admin-kitchen__all-orders">Todos los pedidos</Link>
+            <Link to="/" className="admin-dashboard__store-link">Volver a la tienda</Link>
+            <button type="button" className="admin-dashboard__logout" onClick={handleLogout}>Cerrar sesión</button>
           </div>
         </header>
-
-        <nav className="admin-dashboard__nav" aria-label="Secciones del panel">
-          <Link to="/admin/cocina" className="admin-dashboard__nav-link admin-dashboard__nav-link--active" aria-current="page">Cocina</Link>
-          <Link to="/admin/pedidos" className="admin-dashboard__nav-link">Pedidos</Link>
-        </nav>
 
         <section className="admin-kitchen" aria-label="Tablero de cocina">
           <div className="admin-kitchen__intro">
