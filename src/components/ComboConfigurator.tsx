@@ -582,6 +582,40 @@ export function ComboConfigurator({
                         activeBurgerChoice,
                         activeBurgerStep,
                       )}
+
+                      {activeBurgerChoice.option.ingredients.length > 0 && (
+                        <div className="product-ingredients">
+                          {activeBurgerChoice.option.ingredients.map(
+                            (ingredient) => (
+                              <label
+                                className={
+                                  "product-ingredient " +
+                                  (activeBurgerChoice.removedIngredients.includes(
+                                    ingredient,
+                                  )
+                                    ? "product-ingredient--removed"
+                                    : "")
+                                }
+                                key={ingredient}
+                              >
+                                <input
+                                  type="checkbox"
+                                  checked={activeBurgerChoice.removedIngredients.includes(
+                                    ingredient,
+                                  )}
+                                  onChange={() =>
+                                    handleRemovedIngredient(
+                                      activeBurgerGroup.id,
+                                      ingredient,
+                                    )
+                                  }
+                                />
+                                <span>Sin {ingredient}</span>
+                              </label>
+                            ),
+                          )}
+                        </div>
+                      )}
                     </fieldset>
                   ) : (
                     <p className="combo-configurator__step-complete">
