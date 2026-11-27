@@ -573,6 +573,7 @@ export function ComboConfigurator({
                     <fieldset
                       className="product-customization combo-configurator__group combo-configurator__group--burger combo-configurator__step-options"
                       key={activeBurgerGroup.id}
+                      aria-label={activeBurgerGroup.label}
                     >
                       <legend className="product-customization__title">
                         {activeBurgerGroup.label}
@@ -658,6 +659,7 @@ export function ComboConfigurator({
                     <fieldset
                       className={`product-customization combo-configurator__group combo-configurator__group--${optionKind}`}
                       key={group.id}
+                      aria-label={group.label}
                     >
                       <legend className="product-customization__title">
                         {group.label}
