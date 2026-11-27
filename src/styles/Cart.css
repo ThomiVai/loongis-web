@@ -502,22 +502,22 @@
 ======================================== */
 
 .cart-item--101 {
-  --cart-image-scale: 1.15;
+  --cart-image-scale: 1;
   --cart-image-y: 2px;
 }
 
 .cart-item--102 {
-  --cart-image-scale: 1.22;
+  --cart-image-scale: 1;
   --cart-image-y: 2px;
 }
 
 .cart-item--109 {
-  --cart-image-scale: 1.2;
+  --cart-image-scale: 1;
   --cart-image-y: 3px;
 }
 
 .cart-item--110 {
-  --cart-image-scale: 1.23;
+  --cart-image-scale: 1;
   --cart-image-y: 3px;
 }
 
@@ -1387,19 +1387,19 @@
   /* Combos */
 
   .cart-item--101 {
-    --cart-image-scale: 1.1;
+    --cart-image-scale: 1;
   }
 
   .cart-item--102 {
-    --cart-image-scale: 1.16;
+    --cart-image-scale: 1;
   }
 
   .cart-item--109 {
-    --cart-image-scale: 1.14;
+    --cart-image-scale: 1;
   }
 
   .cart-item--110 {
-    --cart-image-scale: 1.17;
+    --cart-image-scale: 1;
   }
 
 

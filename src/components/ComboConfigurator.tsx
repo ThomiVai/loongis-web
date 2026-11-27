@@ -36,7 +36,6 @@ import {
 import type {
   Product,
   ProductChoiceGroup,
-  ProductChoiceOption,
   ProductChoiceSelection,
   ProductCustomization,
 } from "../types/Product";
@@ -104,18 +103,6 @@ function isCheeseIngredient(ingredient: string): boolean {
   return /\b(queso|cheese)\b/.test(normalizeOptionName(ingredient));
 }
 
-function isClassicBurgerOption(option: ProductChoiceOption): boolean {
-  const optionName = normalizeOptionName(
-    `${option.id} ${option.label}`,
-  );
-
-  return (
-    option.productLegacyId === 2 ||
-    optionName.includes("clasic") ||
-    optionName.includes("classic")
-  );
-}
-
 function sanitizeBurgerChoiceIngredients(product: Product): Product {
   if (!product.choiceGroups) return product;
 
@@ -127,11 +114,9 @@ function sanitizeBurgerChoiceIngredients(product: Product): Product {
         option.kind === "burger"
           ? {
               ...option,
-              ingredients: isClassicBurgerOption(option)
-                ? option.ingredients.filter(
-                    (ingredient) => !isCheeseIngredient(ingredient),
-                  )
-                : [],
+              ingredients: option.ingredients.filter(
+                (ingredient) => !isCheeseIngredient(ingredient),
+              ),
             }
           : option,
       ),
@@ -221,12 +206,12 @@ export function ComboConfigurator({
         group.options.length > 1 &&
         group.options.every((option) => option.kind === "burger"),
     );
-  const hasThreeBurgerSteps =
-    burgerSelectionGroups.length === 3;
+  const hasSteppedBurgerChoices =
+    burgerSelectionGroups.length >= 2;
 
   const [activeBurgerStep, setActiveBurgerStep] =
     useState<number | null>(
-      hasThreeBurgerSteps ? 0 : null,
+      hasSteppedBurgerChoices ? 0 : null,
     );
 
   const [notes, setNotes] =
@@ -494,7 +479,7 @@ export function ComboConfigurator({
                 </div>
               </div>
 
-              {hasThreeBurgerSteps && (
+              {hasSteppedBurgerChoices && (
                 <section
                   className="combo-configurator__stepper"
                   aria-labelledby="combo-configurator-stepper-title"
@@ -502,7 +487,7 @@ export function ComboConfigurator({
                   <div className="combo-configurator__stepper-heading">
                     <div>
                       <h2 id="combo-configurator-stepper-title">
-                        Elegí tus 3 hamburguesas
+                        Elegí tus {burgerSelectionGroups.length} hamburguesas
                       </h2>
                       <p>
                         Seleccioná una para cada lugar. Al elegir, avanzás a la siguiente.
@@ -621,7 +606,7 @@ export function ComboConfigurator({
                   ) : (
                     <p className="combo-configurator__step-complete">
                       <FaCheck aria-hidden="true" />
-                      Listo: ya elegiste las tres. Podés tocar cualquiera para cambiarla.
+                      {"Listo: ya elegiste tus " + burgerSelectionGroups.length + " hamburguesas. Podés tocar cualquiera para cambiarla."}
                     </p>
                   )}
                 </section>
@@ -630,7 +615,7 @@ export function ComboConfigurator({
               {(product.choiceGroups ?? [])
                 .filter(
                   (group) =>
-                    !hasThreeBurgerSteps ||
+                    !hasSteppedBurgerChoices ||
                     !burgerSelectionGroups.some(
                       (burgerGroup) => burgerGroup.id === group.id,
                     ),
