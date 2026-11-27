@@ -471,65 +471,6 @@ export function AdminOrderDetail() {
           </div>
         </header>
 
-        <nav
-          className="admin-dashboard__nav"
-          aria-label="Secciones del panel administrador"
-        >
-          <Link
-            to="/admin"
-            className="admin-dashboard__nav-link"
-          >
-            Productos
-          </Link>
-
-          <Link
-            to="/admin/pedidos"
-            className="admin-dashboard__nav-link admin-dashboard__nav-link--active"
-            aria-current="page"
-          >
-            Pedidos
-          </Link>
-
-          <Link
-            to="/admin/ventas"
-            className="admin-dashboard__nav-link"
-          >
-            Ventas
-          </Link>
-
-          <Link
-            to="/admin/inventario"
-            className="admin-dashboard__nav-link"
-          >
-            Inventario
-          </Link>
-
-          {admin.role === "owner" && (
-          <Link
-            to="/admin/recetas"
-            className="admin-dashboard__nav-link"
-          >
-            Recetas
-          </Link>
-          )}
-
-          <Link
-            to="/admin/stock"
-            className="admin-dashboard__nav-link"
-          >
-            Centro de stock
-          </Link>
-
-          {admin.role === "owner" && (
-            <Link
-              to="/admin/usuarios"
-              className="admin-dashboard__nav-link"
-            >
-              Accesos
-            </Link>
-          )}
-        </nav>
-
         <Link
           to="/admin/pedidos"
           className="admin-order-detail__back"
