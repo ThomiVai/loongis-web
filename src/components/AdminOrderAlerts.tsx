@@ -16,10 +16,10 @@ export function AdminOrderAlerts({token}:{token:string}) {
    try {const orders=await getAdminOrders(token,'pending');if(stopped)return;const newOnes=orders.filter(o=>!seen.has(o._id));orders.forEach(o=>seen.add(o._id));setPending(orders.length);setFailed(false);
     if(ready&&newOnes.length){setFresh(n=>n+newOnes.length);if(enabled.current)beep();}
     ready=true;
-   }catch{if(!stopped)setFailed(true);}finally{if(!stopped)timer=setTimeout(()=>void poll(),20000);}
+   }catch{if(!stopped)setFailed(true);}finally{if(!stopped)timer=setTimeout(()=>void poll(),10000);}
   }
   void poll();return()=>{stopped=true;clearTimeout(timer);};
  },[token]);
  useEffect(()=>()=>{void audio.current?.close();audio.current=null;},[]);
- return <aside className="admin-order-alerts" aria-label="Avisos de pedidos"><div role="status" aria-live="polite">{failed?'No pudimos actualizar los avisos. Revisá la conexión y la sesión.':pending===null?'Consultando pedidos…':`${pending} pedidos pendientes`}{fresh>0&&` · ${fresh} nuevos desde que abriste el panel`}</div><Link to="/admin/pedidos" onClick={()=>setFresh(0)}>Ver pedidos</Link><Link to="/admin/ventas">Ventas</Link><button type="button" onClick={()=>void toggleSound()}>{sound?'Silenciar aviso':'Activar aviso sonoro'}</button><small>Actualiza cada 20 s con el panel abierto. El navegador puede pausar los avisos en segundo plano.{audioError?' No se pudo activar el audio en este navegador.':''}</small></aside>;
+ return <aside className={`admin-order-alerts${pending !== null && pending > 0 ? " admin-order-alerts--pending" : ""}`} aria-label="Avisos de pedidos"><div role="status" aria-live="polite">{failed?'No pudimos actualizar los avisos. Revisá la conexión y la sesión.':pending===null?'Consultando pedidos…':`${pending} pedidos pendientes`}{fresh>0&&` · ${fresh} nuevos desde que abriste el panel`}</div><Link to="/admin/pedidos" onClick={()=>setFresh(0)}>Ver pedidos</Link><Link to="/admin/cocina">Cocina</Link><Link to="/admin/ventas">Ventas</Link><button type="button" onClick={()=>void toggleSound()}>{sound?'Silenciar aviso':'Activar aviso sonoro'}</button><small>Actualiza cada 10 s con el panel abierto. El navegador puede pausar los avisos en segundo plano.{audioError?' No se pudo activar el audio en este navegador.':''}</small></aside>;
 }

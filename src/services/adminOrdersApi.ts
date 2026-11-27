@@ -11,6 +11,12 @@ export type AdminOrderStatus =
   | "confirmed"
   | "cancelled";
 
+export type AdminKitchenStatus =
+  | "new"
+  | "preparing"
+  | "ready"
+  | "completed";
+
 export type AdminOrderOption = {
   id: string;
   name: string;
@@ -64,6 +70,7 @@ export type AdminOrder = {
     number | null;
   total: number;
   status: AdminOrderStatus;
+  kitchenStatus?: AdminKitchenStatus;
   inventoryTrackingStatus?:
     | "not_enabled"
     | "deducted"
@@ -253,6 +260,32 @@ export async function updateAdminOrderStatus(
       data.message ??
         "No se pudo actualizar el pedido.",
     );
+  }
+
+  return data.data;
+}
+
+
+export async function updateAdminKitchenStatus(
+  orderId: string,
+  token: string,
+  kitchenStatus: Exclude<AdminKitchenStatus, "new">,
+): Promise<AdminOrder> {
+  const response = await fetch(
+    `${API_URL}/api/orders/${orderId}/kitchen-status`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        ...authHeaders(token),
+      },
+      body: JSON.stringify({ kitchenStatus }),
+    },
+  );
+
+  const data = await readJson<OrderResponse>(response);
+  if (!response.ok || !data.success || !data.data) {
+    throw new Error(data.message ?? "No se pudo actualizar el estado de cocina.");
   }
 
   return data.data;

@@ -427,6 +427,13 @@ export function AdminOrders() {
           </Link>
 
           <Link
+            to="/admin/cocina"
+            className="admin-dashboard__nav-link"
+          >
+            Cocina
+          </Link>
+
+          <Link
             to="/admin/ventas"
             className="admin-dashboard__nav-link"
           >

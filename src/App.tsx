@@ -21,6 +21,7 @@ import { StoreStatus } from "./components/StoreStatus";
 import { AdminDashboard } from "./pages/AdminDashboard";
 import { AdminOrderDetail } from "./pages/AdminOrderDetail";
 import { AdminOrders } from "./pages/AdminOrders";
+import { AdminKitchen } from "./pages/AdminKitchen";
 import { AdminInventory } from "./pages/AdminInventory";
 import { AdminLogin } from "./pages/AdminLogin";
 import { AdminForgotPassword } from "./pages/AdminForgotPassword";
@@ -160,6 +161,11 @@ function App() {
             element={
               <AdminOrders />
             }
+          />
+
+          <Route
+            path="/admin/cocina"
+            element={<AdminKitchen />}
           />
 
           <Route
