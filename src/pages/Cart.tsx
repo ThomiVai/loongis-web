@@ -18,6 +18,10 @@ import {
   ConfirmModal,
 } from "../components/ConfirmModal";
 
+import {
+  getDailyComboImage,
+} from "../utils/dailyComboImage";
+
 import type {
   CartItem,
 } from "../context/CartContext";
@@ -482,6 +486,25 @@ export function Cart() {
                         customizationDetails.length >
                         0;
 
+                      const dailyBurger =
+                        item.customization.choices?.find(
+                          (choice) => choice.option.kind === "burger",
+                        )?.option;
+                      const dailyBeverage =
+                        item.customization.choices?.find(
+                          (choice) => choice.option.kind === "beverage",
+                        )?.option;
+                      const dailyComboImage =
+                        item.dailyPromo
+                          ? getDailyComboImage(dailyBurger, dailyBeverage)
+                          : undefined;
+                      const cartImage =
+                        dailyComboImage ?? item.image;
+                      const cartImageAlt =
+                        dailyComboImage
+                          ? `Combo del día con ${dailyBurger?.label ?? "hamburguesa"}, papas y ${dailyBeverage?.label ?? "bebida"}`
+                          : item.imageAlt;
+
                       return (
                         <article
                           className={[
@@ -502,12 +525,8 @@ export function Cart() {
                           <div className="cart-item__image-wrapper">
                             <img
                               className="cart-item__image"
-                              src={
-                                item.image
-                              }
-                              alt={
-                                item.imageAlt
-                              }
+                              src={cartImage}
+                              alt={cartImageAlt}
                             />
                           </div>
 
