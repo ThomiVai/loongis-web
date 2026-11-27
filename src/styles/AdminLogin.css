@@ -389,3 +389,37 @@
     min-height: 48px;
   }
 }
+
+/* ========================================
+   PASSWORD RECOVERY
+======================================== */
+
+.admin-login__forgot {
+  display: block;
+  margin-top: 18px;
+  color: var(--color-primary);
+  font-family: "Fredoka", sans-serif;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+}
+
+.admin-login__forgot:hover {
+  text-decoration: underline;
+}
+
+.admin-login__forgot:focus-visible {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 3px;
+}
+
+.admin-login__success {
+  margin: 0;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background-color: rgba(26, 127, 67, 0.1);
+  color: #17683a;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.5;
+}
