@@ -23,7 +23,7 @@
 ======================================== */
 
 .product-detail__content {
-  padding: 42px 0 86px;
+  padding: 42px 0 128px;
 }
 
 .product-detail__container {
@@ -1165,7 +1165,7 @@
     padding:
       24px
       0
-      52px;
+      calc(128px + env(safe-area-inset-bottom));
   }
 
   .product-detail__container {

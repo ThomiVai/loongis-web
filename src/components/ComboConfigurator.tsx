@@ -35,6 +35,7 @@ import {
 
 import type {
   Product,
+  ProductChoiceGroup,
   ProductChoiceOption,
   ProductChoiceSelection,
   ProductCustomization,
@@ -214,6 +215,20 @@ export function ComboConfigurator({
         ),
     );
 
+  const burgerSelectionGroups =
+    (product.choiceGroups ?? []).filter(
+      (group) =>
+        group.options.length > 1 &&
+        group.options.every((option) => option.kind === "burger"),
+    );
+  const hasThreeBurgerSteps =
+    burgerSelectionGroups.length === 3;
+
+  const [activeBurgerStep, setActiveBurgerStep] =
+    useState<number | null>(
+      hasThreeBurgerSteps ? 0 : null,
+    );
+
   const [notes, setNotes] =
     useState(
       editCartItem?.customization.notes ?? "",
@@ -289,6 +304,101 @@ export function ComboConfigurator({
     );
   };
 
+  const renderOptions = (
+    group: ProductChoiceGroup,
+    choice: ProductChoiceSelection,
+    stepIndex?: number,
+  ) => {
+    const optionKind = choice.option.kind;
+
+    return (
+      <div
+        className={"combo-configurator__options combo-configurator__options--" + optionKind}
+        role="radiogroup"
+        aria-label={group.label}
+      >
+        {group.options.map((option) => {
+          const isSelected = choice.option.id === option.id;
+          const burgerImage =
+            option.kind === "burger"
+              ? burgerOptionImages[option.id]
+              : undefined;
+          const beverageImage =
+            option.kind === "beverage"
+              ? getBeverageImage(option.id, option.label)
+              : undefined;
+
+          return (
+            <button
+              key={option.id}
+              className={
+                "combo-configurator__option combo-configurator__option--" +
+                option.kind +
+                " combo-configurator__option--" +
+                option.id +
+                (isSelected
+                  ? " combo-configurator__option--selected"
+                  : "")
+              }
+              type="button"
+              role="radio"
+              aria-checked={isSelected}
+              onClick={() => {
+                handleOptionChange(group.id, option.id);
+
+                if (stepIndex !== undefined) {
+                  setActiveBurgerStep(
+                    stepIndex < burgerSelectionGroups.length - 1
+                      ? stepIndex + 1
+                      : null,
+                  );
+                }
+              }}
+            >
+              {burgerImage ? (
+                <CatalogImage
+                  className="combo-configurator__option-image"
+                  src={burgerImage}
+                  alt=""
+                  variant="card"
+                  sizes="76px"
+                  loading="lazy"
+                />
+              ) : beverageImage ? (
+                <img
+                  className="combo-configurator__beverage-image"
+                  src={beverageImage}
+                  alt=""
+                  loading="lazy"
+                />
+              ) : (
+                <span className="combo-configurator__beverage-fallback" aria-hidden="true">
+                  {option.label.charAt(0)}
+                </span>
+              )}
+
+              <span className="combo-configurator__option-copy">
+                <strong>{option.label}</strong>
+                <small>{isSelected ? "Elegida" : "Seleccionar"}</small>
+              </span>
+
+              <span
+                className={
+                  "combo-configurator__check" +
+                  (isSelected
+                    ? " combo-configurator__check--visible"
+                    : "")
+                }
+              >
+                <FaCheck aria-hidden="true" />
+              </span>
+            </button>
+          );
+        })}
+      </div>
+    );
+  };
+
   const customization:
     ProductCustomization = {
     choices,
@@ -321,6 +431,15 @@ export function ComboConfigurator({
 
     navigate("/carrito", { replace: true });
   };
+
+  const activeBurgerGroup =
+    activeBurgerStep === null
+      ? undefined
+      : burgerSelectionGroups[activeBurgerStep];
+  const activeBurgerChoice =
+    activeBurgerGroup
+      ? choices.find((choice) => choice.groupId === activeBurgerGroup.id)
+      : undefined;
 
   return (
     <main className="product-detail">
@@ -375,7 +494,148 @@ export function ComboConfigurator({
                 </div>
               </div>
 
-              {(product.choiceGroups ?? []).map(
+              {hasThreeBurgerSteps && (
+                <section
+                  className="combo-configurator__stepper"
+                  aria-labelledby="combo-configurator-stepper-title"
+                >
+                  <div className="combo-configurator__stepper-heading">
+                    <div>
+                      <h2 id="combo-configurator-stepper-title">
+                        Elegí tus 3 hamburguesas
+                      </h2>
+                      <p>
+                        Seleccioná una para cada lugar. Al elegir, avanzás a la siguiente.
+                      </p>
+                    </div>
+                    <span aria-live="polite">
+                      {activeBurgerStep === null
+                        ? "Selección lista"
+                        : "Hamburguesa " +
+                          (activeBurgerStep + 1) +
+                          " de " +
+                          burgerSelectionGroups.length}
+                    </span>
+                  </div>
+
+                  <div
+                    className="combo-configurator__step-list"
+                    role="group"
+                    aria-label="Hamburguesas elegidas. Tocá una para cambiarla."
+                  >
+                    {burgerSelectionGroups.map((group, index) => {
+                      const choice = choices.find(
+                        (item) => item.groupId === group.id,
+                      );
+
+                      if (!choice) return null;
+
+                      const selectedImage =
+                        burgerOptionImages[choice.option.id];
+
+                      return (
+                        <button
+                          key={group.id}
+                          className={
+                            "combo-configurator__step-summary" +
+                            (activeBurgerStep === index
+                              ? " combo-configurator__step-summary--active"
+                              : "")
+                          }
+                          type="button"
+                          aria-pressed={activeBurgerStep === index}
+                          onClick={() => setActiveBurgerStep(index)}
+                        >
+                          <span className="combo-configurator__step-number">
+                            {index + 1}
+                          </span>
+                          {selectedImage && (
+                            <img
+                              className="combo-configurator__step-image"
+                              src={selectedImage}
+                              alt=""
+                              loading="lazy"
+                            />
+                          )}
+                          <span className="combo-configurator__step-copy">
+                            <small>Hamburguesa {index + 1}</small>
+                            <strong>{choice.option.label}</strong>
+                          </span>
+                          <span className="combo-configurator__step-edit">
+                            {activeBurgerStep === index ? "Editando" : "Cambiar"}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  {activeBurgerGroup && activeBurgerChoice && activeBurgerStep !== null ? (
+                    <fieldset
+                      className="product-customization combo-configurator__group combo-configurator__group--burger combo-configurator__step-options"
+                      key={activeBurgerGroup.id}
+                      aria-label={activeBurgerGroup.label}
+                    >
+                      <legend className="product-customization__title">
+                        {activeBurgerGroup.label}
+                      </legend>
+                      {renderOptions(
+                        activeBurgerGroup,
+                        activeBurgerChoice,
+                        activeBurgerStep,
+                      )}
+
+                      {activeBurgerChoice.option.ingredients.length > 0 && (
+                        <div className="product-ingredients">
+                          {activeBurgerChoice.option.ingredients.map(
+                            (ingredient) => (
+                              <label
+                                className={
+                                  "product-ingredient " +
+                                  (activeBurgerChoice.removedIngredients.includes(
+                                    ingredient,
+                                  )
+                                    ? "product-ingredient--removed"
+                                    : "")
+                                }
+                                key={ingredient}
+                              >
+                                <input
+                                  type="checkbox"
+                                  checked={activeBurgerChoice.removedIngredients.includes(
+                                    ingredient,
+                                  )}
+                                  onChange={() =>
+                                    handleRemovedIngredient(
+                                      activeBurgerGroup.id,
+                                      ingredient,
+                                    )
+                                  }
+                                />
+                                <span>Sin {ingredient}</span>
+                              </label>
+                            ),
+                          )}
+                        </div>
+                      )}
+                    </fieldset>
+                  ) : (
+                    <p className="combo-configurator__step-complete">
+                      <FaCheck aria-hidden="true" />
+                      Listo: ya elegiste las tres. Podés tocar cualquiera para cambiarla.
+                    </p>
+                  )}
+                </section>
+              )}
+
+              {(product.choiceGroups ?? [])
+                .filter(
+                  (group) =>
+                    !hasThreeBurgerSteps ||
+                    !burgerSelectionGroups.some(
+                      (burgerGroup) => burgerGroup.id === group.id,
+                    ),
+                )
+                .map(
                 (group) => {
                   const choice = choices.find(
                     (item) => item.groupId === group.id,
@@ -399,6 +659,7 @@ export function ComboConfigurator({
                     <fieldset
                       className={`product-customization combo-configurator__group combo-configurator__group--${optionKind}`}
                       key={group.id}
+                      aria-label={group.label}
                     >
                       <legend className="product-customization__title">
                         {group.label}
@@ -418,12 +679,8 @@ export function ComboConfigurator({
                           )}
 
                           <div className="combo-configurator__fixed-copy">
-                            <small>
-                              Selección del día
-                            </small>
-                            <strong>
-                              {choice.option.label}
-                            </strong>
+                            <small>Selección del día</small>
+                            <strong>{choice.option.label}</strong>
                           </div>
 
                           <span className="combo-configurator__check combo-configurator__check--visible">
@@ -431,89 +688,7 @@ export function ComboConfigurator({
                           </span>
                         </div>
                       ) : (
-                        <div
-                          className={`combo-configurator__options combo-configurator__options--${optionKind}`}
-                          role="radiogroup"
-                          aria-label={group.label}
-                        >
-                          {group.options.map((option) => {
-                            const isSelected =
-                              choice.option.id ===
-                              option.id;
-
-                            const burgerImage =
-                              option.kind === "burger"
-                                ? burgerOptionImages[
-                                    option.id
-                                  ]
-                                : undefined;
-                            const beverageImage =
-                              option.kind === "beverage"
-                                ? getBeverageImage(option.id, option.label)
-                                : undefined;
-
-                            return (
-                              <button
-                                key={option.id}
-                                className={`combo-configurator__option combo-configurator__option--${option.kind} combo-configurator__option--${option.id} ${
-                                  isSelected
-                                    ? "combo-configurator__option--selected"
-                                    : ""
-                                }`}
-                                type="button"
-                                role="radio"
-                                aria-checked={isSelected}
-                                onClick={() =>
-                                  handleOptionChange(
-                                    group.id,
-                                    option.id,
-                                  )
-                                }
-                              >
-                                {burgerImage ? (
-                                  <CatalogImage
-                                    className="combo-configurator__option-image"
-                                    src={burgerImage}
-                                    alt=""
-                                    variant="card"
-                                    sizes="76px"
-                                    loading="lazy"
-                                  />
-                                ) : beverageImage ? (
-                                  <img
-                                    className="combo-configurator__beverage-image"
-                                    src={beverageImage}
-                                    alt=""
-                                    loading="lazy"
-                                  />
-                                ) : (
-                                  <span className="combo-configurator__beverage-fallback" aria-hidden="true">
-                                    {option.label.charAt(0)}
-                                  </span>
-                                )}
-
-                                <span className="combo-configurator__option-copy">
-                                  <strong>
-                                    {option.label}
-                                  </strong>
-                                  <small>
-                                    {isSelected
-                                      ? "Elegida"
-                                      : "Seleccionar"}
-                                  </small>
-                                </span>
-
-                                <span className={`combo-configurator__check ${
-                                  isSelected
-                                    ? "combo-configurator__check--visible"
-                                    : ""
-                                }`}>
-                                  <FaCheck aria-hidden="true" />
-                                </span>
-                              </button>
-                            );
-                          })}
-                        </div>
+                        renderOptions(group, choice)
                       )}
 
                       {choice.option.ingredients.length > 0 && (
