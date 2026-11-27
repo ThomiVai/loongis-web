@@ -772,34 +772,6 @@ export function AdminStockCenter() {
           </div>
         </header>
 
-        <nav className="admin-dashboard__nav">
-          <Link to="/admin" className="admin-dashboard__nav-link">
-            Productos
-          </Link>
-          <Link to="/admin/pedidos" className="admin-dashboard__nav-link">
-            Pedidos
-          </Link>
-          <Link to="/admin/ventas" className="admin-dashboard__nav-link">
-            Ventas
-          </Link>
-          <Link to="/admin/inventario" className="admin-dashboard__nav-link">
-            Inventario
-          </Link>
-          <Link to="/admin/stock" className="admin-dashboard__nav-link admin-dashboard__nav-link--active">
-            Centro de stock
-          </Link>
-          {admin.role === "owner" && (
-            <Link to="/admin/recetas" className="admin-dashboard__nav-link">
-              Recetas
-            </Link>
-          )}
-          {admin.role === "owner" && (
-            <Link to="/admin/usuarios" className="admin-dashboard__nav-link">
-              Accesos
-            </Link>
-          )}
-        </nav>
-
         {error && (
           <div className="admin-stock__message admin-stock__message--error" role="alert">
             {error}
