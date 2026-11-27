@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate, useOutletContext } from "react-router-dom";
 import type { ProtectedAdminOutletContext } from "../components/ProtectedAdminRoute";
 import { getAdminOrders, updateAdminKitchenStatus } from "../services/adminOrdersApi";
+import { getAdminProducts } from "../services/adminProductsApi";
 import type { AdminKitchenStatus, AdminOrder } from "../services/adminOrdersApi";
 import { getAdminToken, removeAdminToken } from "../utils/adminSession";
 import "../styles/AdminKitchen.css";
@@ -61,6 +62,7 @@ export function AdminKitchen() {
   const token = getAdminToken();
   const inFlight = useRef(false);
   const [orders, setOrders] = useState<AdminOrder[]>([]);
+  const [productImages, setProductImages] = useState<Record<number, { src: string; alt: string }>>({});
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [updatingId, setUpdatingId] = useState<string | null>(null);
@@ -103,6 +105,30 @@ export function AdminKitchen() {
       setRefreshing(false);
     }
   }, [navigate, token]);
+
+  useEffect(() => {
+    let mounted = true;
+    void getAdminProducts()
+      .then((products) => {
+        if (!mounted) return;
+        const images = products.reduce<Record<number, { src: string; alt: string }>>((result, product) => {
+          if (typeof product.legacyId === "number") {
+            result[product.legacyId] = {
+              src: product.image,
+              alt: product.imageAlt || product.name,
+            };
+          }
+          return result;
+        }, {});
+        setProductImages(images);
+      })
+      .catch(() => {
+        // Las imágenes son un apoyo visual; el pedido sigue siendo legible si el catálogo no carga.
+      });
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   useEffect(() => {
     void loadOrders();
@@ -220,31 +246,47 @@ export function AdminKitchen() {
                           </div>
 
                           <div className="admin-kitchen-card__items">
-                            {order.items.map((item, itemIndex) => (
-                              <section className="admin-kitchen-item" key={`${order._id}-${itemIndex}`}>
-                                <h5><span>{item.quantity}×</span> {item.name}</h5>
-                                {item.customization.size && (
-                                  <p className="admin-kitchen-item__modifier">{item.customization.size.label}</p>
-                                )}
-                                {item.customization.choices?.map((choice, choiceIndex) => (
-                                  <div className="admin-kitchen-item__choice" key={`${choice.groupId}-${choiceIndex}`}>
-                                    <span>{choice.groupLabel}: <strong>{choice.optionLabel}</strong></span>
-                                    {(choice.removedIngredients?.length ?? 0) > 0 && (
-                                      <span className="admin-kitchen-item__remove">Sin {choice.removedIngredients?.join(", ")}</span>
+                            {order.items.map((item, itemIndex) => {
+                              const image = productImages[item.legacyId];
+                              return (
+                                <section
+                                  className={`admin-kitchen-item${image ? " admin-kitchen-item--with-image" : ""}`}
+                                  key={`${order._id}-${itemIndex}`}
+                                >
+                                  {image && (
+                                    <img
+                                      className="admin-kitchen-item__image"
+                                      src={image.src}
+                                      alt={image.alt}
+                                      loading="lazy"
+                                    />
+                                  )}
+                                  <div className="admin-kitchen-item__content">
+                                    <h5><span>{item.quantity}×</span> {item.name}</h5>
+                                    {item.customization.size && (
+                                      <p className="admin-kitchen-item__modifier">{item.customization.size.label}</p>
+                                    )}
+                                    {item.customization.choices?.map((choice, choiceIndex) => (
+                                      <div className="admin-kitchen-item__choice" key={`${choice.groupId}-${choiceIndex}`}>
+                                        <span>{choice.groupLabel}: <strong>{choice.optionLabel}</strong></span>
+                                        {(choice.removedIngredients?.length ?? 0) > 0 && (
+                                          <span className="admin-kitchen-item__remove">Sin {choice.removedIngredients?.join(", ")}</span>
+                                        )}
+                                      </div>
+                                    ))}
+                                    {(item.customization.removedIngredients?.length ?? 0) > 0 && (
+                                      <p className="admin-kitchen-item__remove">Sin {item.customization.removedIngredients?.join(", ")}</p>
+                                    )}
+                                    {(item.customization.extras?.length ?? 0) > 0 && (
+                                      <p className="admin-kitchen-item__modifier">Extras: {item.customization.extras?.map((extra) => extra.label).join(", ")}</p>
+                                    )}
+                                    {item.customization.notes && (
+                                      <p className="admin-kitchen-item__note">{item.customization.notes}</p>
                                     )}
                                   </div>
-                                ))}
-                                {(item.customization.removedIngredients?.length ?? 0) > 0 && (
-                                  <p className="admin-kitchen-item__remove">Sin {item.customization.removedIngredients?.join(", ")}</p>
-                                )}
-                                {(item.customization.extras?.length ?? 0) > 0 && (
-                                  <p className="admin-kitchen-item__modifier">Extras: {item.customization.extras?.map((extra) => extra.label).join(", ")}</p>
-                                )}
-                                {item.customization.notes && (
-                                  <p className="admin-kitchen-item__note">{item.customization.notes}</p>
-                                )}
-                              </section>
-                            ))}
+                                </section>
+                              );
+                            })}
                           </div>
 
                           {order.generalNotes && (
